@@ -59,13 +59,9 @@ These demo programs provide templates for the most common usage:
 - [demo7](PROGRAMS/demo7/demo7.f90) problems with CHARACTER arrays and quotes
 
 ### manpages
-   
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module
-
 - [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html)  -- parses the command line options
-   
 - [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html)  -- obtain parameter values
-
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
 ### doxygen
