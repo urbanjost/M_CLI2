@@ -1,0 +1,307 @@
+<html> 
+<head> 
+<title> </title>
+<style> 
+px {font-family: "Lucida Console", Monaco, monospace}
+p { font-size:100%; line-height:1.1em; }
+body {xfont-style: sans-serif}
+body {
+color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
+a:visited { color:#666; }
+h1,h2,h3,h4,h5,h6 { color:#333; font-family:georgia, verdana, sans-serif; }
+h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}
+h2 { font-size:143%;color:teal; }
+h3 { font-size:134%;color:blue; }
+h4 { font-size:120%;color:gray; }
+img { max-width: 55em}
+p{ padding: 0;margin:0; }
+p{ padding-right:1.4em; }
+p{ padding-bottom:1em; }
+p{ padding-top:1em; }
+p{ whitespace: pre-wrap; }
+h5,h6 { font-size:100% }
+a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }
+XXtable { border:double #000; border-collapse:collapse; }
+XXtable { border-collapse:collapse; }
+XXtd { border:thin solid #888; }
+XXtd { border:none; }
+li { margin-bottom:0.5em; }
+blockquote { display:block; font-size:100%; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
+a,li span { color:#000; }
+a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
+#Container { margin:0 10px; text-align:center; background-color: #BBB}
+#Content { border-top:none; margin:auto; padding:0.3em; text-align:left; width:100%; max-width:55em; background:#FFF}
+span.webName { font-size:.5em; }
+textarea#content { font-size: 1em; line-height: 1.125; }
+h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
+.property { color:#666; font-size:100%; }
+a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+</style> 
+</head>
+<BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
+<h5><a href="download.html">[UP]</a></h5>
+<div id="Container">
+<div id="Content">
+<CENTER>
+<H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>set_args (3m_cli2)</NOBR><HR></H1>
+</CENTER>
+<A name=0>
+
+     <H3>NAME</H3>
+
+</A>
+<BLOCKQUOTE>
+<B>set_args(3f) </B>- [ARGUMENTS:M_CLI2] command line argument parsing
+<B>(LICENSE:PD)
+</B><B>
+</B></BLOCKQUOTE>
+<A name=contents></A><H3>CONTENTS</H3></A>
+<BLOCKQUOTE>
+<A HREF=#1>Synopsis</A><BR>
+<A HREF=#2>Description</A><BR>
+<A HREF=#3>Options</A><BR>
+<A HREF=#4>Usage</A><BR>
+<A HREF=#5>Example</A><BR>
+<A HREF=#6>Author</A><BR>
+<A HREF=#7>License</A><BR>
+</BLOCKQUOTE>
+<A name=8>
+
+     <H3>SYNOPSIS</H3>
+
+</A>
+<BLOCKQUOTE>
+<PRE>
+<P>
+<P>
+<B>subroutine</B> <B>set_args</B>(definition,help_text,version_text)
+<P>
+     character(len=*),intent(in),optional  :: definition
+     character(len=:),intent(in),allocatable,intent(in) :: help_text
+     character(len=:),intent(in),allocatable,intent(in) :: version_text
+</PRE>
+</BLOCKQUOTE>
+<A name=2>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+<B>SET_ARGS</B>(3f) requires a unix-like command prototype for defining
+arguments and default command-line options. Argument values are then
+read using <B>GET_ARGS</B>(3f).
+</BLOCKQUOTE>
+<A name=3>
+
+     <H3>OPTIONS</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B><A HREF=#2>DESCRIPTION</A></B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+composed of all command arguments concatenated
+into a Unix-like command prototype string.
+<TABLE width=100% cellpadding=3><!-- tsb: composed of all command arguments concatenated
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+all keywords get a value.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+logicals must be set to F or T.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+strings MUST be delimited with double-quotes and
+must be at least one space. Internal
+double-quotes are represented with two double-quotes
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+lists of values should be comma-delimited.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+long names (<B>--keyword</B>) should be all lowercase
+</TD></TR>
+<TR></TR></TABLE>DESCRIPTION is pre-defined to act as if started with the
+reserved options &#146;<B>--usage</B> F <B>--help</B> F <B>--version</B> F&#146;.
+<P>
+The <B>--help</B> and <B>--version</B> options require the optional
+help_text and version_text values to be provided.
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>HELP_TEXT</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+if present, will be displayed if program is called with
+<B>--help</B> switch, and then the program will terminate. If
+not supplied, the command line initialized string will be
+shown when <B>--help</B> is used on the commandline.
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>VERSION_TEXT</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
+if present, will be displayed if program is called with
+<B>--version</B> switch, and then the program will terminate.
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=4>
+
+     <H3>USAGE</H3>
+
+</A>
+<BLOCKQUOTE>
+When using one of the Unix-like command line forms note that
+(subject to change) the following variations from other common
+command-line parsers:
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: When using one of the Unix-like command line forms note that
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+long names do not take the <B>--KEY</B>=VALUE form, just
+<B>--KEY</B> VALUE; and long names should be all lowercase and
+always more than one character.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+duplicate keywords are appended together with a space
+separator when a command line is executed.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+numeric keywords are not allowed; but this allows
+negative numbers to be used as values.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+mapping of short names to long names is via an EQUIVALENCE.
+Note that allocatable arrays cannot be EQUIVANENCEd.
+<P>
+Specifying both names of an equivalenced keyword on a command
+line will have undefined results (currently, their alphabetical
+order will define what the Fortran variable values become).
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+short keywords cannot be combined. <B>-a</B> <B>-b</B> <B>-c</B> is required,
+not <B>-abc</B> even for Boolean keys.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+shuffling is not supported. Values should follow their
+keywords.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+if a parameter value of just "-" is supplied it is
+converted to the string "stdin".
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+if the keyword "--" is encountered the rest of the
+command arguments go into the character array "UNUSED".
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+values not matching a keyword go into the character
+array "UNUSED".
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+</BLOCKQUOTE>
+<A name=5>
+
+     <H3>EXAMPLE</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+Sample program:
+<P>
+<PRE>
+    program demo_set_args
+    use M_CLI2,  only : filenames=&gt;unnamed, set_args, get_args, unnamed
+    implicit none
+    integer                      :: i
+    integer,parameter            :: dp=kind(0.0d0)
+    ! DEFINE ARGS
+    real                         :: x, y, z
+    real                         :: p(3)
+    character(len=:),allocatable :: title
+    logical                      :: l, lbig
+    !  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+    !   o only quote strings
+    !   o set all logical values to F or T.
+    call set_args(&#146; -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+            & -l F -L F &
+            & --label " " &
+            & &#146;)
+    ! ASSIGN VALUES TO ELEMENTS
+    ! SCALARS
+    call get_args(&#146;x&#146;,x)
+    call get_args(&#146;y&#146;,y)
+    call get_args(&#146;z&#146;,z)
+    call get_args(&#146;l&#146;,l)
+    call get_args(&#146;L&#146;,lbig)
+    ! ALLOCATABLE STRING
+    call get_args(&#146;title&#146;,title)
+    ! NON-ALLOCATABLE ARRAYS
+    ! for non-allocatable arrays pass size
+    call get_args(&#146;p&#146;,p,size(p))
+    ! USE VALUES
+    write(*,*)&#146;x=&#146;,x
+    write(*,*)&#146;y=&#146;,y
+    write(*,*)&#146;z=&#146;,z
+    write(*,*)&#146;p=&#146;,p
+    write(*,*)&#146;title=&#146;,title
+    write(*,*)&#146;l=&#146;,l
+    write(*,*)&#146;L=&#146;,lbig
+    if(size(filenames).gt.0)then
+       write(*,&#146;(i6.6,3a)&#146;)(i,&#146;[&#146;,filenames(i),&#146;]&#146;,i=1,size(filenames))
+    endif
+    end program demo_set_args
+</PRE>
+</BLOCKQUOTE>
+<A name=6>
+
+     <H3>AUTHOR</H3>
+
+</A>
+<BLOCKQUOTE>
+John S. Urban, 2019
+</BLOCKQUOTE>
+<A name=7>
+
+     <H3>LICENSE</H3>
+
+</A>
+<BLOCKQUOTE>
+Public Domain
+</BLOCKQUOTE>
+<P><HR>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>August 03, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from d1135c9d-2686-47bc-9178-8de628950311 using man macros.</FONT>
+<br><br><center><img src="images/set_args.gif"></center>
+</div>
+</div>
+</body>
+</HTML>
