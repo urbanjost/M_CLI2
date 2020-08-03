@@ -62,14 +62,9 @@ These demo programs provide templates for the most common usage:
    
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module
 
-- [commandline](https://urbanjost.github.io/M_CLI2/commandline.3m_cli2.html)  -- parses the command line options
+- [setargs](https://urbanjost.github.io/M_CLI2/setargs.3m_cli2.html)  -- parses the command line options
    
-- [check_commandline](https://urbanjost.github.io/M_CLI2/check_commandline.3m_cli2.html)  -- convenience
-  routine for checking status of READ of NAMELIST group
-
-- [print_dictionary](https://urbanjost.github.io/M_CLI2/print_dictionary.3m_cli2.html)  -- print the dictionary
-  of command line keywords and values (typically not directly by a user, as automatically called when
-  --usage option is supplied).
+- [getargs](https://urbanjost.github.io/M_CLI2/getargs.3m_cli2.html)  -- obtain parameter values
 
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
