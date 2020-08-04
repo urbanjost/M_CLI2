@@ -1,0 +1,11 @@
+<map id="m_cli2::get_arg_c" name="m_cli2::get_arg_c">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a60a4588aa350fd58640b11f049915111" title="m_cli2::journal" alt="" coords="907,93,1025,120"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a9cab7352414f8b5625330a9ff5cf0cb4" title="NAMEunquote(3f) &#45; [M_strings:QUOTES] remove quotes from string as if read with list&#45;directed input (L..." alt="" coords="189,68,316,95"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_strings:QUOTES] add quotes to string as if written with list&#45;directed input (LICEN..." alt="" coords="364,93,475,120"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a8e172feb2e4ae4d21d4fceb4e54f593c" title="NAMEmerge_str(3f) &#45; [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f) (LICENSE:..." alt="" coords="526,93,665,120"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#a6d2d93ab8471667e632bf7a0e95ebd13" title="NAMElower(3f) &#45; [M_strings:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="541,144,650,171"/>
+<area shape="rect" id="node8" href="$namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f" title="m_cli2::replace_str" alt="" coords="523,195,668,221"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#ad13853611abfee00d40ffa020662ec8a" title="NAMElenset(3f) &#45; [M_strings:LENGTH] return string trimmed or padded to specified length (LICENSE:PD) ..." alt="" coords="731,93,844,120"/>
+<area shape="rect" id="node9" href="$namespacem__cli2.html#a710b26995119aee101959555b1bac8e2" title="NAMEreplace_str(3f) &#45; [M_strings:EDITING] function globally replaces one substring for another in str..." alt="" coords="716,195,859,221"/>
+<area shape="rect" id="node10" href="$namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a" title="m_cli2::strtok" alt="" coords="911,195,1021,221"/>
+</map>

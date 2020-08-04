@@ -1,0 +1,6 @@
+<map id="m_cli2::check_commandline" name="m_cli2::check_commandline">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#aa92e8ad0300d4e324e29eae1ab9d04b4" title="NAMEget(3f) &#45; [ARGUMENTS:M_CLI2] get dictionary value associated with key name in private M_CLI2(3fm)..." alt="" coords="300,5,395,32"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a60a4588aa350fd58640b11f049915111" title="m_cli2::journal" alt="" coords="483,107,601,133"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#acbd726aa5c13b005a14c06d58915cb9a" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandli..." alt="" coords="260,107,435,133"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a76af7f7c39e6755e024890d85d488704" title="NAMEsubstitute(3f) &#45; [M_strings:EDITING] subroutine globally substitutes one substring for another in..." alt="" coords="278,157,417,184"/>
+</map>

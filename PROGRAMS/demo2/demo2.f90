@@ -1,17 +1,14 @@
 program demo2
 !! FULL EXAMPLE ADDING HELP AND VERSION DISPLAY
-   use M_CLI2,  only : unnamed
-   implicit none
-   integer            :: i
+use M_CLI2,  only : unnamed
+implicit none
+integer            :: i
 
-!! DEFINE VALUES TO PUT IN NAMELIST "ARGS"
-   real               :: x        
-   real               :: y
-   real               :: z
-   real               :: point(3)
-   character(len=80)  :: title
-   logical            :: l
-   logical            :: l_
+!! DEFINE "ARGS" VALUES
+integer            :: x, y, z
+real               :: point(3)
+character(len=80)  :: title
+logical            :: l, l_
 
    call parse() !! DEFINE AND PARSE COMMAND LINE
 
@@ -31,11 +28,8 @@ program demo2
 contains
    subroutine parse()
    !! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
-   use M_CLI2, only : commandline, check_commandline
-   character(len=255)            :: message ! use for I/O error messages
-   character(len=:),allocatable  :: readme ! stores updated namelist
+   use M_CLI2, only : set_args, get_args
    character(len=:),allocatable  :: help_text(:), version_text(:)
-   integer                       :: ios
 
    !! DEFINE COMMAND PROTOTYPE
    !!  o All parameters must be listed with a default value
@@ -44,7 +38,6 @@ contains
    !!  o a short uppercase name -L maps to a variable in the NAMELIST of name L_
    !!  o long keynames must be all lowercase
 
-   namelist/args/x,y,z,point,title,l,l_
    character(len=*),parameter :: cmd='&
    & -x 1 -y 2 -z 3     &
    & --point -1,-2,-3   &
@@ -75,9 +68,14 @@ contains
          '@(#)LICENSE:     Public Domain    >', &
          '' ]
 
-      readme=commandline(cmd)
-      read(readme,nml=args,iostat=ios,iomsg=message)
-      call check_commandline(ios,message,help_text,version_text)
+      call set_args(cmd, help_text, version_text)
+      call get_args('x',x)
+      call get_args('y',y)
+      call get_args('z',z)
+      call get_args('point',point,size(point))
+      call get_args('title',title,len(title))
+      call get_args('l',l)
+      call get_args('L',l_)
 
    end subroutine parse
 

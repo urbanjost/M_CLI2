@@ -1,5 +1,8 @@
 # M_CLI2.f90 and associated files
 
+### UNDER CONSTRUCTION -- USES A LOT OF OTHER MODULES AND
+### WANT IT SELF-CONTAINED
+
 ![parse](docs/images/parse.png)
 
 ## NAME
@@ -53,10 +56,7 @@ These demo programs provide templates for the most common usage:
 - [demo1](PROGRAMS/demo1/demo1.f90) full usage 
 - [demo2](PROGRAMS/demo2/demo2.f90) shows putting everything including **help** and **version** information into a contained procedure.
 - [demo3](PROGRAMS/demo3/demo3.f90) example of **basic** use 
-- [demo4](PROGRAMS/demo4/demo4.f90) using  **COMPLEX** values!
-- [demo5](PROGRAMS/demo5/demo5.f90) demo2 with added example code for **interactively editing the NAMELIST group**
 - [demo6](PROGRAMS/demo6/demo6.f90) a more complex example showing how to create a command with subcommands
-- [demo7](PROGRAMS/demo7/demo7.f90) problems with CHARACTER arrays and quotes
 
 ### manpages
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module

@@ -1,0 +1,3455 @@
+\hypertarget{namespacem__cli2}{}\section{m\+\_\+cli2 Module Reference}
+\label{namespacem__cli2}\index{m\+\_\+cli2@{m\+\_\+cli2}}
+
+
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+\+C\+L\+I2(3fm) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+T\+S\+::\+M\+\_\+\+C\+L\+I2\mbox{]} -\/ command line argument parsing using a prototype command (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS} 
+
+
+\subsection*{Data Types}
+\begin{DoxyCompactItemize}
+\item 
+type \mbox{\hyperlink{structm__cli2_1_1dictionary}{dictionary}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1insert}{insert}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1locate}{locate}}
+\item 
+type \mbox{\hyperlink{structm__cli2_1_1option}{option}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1remove}{remove}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1replace}{replace}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1str}{str}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1string__to__value}{string\+\_\+to\+\_\+value}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1v2s}{v2s}}
+\end{DoxyCompactItemize}
+\subsection*{Functions/\+Subroutines}
+\begin{DoxyCompactItemize}
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}{check\+\_\+commandline}} (ios, message, help\+\_\+text, version\+\_\+text)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+check\+\_\+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]}check status from R\+E\+AD of N\+A\+M\+E\+L\+I\+ST group and process pre-\/defined options \end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}{commandline}} (definition)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, public \mbox{\hyperlink{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}{set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}{prototype\+\_\+to\+\_\+dictionary}} (string)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+prototype\+\_\+to\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} parse user command and store tokens into dictionary (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb}{update}} (key, val)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+update(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} update internal dictionary given keyword and value (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ab1525b0419475486f520ef502daa5e94}{wipe\+\_\+dictionary}} ()
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+wipe\+\_\+dictionary(3fp) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} reset private M\+\_\+\+C\+L\+I2(3fm) dictionary to empty (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}{get}} (key)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+get(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} get dictionary value associated with key name in private M\+\_\+\+C\+L\+I2(3fm) dictionary \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype, nml)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} convert Unix-\/like command arguments to namelist (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}{cmd\+\_\+args\+\_\+to\+\_\+dictionary}} (check)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}{dictionary\+\_\+to\+\_\+namelist}} (nml)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}{print\+\_\+dictionary}} (header, stop)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+print\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} print internal dictionary created by calls to commandline(3f) (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+logical function \mbox{\hyperlink{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a}{strtok}} (source\+\_\+string, itoken, token\+\_\+start, token\+\_\+end, delimiters)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a5ecc06d6d44134b8ef7c71f1eab8aa86}{get\+\_\+args\+\_\+class}} (keyword, generic, bounds)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a686a6a56f17e9d4b12c2d039dab21ad4}{get\+\_\+args\+\_\+l}} (keyword, larray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_acf26ceafa7fdceb3824268713f2886b1}{get\+\_\+args\+\_\+d}} (keyword, darray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a116734f2238340eb78d67998fe0ba683}{get\+\_\+args\+\_\+i}} (keyword, iarray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a3f8bdb2a1156962e9d76f5705a16d889}{get\+\_\+args\+\_\+r}} (keyword, rarray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a5c2f92a26d8dbec57ded73d9e29de686}{get\+\_\+args\+\_\+c}} (keyword, strings)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ac326d47897c388a1a25c0cd35a56c17b}{get\+\_\+args\+\_\+ii}} (keyword, iarray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a14e6c8308ce631bf9da16e51b0ed8967}{get\+\_\+args\+\_\+rr}} (keyword, rarray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ad81df3116ccbfb6891078a889a73d1f4}{get\+\_\+args\+\_\+dd}} (keyword, darr)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ac2f9f8815e15f33593443521ff4cf411}{get\+\_\+args\+\_\+ll}} (keyword, larray)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a07ab75edc4b65340919a625dc7defedb}{get\+\_\+args\+\_\+cc}} (keyword, strings)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ab2545d838b8ae3900c96212d6416bcbf}{get\+\_\+arg\+\_\+d}} (keyword, d)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a076c50e20e9ba13a40d9d0001436185a}{get\+\_\+arg\+\_\+r}} (keyword, r)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ab3678cd01c8b1cc9800e64f65c659db1}{get\+\_\+arg\+\_\+i}} (keyword, i)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a2809fae3588cb1e09efa1985a6e5d4a7}{get\+\_\+arg\+\_\+c}} (keyword, strings)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a9848bf0f579798f69fd83737e118d5cb}{get\+\_\+arg\+\_\+cx}} (keyword, strings, length)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a8a0f18494b4ec5158935fefff5ea9491}{get\+\_\+arg\+\_\+l}} (keyword, l)
+\item 
+integer function \mbox{\hyperlink{namespacem__cli2_a7240f12031027172b87fde623bd77958}{longest\+\_\+command\+\_\+argument}} ()
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+longest\+\_\+command\+\_\+argument(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+args\mbox{]} length of longest argument on command line (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a60a4588aa350fd58640b11f049915111}{journal}} (where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, nospace)
+\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a737dc863a63dc101338840baad1cfd17}{msg\+\_\+scalar}} (generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, nospace)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+str(3f) -\/ \mbox{[}M\+\_\+msg\mbox{]} converts any standard scalar type to a string (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a368e9aaa556f69228e7f0837bd558b82}{msg\+\_\+one}} (generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, nospace)
+\item 
+elemental pure character(len(\mbox{\hyperlink{interfacem__cli2_1_1str}{str}})) function \mbox{\hyperlink{namespacem__cli2_afa7a2419002024ff6d950c5d905ddd7a}{upper}} (\mbox{\hyperlink{interfacem__cli2_1_1str}{str}}, begin, end)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+upper(3f) -\/ \mbox{[}M\+\_\+strings\+:C\+A\+SE\mbox{]} changes a string to uppercase (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+elemental pure character(len(\mbox{\hyperlink{interfacem__cli2_1_1str}{str}})) function \mbox{\hyperlink{namespacem__cli2_a6d2d93ab8471667e632bf7a0e95ebd13}{lower}} (\mbox{\hyperlink{interfacem__cli2_1_1str}{str}}, begin, end)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lower(3f) -\/ \mbox{[}M\+\_\+strings\+:C\+A\+SE\mbox{]} changes a string to lowercase over specified range (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f}{a2i}} (chars, valu, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} subroutine returns numeric value from string (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2}{a2d}} (chars, valu, ierr, onerr)
+\item 
+pure elemental logical function \mbox{\hyperlink{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}{isupper}} (ch)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665}{split}} (input\+\_\+line, array, delimiters, order, nulls)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+split(3f) -\/ \mbox{[}M\+\_\+strings\+:T\+O\+K\+E\+NS\mbox{]} parse string into an array using specified delimiters (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a710b26995119aee101959555b1bac8e2}{crack\+\_\+cmd}} (cmd, old, new, ierr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+replace\+\_\+str(3f) -\/ \mbox{[}M\+\_\+strings\+:E\+D\+I\+T\+I\+NG\mbox{]} function globally replaces one substring for another in string (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a8f65cf1b227d837d89437368c660666f}{replace\+\_\+str}} (targetline, old, new, ierr, cmd, range)
+\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a63f81a2c027eb5f3e0a77167ac29fc73}{quote}} (\mbox{\hyperlink{interfacem__cli2_1_1str}{str}}, mode, clip)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+quote(3f) -\/ \mbox{[}M\+\_\+strings\+:Q\+U\+O\+T\+ES\mbox{]} add quotes to string as if written with list-\/directed input (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a9cab7352414f8b5625330a9ff5cf0cb4}{unquote}} (quoted\+\_\+str, esc)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+unquote(3f) -\/ \mbox{[}M\+\_\+strings\+:Q\+U\+O\+T\+ES\mbox{]} remove quotes from string as if read with list-\/directed input (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_aa106d3533fd6d4845f0b3e94b2a79ffb}{i2s}} (ivalue, fmt)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+v2s(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric string from a numeric value (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a8e172feb2e4ae4d21d4fceb4e54f593c}{merge\+\_\+str}} (str1, str2, expr)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+merge\+\_\+str(3f) -\/ \mbox{[}M\+\_\+strings\+:L\+E\+N\+G\+TH\mbox{]} pads strings to same length and then calls M\+E\+R\+G\+E(3f) (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+logical function \mbox{\hyperlink{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb}{decodebase}} (string, basein, out\+\_\+baseten)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}\end{DoxyCompactList}\item 
+character(len=length) function \mbox{\hyperlink{namespacem__cli2_ad13853611abfee00d40ffa020662ec8a}{lenset}} (line, length)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+lenset(3f) -\/ \mbox{[}M\+\_\+strings\+:L\+E\+N\+G\+TH\mbox{]} return string trimmed or padded to specified length (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a1bbcefd886dabb0286e2cb14ab54034f}{value\+\_\+to\+\_\+string}} (gval, chars, length, err, fmt, trimz)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+value\+\_\+to\+\_\+string(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric string from a numeric value (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a770a66475094fd80493d46498de1ebf7}{trimzeros\+\_\+}} (string)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+trimzeros\+\_\+(3fp) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} Delete trailing zeros from numeric decimal string (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a76af7f7c39e6755e024890d85d488704}{substitute}} (targetline, old, new, ierr, start, end)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+substitute(3f) -\/ \mbox{[}M\+\_\+strings\+:E\+D\+I\+T\+I\+NG\mbox{]} subroutine globally substitutes one substring for another in string (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a2199778fea512efcde8778f20765643a}{locate\+\_\+c}} (list, value, place, ier, errmsg)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+locate(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}{locate\+\_\+d}} (list, value, place, ier, errmsg)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a2e12eb8c0ae6ce90b821141699e627df}{locate\+\_\+r}} (list, value, place, ier, errmsg)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a3cc41a1a629f9ab278376a71b243673d}{locate\+\_\+i}} (list, value, place, ier, errmsg)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a155af513c048d68552ec2e8fb54e1294}{remove\+\_\+c}} (list, place)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+remove(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} remove entry from an allocatable array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a5deb6a427a39e04c5a18a82497d5cf84}{remove\+\_\+d}} (list, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a281edafaa6f74c30bd8de6d0c1d05be6}{remove\+\_\+r}} (list, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ae3fc38d25a8a4892bde95a7198c2495a}{remove\+\_\+l}} (list, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a1c2bd26b3c04a499cc65b00133dfe6b9}{remove\+\_\+i}} (list, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_affd644ac84d1010b40748f80d142d6b3}{replace\+\_\+c}} (list, value, place)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+replace(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} replace entry in a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ac327823dd714cd4c1667666158f0c135}{replace\+\_\+d}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_abe681a8b55ae238b029766713a79210a}{replace\+\_\+r}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ae4a1802207f6b67e36cbf89003d6fb55}{replace\+\_\+l}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a0a591fd55e8010f26eb6f9f6bafc1ddb}{replace\+\_\+i}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ab3f2aa827b3b7ff419bcdc3ccb2672b3}{insert\+\_\+c}} (list, value, place)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+insert(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ae43e655d3678fcc31824a3e9db3daae1}{insert\+\_\+r}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a737ae8e6f73a3fc8cc260732c047fafb}{insert\+\_\+d}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a7e5ee66813d8f6db9d48ebdc350a6b3e}{insert\+\_\+l}} (list, value, place)
+\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_afa6f00a57f1252ba5daa0c440a23ffbb}{insert\+\_\+i}} (list, value, place)
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_afcdd2c59305faf341ebf8ec3b115a05e}{dict\+\_\+delete}} (self, key)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+dict\+\_\+delete(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} delete entry by name from an allocatable sorted string array if it is present (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a5b489c992f1434fa27e7858a483a38c7}{dict\+\_\+get}} (self, key)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+dict\+\_\+get(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} get value of key-\/value pair in a dictionary given key (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a601a06b7038b524abababc8d437ee823}{dict\+\_\+add}} (self, key, value)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+dict\+\_\+add(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} add or replace a key-\/value pair in a dictionary (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+integer, parameter, private \mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}} =kind(0.\+0d0)
+\item 
+character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}{unnamed}}
+\item 
+character(len=\+:), dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}{keywords}}
+\item 
+character(len=\+:), dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_af631ee3a1bca98e9fbf1f80646dae360}{values}}
+\item 
+integer, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_abf81746a55c2218c7f2de15602bc0be8}{counts}}
+\item 
+logical, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}{present\+\_\+in}}
+\item 
+logical \mbox{\hyperlink{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}{keyword\+\_\+single}} =.true.
+\item 
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a649439045139e5473091df65ecde6a4b}{passed\+\_\+in}}
+\item 
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}{namelist\+\_\+name}}
+\item 
+logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{return\+\_\+all}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{N\+A\+ME}
+
+M\+\_\+\+C\+L\+I2(3fm) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+T\+S\+::\+M\+\_\+\+C\+L\+I2\mbox{]} -\/ command line argument parsing using a prototype command (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+use M\+\_\+\+C\+L\+I2, only \+: set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed ! argument type conversion
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Allow for command line parsing much like standard Unix command line parsing using a simple prototype.
+
+In this method a call is made to obtain the value for each argument.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample program using type conversion routines
+
+ program demo_M_CLI2
+ use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+ implicit none
+ integer                      :: i
+ integer,parameter            :: dp=kind(0.0d0)
+ !
+ ! DEFINE ARGS
+ real                         :: x, y, z
+ real                         :: p(3)
+ real(kind=dp),allocatable    :: point(:)
+ character(len=:),allocatable :: title
+ character(len=40)            :: label
+ logical                      :: l, lbig
+ logical,allocatable          :: logicals(:)
+ logical                      :: logi(3)
+ !
+ ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+ !   o only quote strings
+ !   o set all logical values to F or T.
+ call set_args('                         &
+         & -x 1 -y 2 -z 3                &
+         & -p -1 -2 -3                   &
+         & --point 11.11, 22.22, 33.33e0 &
+         & --title "my title" -l F -L F  &
+         & --logicals  F F F F F         &
+         & -logi F T F                   &
+         ! note space between quotes is required
+         & --label " " &
+         & ')
+ ! ASSIGN VALUES TO ELEMENTS
+ call get_args('x',x)         ! SCALARS
+ call get_args('y',y)
+ call get_args('z',z)
+ call get_args('l',l)
+ call get_args('L',lbig)
+ call get_args('title',title) ! ALLOCATABLE STRING
+ call get_args('point',point) ! ALLOCATABLE ARRAYS
+ call get_args('logicals',logicals)
+ !
+ ! for NON-ALLOCATABLE VARIABLES
+ call get_args('label',label,len(label)) ! for non-allocatable string pass length
+ call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
+ call get_args('logi',logi,size(logi))
+ !
+ ! USE VALUES
+ write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
+ write(*,*)'p=',p
+ write(*,*)'point=',point
+ write(*,*)'title=',title
+ write(*,*)'label=',label
+ write(*,*)'l=',l
+ write(*,*)'L=',lbig
+ write(*,*)'logicals=',logicals
+ write(*,*)'logi=',logi
+ !
+ ! unnamed strings
+ !
+ if(size(filenames).gt.0)then
+    write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+ endif
+ !
+ end program demo_M_CLI2
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+\subsection{Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2}\label{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!a2d@{a2d}}
+\index{a2d@{a2d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{a2d()}{a2d()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::a2d (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{chars,  }\item[{doubleprecision, intent(out)}]{valu,  }\item[{integer, intent(out)}]{ierr,  }\item[{class($\ast$), intent(in), optional}]{onerr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References decodebase(), journal(), and substitute().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f}\label{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!a2i@{a2i}}
+\index{a2i@{a2i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{a2i()}{a2i()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::a2i (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{chars,  }\item[{integer, intent(out)}]{valu,  }\item[{integer, intent(out)}]{ierr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} subroutine returns numeric value from string (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine string_to_value(chars,valu,ierr)
+
+ character(len=*),intent(in)              :: chars   ! input string
+ integer|real|doubleprecision,intent(out) :: valu
+ integer,intent(out)                      :: ierr
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+returns a numeric value from a numeric character string.
+
+works with any g-\/format input, including integer, real, and exponential. If the input string begins with \char`\"{}\+B\char`\"{}, \char`\"{}\+Z\char`\"{}, or \char`\"{}\+O\char`\"{} and otherwise represents a positive whole number it is assumed to be a binary, hexadecimal, or octal value. If the string contains commas they are removed. If the string is of the form NN\+:M\+MM... or N\+N\+::\+M\+MM then NN is assumed to be the base of the whole number.
+
+if an error occurs in the R\+E\+AD, I\+O\+S\+T\+AT is returned in I\+E\+RR and value is set to zero. if no error occurs, I\+E\+RR=0. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+C\+H\+A\+RS input string to read numeric value from \subsubsection*{R\+E\+T\+U\+R\+NS}
+
+V\+A\+LU numeric value returned. May be I\+N\+T\+E\+G\+ER, R\+E\+AL, or D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON. I\+E\+RR error flag (0 == no error) \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample Program\+:
+
+program demo\+\_\+string\+\_\+to\+\_\+value use M\+\_\+strings, only\+: \mbox{\hyperlink{interfacem__cli2_1_1string__to__value}{string\+\_\+to\+\_\+value}} character(len=80) \+:\+: string string=\textquotesingle{} -\/40.\+5e-\/2 \textquotesingle{} call string\+\_\+to\+\_\+value(string,value,ierr) write($\ast$,$\ast$) \textquotesingle{}value of string \mbox{[}\textquotesingle{}//trim(string)//\textquotesingle{}\mbox{]} is \textquotesingle{},value end program demo\+\_\+string\+\_\+to\+\_\+value \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References a2d(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}\label{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!check\+\_\+commandline@{check\+\_\+commandline}}
+\index{check\+\_\+commandline@{check\+\_\+commandline}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{check\+\_\+commandline()}{check\_commandline()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::check\+\_\+commandline (\begin{DoxyParamCaption}\item[{integer}]{ios,  }\item[{character(len=$\ast$)}]{message,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{help\+\_\+text,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{version\+\_\+text }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+check\+\_\+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]}check status from R\+E\+AD of N\+A\+M\+E\+L\+I\+ST group and process pre-\/defined options 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}  subroutine check_commandline(ios,message,help_text,version_text)
+
+   integer,intent(in) :: ios
+   character(len=*),intent(in) :: message
+   character(len=:),allocatable,intent(in),allocatable,optional :: help_text(:)
+   character(len=:),allocatable,intent(in),allocatable,optional :: version_text(:)
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Checks the status of a R\+E\+A\+D(7f) of the N\+A\+M\+E\+L\+I\+ST after calling commandline(3f) and processes the implicit --help, --version, and --usage parameters.
+
+If the optional text values are supplied they will be displayed by --help and --version command-\/line options, respectively.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb} IOS           status from READ(7f) of NAMELIST after calling
+               commandline(3f)
+
+ MESSAGE       message from READ(7f) of NAMELIST after calling
+               commandline(3f)
+
+ HELP_TEXT     if present, will be displayed if program is called with
+               --help switch, and then the program will terminate. If
+               not supplied, the command line initialized string will be
+               shown when --help is used on the commandline.
+
+ VERSION_TEXT  if present, will be displayed if program is called with
+               --version switch, and then the program will terminate.
+
+    If the first four characters of each line are "@(#)" this prefix will
+    not be displayed. This if for support of the SCCS what(1) command. If
+    you do not have the what(1) command on GNU/Linux and Unix platforms
+    you can probably see how it can be used to place metadata in a binary
+    by entering:
+
+        strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Typical usage:
+
+  program demo_commandline
+  use M_CLI2,  only : unnamed, commandline, check_commandline
+  implicit none
+  integer                      :: i
+  character(len=255)           :: message ! use for I/O error messages
+  character(len=:),allocatable :: readme  ! stores updated namelist
+  character(len=:),allocatable :: version_text(:), help_text(:)
+  integer                      :: ios
+
+  real               :: x, y, z
+  logical            :: help, h
+  equivalence       (help,h)
+  namelist /args/ x,y,z,help,h
+  character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
+
+  ! initialize namelist from string and then update from command line
+  readme=commandline(cmd)
+  write (*,*)'README=',readme
+  read(readme,nml=args,iostat=ios,iomsg=message)
+  version_text=[character(len=80) :: "version 1.0","author: me"]
+  help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
+  call check_commandline(ios,message,help_text,version_text)
+
+  ! all done cracking the command line
+  ! use the values in your program.
+  write (*,nml=args)
+  ! the optional unnamed values on the command line are
+  ! accumulated in the character array "UNNAMED"
+  if(size(unnamed).gt.0)then
+     write (*,'(a)')'files:'
+     write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+  endif
+  end program demo_commandline \end{DoxyVerb}
+ 
+
+References get(), journal(), passed\+\_\+in, print\+\_\+dictionary(), and substitute().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}\label{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!cmd\+\_\+args\+\_\+to\+\_\+dictionary@{cmd\+\_\+args\+\_\+to\+\_\+dictionary}}
+\index{cmd\+\_\+args\+\_\+to\+\_\+dictionary@{cmd\+\_\+args\+\_\+to\+\_\+dictionary}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{cmd\+\_\+args\+\_\+to\+\_\+dictionary()}{cmd\_args\_to\_dictionary()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::cmd\+\_\+args\+\_\+to\+\_\+dictionary (\begin{DoxyParamCaption}\item[{logical, intent(in), optional}]{check }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get(), ifnull(), keyword\+\_\+single, keywords, print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}\label{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!commandline@{commandline}}
+\index{commandline@{commandline}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{commandline()}{commandline()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable, private m\+\_\+cli2\+::commandline (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{definition }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} function commandline(definition) result(string)
+
+  character(len=*),intent(in),optional  :: definition
+  character(len=:),allocatable :: string
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb} To use the routine first define a NAMELIST group called ARGS.
+
+ This routine leverages NAMELIST groups to do the conversion from
+ strings to numeric values required by other command line parsers.
+
+ The example program shows how simple it is to use. Add a variable to
+ the NAMELIST and the prototype and it automatically is available as
+ a value in the program.
+
+ There is no need to convert from strings to numeric values in the
+ source code. Even arrays and user-defined types can be used, complex
+ values can be input ... just define the variable in the prototype
+ and add it to the NAMELIST definition.
+
+ Note that since all the arguments are defined in a NAMELIST group that
+ config files can easily be used for the same options. Just create
+ a NAMELIST input file and read it.
+
+ NAMELIST syntax can vary between different programming environments.
+ Currently, this routine has only been tested using gfortran 7.0.4;
+ and requires at least Fortran 2003.
+
+ For example:
+
+     program show_commandline_unix_prototype
+        use M_CLI2,  only : unnamed, commandline, check_commandline
+        implicit none
+        integer                      :: i
+        character(len=255)           :: message ! for I/O error messages
+        character(len=:),allocatable :: readme  ! stores updated namelist
+        integer                      :: ios
+
+     ! declare a namelist
+        real               :: x, y, z, point(3), p(3)
+        character(len=80)  :: title
+        logical            :: l, l_
+        equivalence       (point,p)
+        namelist /args/ x,y,z,point,p,title,l,l_
+
+     ! Define the prototype
+     !  o All parameters must be listed with a default value.
+     !  o logicals should be specified with a value of F or T.
+     !  o string values  must be double-quoted.
+     !  o lists must be comma-delimited. No spaces are allowed in lists.
+     !  o all long names must be lowercase. An uppercase short name
+     !    -A maps to variable A_
+     !  o if variables are equivalenced only one should be used on
+     !    the command line
+        character(len=*),parameter  :: cmd='&
+        & -x 1 -y 2 -z 3     &
+        & --point -1,-2,-3   &
+        & --title "my title" &
+        & -l F -L F'
+        ! reading in a NAMELIST definition defining the entire NAMELIST
+        ! now get the values from the command prototype and command line as NAMELIST input
+        readme=commandline(cmd)
+        read(readme,nml=args,iostat=ios,iomsg=message)
+        call check_commandline(ios,message)
+        ! all done cracking the command line
+
+        ! use the values in your program.
+        write (*,nml=args)
+        ! the optional unnamed values on the command line are
+        ! accumulated in the character array "UNNAMED"
+        if(size(unnamed).gt.0)then
+           write (*,'(a)')'files:'
+           write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+        endif
+     end program show_commandline_unix_prototype
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  DESCRIPTION   composed of all command arguments concatenated
+                into a Unix-like command prototype string.
+
+                o all keywords get a value.
+                o logicals must be set to F or T.
+                o strings MUST be delimited with double-quotes and
+                  must be at least one space. Internal
+                  double-quotes are represented with two double-quotes
+                o lists of values should be comma-delimited.
+                o long names (--keyword) should be all lowercase
+                o short names (-letter) that are uppercase map to a
+                  NAMELIST variable called "letter_", but lowercase
+                  short names map to NAMELIST name "letter".
+                o the values follow the rules for NAMELIST values, so
+                  "-p 2*0" for example would define two values.
+
+                DESCRIPTION is pre-defined to act as if started with the reserved
+                options '--usage F --help F --version F'. The --usage
+                option is processed when the check_commandline(3f)
+                routine is called. The same is true for --help and --version
+                if the optional help_text and version_text options are
+                provided.
+\end{DoxyVerb}
+ \subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\begin{DoxyVerb}  STRING   The output is a NAMELIST string than can be read to update
+           the NAMELIST "ARGS" with the keywords that were supplied on
+           the command line.
+
+  When using one of the Unix-like command line forms note that
+  (subject to change) the following variations from other common
+  command-line parsers:
+
+     o long names do not take the --KEY=VALUE form, just
+       --KEY VALUE; and long names should be all lowercase and
+       always more than one character.
+
+     o duplicate keyword values are appended together with a space
+       separator.
+
+     o numeric keywords are not allowed; but this allows
+       negative numbers to be used as values.
+
+     o mapping of short names to long names is via an EQUIVALENCE.
+       specifying both names of an equivalenced keyword will have
+       undefined results (currently, their alphabetical order
+       will define what the Fortran variable values become).
+
+     o short keywords cannot be combined. -a -b -c is required,
+       not -abc even for Boolean keys.
+
+     o shuffling is not supported. Values must follow their
+       keywords.
+
+     o if a parameter value of just "-" is supplied it is
+       converted to the string "stdin".
+
+     o if the keyword "--" is encountered the rest of the
+       command arguments go into the character array "UNUSED".
+
+     o values not matching a keyword go into the character
+       array "UNUSED".
+
+     o short-name parameters of the form -LETTER VALUE
+       map to a NAMELIST name of LETTER_ if uppercase
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References longest\+\_\+command\+\_\+argument(), passed\+\_\+in, prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), unnamed, and wipe\+\_\+dictionary().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a710b26995119aee101959555b1bac8e2}\label{namespacem__cli2_a710b26995119aee101959555b1bac8e2}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!crack\+\_\+cmd@{crack\+\_\+cmd}}
+\index{crack\+\_\+cmd@{crack\+\_\+cmd}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{crack\+\_\+cmd()}{crack\_cmd()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::crack\+\_\+cmd (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{cmd,  }\item[{character(len=\+:), intent(out), allocatable}]{old,  }\item[{character(len=\+:), intent(out), allocatable}]{new,  }\item[{integer}]{ierr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+replace\+\_\+str(3f) -\/ \mbox{[}M\+\_\+strings\+:E\+D\+I\+T\+I\+NG\mbox{]} function globally replaces one substring for another in string (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}function replace_str(targetline[,old,new|cmd],range,ierr) result (newline)
+
+ character(len=*)                       :: targetline
+ character(len=*),intent(in),optional   :: old
+ character(len=*),intent(in),optional   :: new
+ character(len=*),intent(in),optional   :: cmd
+ integer,intent(in),optional            :: range(2)
+ integer,intent(out),optional           :: ierr
+ logical,intent(in),optional            :: clip
+ character(len=:),allocatable           :: newline
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Globally replace one substring for another in string. Either C\+MD or O\+LD and N\+EW must be specified.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+targetline input line to be changed old old substring to replace new new substring cmd alternate way to specify old and new string, in the form c/old/new/; where \char`\"{}/\char`\"{} can be any character not in \char`\"{}old\char`\"{} or \char`\"{}new\char`\"{} range if present, only change range(1) to range(2) of occurrences of old string ierr error code. iF ier = -\/1 bad directive, $>$= 0 then count of changes made clip whether to return trailing spaces or not. Defaults to .false. \subsubsection*{R\+E\+T\+U\+R\+NS}
+
+newline allocatable string returned
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample Program\+: \begin{DoxyVerb}program demo_replace_str
+use M_strings, only : replace_str
+implicit none
+character(len=:),allocatable :: targetline
+
+targetline='this is the input string'
+
+call testit('th','TH','THis is THe input string')
+
+! a null old substring means "at beginning of line"
+call testit('','BEFORE:', 'BEFORE:THis is THe input string')
+
+! a null new string deletes occurrences of the old substring
+call testit('i','', 'BEFORE:THs s THe nput strng')
+
+write(*,*)'Examples of the use of RANGE='
+
+targetline=replace_str('a b ab baaa aaaa','a','A')
+write(*,*)'replace a with A ['//targetline//']'
+
+targetline=replace_str('a b ab baaa aaaa','a','A',range=[3,5])
+write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
+
+targetline=replace_str('a b ab baaa aaaa','a','',range=[3,5])
+write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
+
+targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
+
+contains
+subroutine testit(old,new,expected)
+character(len=*),intent(in) :: old,new,expected
+write(*,*)repeat('=',79)
+write(*,*)':STARTED ['//targetline//']'
+write(*,*)':OLD['//old//']', ' NEW['//new//']'
+targetline=replace_str(targetline,old,new)
+write(*,*)':GOT     ['//targetline//']'
+write(*,*)':EXPECTED['//expected//']'
+write(*,*)':TEST    [',targetline.eq.expected,']'
+end subroutine testit
+
+end program demo_replace_str
+\end{DoxyVerb}
+
+
+Expected output 
+
+ S\+T\+A\+R\+T\+ED \mbox{[}this is the input string\mbox{]} O\+LD\mbox{[}th\mbox{]} N\+EW\mbox{[}TH\mbox{]} G\+OT \mbox{[}T\+His is T\+He input string\mbox{]} E\+X\+P\+E\+C\+T\+ED\mbox{[}T\+His is T\+He input string\mbox{]} \subsection*{T\+E\+ST \mbox{[} T \mbox{]} }
+
+S\+T\+A\+R\+T\+ED \mbox{[}T\+His is T\+He input string\mbox{]} O\+LD\mbox{[}\mbox{]} N\+EW\mbox{[}B\+E\+F\+O\+RE\+:\mbox{]} G\+OT \mbox{[}B\+E\+F\+O\+RE\+:T\+His is T\+He input string\mbox{]} E\+X\+P\+E\+C\+T\+ED\mbox{[}B\+E\+F\+O\+RE\+:T\+His is T\+He input string\mbox{]} \subsection*{T\+E\+ST \mbox{[} T \mbox{]} }
+
+S\+T\+A\+R\+T\+ED \mbox{[}B\+E\+F\+O\+RE\+:T\+His is T\+He input string\mbox{]} O\+LD\mbox{[}i\mbox{]} N\+EW\mbox{[}\mbox{]} G\+OT \mbox{[}B\+E\+F\+O\+RE\+:T\+Hs s T\+He nput strng\mbox{]} E\+X\+P\+E\+C\+T\+ED\mbox{[}B\+E\+F\+O\+RE\+:T\+Hs s T\+He nput strng\mbox{]} T\+E\+ST \mbox{[} T \mbox{]} Examples of the use of R\+A\+N\+GE= replace a with A \mbox{[}A b Ab b\+A\+AA A\+A\+AA\mbox{]} replace a with A instances 3 to 5 \mbox{[}a b ab b\+A\+AA aaaa\mbox{]} replace a with null instances 3 to 5 \mbox{[}a b ab b aaaa\mbox{]} replace aa with C\+C\+CC instances 3 to 5 \mbox{[}a b ab baaa aa\+C\+C\+CC C\+C\+CC C\+C\+CC a a a aa aaaaaa\mbox{]}
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References journal(), and strtok().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{namespacem__cli2_a710b26995119aee101959555b1bac8e2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a710b26995119aee101959555b1bac8e2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb}\label{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!decodebase@{decodebase}}
+\index{decodebase@{decodebase}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{decodebase()}{decodebase()}}
+{\footnotesize\ttfamily logical function m\+\_\+cli2\+::decodebase (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{string,  }\item[{integer, intent(in)}]{basein,  }\item[{integer, intent(out)}]{out\+\_\+baseten }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+decodebase(3f) -\/ \mbox{[}M\+\_\+strings\+:B\+A\+SE\mbox{]} convert whole number string in base \mbox{[}2-\/36\mbox{]} to base 10 number (L\+I\+C\+E\+N\+SE\+:PD)
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+logical function decodebase(string,basein,out10)
+
+character(len=$\ast$),intent(in) \+:\+: string integer,intent(in) \+:\+: basein integer,intent(out) \+:\+: out10 \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}Convert a numeric string representing a whole number in base BASEIN
+to base 10. The function returns FALSE if BASEIN is not in the range
+[2..36] or if string STRING contains invalid characters in base BASEIN
+or if result OUT10 is too big
+
+The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+string input string. It represents a whole number in the base specified by B\+A\+S\+E\+IN unless B\+A\+S\+E\+IN is set to zero. When B\+A\+S\+E\+IN is zero S\+T\+R\+I\+NG is assumed to be of the form B\+A\+S\+E\+::\+V\+A\+L\+UE where B\+A\+SE represents the function normally provided by B\+A\+S\+E\+IN. basein base of input string; either 0 or from 2 to 36. out10 output value in base 10
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+decodebase use M\+\_\+strings, only \+: codebase, decodebase implicit none integer \+:\+: ba,bd character(len=40) \+:\+: x,y integer \+:\+: r
+
+print $\ast$,\textquotesingle{} B\+A\+SE C\+O\+N\+V\+E\+R\+S\+I\+ON\textquotesingle{} write($\ast$,\textquotesingle{}(\char`\"{}\+Start   Base (2 to 36)\+: \char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{}); read $\ast$, bd write($\ast$,\textquotesingle{}(\char`\"{}\+Arrival Base (2 to 36)\+: \char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{}); read $\ast$, ba I\+N\+F\+I\+N\+I\+TE\+: do print $\ast$,\textquotesingle{}\textquotesingle{} write($\ast$,\textquotesingle{}(\char`\"{}\+Enter number in start base\+: \char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{}); read $\ast$, x if(x.\+eq.\textquotesingle{}0\textquotesingle{}) exit I\+N\+F\+I\+N\+I\+TE if(decodebase(x,bd,r)) then if(codebase(r,ba,y)) then write($\ast$,\textquotesingle{}(\char`\"{}\+In base \char`\"{},I2,\char`\"{}\+: \char`\"{},A20)\textquotesingle{}) ba, y else print $\ast$,\textquotesingle{}Error in coding number.\textquotesingle{} endif else print $\ast$,\textquotesingle{}Error in decoding number.\textquotesingle{} endif enddo I\+N\+F\+I\+N\+I\+TE
+
+end program demo\+\_\+decodebase
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban
+
+Ref.\+: "Math matiques en Turbo-\/\+Pascal by M. Ducamp and A. Reverchon (2), Eyrolles, Paris, 1988".
+
+based on a F90 Version By J-\/P Moreau (www.\+jpmoreau.\+fr)
+
+\subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References upper().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=312pt]{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a601a06b7038b524abababc8d437ee823}\label{namespacem__cli2_a601a06b7038b524abababc8d437ee823}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dict\+\_\+add@{dict\+\_\+add}}
+\index{dict\+\_\+add@{dict\+\_\+add}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dict\+\_\+add()}{dict\_add()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::dict\+\_\+add (\begin{DoxyParamCaption}\item[{class(\mbox{\hyperlink{structm__cli2_1_1dictionary}{dictionary}}), intent(inout)}]{self,  }\item[{character(len=$\ast$), intent(in)}]{key,  }\item[{character(len=$\ast$), intent(in)}]{value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+dict\+\_\+add(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} add or replace a key-\/value pair in a dictionary (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine dict\+\_\+add(dict,key,value)
+
+type(dictionary) \+:\+: dict character(len=$\ast$),intent(in) \+:\+: key character(len=$\ast$),intent(in) \+:\+: V\+A\+L\+UE
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Add or replace a key-\/value pair in a dictionary.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+D\+I\+CT is the dictionary. key key name V\+A\+L\+UE value associated with key
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}If string is not found in a sorted array, insert the string
+
+ program demo_add
+ use M_list, only : dictionary
+ implicit none
+ type(dictionary) :: dict
+ integer          :: i
+
+ call dict%set('A','b')
+ call dict%set('B','^')
+ call dict%set('C',' ')
+ call dict%set('D','c')
+ call dict%set('E','ZZ')
+ call dict%set('F','ZZZZ')
+ call dict%set('G','z')
+ call dict%set('A','new value for A')
+ write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
+ end program demo_add
+
+Results:
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_afcdd2c59305faf341ebf8ec3b115a05e}\label{namespacem__cli2_afcdd2c59305faf341ebf8ec3b115a05e}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dict\+\_\+delete@{dict\+\_\+delete}}
+\index{dict\+\_\+delete@{dict\+\_\+delete}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dict\+\_\+delete()}{dict\_delete()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::dict\+\_\+delete (\begin{DoxyParamCaption}\item[{class(\mbox{\hyperlink{structm__cli2_1_1dictionary}{dictionary}}), intent(inout)}]{self,  }\item[{character(len=$\ast$), intent(in)}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+dict\+\_\+delete(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} delete entry by name from an allocatable sorted string array if it is present (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine dict\+\_\+delete(key,dict)
+
+character(len=$\ast$),intent(in) \+:\+: key type(dictionary) \+:\+: dict
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}Find if a string is in a sorted array, and delete the string
+from the dictionary if it is present.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}KEY           the key name to find and delete from the dictionary.
+DICTIONARY    the dictionary.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}delete a key from a dictionary by name.
+
+ program demo_dict_delete
+ use M_list, only : dictionary
+ implicit none
+ type(dictionary) :: caps
+ integer                       :: i
+ call caps%set(caps,'A','aye')
+ call caps%set(caps,'B','bee')
+ call caps%set(caps,'C','see')
+ call caps%set(caps,'D','dee')
+
+ write(*,101)(trim(arr(i)),i=1,size(caps%keys)) ! show array
+ call  caps%del(caps,'A')
+ call  caps%del(caps,'C')
+ call  caps%del(caps,'z')
+ write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+ 101 format (1x,*("[",a,"]",:,","))
+ end program demo_dict_delete
+
+Results:
+
+ [z],[xxx],[c],[b],[b],[aaa],[ZZZ],[ZZ]
+ [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
+ [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
+ [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
+ [z],[xxx],[aaa],[ZZZ],[ZZ]
+ [z],[xxx],[aaa],[ZZZ]
+ [z],[xxx],[aaa],[ZZZ]
+ [xxx],[aaa],[ZZZ]
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_a5b489c992f1434fa27e7858a483a38c7}\label{namespacem__cli2_a5b489c992f1434fa27e7858a483a38c7}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dict\+\_\+get@{dict\+\_\+get}}
+\index{dict\+\_\+get@{dict\+\_\+get}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dict\+\_\+get()}{dict\_get()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::dict\+\_\+get (\begin{DoxyParamCaption}\item[{class(\mbox{\hyperlink{structm__cli2_1_1dictionary}{dictionary}})}]{self,  }\item[{character(len=$\ast$), intent(in)}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+dict\+\_\+get(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} get value of key-\/value pair in a dictionary given key (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine dict\+\_\+get(dict,key,value)
+
+type(dictionary) \+:\+: dict character(len=$\ast$),intent(in) \+:\+: key character(len=$\ast$),intent(in) \+:\+: V\+A\+L\+UE
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}get a value given a key from a key-value dictionary
+
+If key is not found in dictionary , return a blank
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}DICT     is the dictionary.
+KEY      key name
+VALUE    value associated with key
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb} program demo_locate
+ use M_list, only : dictionary
+ implicit none
+ type(dictionary)             :: table
+ integer          :: i
+
+ call table%set('A','value for A')
+ call table%set('B','value for B')
+ call table%set('C','value for C')
+ call table%set('D','value for D')
+ call table%set('E','value for E')
+ call table%set('F','value for F')
+ call table%set('G','value for G')
+ write(*,*)table%get('A')
+ write(*,*)table%get('B')
+ write(*,*)table%get('C')
+ write(*,*)table%get('D')
+ write(*,*)table%get('E')
+ write(*,*)table%get('F')
+ write(*,*)table%get('G')
+ write(*,*)table%get('H')
+ end program demo_locate
+
+Results:
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}\label{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dictionary\+\_\+to\+\_\+namelist@{dictionary\+\_\+to\+\_\+namelist}}
+\index{dictionary\+\_\+to\+\_\+namelist@{dictionary\+\_\+to\+\_\+namelist}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dictionary\+\_\+to\+\_\+namelist()}{dictionary\_to\_namelist()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::dictionary\+\_\+to\+\_\+namelist (\begin{DoxyParamCaption}\item[{character(len=\+:), intent(out), allocatable}]{nml }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References isupper(), keywords, lower(), present\+\_\+in, return\+\_\+all, and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}\label{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get@{get}}
+\index{get@{get}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable, private m\+\_\+cli2\+::get (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+get(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} get dictionary value associated with key name in private M\+\_\+\+C\+L\+I2(3fm) dictionary \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Get dictionary value associated with key name in private M\+\_\+\+C\+L\+I2(3fm) dictionary. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+References counts, keywords, and values.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a2809fae3588cb1e09efa1985a6e5d4a7}\label{namespacem__cli2_a2809fae3588cb1e09efa1985a6e5d4a7}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+arg\+\_\+c@{get\+\_\+arg\+\_\+c}}
+\index{get\+\_\+arg\+\_\+c@{get\+\_\+arg\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+arg\+\_\+c()}{get\_arg\_c()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+arg\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{character(len=\+:), allocatable}]{strings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References counts, journal(), keywords, unquote(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a2809fae3588cb1e09efa1985a6e5d4a7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a9848bf0f579798f69fd83737e118d5cb}\label{namespacem__cli2_a9848bf0f579798f69fd83737e118d5cb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+arg\+\_\+cx@{get\+\_\+arg\+\_\+cx}}
+\index{get\+\_\+arg\+\_\+cx@{get\+\_\+arg\+\_\+cx}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+arg\+\_\+cx()}{get\_arg\_cx()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+arg\+\_\+cx (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{character(len=$\ast$)}]{strings,  }\item[{integer}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References counts, journal(), keywords, unquote(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a9848bf0f579798f69fd83737e118d5cb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ab2545d838b8ae3900c96212d6416bcbf}\label{namespacem__cli2_ab2545d838b8ae3900c96212d6416bcbf}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+arg\+\_\+d@{get\+\_\+arg\+\_\+d}}
+\index{get\+\_\+arg\+\_\+d@{get\+\_\+arg\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+arg\+\_\+d()}{get\_arg\_d()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+arg\+\_\+d (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}})}]{d }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+d(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ab2545d838b8ae3900c96212d6416bcbf_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{namespacem__cli2_ab2545d838b8ae3900c96212d6416bcbf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ab3678cd01c8b1cc9800e64f65c659db1}\label{namespacem__cli2_ab3678cd01c8b1cc9800e64f65c659db1}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+arg\+\_\+i@{get\+\_\+arg\+\_\+i}}
+\index{get\+\_\+arg\+\_\+i@{get\+\_\+arg\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+arg\+\_\+i()}{get\_arg\_i()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+arg\+\_\+i (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{integer, intent(out)}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+arg\+\_\+d().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ab3678cd01c8b1cc9800e64f65c659db1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a8a0f18494b4ec5158935fefff5ea9491}\label{namespacem__cli2_a8a0f18494b4ec5158935fefff5ea9491}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+arg\+\_\+l@{get\+\_\+arg\+\_\+l}}
+\index{get\+\_\+arg\+\_\+l@{get\+\_\+arg\+\_\+l}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+arg\+\_\+l()}{get\_arg\_l()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+arg\+\_\+l (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{logical}]{l }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+l(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a8a0f18494b4ec5158935fefff5ea9491_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a076c50e20e9ba13a40d9d0001436185a}\label{namespacem__cli2_a076c50e20e9ba13a40d9d0001436185a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+arg\+\_\+r@{get\+\_\+arg\+\_\+r}}
+\index{get\+\_\+arg\+\_\+r@{get\+\_\+arg\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+arg\+\_\+r()}{get\_arg\_r()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+arg\+\_\+r (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{real, intent(out)}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+arg\+\_\+d().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a076c50e20e9ba13a40d9d0001436185a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a5c2f92a26d8dbec57ded73d9e29de686}\label{namespacem__cli2_a5c2f92a26d8dbec57ded73d9e29de686}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+c@{get\+\_\+args\+\_\+c}}
+\index{get\+\_\+args\+\_\+c@{get\+\_\+args\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+c()}{get\_args\_c()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{character(len=\+:), dimension(\+:), allocatable}]{strings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References counts, journal(), keywords, split(), unquote(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a5c2f92a26d8dbec57ded73d9e29de686_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a07ab75edc4b65340919a625dc7defedb}\label{namespacem__cli2_a07ab75edc4b65340919a625dc7defedb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+cc@{get\+\_\+args\+\_\+cc}}
+\index{get\+\_\+args\+\_\+cc@{get\+\_\+args\+\_\+cc}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+cc()}{get\_args\_cc()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+cc (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{character(len=$\ast$), dimension(\+:)}]{strings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References counts, journal(), keywords, split(), unquote(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a07ab75edc4b65340919a625dc7defedb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a07ab75edc4b65340919a625dc7defedb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a5ecc06d6d44134b8ef7c71f1eab8aa86}\label{namespacem__cli2_a5ecc06d6d44134b8ef7c71f1eab8aa86}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+class@{get\+\_\+args\+\_\+class}}
+\index{get\+\_\+args\+\_\+class@{get\+\_\+args\+\_\+class}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+class()}{get\_args\_class()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+class (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{class($\ast$), dimension(\+:)}]{generic,  }\item[{integer}]{bounds }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} subroutine set_args(definition,help_text,version_text)
+
+  character(len=*),intent(in),optional  :: definition
+  character(len=:),intent(in),allocatable,intent(in) :: help_text
+  character(len=:),intent(in),allocatable,intent(in) :: version_text
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb} SET_ARGS(3f) requires a unix-like command prototype for defining
+ arguments and default command-line options. Argument values are then
+ read using GET_ARGS(3f).
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  DESCRIPTION   composed of all command arguments concatenated
+                into a Unix-like command prototype string.
+
+                o all keywords get a value.
+                o logicals must be set to F or T.
+                o strings MUST be delimited with double-quotes and
+                  must be at least one space. Internal
+                  double-quotes are represented with two double-quotes
+                o lists of values should be comma-delimited.
+                o long names (--keyword) should be all lowercase
+
+                DESCRIPTION is pre-defined to act as if started with the
+                reserved options '--usage F --help F --version F'.
+
+                The --help and --version options require the optional
+                help_text and version_text values to be provided.
+
+  HELP_TEXT     if present, will be displayed if program is called with
+                --help switch, and then the program will terminate. If
+                not supplied, the command line initialized string will be
+                shown when --help is used on the commandline.
+
+  VERSION_TEXT  if present, will be displayed if program is called with
+                --version switch, and then the program will terminate.
+\end{DoxyVerb}
+
+
+\subsubsection*{U\+S\+A\+GE}
+
+When using one of the Unix-\/like command line forms note that (subject to change) the following variations from other common command-\/line parsers\+:
+
+o long names do not take the --K\+EY=V\+A\+L\+UE form, just --K\+EY V\+A\+L\+UE; and long names should be all lowercase and always more than one character.
+
+o duplicate keywords are appended together with a space separator when a command line is executed.
+
+o numeric keywords are not allowed; but this allows negative numbers to be used as values.
+
+o mapping of short names to long names is via an E\+Q\+U\+I\+V\+A\+L\+E\+N\+CE. Note that allocatable arrays cannot be E\+Q\+U\+I\+V\+A\+N\+E\+N\+C\+Ed.
+
+Specifying both names of an equivalenced keyword on a command line will have undefined results (currently, their alphabetical order will define what the Fortran variable values become).
+
+o short keywords cannot be combined. -\/a -\/b -\/c is required, not -\/abc even for Boolean keys.
+
+o shuffling is not supported. Values should follow their keywords.
+
+o if a parameter value of just \char`\"{}-\/\char`\"{} is supplied it is converted to the string \char`\"{}stdin\char`\"{}.
+
+o if the keyword \char`\"{}-\/-\/\char`\"{} is encountered the rest of the command arguments go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}.
+
+o values not matching a keyword go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+set\+\_\+args use M\+\_\+\+C\+L\+I2, only \+: filenames=$>$unnamed, set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed implicit none integer \+:\+: i integer,parameter \+:\+: dp=kind(0.\+0d0) ! D\+E\+F\+I\+NE A\+R\+GS real \+:\+: x, y, z real \+:\+: p(3) character(len=\+:),allocatable \+:\+: title logical \+:\+: l, lbig ! D\+E\+F\+I\+NE A\+ND P\+A\+R\+SE (TO S\+ET I\+N\+I\+T\+I\+AL V\+A\+L\+U\+ES) C\+O\+M\+M\+A\+ND L\+I\+NE ! o only quote strings ! o set all logical values to F or T. call set\+\_\+args(\textquotesingle{} -\/x 1 -\/y 2 -\/z 3 -\/p -\/1,-\/2,-\/3 --title \char`\"{}my title\char`\"{} \& \& -\/l F -\/L F \& \& --label \char`\"{} \char`\"{} \& \& \textquotesingle{}) ! A\+S\+S\+I\+GN V\+A\+L\+U\+ES TO E\+L\+E\+M\+E\+N\+TS ! S\+C\+A\+L\+A\+RS call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}x\textquotesingle{},x) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}y\textquotesingle{},y) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}z\textquotesingle{},z) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}l\textquotesingle{},l) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}L\textquotesingle{},lbig) ! A\+L\+L\+O\+C\+A\+T\+A\+B\+LE S\+T\+R\+I\+NG call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}title\textquotesingle{},title) ! N\+O\+N-\/\+A\+L\+L\+O\+C\+A\+T\+A\+B\+LE A\+R\+R\+A\+YS ! for non-\/allocatable arrays pass size call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}p\textquotesingle{},p,size(p)) ! U\+SE V\+A\+L\+U\+ES write($\ast$,$\ast$)\textquotesingle{}x=\textquotesingle{},x write($\ast$,$\ast$)\textquotesingle{}y=\textquotesingle{},y write($\ast$,$\ast$)\textquotesingle{}z=\textquotesingle{},z write($\ast$,$\ast$)\textquotesingle{}p=\textquotesingle{},p write($\ast$,$\ast$)\textquotesingle{}title=\textquotesingle{},title write($\ast$,$\ast$)\textquotesingle{}l=\textquotesingle{},l write($\ast$,$\ast$)\textquotesingle{}L=\textquotesingle{},lbig if(size(filenames).gt.\+0)then write($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{})(i,\textquotesingle{}\mbox{[}\textquotesingle{},filenames(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(filenames)) endif end program demo\+\_\+set\+\_\+args \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \subsubsection*{N\+A\+ME}
+
+get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} return keyword values when parsing command line arguments (L\+I\+C\+E\+N\+SE\+:PD)
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} subroutine get_args(name,value,magnitude)
+
+  character(len=*),intent(in),optional  :: name
+  real|integer|logical|character(len=*) :: value
+  integer,intent(in) :: magnitude
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb} GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f) has
+ been called.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  NAME       name of commandline argument to obtain the value of
+  VALUE      variable to hold returned value. The kind of the value
+             is used to determine the type of returned value
+  MAGNITUDE  for non-allocatable arrays the size of the array. For
+             non-allocatable character variables the length of the
+             variable.
+\end{DoxyVerb}
+ \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+get\+\_\+args use M\+\_\+\+C\+L\+I2, only \+: filenames=$>$unnamed, set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed implicit none integer \+:\+: i integer,parameter \+:\+: dp=kind(0.\+0d0) ! D\+E\+F\+I\+NE A\+R\+GS real \+:\+: x, y, z real \+:\+: p(3) character(len=\+:),allocatable \+:\+: title logical \+:\+: l, lbig ! D\+E\+F\+I\+NE A\+ND P\+A\+R\+SE (TO S\+ET I\+N\+I\+T\+I\+AL V\+A\+L\+U\+ES) C\+O\+M\+M\+A\+ND L\+I\+NE ! o only quote strings ! o set all logical values to F or T. call set\+\_\+args(\textquotesingle{} -\/x 1 -\/y 2 -\/z 3 -\/p -\/1,-\/2,-\/3 --title \char`\"{}my title\char`\"{} \& \& -\/l F -\/L F \& \& --label \char`\"{} \char`\"{} \& \& \textquotesingle{}) ! A\+S\+S\+I\+GN V\+A\+L\+U\+ES TO E\+L\+E\+M\+E\+N\+TS ! S\+C\+A\+L\+A\+RS call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}x\textquotesingle{},x) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}y\textquotesingle{},y) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}z\textquotesingle{},z) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}l\textquotesingle{},l) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}L\textquotesingle{},lbig) ! A\+L\+L\+O\+C\+A\+T\+A\+B\+LE S\+T\+R\+I\+NG call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}title\textquotesingle{},title) ! N\+O\+N-\/\+A\+L\+L\+O\+C\+A\+T\+A\+B\+LE A\+R\+R\+A\+YS ! for non-\/allocatable arrays pass size call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}p\textquotesingle{},p,size(p)) ! U\+SE V\+A\+L\+U\+ES write($\ast$,$\ast$)\textquotesingle{}x=\textquotesingle{},x write($\ast$,$\ast$)\textquotesingle{}y=\textquotesingle{},y write($\ast$,$\ast$)\textquotesingle{}z=\textquotesingle{},z write($\ast$,$\ast$)\textquotesingle{}p=\textquotesingle{},p write($\ast$,$\ast$)\textquotesingle{}title=\textquotesingle{},title write($\ast$,$\ast$)\textquotesingle{}l=\textquotesingle{},l write($\ast$,$\ast$)\textquotesingle{}L=\textquotesingle{},lbig if(size(filenames).gt.\+0)then write($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{})(i,\textquotesingle{}\mbox{[}\textquotesingle{},filenames(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(filenames)) endif if(size(unnamed).gt.\+0)then write ($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}files\+:\textquotesingle{} write ($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{}) (i,\textquotesingle{}\mbox{[}\textquotesingle{},unnamed(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(unnamed)) endif end program demo\+\_\+get\+\_\+args \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References get\+\_\+args\+\_\+cc(), get\+\_\+args\+\_\+dd(), get\+\_\+args\+\_\+ii(), get\+\_\+args\+\_\+ll(), and get\+\_\+args\+\_\+rr().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a5ecc06d6d44134b8ef7c71f1eab8aa86_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_acf26ceafa7fdceb3824268713f2886b1}\label{namespacem__cli2_acf26ceafa7fdceb3824268713f2886b1}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+d@{get\+\_\+args\+\_\+d}}
+\index{get\+\_\+args\+\_\+d@{get\+\_\+args\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+d()}{get\_args\_d()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+d (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}}), dimension(\+:), intent(out), allocatable}]{darray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References counts, journal(), keywords, split(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_acf26ceafa7fdceb3824268713f2886b1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_acf26ceafa7fdceb3824268713f2886b1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ad81df3116ccbfb6891078a889a73d1f4}\label{namespacem__cli2_ad81df3116ccbfb6891078a889a73d1f4}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+dd@{get\+\_\+args\+\_\+dd}}
+\index{get\+\_\+args\+\_\+dd@{get\+\_\+args\+\_\+dd}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+dd()}{get\_args\_dd()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+dd (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}}), dimension(\+:)}]{darr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+d(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ad81df3116ccbfb6891078a889a73d1f4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ad81df3116ccbfb6891078a889a73d1f4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a116734f2238340eb78d67998fe0ba683}\label{namespacem__cli2_a116734f2238340eb78d67998fe0ba683}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+i@{get\+\_\+args\+\_\+i}}
+\index{get\+\_\+args\+\_\+i@{get\+\_\+args\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+i()}{get\_args\_i()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+i (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{integer, dimension(\+:), allocatable}]{iarray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+d().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a116734f2238340eb78d67998fe0ba683_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ac326d47897c388a1a25c0cd35a56c17b}\label{namespacem__cli2_ac326d47897c388a1a25c0cd35a56c17b}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+ii@{get\+\_\+args\+\_\+ii}}
+\index{get\+\_\+args\+\_\+ii@{get\+\_\+args\+\_\+ii}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+ii()}{get\_args\_ii()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+ii (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{integer, dimension(\+:)}]{iarray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+d(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ac326d47897c388a1a25c0cd35a56c17b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ac326d47897c388a1a25c0cd35a56c17b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a686a6a56f17e9d4b12c2d039dab21ad4}\label{namespacem__cli2_a686a6a56f17e9d4b12c2d039dab21ad4}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+l@{get\+\_\+args\+\_\+l}}
+\index{get\+\_\+args\+\_\+l@{get\+\_\+args\+\_\+l}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+l()}{get\_args\_l()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+l (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{logical, dimension(\+:), allocatable}]{larray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References counts, journal(), keywords, split(), upper(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a686a6a56f17e9d4b12c2d039dab21ad4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a686a6a56f17e9d4b12c2d039dab21ad4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ac2f9f8815e15f33593443521ff4cf411}\label{namespacem__cli2_ac2f9f8815e15f33593443521ff4cf411}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+ll@{get\+\_\+args\+\_\+ll}}
+\index{get\+\_\+args\+\_\+ll@{get\+\_\+args\+\_\+ll}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+ll()}{get\_args\_ll()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+ll (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{logical, dimension(\+:)}]{larray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+l(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ac2f9f8815e15f33593443521ff4cf411_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ac2f9f8815e15f33593443521ff4cf411_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a3f8bdb2a1156962e9d76f5705a16d889}\label{namespacem__cli2_a3f8bdb2a1156962e9d76f5705a16d889}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+r@{get\+\_\+args\+\_\+r}}
+\index{get\+\_\+args\+\_\+r@{get\+\_\+args\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+r()}{get\_args\_r()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+r (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{real, dimension(\+:), allocatable}]{rarray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+d().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a3f8bdb2a1156962e9d76f5705a16d889_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a14e6c8308ce631bf9da16e51b0ed8967}\label{namespacem__cli2_a14e6c8308ce631bf9da16e51b0ed8967}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!get\+\_\+args\+\_\+rr@{get\+\_\+args\+\_\+rr}}
+\index{get\+\_\+args\+\_\+rr@{get\+\_\+args\+\_\+rr}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{get\+\_\+args\+\_\+rr()}{get\_args\_rr()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+rr (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{real, dimension(\+:)}]{rarray }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References get\+\_\+args\+\_\+d(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a14e6c8308ce631bf9da16e51b0ed8967_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a14e6c8308ce631bf9da16e51b0ed8967_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_aa106d3533fd6d4845f0b3e94b2a79ffb}\label{namespacem__cli2_aa106d3533fd6d4845f0b3e94b2a79ffb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!i2s@{i2s}}
+\index{i2s@{i2s}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{i2s()}{i2s()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::i2s (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{ivalue,  }\item[{character(len=$\ast$), intent(in), optional}]{fmt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+v2s(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric string from a numeric value (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}   function v2s(value) result(outstr)
+
+    integer|real|doubleprecision|logical,intent(in ) :: value
+    character(len=:),allocatable :: outstr
+    character(len=*),optional,intent(in) :: fmt
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}v2s(3f) returns a representation of a numeric value as a
+string when given a numeric value of type REAL, DOUBLEPRECISION,
+INTEGER or LOGICAL. It creates the strings using internal WRITE()
+statements. Trailing zeros are removed from non-zero values, and the
+string is left-justified.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+V\+A\+L\+UE input value to be converted to a string F\+MT format can be explicitly given, but is limited to generating a string of eighty or less characters.
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+O\+U\+T\+S\+TR returned string representing input value,
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample Program\+:
+
+program demo\+\_\+v2s use M\+\_\+strings, only\+: \mbox{\hyperlink{interfacem__cli2_1_1v2s}{v2s}} write($\ast$,$\ast$) \textquotesingle{}The value of 3.\+0/4.0 is \mbox{[}\textquotesingle{}//v2s(3.\+0/4.0)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of 1234 is \mbox{[}\textquotesingle{}//v2s(1234)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of 0d0 is \mbox{[}\textquotesingle{}//v2s(0d0)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of .false. is \mbox{[}\textquotesingle{}//v2s(.false.)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of .true. is \mbox{[}\textquotesingle{}//v2s(.true.)//\textquotesingle{}\mbox{]}\textquotesingle{} end program demo\+\_\+v2s
+
+Expected output
+
+The value of 3.\+0/4.0 is \mbox{[}0.\+75\mbox{]} The value of 1234 is \mbox{[}1234\mbox{]} The value of 0d0 is \mbox{[}0\mbox{]} The value of .false. is \mbox{[}F\mbox{]} The value of .true. is \mbox{[}T\mbox{]}
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References value\+\_\+to\+\_\+string().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_aa106d3533fd6d4845f0b3e94b2a79ffb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ab3f2aa827b3b7ff419bcdc3ccb2672b3}\label{namespacem__cli2_ab3f2aa827b3b7ff419bcdc3ccb2672b3}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!insert\+\_\+c@{insert\+\_\+c}}
+\index{insert\+\_\+c@{insert\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{insert\+\_\+c()}{insert\_c()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::insert\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+insert(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine insert(list,value,place)
+
+character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: value character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: list(\+:) integer,intent(in) \+:\+: place
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}Insert a value into an allocatable array at the specified index.
+The list and value must be of the same type (CHARACTER, DOUBLEPRECISION,
+REAL, or INTEGER)
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}list    is the list array. Must be sorted in descending order.
+value   the value to place in the array
+PLACE   is the subscript that the entry should be placed at
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}Find if a string is in a sorted array, and insert the string into
+the list if it is not present ...
+
+ program demo_insert
+ use M_sort, only : sort_shell
+ use M_list, only : locate, insert
+ implicit none
+ character(len=:),allocatable :: arr(:)
+ integer                       :: i
+
+ arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+ ! make sure sorted in descending order
+ call sort_shell(arr,order='d')
+ ! add or replace values
+ call update(arr,'b')
+ call update(arr,'[')
+ call update(arr,'c')
+ call update(arr,'ZZ')
+ call update(arr,'ZZZ')
+ call update(arr,'ZZZZ')
+ call update(arr,'')
+ call update(arr,'z')
+
+ contains
+ subroutine update(arr,string)
+ character(len=:),allocatable :: arr(:)
+ character(len=*)             :: string
+ integer                      :: place, end
+
+ end=size(arr)
+ ! find where string is or should be
+ call locate(arr,string,place)
+ ! if string was not found insert it
+ if(place.lt.1)then
+    call insert(arr,string,abs(place))
+ endif
+ ! show array
+ end=size(arr)
+ write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+
+ end subroutine update
+ end program demo_insert
+\end{DoxyVerb}
+
+
+Results\+:
+
+array is now S\+I\+ZE=5 xxx,b,aaa,Z\+ZZ,, array is now S\+I\+ZE=6 xxx,b,aaa,\mbox{[},Z\+ZZ,, array is now S\+I\+ZE=7 xxx,c,b,aaa,\mbox{[},Z\+ZZ,, array is now S\+I\+ZE=8 xxx,c,b,aaa,\mbox{[},Z\+ZZ,ZZ,, array is now S\+I\+ZE=9 xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,ZZ,, array is now S\+I\+ZE=10 z,xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,ZZ,,
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_a737ae8e6f73a3fc8cc260732c047fafb}\label{namespacem__cli2_a737ae8e6f73a3fc8cc260732c047fafb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!insert\+\_\+d@{insert\+\_\+d}}
+\index{insert\+\_\+d@{insert\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{insert\+\_\+d()}{insert\_d()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::insert\+\_\+d (\begin{DoxyParamCaption}\item[{doubleprecision, dimension(\+:), allocatable}]{list,  }\item[{doubleprecision, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_afa6f00a57f1252ba5daa0c440a23ffbb}\label{namespacem__cli2_afa6f00a57f1252ba5daa0c440a23ffbb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!insert\+\_\+i@{insert\+\_\+i}}
+\index{insert\+\_\+i@{insert\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{insert\+\_\+i()}{insert\_i()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::insert\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a7e5ee66813d8f6db9d48ebdc350a6b3e}\label{namespacem__cli2_a7e5ee66813d8f6db9d48ebdc350a6b3e}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!insert\+\_\+l@{insert\+\_\+l}}
+\index{insert\+\_\+l@{insert\+\_\+l}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{insert\+\_\+l()}{insert\_l()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::insert\+\_\+l (\begin{DoxyParamCaption}\item[{logical, dimension(\+:), allocatable}]{list,  }\item[{logical, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_ae43e655d3678fcc31824a3e9db3daae1}\label{namespacem__cli2_ae43e655d3678fcc31824a3e9db3daae1}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!insert\+\_\+r@{insert\+\_\+r}}
+\index{insert\+\_\+r@{insert\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{insert\+\_\+r()}{insert\_r()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::insert\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{real, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}\label{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!isupper@{isupper}}
+\index{isupper@{isupper}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{isupper()}{isupper()}}
+{\footnotesize\ttfamily pure elemental logical function m\+\_\+cli2\+::isupper (\begin{DoxyParamCaption}\item[{character, intent(in)}]{ch }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a60a4588aa350fd58640b11f049915111}\label{namespacem__cli2_a60a4588aa350fd58640b11f049915111}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!journal@{journal}}
+\index{journal@{journal}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{journal()}{journal()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::journal (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{where,  }\item[{class($\ast$), intent(in)}]{g0,  }\item[{class($\ast$), intent(in), optional}]{g1,  }\item[{class($\ast$), intent(in), optional}]{g2,  }\item[{class($\ast$), intent(in), optional}]{g3,  }\item[{class($\ast$), intent(in), optional}]{g4,  }\item[{class($\ast$), intent(in), optional}]{g5,  }\item[{class($\ast$), intent(in), optional}]{g6,  }\item[{class($\ast$), intent(in), optional}]{g7,  }\item[{class($\ast$), intent(in), optional}]{g8,  }\item[{class($\ast$), intent(in), optional}]{g9,  }\item[{logical, intent(in), optional}]{nospace }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a60a4588aa350fd58640b11f049915111_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ad13853611abfee00d40ffa020662ec8a}\label{namespacem__cli2_ad13853611abfee00d40ffa020662ec8a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!lenset@{lenset}}
+\index{lenset@{lenset}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{lenset()}{lenset()}}
+{\footnotesize\ttfamily character(len=length) function m\+\_\+cli2\+::lenset (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{line,  }\item[{integer, intent(in)}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lenset(3f) -\/ \mbox{[}M\+\_\+strings\+:L\+E\+N\+G\+TH\mbox{]} return string trimmed or padded to specified length (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}function lenset(str,length) result(strout)
+
+ character(len=*)                     :: str
+ character(len=length)                :: strout
+ integer,intent(in)                   :: length
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+lenset(3f) truncates a string or pads it with spaces to the specified length. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+str input string length output string length \subsubsection*{R\+E\+S\+U\+L\+TS}
+
+strout output string \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample Program:
+
+ program demo_lenset
+  use M_strings, only : lenset
+  implicit none
+  character(len=10)            :: string='abcdefghij'
+  character(len=:),allocatable :: answer
+     answer=lenset(string,5)
+     write(*,'("[",a,"]")') answer
+     answer=lenset(string,20)
+     write(*,'("[",a,"]")') answer
+ end program demo_lenset
+
+Expected output:
+
+ [abcde]
+ [abcdefghij          ]
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ad13853611abfee00d40ffa020662ec8a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a2199778fea512efcde8778f20765643a}\label{namespacem__cli2_a2199778fea512efcde8778f20765643a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+c@{locate\+\_\+c}}
+\index{locate\+\_\+c@{locate\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{locate\+\_\+c()}{locate\_c()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+locate(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine locate(list,value,place,ier,errmsg)
+
+character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,allocatable \+:\+: list(\+:) character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: value integer, intent(out) \+:\+: P\+L\+A\+CE
+
+integer, intent(out),optional \+:\+: I\+ER character(len=$\ast$),intent(out),optional \+:\+: E\+R\+R\+M\+SG
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}LOCATE(3f) finds the index where the VALUE is found or should
+be found in an array. The array must be sorted in descending
+order (highest at top). If VALUE is not found it returns the index
+where the name should be placed at with a negative sign.
+
+The array and list must be of the same type (CHARACTER, DOUBLEPRECISION,
+REAL,INTEGER)
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}VALUE         the value to locate in the list.
+LIST          is the list array.
+\end{DoxyVerb}
+
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+P\+L\+A\+CE is the subscript that the entry was found at if it is greater than zero(0).
+
+If P\+L\+A\+CE is negative, the absolute value of P\+L\+A\+CE indicates the subscript value where the new entry should be placed in order to keep the list alphabetized.
+
+I\+ER is zero(0) if no error occurs. If an error occurs and I\+ER is not present, the program is stopped.
+
+E\+R\+R\+M\+SG description of any error
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}Find if a string is in a sorted array, and insert the string into
+the list if it is not present ...
+
+ program demo_locate
+ use M_sort, only : sort_shell
+ use M_list, only : locate
+ implicit none
+ character(len=:),allocatable  :: arr(:)
+ integer                       :: i
+
+ arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+ ! make sure sorted in descending order
+ call sort_shell(arr,order='d')
+
+ call update(arr,'b')
+ call update(arr,'[')
+ call update(arr,'c')
+ call update(arr,'ZZ')
+ call update(arr,'ZZZZ')
+ call update(arr,'z')
+
+ contains
+ subroutine update(arr,string)
+ character(len=:),allocatable :: arr(:)
+ character(len=*)             :: string
+ integer                      :: place, plus, ii, end
+ ! find where string is or should be
+ call locate(arr,string,place)
+ write(*,*)'for "'//string//'" index is ',place, size(arr)
+ ! if string was not found insert it
+ if(place.lt.1)then
+    plus=abs(place)
+    ii=len(arr)
+    end=size(arr)
+    ! empty array
+    if(end.eq.0)then
+       arr=[character(len=ii) :: string ]
+    ! put in front of array
+    elseif(plus.eq.1)then
+       arr=[character(len=ii) :: string, arr]
+    ! put at end of array
+    elseif(plus.eq.end)then
+       arr=[character(len=ii) :: arr, string ]
+    ! put in middle of array
+    else
+       arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+    endif
+    ! show array
+    write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+ endif
+ end subroutine update
+ end program demo_locate
+\end{DoxyVerb}
+
+
+Results\+:
+
+for \char`\"{}b\char`\"{} index is 2 5 for \char`\"{}\mbox{[}\char`\"{} index is -\/4 5 S\+I\+ZE=5 xxx,b,aaa,\mbox{[},Z\+ZZ, for \char`\"{}c\char`\"{} index is -\/2 6 S\+I\+ZE=6 xxx,c,b,aaa,\mbox{[},Z\+ZZ, for \char`\"{}\+Z\+Z\char`\"{} index is -\/7 7 S\+I\+ZE=7 xxx,c,b,aaa,\mbox{[},Z\+ZZ,, for \char`\"{}\+Z\+Z\+Z\+Z\char`\"{} index is -\/6 8 S\+I\+ZE=8 xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,, for \char`\"{}z\char`\"{} index is -\/1 9 S\+I\+ZE=9 z,xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,,
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}\label{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+d@{locate\+\_\+d}}
+\index{locate\+\_\+d@{locate\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{locate\+\_\+d()}{locate\_d()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+d (\begin{DoxyParamCaption}\item[{doubleprecision, dimension(\+:), allocatable}]{list,  }\item[{doubleprecision, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a3cc41a1a629f9ab278376a71b243673d}\label{namespacem__cli2_a3cc41a1a629f9ab278376a71b243673d}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+i@{locate\+\_\+i}}
+\index{locate\+\_\+i@{locate\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{locate\+\_\+i()}{locate\_i()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a2e12eb8c0ae6ce90b821141699e627df}\label{namespacem__cli2_a2e12eb8c0ae6ce90b821141699e627df}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+r@{locate\+\_\+r}}
+\index{locate\+\_\+r@{locate\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{locate\+\_\+r()}{locate\_r()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{real, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a7240f12031027172b87fde623bd77958}\label{namespacem__cli2_a7240f12031027172b87fde623bd77958}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!longest\+\_\+command\+\_\+argument@{longest\+\_\+command\+\_\+argument}}
+\index{longest\+\_\+command\+\_\+argument@{longest\+\_\+command\+\_\+argument}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{longest\+\_\+command\+\_\+argument()}{longest\_command\_argument()}}
+{\footnotesize\ttfamily integer function m\+\_\+cli2\+::longest\+\_\+command\+\_\+argument (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+longest\+\_\+command\+\_\+argument(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+args\mbox{]} length of longest argument on command line (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+function \mbox{\hyperlink{namespacem__cli2_a7240f12031027172b87fde623bd77958}{longest\+\_\+command\+\_\+argument()}} result(ilongest)
+
+integer \+:\+: ilongest
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+length of longest argument on command line. Useful when allocating storage for holding arguments. \subsubsection*{R\+E\+S\+U\+LT}
+
+longest\+\_\+command\+\_\+argument length of longest command argument \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program
+
+program demo\+\_\+longest\+\_\+command\+\_\+argument use M\+\_\+args, only \+: longest\+\_\+command\+\_\+argument write($\ast$,$\ast$)\textquotesingle{}longest argument is \textquotesingle{},\mbox{\hyperlink{namespacem__cli2_a7240f12031027172b87fde623bd77958}{longest\+\_\+command\+\_\+argument()}} end program demo\+\_\+longest\+\_\+command\+\_\+argument \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a7240f12031027172b87fde623bd77958_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a6d2d93ab8471667e632bf7a0e95ebd13}\label{namespacem__cli2_a6d2d93ab8471667e632bf7a0e95ebd13}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!lower@{lower}}
+\index{lower@{lower}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{lower()}{lower()}}
+{\footnotesize\ttfamily elemental pure character(len(\mbox{\hyperlink{interfacem__cli2_1_1str}{str}})) function m\+\_\+cli2\+::lower (\begin{DoxyParamCaption}\item[{character($\ast$), intent(in)}]{str,  }\item[{integer, intent(in), optional}]{begin,  }\item[{integer, intent(in), optional}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+lower(3f) -\/ \mbox{[}M\+\_\+strings\+:C\+A\+SE\mbox{]} changes a string to lowercase over specified range (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}elemental pure function lower(str,begin,end) result (string)
+
+ character(*), intent(in) :: str
+ integer,optional         :: begin, end
+ character(len(str))      :: string  ! output string
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+lower(string) returns a copy of the input string with all characters converted to miniscule over the specified range, assuming A\+S\+C\+II character sets are being used. If no range is specified the entire string is converted to miniscule.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+str string to convert to miniscule begin optional starting position in \char`\"{}str\char`\"{} to begin converting to miniscule end optional ending position in \char`\"{}str\char`\"{} to stop converting to miniscule
+
+\subsubsection*{R\+E\+S\+U\+L\+TS}
+
+lower copy of the input string with all characters converted to miniscule over optionally specified range.
+
+\subsubsection*{T\+R\+I\+V\+IA}
+
+The terms \char`\"{}uppercase\char`\"{} and \char`\"{}lowercase\char`\"{} date back to the early days of the mechanical printing press. Individual metal alloy casts of each needed letter, or punctuation symbol, were meticulously added to a press block, by hand, before rolling out copies of a page. These metal casts were stored and organized in wooden cases. The more often needed miniscule letters were placed closer to hand, in the lower cases of the work bench. The less often needed, capitalized, majuscule letters, ended up in the harder to reach upper cases.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample program:
+
+   program demo_lower
+   use M_strings, only: lower
+   implicit none
+   character(len=:),allocatable  :: s
+      s=' ABCDEFG abcdefg '
+      write(*,*) 'mixed-case input string is ....',s
+      write(*,*) 'lower-case output string is ...',lower(s)
+   end program demo_lower
+
+Expected output
+
+   mixed-case input string is .... ABCDEFG abcdefg
+   lower-case output string is ... abcdefg abcdefg
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a6d2d93ab8471667e632bf7a0e95ebd13_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a8e172feb2e4ae4d21d4fceb4e54f593c}\label{namespacem__cli2_a8e172feb2e4ae4d21d4fceb4e54f593c}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!merge\+\_\+str@{merge\+\_\+str}}
+\index{merge\+\_\+str@{merge\+\_\+str}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{merge\+\_\+str()}{merge\_str()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::merge\+\_\+str (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in), optional}]{str1,  }\item[{character(len=$\ast$), intent(in), optional}]{str2,  }\item[{logical, intent(in)}]{expr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+merge\+\_\+str(3f) -\/ \mbox{[}M\+\_\+strings\+:L\+E\+N\+G\+TH\mbox{]} pads strings to same length and then calls M\+E\+R\+G\+E(3f) (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}function merge_str(str1,str2,expr) result(strout)
+
+ character(len=*),intent(in),optional :: str1
+ character(len=*),intent(in),optional :: str2
+ logical,intent(in)              :: expr
+ character(len=:),allocatable    :: strout
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+merge\+\_\+str(3f) pads the shorter of str1 and str2 to the longest length of str1 and str2 and then calls M\+E\+R\+G\+E(padded\+\_\+str1,padded\+\_\+str2,expr). It trims trailing spaces off the result and returns the trimmed string. This makes it easier to call M\+E\+R\+G\+E(3f) with strings, as M\+E\+R\+G\+E(3f) requires the strings to be the same length.
+
+N\+O\+TE\+: S\+T\+R1 and S\+T\+R2 are always required even though declared optional. this is so the call \char`\"{}\+S\+T\+R\+\_\+\+M\+E\+R\+G\+E(\+A,\+B,present(\+A))\char`\"{} is a valid call. The parameters S\+T\+R1 and S\+T\+R2 when they are optional parameters can be passed to a procedure if the options are optional on the called procedure.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+S\+T\+R1 string to return if the logical expression E\+X\+PR is true S\+T\+R2 string to return if the logical expression E\+X\+PR is false E\+X\+PR logical expression to evaluate to determine whether to return S\+T\+R1 when true, and S\+T\+R2 when false. \subsubsection*{R\+E\+S\+U\+LT}
+
+M\+E\+R\+G\+E\+\_\+\+S\+TR a trimmed string is returned that is otherwise the value of S\+T\+R1 or S\+T\+R2, depending on the logical expression E\+X\+PR.
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample Program\+:
+
+program demo\+\_\+merge\+\_\+str use M\+\_\+strings, only \+: merge\+\_\+str implicit none character(len=\+:), allocatable \+:\+: answer answer=merge\+\_\+str(\textquotesingle{}first string\textquotesingle{}, \textquotesingle{}second string is longer\textquotesingle{},10.\+eq.\+10) write($\ast$,\textquotesingle{}(\char`\"{}\mbox{[}\char`\"{},a,\char`\"{}\mbox{]}\char`\"{})\textquotesingle{}) answer answer=merge\+\_\+str(\textquotesingle{}first string\textquotesingle{}, \textquotesingle{}second string is longer\textquotesingle{},10.\+ne.\+10) write($\ast$,\textquotesingle{}(\char`\"{}\mbox{[}\char`\"{},a,\char`\"{}\mbox{]}\char`\"{})\textquotesingle{}) answer end program demo\+\_\+merge\+\_\+str
+
+Expected output
+
+\mbox{[}first string\mbox{]} \mbox{[}second string is longer\mbox{]} \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References lenset().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{namespacem__cli2_a8e172feb2e4ae4d21d4fceb4e54f593c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a8e172feb2e4ae4d21d4fceb4e54f593c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a368e9aaa556f69228e7f0837bd558b82}\label{namespacem__cli2_a368e9aaa556f69228e7f0837bd558b82}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!msg\+\_\+one@{msg\+\_\+one}}
+\index{msg\+\_\+one@{msg\+\_\+one}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{msg\+\_\+one()}{msg\_one()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::msg\+\_\+one (\begin{DoxyParamCaption}\item[{class($\ast$), dimension(\+:), intent(in)}]{generic0,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic1,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic2,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic3,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic4,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic5,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic6,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic7,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic8,  }\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic9,  }\item[{logical, intent(in), optional}]{nospace }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References print\+\_\+generic().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{namespacem__cli2_a368e9aaa556f69228e7f0837bd558b82_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a737dc863a63dc101338840baad1cfd17}\label{namespacem__cli2_a737dc863a63dc101338840baad1cfd17}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!msg\+\_\+scalar@{msg\+\_\+scalar}}
+\index{msg\+\_\+scalar@{msg\+\_\+scalar}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{msg\+\_\+scalar()}{msg\_scalar()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::msg\+\_\+scalar (\begin{DoxyParamCaption}\item[{class($\ast$), intent(in), optional}]{generic0,  }\item[{class($\ast$), intent(in), optional}]{generic1,  }\item[{class($\ast$), intent(in), optional}]{generic2,  }\item[{class($\ast$), intent(in), optional}]{generic3,  }\item[{class($\ast$), intent(in), optional}]{generic4,  }\item[{class($\ast$), intent(in), optional}]{generic5,  }\item[{class($\ast$), intent(in), optional}]{generic6,  }\item[{class($\ast$), intent(in), optional}]{generic7,  }\item[{class($\ast$), intent(in), optional}]{generic8,  }\item[{class($\ast$), intent(in), optional}]{generic9,  }\item[{class($\ast$), intent(in), optional}]{generica,  }\item[{class($\ast$), intent(in), optional}]{genericb,  }\item[{class($\ast$), intent(in), optional}]{genericc,  }\item[{class($\ast$), intent(in), optional}]{genericd,  }\item[{class($\ast$), intent(in), optional}]{generice,  }\item[{class($\ast$), intent(in), optional}]{genericf,  }\item[{class($\ast$), intent(in), optional}]{genericg,  }\item[{class($\ast$), intent(in), optional}]{generich,  }\item[{class($\ast$), intent(in), optional}]{generici,  }\item[{class($\ast$), intent(in), optional}]{genericj,  }\item[{logical, intent(in), optional}]{nospace }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+str(3f) -\/ \mbox{[}M\+\_\+msg\mbox{]} converts any standard scalar type to a string (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,nospace)
+
+class($\ast$),intent(in),optional \+:\+: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9 class($\ast$),intent(in),optional \+:\+: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj logical,intent(in),optional \+:\+: nospace character,len=(\+:),allocatable \+:\+: str
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+str(3f) builds a space-\/separated string from up to twenty scalar values.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+g\mbox{[}0-\/9a-\/j\mbox{]} optional value to print the value of after the message. May be of type I\+N\+T\+E\+G\+ER, L\+O\+G\+I\+C\+AL, R\+E\+AL, D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON, C\+O\+M\+P\+L\+EX, or C\+H\+A\+R\+A\+C\+T\+ER.
+
+Optionally, all the generic values can be single-\/dimensioned arrays. Currently, mixing scalar arguments and array arguments is not supported.
+
+nospace if nospace=.true., then no spaces are added between values \subsubsection*{R\+E\+T\+U\+R\+NS}
+
+str description to print \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+: \begin{DoxyVerb}program demo_msg
+use M_msg, only : str
+implicit none
+character(len=:),allocatable :: pr
+character(len=:),allocatable :: frmt
+integer                      :: biggest
+
+pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
+write(*,'(a)')pr
+pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
+write(*,'(a)')pr
+pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+write(*,'(a)')pr
+pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
+write(*,'(a)')pr
+
+! create a format on the fly
+biggest=huge(0)
+frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+write(*,*)'format=',frmt
+
+! although it will often work, using str(3f) in an I/O statement is not recommended
+! because if an error occurs str(3f) will try to write while part of an I/O statement
+! which not all compilers can handle and is currently non-standard
+write(*,*)str('program will now stop')
+
+end program demo_msg
+\end{DoxyVerb}
+
+
+Output
+
+H\+U\+G\+E(3f) integers 2147483647 and real 3.\+40282347E+38 and double 1.\+7976931348623157E+308 real \+: 3.\+40282347E+38 0.\+00000000 12345.\+6787 1.\+17549435E-\/38 doubleprecision \+: 1.\+7976931348623157E+308 0.\+0000000000000000 12345.\+678900000001 2.\+2250738585072014E-\/308 complex \+: (3.\+40282347E+38,1.\+17549435E-\/38) format=($\ast$(i9\+:,1x)) program will now stop
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References print\+\_\+generic().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{namespacem__cli2_a737dc863a63dc101338840baad1cfd17_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}\label{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!print\+\_\+dictionary@{print\+\_\+dictionary}}
+\index{print\+\_\+dictionary@{print\+\_\+dictionary}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{print\+\_\+dictionary()}{print\_dictionary()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::print\+\_\+dictionary (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in), optional}]{header,  }\item[{logical, intent(in), optional}]{stop }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+print\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} print internal dictionary created by calls to commandline(3f) (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine print\+\_\+dictionary(header)
+
+character(len=$\ast$),intent(in),optional \+:\+: header logical,intent(in),optional \+:\+: stop \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Print the internal dictionary created by calls to commandline(3f). This routine is intended to print the state of the argument list if an error occurs in using the commandline(3f) procedure.. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+H\+E\+A\+D\+ER label to print before printing the state of the command argument list. S\+T\+OP logical value that if true stops the program after displaying the dictionary. \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}  Typical usage:
+
+   program demo_commandline
+   use M_CLI2,  only : unnamed, commandline, print_dictionary
+   implicit none
+   integer                      :: i
+   character(len=255)           :: message ! use for I/O error messages
+   character(len=:),allocatable :: readme  ! stores updated namelist
+   integer                      :: ios
+   real               :: x, y, z
+   logical            :: help, h
+   equivalence       (help,h)
+   namelist /args/ x,y,z,help,h
+   character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
+   ! initialize namelist from string and then update from command line
+   readme=cmd
+   read(readme,nml=args,iostat=ios,iomsg=message)
+   if(ios.eq.0)then
+      ! update cmd with options from command line
+      readme=commandline(cmd)
+      read(readme,nml=args,iostat=ios,iomsg=message)
+   endif
+   if(ios.ne.0)then
+      write (*,'("ERROR:",i0,1x,a)')ios, trim(message)
+      call print_dictionary('OPTIONS:')
+      stop 1
+   endif
+   ! all done cracking the command line
+   ! use the values in your program.
+   write (*,nml=args)
+   ! the optional unnamed values on the command line are
+   ! accumulated in the character array "UNNAMED"
+   if(size(unnamed).gt.0)then
+      write (*,'(a)')'files:'
+      write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+   endif
+   end program demo_commandline
+
+  Sample output
+
+  Calling the sample program with an unknown
+  parameter produces the following:
+
+     $ ./print_dictionary -A
+     UNKNOWN SHORT KEYWORD: -A
+     KEYWORD             PRESENT  VALUE
+     z                   F        [3]
+     y                   F        [2]
+     x                   F        [1]
+     help                F        [F]
+     h                   F        [F]
+
+     STOP 2
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References counts, keywords, present\+\_\+in, unnamed, and values.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}\label{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist@{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}}
+\index{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist@{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist()}{prototype\_and\_cmd\_args\_to\_nlist()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype,  }\item[{character(len=\+:), intent(out), allocatable}]{nml }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} convert Unix-\/like command arguments to namelist (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(prototype,nml)
+
+character(len=$\ast$) \+:\+: prototype character(len=\+:),allocatable \+:\+: nml \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+create dictionary with character keywords, values, and value lengths using the routines for maintaining a list from command line arguments. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+prototype \subsubsection*{R\+E\+T\+U\+R\+NS}
+
+nml \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb} Sample program
+
+  program demo_prototype_and_cmd_args_to_nlist
+  use M_CLI2,  only : prototype_and_cmd_args_to_nlist, unnamed
+  implicit none
+  character(len=:),allocatable :: readme
+  character(len=256)           :: message
+  integer                      :: ios
+  integer                      :: i
+  doubleprecision              :: something
+
+  ! define namelist
+  ! lowercase keywords
+  logical            :: l,h,v
+  real               :: p(2)
+  complex            :: c
+  doubleprecision    :: x,y,z
+
+  ! uppercase keywords get an underscore
+  logical            :: l_,h_,v_
+  character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
+  integer            :: c_(3)
+  namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
+
+     ! give command template with default values
+     ! all values except logicals get a value.
+     ! strings must be delimited with double quotes
+     ! A string has to have at least one character as for -A
+     ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
+     ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
+     call prototype_and_cmd_args_to_nlist('&
+     & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
+     & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
+     read(readme,nml=args,iostat=ios,iomsg=message)
+     if(ios.ne.0)then
+        write (*,*)'ERROR:',trim(message)
+        write (*,'("INPUT WAS ",a)')readme
+        write (*,args)
+        stop 3
+     else
+        something=sqrt(x**2+y**2+z**2)
+        write (*,*)something,x,y,z
+        if(size(unnamed).gt.0)then
+           write (*,'(a)')'files:'
+           write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+        endif
+     endif
+  end program demo_prototype_and_cmd_args_to_nlist
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References cmd\+\_\+args\+\_\+to\+\_\+dictionary(), dictionary\+\_\+to\+\_\+namelist(), longest\+\_\+command\+\_\+argument(), namelist\+\_\+name, passed\+\_\+in, present\+\_\+in, prototype\+\_\+to\+\_\+dictionary(), return\+\_\+all, and unnamed.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}\label{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!prototype\+\_\+to\+\_\+dictionary@{prototype\+\_\+to\+\_\+dictionary}}
+\index{prototype\+\_\+to\+\_\+dictionary@{prototype\+\_\+to\+\_\+dictionary}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{prototype\+\_\+to\+\_\+dictionary()}{prototype\_to\_dictionary()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::prototype\+\_\+to\+\_\+dictionary (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{string }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+prototype\+\_\+to\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} parse user command and store tokens into dictionary (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} subroutine prototype_to_dictionary(string)
+
+  character(len=*),intent(in)     ::  string
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+given a string of form
+
+-\/var value -\/var value
+
+define dictionary of form
+
+keyword(i), value(i)
+
+o string values \begin{DoxyVerb}o must be delimited with double quotes.
+o adjacent double quotes put one double quote into value
+o must not be null. A blank is specified as " ", not "".
+\end{DoxyVerb}
+
+
+o logical values \begin{DoxyVerb}o logical values must not have a value
+\end{DoxyVerb}
+
+
+o leading and trailing blanks are removed from unquoted values
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+S\+T\+R\+I\+NG string is character input string to define command
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb} sample program:
+
+ Results:
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References keyword\+\_\+single, and update().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a63f81a2c027eb5f3e0a77167ac29fc73}\label{namespacem__cli2_a63f81a2c027eb5f3e0a77167ac29fc73}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!quote@{quote}}
+\index{quote@{quote}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{quote()}{quote()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::quote (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{str,  }\item[{character(len=$\ast$), intent(in), optional}]{mode,  }\item[{logical, intent(in), optional}]{clip }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+quote(3f) -\/ \mbox{[}M\+\_\+strings\+:Q\+U\+O\+T\+ES\mbox{]} add quotes to string as if written with list-\/directed input (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+function quote(str,mode,clip) result (quoted\+\_\+str)
+
+character(len=$\ast$),intent(in) \+:\+: str character(len=$\ast$),optional,intent(in) \+:\+: mode logical,optional,intent(in) \+:\+: clip character(len=\+:),allocatable \+:\+: quoted\+\_\+str \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Add quotes to a C\+H\+A\+R\+A\+C\+T\+ER variable as if it was written using list-\/directed input. This is particularly useful for processing strings to add to C\+SV files.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+str input string to add quotes to, using the rules of list-\/directed input (single quotes are replaced by two adjacent quotes) mode alternate quoting methods are supported\+: \begin{DoxyVerb}           DOUBLE   default. replace quote with double quotes
+           ESCAPE   replace quotes with backslash-quote instead of double quotes
+\end{DoxyVerb}
+
+
+clip default is to trim leading and trailing spaces from the string. If C\+L\+IP is .F\+A\+L\+SE. spaces are not trimmed
+
+\subsubsection*{R\+E\+S\+U\+LT}
+
+quoted\+\_\+str The output string, which is based on adding quotes to S\+TR. \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+:
+
+program demo\+\_\+quote use M\+\_\+strings, only \+: quote implicit none character(len=\+:),allocatable \+:\+: str character(len=1024) \+:\+: msg integer \+:\+: ios character(len=80) \+:\+: inline do write($\ast$,\textquotesingle{}(a)\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})\textquotesingle{}Enter test string\+:\textquotesingle{} read($\ast$,\textquotesingle{}(a)\textquotesingle{},iostat=ios,iomsg=msg)inline if(ios.\+ne.\+0)then write($\ast$,$\ast$)trim(inline) exit endif
+
+! the original string write($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}O\+R\+I\+G\+I\+N\+AL \mbox{[}\textquotesingle{}//trim(inline)//\textquotesingle{}\mbox{]}\textquotesingle{}
+
+! the string processed by quote(3f) str=quote(inline) write($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}Q\+U\+O\+T\+ED \mbox{[}\textquotesingle{}//str//\textquotesingle{}\mbox{]}\textquotesingle{}
+
+! write the string list-\/directed to compare the results write($\ast$,\textquotesingle{}(a)\textquotesingle{},iostat=ios,iomsg=msg) \textquotesingle{}L\+I\+ST D\+I\+R\+E\+C\+T\+ED\+:\textquotesingle{} write($\ast$,$\ast$,iostat=ios,iomsg=msg,delim=\textquotesingle{}none\textquotesingle{}) inline write($\ast$,$\ast$,iostat=ios,iomsg=msg,delim=\textquotesingle{}quote\textquotesingle{}) inline write($\ast$,$\ast$,iostat=ios,iomsg=msg,delim=\textquotesingle{}apostrophe\textquotesingle{}) inline enddo end program demo\+\_\+quote
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References journal(), lower(), merge\+\_\+str(), and replace\+\_\+str().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a63f81a2c027eb5f3e0a77167ac29fc73_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a63f81a2c027eb5f3e0a77167ac29fc73_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a155af513c048d68552ec2e8fb54e1294}\label{namespacem__cli2_a155af513c048d68552ec2e8fb54e1294}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!remove\+\_\+c@{remove\+\_\+c}}
+\index{remove\+\_\+c@{remove\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{remove\+\_\+c()}{remove\_c()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::remove\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+remove(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} remove entry from an allocatable array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine remove(list,place)
+
+character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(inout) \+:\+: list(\+:) integer, intent(out) \+:\+: P\+L\+A\+CE
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}Remove a value from an allocatable array at the specified index.
+The array is assumed to be sorted in descending order. It may be of
+type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}list    is the list array.
+PLACE   is the subscript for the entry that should be removed
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}Sample program
+
+ program demo_remove
+ use M_sort, only : sort_shell
+ use M_list, only : locate, remove
+ implicit none
+ character(len=:),allocatable :: arr(:)
+ integer                       :: i
+ integer                       :: end
+
+ arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
+ ! make sure sorted in descending order
+ call sort_shell(arr,order='d')
+
+ end=size(arr)
+ write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+ call remove(arr,1)
+ end=size(arr)
+ write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+ call remove(arr,4)
+ end=size(arr)
+ write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+
+ end program demo_remove
+\end{DoxyVerb}
+
+
+Results\+:
+
+Expected output
+
+S\+I\+ZE=9 xxx,bb,b,b,ab,aaa,Z\+ZZ,Z,, S\+I\+ZE=8 bb,b,b,ab,aaa,Z\+ZZ,Z,, S\+I\+ZE=7 bb,b,b,aaa,Z\+ZZ,Z,,
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_a5deb6a427a39e04c5a18a82497d5cf84}\label{namespacem__cli2_a5deb6a427a39e04c5a18a82497d5cf84}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!remove\+\_\+d@{remove\+\_\+d}}
+\index{remove\+\_\+d@{remove\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{remove\+\_\+d()}{remove\_d()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::remove\+\_\+d (\begin{DoxyParamCaption}\item[{doubleprecision, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a1c2bd26b3c04a499cc65b00133dfe6b9}\label{namespacem__cli2_a1c2bd26b3c04a499cc65b00133dfe6b9}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!remove\+\_\+i@{remove\+\_\+i}}
+\index{remove\+\_\+i@{remove\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{remove\+\_\+i()}{remove\_i()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::remove\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_ae3fc38d25a8a4892bde95a7198c2495a}\label{namespacem__cli2_ae3fc38d25a8a4892bde95a7198c2495a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!remove\+\_\+l@{remove\+\_\+l}}
+\index{remove\+\_\+l@{remove\+\_\+l}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{remove\+\_\+l()}{remove\_l()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::remove\+\_\+l (\begin{DoxyParamCaption}\item[{logical, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a281edafaa6f74c30bd8de6d0c1d05be6}\label{namespacem__cli2_a281edafaa6f74c30bd8de6d0c1d05be6}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!remove\+\_\+r@{remove\+\_\+r}}
+\index{remove\+\_\+r@{remove\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{remove\+\_\+r()}{remove\_r()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::remove\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_affd644ac84d1010b40748f80d142d6b3}\label{namespacem__cli2_affd644ac84d1010b40748f80d142d6b3}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!replace\+\_\+c@{replace\+\_\+c}}
+\index{replace\+\_\+c@{replace\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{replace\+\_\+c()}{replace\_c()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::replace\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+replace(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} replace entry in a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine replace(list,value,place)
+
+character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: value character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: list(\+:) integer, intent(out) \+:\+: P\+L\+A\+CE
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}replace a value in an allocatable array at the specified index. Unless the
+array needs the string length to increase this is merely an assign of a value
+to an array element.
+
+The array may be of type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER>
+It is assumed to be sorted in descending order without duplicate values.
+
+The value and list must be of the same type.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}VALUE         the value to place in the array
+LIST          is the array.
+PLACE         is the subscript that the entry should be placed at
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Replace key-\/value pairs in a dictionary
+
+program demo\+\_\+replace use M\+\_\+list, only \+: insert, locate, replace ! Find if a key is in a list and insert it ! into the key list and value list if it is not present ! or replace the associated value if the key existed implicit none character(len=20) \+:\+: key character(len=100) \+:\+: val character(len=\+:),allocatable \+:\+: keywords(\+:) character(len=\+:),allocatable \+:\+: values(\+:) integer \+:\+: i integer \+:\+: place call update(\textquotesingle{}b\textquotesingle{},\textquotesingle{}value of b\textquotesingle{}) call update(\textquotesingle{}a\textquotesingle{},\textquotesingle{}value of a\textquotesingle{}) call update(\textquotesingle{}c\textquotesingle{},\textquotesingle{}value of c\textquotesingle{}) call update(\textquotesingle{}c\textquotesingle{},\textquotesingle{}value of c again\textquotesingle{}) call update(\textquotesingle{}d\textquotesingle{},\textquotesingle{}value of d\textquotesingle{}) call update(\textquotesingle{}a\textquotesingle{},\textquotesingle{}value of a again\textquotesingle{}) ! show array write($\ast$,\textquotesingle{}($\ast$(a,\char`\"{}==$>$\char`\"{},a,/))\textquotesingle{})(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
+
+call locate(keywords,\textquotesingle{}a\textquotesingle{},place) if(place.\+gt.\+0)then write($\ast$,$\ast$)\textquotesingle{}The value of \char`\"{}a\char`\"{} is\textquotesingle{},trim(values(place)) else write($\ast$,$\ast$)\textquotesingle{}\char`\"{}a\char`\"{} not found\textquotesingle{} endif
+
+contains subroutine update(key,val) character(len=$\ast$),intent(in) \+:\+: key character(len=$\ast$),intent(in) \+:\+: val integer \+:\+: place
+
+! find where string is or should be call locate(keywords,key,place) ! if string was not found insert it if(place.\+lt.\+1)then call insert(keywords,key,abs(place)) call insert(values,val,abs(place)) else ! replace call replace(values,val,place) endif
+
+end subroutine update end program demo\+\_\+replace
+
+Expected output
+
+d==$>$value of d c==$>$value of c again b==$>$value of b a==$>$value of a again
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{namespacem__cli2_ac327823dd714cd4c1667666158f0c135}\label{namespacem__cli2_ac327823dd714cd4c1667666158f0c135}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!replace\+\_\+d@{replace\+\_\+d}}
+\index{replace\+\_\+d@{replace\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{replace\+\_\+d()}{replace\_d()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::replace\+\_\+d (\begin{DoxyParamCaption}\item[{doubleprecision, dimension(\+:), allocatable}]{list,  }\item[{doubleprecision, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a0a591fd55e8010f26eb6f9f6bafc1ddb}\label{namespacem__cli2_a0a591fd55e8010f26eb6f9f6bafc1ddb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!replace\+\_\+i@{replace\+\_\+i}}
+\index{replace\+\_\+i@{replace\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{replace\+\_\+i()}{replace\_i()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::replace\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_ae4a1802207f6b67e36cbf89003d6fb55}\label{namespacem__cli2_ae4a1802207f6b67e36cbf89003d6fb55}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!replace\+\_\+l@{replace\+\_\+l}}
+\index{replace\+\_\+l@{replace\+\_\+l}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{replace\+\_\+l()}{replace\_l()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::replace\+\_\+l (\begin{DoxyParamCaption}\item[{logical, dimension(\+:), allocatable}]{list,  }\item[{logical, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_abe681a8b55ae238b029766713a79210a}\label{namespacem__cli2_abe681a8b55ae238b029766713a79210a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!replace\+\_\+r@{replace\+\_\+r}}
+\index{replace\+\_\+r@{replace\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{replace\+\_\+r()}{replace\_r()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::replace\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{real, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a8f65cf1b227d837d89437368c660666f}\label{namespacem__cli2_a8f65cf1b227d837d89437368c660666f}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!replace\+\_\+str@{replace\+\_\+str}}
+\index{replace\+\_\+str@{replace\+\_\+str}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{replace\+\_\+str()}{replace\_str()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::replace\+\_\+str (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{targetline,  }\item[{character(len=$\ast$), intent(in), optional}]{old,  }\item[{character(len=$\ast$), intent(in), optional}]{new,  }\item[{integer, intent(out), optional}]{ierr,  }\item[{character(len=$\ast$), intent(in), optional}]{cmd,  }\item[{integer, dimension(2), intent(in), optional}]{range }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References crack\+\_\+cmd(), and journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a8f65cf1b227d837d89437368c660666f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a8f65cf1b227d837d89437368c660666f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}\label{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!set\+\_\+args@{set\+\_\+args}}
+\index{set\+\_\+args@{set\+\_\+args}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{set\+\_\+args()}{set\_args()}}
+{\footnotesize\ttfamily subroutine, public m\+\_\+cli2\+::set\+\_\+args (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{help\+\_\+text,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{version\+\_\+text }\end{DoxyParamCaption})}
+
+
+
+References check\+\_\+commandline(), and commandline().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665}\label{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!split@{split}}
+\index{split@{split}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{split()}{split()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::split (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{input\+\_\+line,  }\item[{character(len=\+:), dimension(\+:), intent(out), allocatable}]{array,  }\item[{character(len=$\ast$), intent(in), optional}]{delimiters,  }\item[{character(len=$\ast$), intent(in), optional}]{order,  }\item[{character(len=$\ast$), intent(in), optional}]{nulls }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+split(3f) -\/ \mbox{[}M\+\_\+strings\+:T\+O\+K\+E\+NS\mbox{]} parse string into an array using specified delimiters (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine split(input_line,array,delimiters,order,nulls)
+
+ character(len=*),intent(in)              :: input_line
+ character(len=:),allocatable,intent(out) :: array(:)
+ character(len=*),optional,intent(in)     :: delimiters
+ character(len=*),optional,intent(in)     :: order
+ character(len=*),optional,intent(in)     :: nulls
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+S\+P\+L\+I\+T(3f) parses a string using specified delimiter characters and store tokens into an allocatable array
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}INPUT_LINE  Input string to tokenize
+
+ARRAY       Output array of tokens
+
+DELIMITERS  List of delimiter characters.
+            The default delimiters are the "whitespace" characters
+            (space, tab,new line, vertical tab, formfeed, carriage
+            return, and null). You may specify an alternate set of
+            delimiter characters.
+
+            Multi-character delimiters are not supported (Each
+            character in the DELIMITERS list is considered to be
+            a delimiter).
+
+            Quoting of delimiter characters is not supported.
+
+ORDER SEQUENTIAL|REVERSE|RIGHT  Order of output array.
+            By default ARRAY contains the tokens having parsed
+            the INPUT_LINE from left to right. If ORDER='RIGHT'
+            or ORDER='REVERSE' the parsing goes from right to left.
+
+NULLS IGNORE|RETURN|IGNOREEND  Treatment of null fields.
+            By default adjacent delimiters in the input string
+            do not create an empty string in the output array. if
+            NULLS='return' adjacent delimiters create an empty element
+            in the output ARRAY. If NULLS='ignoreend' then only
+            trailing delimiters at the right of the string are ignored.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample program\+:
+
+program demo\+\_\+split use M\+\_\+strings, only\+: split character(len=$\ast$),parameter \+:\+: \& \& line=\textquotesingle{} a\+Bcdef ghijklmnop qrstuvwxyz 1\+:$\vert$\+:2 333$\vert$333 a B cc \textquotesingle{} character(len=\+:),allocatable \+:\+: array(\+:) ! output array of tokens write($\ast$,$\ast$)\textquotesingle{}I\+N\+P\+UT L\+I\+NE\+:\mbox{[}\textquotesingle{}//\+L\+I\+N\+E//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,\textquotesingle{}(80(\char`\"{}=\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}typical call\+:\textquotesingle{} C\+A\+LL split(line,array) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) write($\ast$,\textquotesingle{}(80(\char`\"{}-\/\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}custom list of delimiters (colon and vertical line)\+:\textquotesingle{} C\+A\+LL split(line,array,delimiters=\textquotesingle{}\+:$\vert$\textquotesingle{},order=\textquotesingle{}sequential\textquotesingle{},nulls=\textquotesingle{}ignore\textquotesingle{}) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) write($\ast$,\textquotesingle{}(80(\char`\"{}-\/\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\& \&\textquotesingle{}custom list of delimiters, reverse array order and count null fields\+:\textquotesingle{} C\+A\+LL split(line,array,delimiters=\textquotesingle{}\+:$\vert$\textquotesingle{},order=\textquotesingle{}reverse\textquotesingle{},nulls=\textquotesingle{}return\textquotesingle{}) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) write($\ast$,\textquotesingle{}(80(\char`\"{}-\/\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}I\+N\+P\+UT L\+I\+NE\+:\mbox{[}\textquotesingle{}//\+L\+I\+N\+E//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$)\& \&\textquotesingle{}default delimiters and reverse array order and return null fields\+:\textquotesingle{} C\+A\+LL split(line,array,delimiters=\textquotesingle{}\textquotesingle{},order=\textquotesingle{}reverse\textquotesingle{},nulls=\textquotesingle{}return\textquotesingle{}) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) end program demo\+\_\+split
+
+Output
+
+$>$ I\+N\+P\+UT L\+I\+NE\+:\mbox{[} a\+Bcdef ghijklmnop qrstuvwxyz 1\+:$\vert$\+:2 333$\vert$333 a B cc \mbox{]} $>$ =========================================================================== $>$ typical call\+: $>$ 1 ==$>$ a\+Bcdef $>$ 2 ==$>$ ghijklmnop $>$ 3 ==$>$ qrstuvwxyz $>$ 4 ==$>$ 1\+:$\vert$\+:2 $>$ 5 ==$>$ 333$\vert$333 $>$ 6 ==$>$ a $>$ 7 ==$>$ B $>$ 8 ==$>$ cc $>$ S\+I\+ZE\+: 8 $>$ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- $>$ custom list of delimiters (colon and vertical line)\+: $>$ 1 ==$>$ a\+Bcdef ghijklmnop qrstuvwxyz 1 $>$ 2 ==$>$ 2 333 $>$ 3 ==$>$ 333 a B cc $>$ S\+I\+ZE\+: 3 $>$ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- $>$ custom list of delimiters, reverse array order and return null fields\+: $>$ 1 ==$>$ 333 a B cc $>$ 2 ==$>$ 2 333 $>$ 3 ==$>$ $>$ 4 ==$>$ $>$ 5 ==$>$ a\+Bcdef ghijklmnop qrstuvwxyz 1 $>$ S\+I\+ZE\+: 5 $>$ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/--- $>$ I\+N\+P\+UT L\+I\+NE\+:\mbox{[} a\+Bcdef ghijklmnop qrstuvwxyz 1\+:$\vert$\+:2 333$\vert$333 a B cc \mbox{]} $>$ default delimiters and reverse array order and count null fields\+: $>$ 1 ==$>$ $>$ 2 ==$>$ $>$ 3 ==$>$ $>$ 4 ==$>$ cc $>$ 5 ==$>$ B $>$ 6 ==$>$ a $>$ 7 ==$>$ 333$\vert$333 $>$ 8 ==$>$ $>$ 9 ==$>$ $>$ 10 ==$>$ $>$ 11 ==$>$ $>$ 12 ==$>$ 1\+:$\vert$\+:2 $>$ 13 ==$>$ $>$ 14 ==$>$ qrstuvwxyz $>$ 15 ==$>$ ghijklmnop $>$ 16 ==$>$ $>$ 17 ==$>$ $>$ 18 ==$>$ a\+Bcdef $>$ 19 ==$>$ $>$ 20 ==$>$ $>$ S\+I\+ZE\+: 20 \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References lower().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a}\label{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!strtok@{strtok}}
+\index{strtok@{strtok}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{strtok()}{strtok()}}
+{\footnotesize\ttfamily logical function m\+\_\+cli2\+::strtok (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{source\+\_\+string,  }\item[{integer, intent(inout)}]{itoken,  }\item[{integer, intent(out)}]{token\+\_\+start,  }\item[{integer, intent(inout)}]{token\+\_\+end,  }\item[{character(len=$\ast$), intent(in)}]{delimiters }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a76af7f7c39e6755e024890d85d488704}\label{namespacem__cli2_a76af7f7c39e6755e024890d85d488704}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!substitute@{substitute}}
+\index{substitute@{substitute}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{substitute()}{substitute()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::substitute (\begin{DoxyParamCaption}\item[{character(len=$\ast$)}]{targetline,  }\item[{character(len=$\ast$), intent(in)}]{old,  }\item[{character(len=$\ast$), intent(in)}]{new,  }\item[{integer, intent(out), optional}]{ierr,  }\item[{integer, intent(in), optional}]{start,  }\item[{integer, intent(in), optional}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+substitute(3f) -\/ \mbox{[}M\+\_\+strings\+:E\+D\+I\+T\+I\+NG\mbox{]} subroutine globally substitutes one substring for another in string (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine substitute(targetline,old,new,ierr,start,end)
+
+ character(len=*)              :: targetline
+ character(len=*),intent(in)   :: old
+ character(len=*),intent(in)   :: new
+ integer,intent(out),optional  :: ierr
+ integer,intent(in),optional   :: start
+ integer,intent(in),optional   :: end
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Globally substitute one substring for another in string.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+T\+A\+R\+G\+E\+T\+L\+I\+NE input line to be changed. Must be long enough to hold altered output. O\+LD substring to find and replace N\+EW replacement for O\+LD substring I\+E\+RR error code. If I\+ER = -\/1 bad directive, $>$= 0 then count of changes made. S\+T\+A\+RT sets the left margin to be scanned for O\+LD in T\+A\+R\+G\+E\+T\+L\+I\+NE. E\+ND sets the right margin to be scanned for O\+LD in T\+A\+R\+G\+E\+T\+L\+I\+NE.
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Sample Program\+:
+
+program demo\+\_\+substitute use M\+\_\+strings, only \+: substitute implicit none ! must be long enough to hold changed line character(len=80) \+:\+: targetline
+
+targetline=\textquotesingle{}this is the input string\textquotesingle{} write($\ast$,$\ast$)\textquotesingle{}O\+R\+I\+G\+I\+N\+AL \+: \textquotesingle{}//trim(targetline)
+
+! changes the input to \textquotesingle{}T\+His is T\+He input string\textquotesingle{} call substitute(targetline,\textquotesingle{}th\textquotesingle{},\textquotesingle{}TH\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}th =$>$ TH \+: \textquotesingle{}//trim(targetline)
+
+! a null old substring means \char`\"{}at beginning of line\char`\"{} ! changes the input to \textquotesingle{}B\+E\+F\+O\+RE\+:this is the input string\textquotesingle{} call substitute(targetline,\textquotesingle{}\textquotesingle{},\textquotesingle{}B\+E\+F\+O\+RE\+:\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}\char`\"{}\char`\"{} =$>$ B\+E\+F\+O\+RE\+: \textquotesingle{}//trim(targetline)
+
+! a null new string deletes occurrences of the old substring ! changes the input to \textquotesingle{}ths s the nput strng\textquotesingle{} call substitute(targetline,\textquotesingle{}i\textquotesingle{},\textquotesingle{}\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}i =$>$ \char`\"{}\char`\"{} \+: \textquotesingle{}//trim(targetline)
+
+end program demo\+\_\+substitute
+
+Expected output
+
+O\+R\+I\+G\+I\+N\+AL \+: this is the input string th =$>$ TH \+: T\+His is T\+He input string \char`\"{}\char`\"{} =$>$ B\+E\+F\+O\+RE\+: B\+E\+F\+O\+RE\+:T\+His is T\+He input string i =$>$ \char`\"{}\char`\"{} \+: B\+E\+F\+O\+RE\+:T\+Hs s T\+He nput strng \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References journal().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{namespacem__cli2_a76af7f7c39e6755e024890d85d488704_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a76af7f7c39e6755e024890d85d488704_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a770a66475094fd80493d46498de1ebf7}\label{namespacem__cli2_a770a66475094fd80493d46498de1ebf7}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!trimzeros\+\_\+@{trimzeros\+\_\+}}
+\index{trimzeros\+\_\+@{trimzeros\+\_\+}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{trimzeros\+\_\+()}{trimzeros\_()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::trimzeros\+\_\+ (\begin{DoxyParamCaption}\item[{character(len=$\ast$)}]{string }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+trimzeros\+\_\+(3fp) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} Delete trailing zeros from numeric decimal string (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine trimzeros\+\_\+(str)
+
+character(len=$\ast$) \+:\+: str \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+T\+R\+I\+M\+Z\+E\+R\+O\+S\+\_\+(3f) deletes trailing zeros from a string representing a number. If the resulting string would end in a decimal point, one trailing zero is added. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+str input string will be assumed to be a numeric value and have trailing zeros removed \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}Sample program:
+
+   program demo_trimzeros_
+   use M_strings, only : trimzeros_
+   character(len=:),allocatable :: string
+      write(*,*)trimzeros_('123.450000000000')
+      write(*,*)trimzeros_('12345')
+      write(*,*)trimzeros_('12345.')
+      write(*,*)trimzeros_('12345.00e3')
+   end program demo_trimzeros_
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a770a66475094fd80493d46498de1ebf7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a9cab7352414f8b5625330a9ff5cf0cb4}\label{namespacem__cli2_a9cab7352414f8b5625330a9ff5cf0cb4}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!unquote@{unquote}}
+\index{unquote@{unquote}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{unquote()}{unquote()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::unquote (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{quoted\+\_\+str,  }\item[{character(len=1), intent(in), optional}]{esc }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+unquote(3f) -\/ \mbox{[}M\+\_\+strings\+:Q\+U\+O\+T\+ES\mbox{]} remove quotes from string as if read with list-\/directed input (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+function unquote(quoted\+\_\+str,esc) result (unquoted\+\_\+str)
+
+character(len=$\ast$),intent(in) \+:\+: quoted\+\_\+str character(len=1),optional,intent(in) \+:\+: esc character(len=\+:),allocatable \+:\+: unquoted\+\_\+str \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Remove quotes from a C\+H\+A\+R\+A\+C\+T\+ER variable as if it was read using list-\/directed input. This is particularly useful for processing tokens read from input such as C\+SV files.
+
+Fortran can now read using list-\/directed input from an internal file, which should handle quoted strings, but list-\/directed input does not support escape characters, which U\+N\+Q\+U\+O\+T\+E(3f) does. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+quoted\+\_\+str input string to remove quotes from, using the rules of list-\/directed input (two adjacent quotes inside a quoted region are replaced by a single quote, a single quote or double quote is selected as the delimiter based on which is encountered first going from left to right, ...) esc optional character used to protect the next quote character from being processed as a quote, but simply as a plain character. \subsubsection*{R\+E\+S\+U\+LT}
+
+unquoted\+\_\+str The output string, which is based on removing quotes from quoted\+\_\+str. \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+: \begin{DoxyVerb}program demo_unquote
+use M_strings, only : unquote
+implicit none
+character(len=128)           :: quoted_str
+character(len=:),allocatable :: unquoted_str
+character(len=1),parameter   :: esc='\'
+character(len=1024)          :: msg
+integer                      :: ios
+character(len=1024)          :: dummy
+do
+   write(*,'(a)',advance='no')'Enter test string:'
+   read(*,'(a)',iostat=ios,iomsg=msg)quoted_str
+   if(ios.ne.0)then
+      write(*,*)trim(msg)
+      exit
+   endif
+
+   ! the original string
+   write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
+
+   ! the string processed by unquote(3f)
+   unquoted_str=unquote(trim(quoted_str),esc)
+   write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
+
+   ! read the string list-directed to compare the results
+   read(quoted_str,*,iostat=ios,iomsg=msg)dummy
+   if(ios.ne.0)then
+      write(*,*)trim(msg)
+   else
+      write(*,'(a)')'LIST DIRECTED['//trim(dummy)//']'
+   endif
+enddo
+end program demo_unquote
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References quote().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a9cab7352414f8b5625330a9ff5cf0cb4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a9cab7352414f8b5625330a9ff5cf0cb4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb}\label{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!update@{update}}
+\index{update@{update}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::update (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{key,  }\item[{character(len=$\ast$), intent(in), optional}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+update(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} update internal dictionary given keyword and value (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine update(key,val)
+
+character(len=$\ast$),intent(in) \+:\+: key character(len=$\ast$),intent(in),optional \+:\+: val \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+Update internal dictionary in M\+\_\+\+C\+L\+I2(3fm) module. \subsubsection*{O\+P\+T\+I\+O\+NS}
+
+key name of keyword to add, replace, or delete from dictionary val if present add or replace value associated with keyword. If not present remove keyword entry from dictionary.
+
+If \char`\"{}present\char`\"{} is true, a value will be appended \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References counts, keywords, present\+\_\+in, unquote(), and values.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_afa7a2419002024ff6d950c5d905ddd7a}\label{namespacem__cli2_afa7a2419002024ff6d950c5d905ddd7a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!upper@{upper}}
+\index{upper@{upper}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{upper()}{upper()}}
+{\footnotesize\ttfamily elemental pure character(len(\mbox{\hyperlink{interfacem__cli2_1_1str}{str}})) function m\+\_\+cli2\+::upper (\begin{DoxyParamCaption}\item[{character($\ast$), intent(in)}]{str,  }\item[{integer, intent(in), optional}]{begin,  }\item[{integer, intent(in), optional}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+upper(3f) -\/ \mbox{[}M\+\_\+strings\+:C\+A\+SE\mbox{]} changes a string to uppercase (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}elemental pure function upper(str,begin,end) result (string)
+
+ character(*), intent(in)    :: str
+ integer,optional,intent(in) :: begin,end
+ character(len(str))         :: string  ! output string
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+upper(string) returns a copy of the input string with all characters converted in the optionally specified range to uppercase, assuming A\+S\+C\+II character sets are being used. If no range is specified the entire string is converted to uppercase.
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+str string to convert to uppercase begin optional starting position in \char`\"{}str\char`\"{} to begin converting to uppercase end optional ending position in \char`\"{}str\char`\"{} to stop converting to uppercase
+
+\subsubsection*{R\+E\+S\+U\+L\+TS}
+
+upper copy of the input string with all characters converted to uppercase over optionally specified range.
+
+\subsubsection*{T\+R\+I\+V\+IA}
+
+The terms \char`\"{}uppercase\char`\"{} and \char`\"{}lowercase\char`\"{} date back to the early days of the mechanical printing press. Individual metal alloy casts of each needed letter, or punctuation symbol, were meticulously added to a press block, by hand, before rolling out copies of a page. These metal casts were stored and organized in wooden cases. The more often needed miniscule letters were placed closer to hand, in the lower cases of the work bench. The less often needed, capitalized, majuscule letters, ended up in the harder to reach upper cases.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample program:
+
+ program demo_upper
+ use M_strings, only: upper
+ implicit none
+ character(len=:),allocatable  :: s
+    s=' ABCDEFG abcdefg '
+    write(*,*) 'mixed-case input string is ....',s
+    write(*,*) 'upper-case output string is ...',upper(s)
+    write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
+    write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
+ end program demo_upper
+
+Expected output
+
+ mixed-case input string is .... ABCDEFG abcdefg
+ upper-case output string is ... ABCDEFG ABCDEFG
+ make first character uppercase  ... This is a sentence.
+ UPPER(3f) is elemental ==>ABC+DEF+GHI
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_afa7a2419002024ff6d950c5d905ddd7a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a1bbcefd886dabb0286e2cb14ab54034f}\label{namespacem__cli2_a1bbcefd886dabb0286e2cb14ab54034f}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!value\+\_\+to\+\_\+string@{value\+\_\+to\+\_\+string}}
+\index{value\+\_\+to\+\_\+string@{value\+\_\+to\+\_\+string}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{value\+\_\+to\+\_\+string()}{value\_to\_string()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::value\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{class($\ast$), intent(in)}]{gval,  }\item[{character(len=$\ast$), intent(out)}]{chars,  }\item[{integer, intent(out), optional}]{length,  }\item[{integer, optional}]{err,  }\item[{character(len=$\ast$), intent(in), optional}]{fmt,  }\item[{logical, intent(in), optional}]{trimz }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+value\+\_\+to\+\_\+string(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric string from a numeric value (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine value_to_string(value,chars[,ilen,ierr,fmt,trimz])
+
+ character(len=*) :: chars  ! minimum of 23 characters required
+ !--------
+ ! VALUE may be any <em>one</em> of the following types:
+ doubleprecision,intent(in)               :: value
+ real,intent(in)                          :: value
+ integer,intent(in)                       :: value
+ logical,intent(in)                       :: value
+ !--------
+ character(len=*),intent(out)             :: chars
+ integer,intent(out),optional             :: ilen
+ integer,optional                         :: ierr
+ character(len=*),intent(in),optional     :: fmt
+ logical,intent(in)                       :: trimz
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}value_to_string(3f) returns a numeric representation of a numeric
+value in a string given a numeric value of type REAL, DOUBLEPRECISION,
+INTEGER or LOGICAL. It creates the string using internal writes. It
+then removes trailing zeros from non-zero values, and left-justifies
+the string.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+V\+A\+L\+UE input value to be converted to a string F\+MT You may specify a specific format that produces a string up to the length of C\+H\+A\+RS; optional. T\+R\+I\+MZ If a format is supplied the default is not to try to trim trailing zeros. Set T\+R\+I\+MZ to .true. to trim zeros from a string assumed to represent a simple numeric value.
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+C\+H\+A\+RS returned string representing input value, must be at least 23 characters long; or what is required by optional F\+MT if longer. I\+L\+EN position of last non-\/blank character in returned string; optional. I\+E\+RR If not zero, error occurred; optional. \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}Sample program:
+
+  program demo_value_to_string
+  use M_strings, only: value_to_string
+  implicit none
+  character(len=80) :: string
+  integer           :: ilen
+     call value_to_string(3.0/4.0,string,ilen)
+     write(*,*) 'The value is [',string(:ilen),']'
+
+     call value_to_string(3.0/4.0,string,ilen,fmt='')
+     write(*,*) 'The value is [',string(:ilen),']'
+
+     call value_to_string(3.0/4.0,string,ilen,fmt='("THE VALUE IS ",g0)')
+     write(*,*) 'The value is [',string(:ilen),']'
+
+     call value_to_string(1234,string,ilen)
+     write(*,*) 'The value is [',string(:ilen),']'
+
+     call value_to_string(1.0d0/3.0d0,string,ilen)
+     write(*,*) 'The value is [',string(:ilen),']'
+
+  end program demo_value_to_string
+
+Expected output
+
+ The value is [0.75]
+ The value is [      0.7500000000]
+ The value is [THE VALUE IS .750000000]
+ The value is [1234]
+ The value is [0.33333333333333331]
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References journal(), and trimzeros\+\_\+().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a1bbcefd886dabb0286e2cb14ab54034f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{namespacem__cli2_a1bbcefd886dabb0286e2cb14ab54034f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ab1525b0419475486f520ef502daa5e94}\label{namespacem__cli2_ab1525b0419475486f520ef502daa5e94}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!wipe\+\_\+dictionary@{wipe\+\_\+dictionary}}
+\index{wipe\+\_\+dictionary@{wipe\+\_\+dictionary}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{wipe\+\_\+dictionary()}{wipe\_dictionary()}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::wipe\+\_\+dictionary (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+wipe\+\_\+dictionary(3fp) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} reset private M\+\_\+\+C\+L\+I2(3fm) dictionary to empty (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine \mbox{\hyperlink{namespacem__cli2_ab1525b0419475486f520ef502daa5e94}{wipe\+\_\+dictionary()}} \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+reset private M\+\_\+\+C\+L\+I2(3fm) dictionary to empty \subsubsection*{E\+X\+A\+M\+P\+LE}
+
+\begin{DoxyVerb}  program demo_wipe_dictionary
+  use M_CLI2, only : dictionary
+     call wipe_dictionary()
+  end program demo_wipe_dictionary
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+References counts, keywords, present\+\_\+in, and values.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_ab1525b0419475486f520ef502daa5e94_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__cli2_abf81746a55c2218c7f2de15602bc0be8}\label{namespacem__cli2_abf81746a55c2218c7f2de15602bc0be8}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!counts@{counts}}
+\index{counts@{counts}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{counts}{counts}}
+{\footnotesize\ttfamily integer, dimension(\+:), allocatable m\+\_\+cli2\+::counts\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}\label{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dp@{dp}}
+\index{dp@{dp}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dp}{dp}}
+{\footnotesize\ttfamily integer, parameter, private m\+\_\+cli2\+::dp =kind(0.\+0d0)\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}\label{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!keyword\+\_\+single@{keyword\+\_\+single}}
+\index{keyword\+\_\+single@{keyword\+\_\+single}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{keyword\+\_\+single}{keyword\_single}}
+{\footnotesize\ttfamily logical m\+\_\+cli2\+::keyword\+\_\+single =.true.\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}\label{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!keywords@{keywords}}
+\index{keywords@{keywords}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{keywords}{keywords}}
+{\footnotesize\ttfamily character(len=\+:), dimension(\+:), allocatable m\+\_\+cli2\+::keywords\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}\label{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!namelist\+\_\+name@{namelist\+\_\+name}}
+\index{namelist\+\_\+name@{namelist\+\_\+name}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{namelist\+\_\+name}{namelist\_name}}
+{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::namelist\+\_\+name\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a649439045139e5473091df65ecde6a4b}\label{namespacem__cli2_a649439045139e5473091df65ecde6a4b}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!passed\+\_\+in@{passed\+\_\+in}}
+\index{passed\+\_\+in@{passed\+\_\+in}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{passed\+\_\+in}{passed\_in}}
+{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::passed\+\_\+in\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}\label{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!present\+\_\+in@{present\+\_\+in}}
+\index{present\+\_\+in@{present\+\_\+in}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{present\+\_\+in}{present\_in}}
+{\footnotesize\ttfamily logical, dimension(\+:), allocatable m\+\_\+cli2\+::present\+\_\+in\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}\label{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!return\+\_\+all@{return\+\_\+all}}
+\index{return\+\_\+all@{return\+\_\+all}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{return\+\_\+all}{return\_all}}
+{\footnotesize\ttfamily logical m\+\_\+cli2\+::return\+\_\+all\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}\label{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!unnamed@{unnamed}}
+\index{unnamed@{unnamed}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{unnamed}{unnamed}}
+{\footnotesize\ttfamily character(len=\+:), dimension(\+:), allocatable, public m\+\_\+cli2\+::unnamed}
+
+\mbox{\Hypertarget{namespacem__cli2_af631ee3a1bca98e9fbf1f80646dae360}\label{namespacem__cli2_af631ee3a1bca98e9fbf1f80646dae360}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!values@{values}}
+\index{values@{values}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{values}{values}}
+{\footnotesize\ttfamily character(len=\+:), dimension(\+:), allocatable m\+\_\+cli2\+::values\hspace{0.3cm}{\ttfamily [private]}}
+

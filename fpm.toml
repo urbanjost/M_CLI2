@@ -15,11 +15,11 @@ source-dir="src"
 # demo programs
 
 [[executable]]   name="demo1"  source-dir="PROGRAMS/demo1"  main="demo1.f90"
-#[[executable]]   name="demo2"  source-dir="PROGRAMS/demo2"  main="demo2.f90"
-#[[executable]]   name="demo3"  source-dir="PROGRAMS/demo3"  main="demo3.f90"
+[[executable]]   name="demo2"  source-dir="PROGRAMS/demo2"  main="demo2.f90"
+[[executable]]   name="demo3"  source-dir="PROGRAMS/demo3"  main="demo3.f90"
 #[[executable]]   name="demo4"  source-dir="PROGRAMS/demo4"  main="demo4.f90"
 #[[executable]]   name="demo5"  source-dir="PROGRAMS/demo5"  main="demo5.f90"
-#[[executable]]   name="demo6"  source-dir="PROGRAMS/demo6"  main="demo6.f90"
+[[executable]]   name="demo6"  source-dir="PROGRAMS/demo6"  main="demo6.f90"
 #[[executable]]   name="demo7"  source-dir="PROGRAMS/demo7"  main="demo7.f90"
 
 # sample programs extracted from manpages:

@@ -3,90 +3,93 @@
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2] - command line argument parsing using a prototype command
-!     (LICENSE:PD)
-! SYNOPSIS
-! 
-!     use M_CLI2, only : set_args, get_args, unnamed ! argument type conversion
-! 
-! DESCRIPTION
-!     Allow for command line parsing much like standard Unix command line
-!     parsing using a simple prototype.
-! 
-!     In this method a call is made to obtain the value for each argument.
-! 
-! EXAMPLE
-! 
-!    Sample program using type conversion routines
-! 
-!     program demo_M_CLI2
-!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
-!     implicit none
-!     integer                      :: i
-!     integer,parameter            :: dp=kind(0.0d0)
-!     !
-!     ! DEFINE ARGS
-!     real                         :: x, y, z
-!     real                         :: p(3)
-!     real(kind=dp),allocatable    :: point(:)
-!     character(len=:),allocatable :: title
-!     character(len=40)            :: label
-!     logical                      :: l, lbig
-!     logical,allocatable          :: logicals(:)
-!     logical                      :: logi(3)
-!     !
-!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!     !   o only quote strings
-!     !   o set all logical values to F or T.
-!     call set_args('                         &
-!             & -x 1 -y 2 -z 3                &
-!             & -p -1 -2 -3                   &
-!             & --point 11.11, 22.22, 33.33e0 &
-!             & --title "my title" -l F -L F  &
-!             & --logicals  F F F F F         &
-!             & -logi F T F                   &
-!             ! note space between quotes is required
-!             & --label " " &
-!             & ')
-!     ! ASSIGN VALUES TO ELEMENTS
-!     call get_args('x',x)         ! SCALARS
-!     call get_args('y',y)
-!     call get_args('z',z)
-!     call get_args('l',l)
-!     call get_args('L',lbig)
-!     call get_args('title',title) ! ALLOCATABLE STRING
-!     call get_args('point',point) ! ALLOCATABLE ARRAYS
-!     call get_args('logicals',logicals)
-!     !
-!     ! for NON-ALLOCATABLE VARIABLES
-!     call get_args('label',label,len(label)) ! for non-allocatable string pass length
-!     call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
-!     call get_args('logi',logi,size(logi))
-!     !
-!     ! USE VALUES
-!     write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
-!     write(*,*)'p=',p
-!     write(*,*)'point=',point
-!     write(*,*)'title=',title
-!     write(*,*)'label=',label
-!     write(*,*)'l=',l
-!     write(*,*)'L=',lbig
-!     write(*,*)'logicals=',logicals
-!     write(*,*)'logi=',logi
-!     !
-!     ! unnamed strings
-!     !
-!     if(size(filenames).gt.0)then
-!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
-!     endif
-!     !
-!     end program demo_M_CLI2
-! 
-! AUTHOR
-!     John S. Urban, 2019
-! LICENSE
-!     Public Domain
+!>
+!!##NAME
+!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2] - command line argument parsing using a prototype command
+!!     (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!
+!!     use M_CLI2, only : set_args, get_args, unnamed ! argument type conversion
+!!
+!!##DESCRIPTION
+!!     Allow for command line parsing much like standard Unix command line
+!!     parsing using a simple prototype.
+!!
+!!     In this method a call is made to obtain the value for each argument.
+!!
+!!##EXAMPLE
+!!
+!!
+!!    Sample program using type conversion routines
+!!
+!!     program demo_M_CLI2
+!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+!!     implicit none
+!!     integer                      :: i
+!!     integer,parameter            :: dp=kind(0.0d0)
+!!     !
+!!     ! DEFINE ARGS
+!!     real                         :: x, y, z
+!!     real                         :: p(3)
+!!     real(kind=dp),allocatable    :: point(:)
+!!     character(len=:),allocatable :: title
+!!     character(len=40)            :: label
+!!     logical                      :: l, lbig
+!!     logical,allocatable          :: logicals(:)
+!!     logical                      :: logi(3)
+!!     !
+!!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!!     !   o only quote strings
+!!     !   o set all logical values to F or T.
+!!     call set_args('                         &
+!!             & -x 1 -y 2 -z 3                &
+!!             & -p -1 -2 -3                   &
+!!             & --point 11.11, 22.22, 33.33e0 &
+!!             & --title "my title" -l F -L F  &
+!!             & --logicals  F F F F F         &
+!!             & -logi F T F                   &
+!!             ! note space between quotes is required
+!!             & --label " " &
+!!             & ')
+!!     ! ASSIGN VALUES TO ELEMENTS
+!!     call get_args('x',x)         ! SCALARS
+!!     call get_args('y',y)
+!!     call get_args('z',z)
+!!     call get_args('l',l)
+!!     call get_args('L',lbig)
+!!     call get_args('title',title) ! ALLOCATABLE STRING
+!!     call get_args('point',point) ! ALLOCATABLE ARRAYS
+!!     call get_args('logicals',logicals)
+!!     !
+!!     ! for NON-ALLOCATABLE VARIABLES
+!!     call get_args('label',label,len(label)) ! for non-allocatable string pass length
+!!     call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
+!!     call get_args('logi',logi,size(logi))
+!!     !
+!!     ! USE VALUES
+!!     write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
+!!     write(*,*)'p=',p
+!!     write(*,*)'point=',point
+!!     write(*,*)'title=',title
+!!     write(*,*)'label=',label
+!!     write(*,*)'l=',l
+!!     write(*,*)'L=',lbig
+!!     write(*,*)'logicals=',logicals
+!!     write(*,*)'logi=',logi
+!!     !
+!!     ! unnamed strings
+!!     !
+!!     if(size(filenames).gt.0)then
+!!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+!!     endif
+!!     !
+!!     end program demo_M_CLI2
+!!
+!!##AUTHOR
+!!     John S. Urban, 2019
+!!##LICENSE
+!!     Public Domain
 !===================================================================================================================================
 module M_CLI2
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>INPUT_UNIT    ! access computing environment
@@ -103,7 +106,6 @@ private                             :: check_commandline
 character(len=:),allocatable,public :: unnamed(:)
 public                              :: set_args
 public                              :: get_args
-private                             :: std_args
 
 private :: wipe_dictionary
 private :: prototype_to_dictionary
@@ -235,87 +237,90 @@ contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!     check_commandline(3f) - [ARGUMENTS:M_CLI2]check status from READ of NAMELIST group and process pre-defined options
-! 
-! SYNOPSIS
-! 
-!      subroutine check_commandline(ios,message,help_text,version_text)
-! 
-!       integer,intent(in) :: ios
-!       character(len=*),intent(in) :: message
-!       character(len=:),allocatable,intent(in),allocatable,optional :: help_text(:)
-!       character(len=:),allocatable,intent(in),allocatable,optional :: version_text(:)
-! 
-! DESCRIPTION
-!     Checks the status of a READ(7f) of the NAMELIST after calling
-!     commandline(3f) and processes the implicit --help, --version,
-!     and --usage parameters.
-! 
-!     If the optional text values are supplied they will be displayed by
-!     --help and --version command-line options, respectively.
-! 
-! OPTIONS
-! 
-!     IOS           status from READ(7f) of NAMELIST after calling
-!                   commandline(3f)
-! 
-!     MESSAGE       message from READ(7f) of NAMELIST after calling
-!                   commandline(3f)
-! 
-!     HELP_TEXT     if present, will be displayed if program is called with
-!                   --help switch, and then the program will terminate. If
-!                   not supplied, the command line initialized string will be
-!                   shown when --help is used on the commandline.
-! 
-!     VERSION_TEXT  if present, will be displayed if program is called with
-!                   --version switch, and then the program will terminate.
-! 
-!        If the first four characters of each line are "@(#)" this prefix will
-!        not be displayed. This if for support of the SCCS what(1) command. If
-!        you do not have the what(1) command on GNU/Linux and Unix platforms
-!        you can probably see how it can be used to place metadata in a binary
-!        by entering:
-! 
-!            strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
-! 
-! EXAMPLE
-! 
-!    Typical usage:
-! 
-!      program demo_commandline
-!      use M_CLI2,  only : unnamed, commandline, check_commandline
-!      implicit none
-!      integer                      :: i
-!      character(len=255)           :: message ! use for I/O error messages
-!      character(len=:),allocatable :: readme  ! stores updated namelist
-!      character(len=:),allocatable :: version_text(:), help_text(:)
-!      integer                      :: ios
-! 
-!      real               :: x, y, z
-!      logical            :: help, h
-!      equivalence       (help,h)
-!      namelist /args/ x,y,z,help,h
-!      character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
-! 
-!      ! initialize namelist from string and then update from command line
-!      readme=commandline(cmd)
-!      write (*,*)'README=',readme
-!      read(readme,nml=args,iostat=ios,iomsg=message)
-!      version_text=[character(len=80) :: "version 1.0","author: me"]
-!      help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
-!      call check_commandline(ios,message,help_text,version_text)
-! 
-!      ! all done cracking the command line
-!      ! use the values in your program.
-!      write (*,nml=args)
-!      ! the optional unnamed values on the command line are
-!      ! accumulated in the character array "UNNAMED"
-!      if(size(unnamed).gt.0)then
-!         write (*,'(a)')'files:'
-!         write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
-!      endif
-!      end program demo_commandline
+!>
+!!##NAME
+!!     check_commandline(3f) - [ARGUMENTS:M_CLI2]check status from READ of NAMELIST group and process pre-defined options
+!!
+!!##SYNOPSIS
+!!
+!!
+!!      subroutine check_commandline(ios,message,help_text,version_text)
+!!
+!!       integer,intent(in) :: ios
+!!       character(len=*),intent(in) :: message
+!!       character(len=:),allocatable,intent(in),allocatable,optional :: help_text(:)
+!!       character(len=:),allocatable,intent(in),allocatable,optional :: version_text(:)
+!!
+!!##DESCRIPTION
+!!     Checks the status of a READ(7f) of the NAMELIST after calling
+!!     commandline(3f) and processes the implicit --help, --version,
+!!     and --usage parameters.
+!!
+!!     If the optional text values are supplied they will be displayed by
+!!     --help and --version command-line options, respectively.
+!!
+!!##OPTIONS
+!!
+!!     IOS           status from READ(7f) of NAMELIST after calling
+!!                   commandline(3f)
+!!
+!!     MESSAGE       message from READ(7f) of NAMELIST after calling
+!!                   commandline(3f)
+!!
+!!     HELP_TEXT     if present, will be displayed if program is called with
+!!                   --help switch, and then the program will terminate. If
+!!                   not supplied, the command line initialized string will be
+!!                   shown when --help is used on the commandline.
+!!
+!!     VERSION_TEXT  if present, will be displayed if program is called with
+!!                   --version switch, and then the program will terminate.
+!!
+!!        If the first four characters of each line are "@(#)" this prefix will
+!!        not be displayed. This if for support of the SCCS what(1) command. If
+!!        you do not have the what(1) command on GNU/Linux and Unix platforms
+!!        you can probably see how it can be used to place metadata in a binary
+!!        by entering:
+!!
+!!            strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
+!!
+!!##EXAMPLE
+!!
+!!
+!!    Typical usage:
+!!
+!!      program demo_commandline
+!!      use M_CLI2,  only : unnamed, commandline, check_commandline
+!!      implicit none
+!!      integer                      :: i
+!!      character(len=255)           :: message ! use for I/O error messages
+!!      character(len=:),allocatable :: readme  ! stores updated namelist
+!!      character(len=:),allocatable :: version_text(:), help_text(:)
+!!      integer                      :: ios
+!!
+!!      real               :: x, y, z
+!!      logical            :: help, h
+!!      equivalence       (help,h)
+!!      namelist /args/ x,y,z,help,h
+!!      character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
+!!
+!!      ! initialize namelist from string and then update from command line
+!!      readme=commandline(cmd)
+!!      write (*,*)'README=',readme
+!!      read(readme,nml=args,iostat=ios,iomsg=message)
+!!      version_text=[character(len=80) :: "version 1.0","author: me"]
+!!      help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
+!!      call check_commandline(ios,message,help_text,version_text)
+!!
+!!      ! all done cracking the command line
+!!      ! use the values in your program.
+!!      write (*,nml=args)
+!!      ! the optional unnamed values on the command line are
+!!      ! accumulated in the character array "UNNAMED"
+!!      if(size(unnamed).gt.0)then
+!!         write (*,'(a)')'files:'
+!!         write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+!!      endif
+!!      end program demo_commandline
 !===================================================================================================================================
 subroutine check_commandline(ios,message,help_text,version_text)
 integer                                          :: ios
@@ -376,160 +381,162 @@ end subroutine check_commandline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!     commandline(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
-!     (LICENSE:PD)
-! 
-! SYNOPSIS
-! 
-! 
-!     function commandline(definition) result(string)
-! 
-!      character(len=*),intent(in),optional  :: definition
-!      character(len=:),allocatable :: string
-! DESCRIPTION
-! 
-!     To use the routine first define a NAMELIST group called ARGS.
-! 
-!     This routine leverages NAMELIST groups to do the conversion from
-!     strings to numeric values required by other command line parsers.
-! 
-!     The example program shows how simple it is to use. Add a variable to
-!     the NAMELIST and the prototype and it automatically is available as
-!     a value in the program.
-! 
-!     There is no need to convert from strings to numeric values in the
-!     source code. Even arrays and user-defined types can be used, complex
-!     values can be input ... just define the variable in the prototype
-!     and add it to the NAMELIST definition.
-! 
-!     Note that since all the arguments are defined in a NAMELIST group that
-!     config files can easily be used for the same options. Just create
-!     a NAMELIST input file and read it.
-! 
-!     NAMELIST syntax can vary between different programming environments.
-!     Currently, this routine has only been tested using gfortran 7.0.4;
-!     and requires at least Fortran 2003.
-! 
-!     For example:
-! 
-!         program show_commandline_unix_prototype
-!            use M_CLI2,  only : unnamed, commandline, check_commandline
-!            implicit none
-!            integer                      :: i
-!            character(len=255)           :: message ! for I/O error messages
-!            character(len=:),allocatable :: readme  ! stores updated namelist
-!            integer                      :: ios
-! 
-!         ! declare a namelist
-!            real               :: x, y, z, point(3), p(3)
-!            character(len=80)  :: title
-!            logical            :: l, l_
-!            equivalence       (point,p)
-!            namelist /args/ x,y,z,point,p,title,l,l_
-! 
-!         ! Define the prototype
-!         !  o All parameters must be listed with a default value.
-!         !  o logicals should be specified with a value of F or T.
-!         !  o string values  must be double-quoted.
-!         !  o lists must be comma-delimited. No spaces are allowed in lists.
-!         !  o all long names must be lowercase. An uppercase short name
-!         !    -A maps to variable A_
-!         !  o if variables are equivalenced only one should be used on
-!         !    the command line
-!            character(len=*),parameter  :: cmd='&
-!            & -x 1 -y 2 -z 3     &
-!            & --point -1,-2,-3   &
-!            & --title "my title" &
-!            & -l F -L F'
-!            ! reading in a NAMELIST definition defining the entire NAMELIST
-!            ! now get the values from the command prototype and command line as NAMELIST input
-!            readme=commandline(cmd)
-!            read(readme,nml=args,iostat=ios,iomsg=message)
-!            call check_commandline(ios,message)
-!            ! all done cracking the command line
-! 
-!            ! use the values in your program.
-!            write (*,nml=args)
-!            ! the optional unnamed values on the command line are
-!            ! accumulated in the character array "UNNAMED"
-!            if(size(unnamed).gt.0)then
-!               write (*,'(a)')'files:'
-!               write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!            endif
-!         end program show_commandline_unix_prototype
-! 
-! OPTIONS
-! 
-!      DESCRIPTION   composed of all command arguments concatenated
-!                    into a Unix-like command prototype string.
-! 
-!                    o all keywords get a value.
-!                    o logicals must be set to F or T.
-!                    o strings MUST be delimited with double-quotes and
-!                      must be at least one space. Internal
-!                      double-quotes are represented with two double-quotes
-!                    o lists of values should be comma-delimited.
-!                    o long names (--keyword) should be all lowercase
-!                    o short names (-letter) that are uppercase map to a
-!                      NAMELIST variable called "letter_", but lowercase
-!                      short names map to NAMELIST name "letter".
-!                    o the values follow the rules for NAMELIST values, so
-!                      "-p 2*0" for example would define two values.
-! 
-!                    DESCRIPTION is pre-defined to act as if started with the reserved
-!                    options '--usage F --help F --version F'. The --usage
-!                    option is processed when the check_commandline(3f)
-!                    routine is called. The same is true for --help and --version
-!                    if the optional help_text and version_text options are
-!                    provided.
-! RETURNS
-! 
-!      STRING   The output is a NAMELIST string than can be read to update
-!               the NAMELIST "ARGS" with the keywords that were supplied on
-!               the command line.
-! 
-!      When using one of the Unix-like command line forms note that
-!      (subject to change) the following variations from other common
-!      command-line parsers:
-! 
-!         o long names do not take the --KEY=VALUE form, just
-!           --KEY VALUE; and long names should be all lowercase and
-!           always more than one character.
-! 
-!         o duplicate keyword values are appended together with a space
-!           separator.
-! 
-!         o numeric keywords are not allowed; but this allows
-!           negative numbers to be used as values.
-! 
-!         o mapping of short names to long names is via an EQUIVALENCE.
-!           specifying both names of an equivalenced keyword will have
-!           undefined results (currently, their alphabetical order
-!           will define what the Fortran variable values become).
-! 
-!         o short keywords cannot be combined. -a -b -c is required,
-!           not -abc even for Boolean keys.
-! 
-!         o shuffling is not supported. Values must follow their
-!           keywords.
-! 
-!         o if a parameter value of just "-" is supplied it is
-!           converted to the string "stdin".
-! 
-!         o if the keyword "--" is encountered the rest of the
-!           command arguments go into the character array "UNUSED".
-! 
-!         o values not matching a keyword go into the character
-!           array "UNUSED".
-! 
-!         o short-name parameters of the form -LETTER VALUE
-!           map to a NAMELIST name of LETTER_ if uppercase
-! 
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!     commandline(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
+!!     (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!
+!!
+!!     function commandline(definition) result(string)
+!!
+!!      character(len=*),intent(in),optional  :: definition
+!!      character(len=:),allocatable :: string
+!!##DESCRIPTION
+!!
+!!     To use the routine first define a NAMELIST group called ARGS.
+!!
+!!     This routine leverages NAMELIST groups to do the conversion from
+!!     strings to numeric values required by other command line parsers.
+!!
+!!     The example program shows how simple it is to use. Add a variable to
+!!     the NAMELIST and the prototype and it automatically is available as
+!!     a value in the program.
+!!
+!!     There is no need to convert from strings to numeric values in the
+!!     source code. Even arrays and user-defined types can be used, complex
+!!     values can be input ... just define the variable in the prototype
+!!     and add it to the NAMELIST definition.
+!!
+!!     Note that since all the arguments are defined in a NAMELIST group that
+!!     config files can easily be used for the same options. Just create
+!!     a NAMELIST input file and read it.
+!!
+!!     NAMELIST syntax can vary between different programming environments.
+!!     Currently, this routine has only been tested using gfortran 7.0.4;
+!!     and requires at least Fortran 2003.
+!!
+!!     For example:
+!!
+!!         program show_commandline_unix_prototype
+!!            use M_CLI2,  only : unnamed, commandline, check_commandline
+!!            implicit none
+!!            integer                      :: i
+!!            character(len=255)           :: message ! for I/O error messages
+!!            character(len=:),allocatable :: readme  ! stores updated namelist
+!!            integer                      :: ios
+!!
+!!         ! declare a namelist
+!!            real               :: x, y, z, point(3), p(3)
+!!            character(len=80)  :: title
+!!            logical            :: l, l_
+!!            equivalence       (point,p)
+!!            namelist /args/ x,y,z,point,p,title,l,l_
+!!
+!!         ! Define the prototype
+!!         !  o All parameters must be listed with a default value.
+!!         !  o logicals should be specified with a value of F or T.
+!!         !  o string values  must be double-quoted.
+!!         !  o lists must be comma-delimited. No spaces are allowed in lists.
+!!         !  o all long names must be lowercase. An uppercase short name
+!!         !    -A maps to variable A_
+!!         !  o if variables are equivalenced only one should be used on
+!!         !    the command line
+!!            character(len=*),parameter  :: cmd='&
+!!            & -x 1 -y 2 -z 3     &
+!!            & --point -1,-2,-3   &
+!!            & --title "my title" &
+!!            & -l F -L F'
+!!            ! reading in a NAMELIST definition defining the entire NAMELIST
+!!            ! now get the values from the command prototype and command line as NAMELIST input
+!!            readme=commandline(cmd)
+!!            read(readme,nml=args,iostat=ios,iomsg=message)
+!!            call check_commandline(ios,message)
+!!            ! all done cracking the command line
+!!
+!!            ! use the values in your program.
+!!            write (*,nml=args)
+!!            ! the optional unnamed values on the command line are
+!!            ! accumulated in the character array "UNNAMED"
+!!            if(size(unnamed).gt.0)then
+!!               write (*,'(a)')'files:'
+!!               write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+!!            endif
+!!         end program show_commandline_unix_prototype
+!!
+!!##OPTIONS
+!!
+!!      DESCRIPTION   composed of all command arguments concatenated
+!!                    into a Unix-like command prototype string.
+!!
+!!                    o all keywords get a value.
+!!                    o logicals must be set to F or T.
+!!                    o strings MUST be delimited with double-quotes and
+!!                      must be at least one space. Internal
+!!                      double-quotes are represented with two double-quotes
+!!                    o lists of values should be comma-delimited.
+!!                    o long names (--keyword) should be all lowercase
+!!                    o short names (-letter) that are uppercase map to a
+!!                      NAMELIST variable called "letter_", but lowercase
+!!                      short names map to NAMELIST name "letter".
+!!                    o the values follow the rules for NAMELIST values, so
+!!                      "-p 2*0" for example would define two values.
+!!
+!!                    DESCRIPTION is pre-defined to act as if started with the reserved
+!!                    options '--usage F --help F --version F'. The --usage
+!!                    option is processed when the check_commandline(3f)
+!!                    routine is called. The same is true for --help and --version
+!!                    if the optional help_text and version_text options are
+!!                    provided.
+!!##RETURNS
+!!
+!!      STRING   The output is a NAMELIST string than can be read to update
+!!               the NAMELIST "ARGS" with the keywords that were supplied on
+!!               the command line.
+!!
+!!      When using one of the Unix-like command line forms note that
+!!      (subject to change) the following variations from other common
+!!      command-line parsers:
+!!
+!!         o long names do not take the --KEY=VALUE form, just
+!!           --KEY VALUE; and long names should be all lowercase and
+!!           always more than one character.
+!!
+!!         o duplicate keyword values are appended together with a space
+!!           separator.
+!!
+!!         o numeric keywords are not allowed; but this allows
+!!           negative numbers to be used as values.
+!!
+!!         o mapping of short names to long names is via an EQUIVALENCE.
+!!           specifying both names of an equivalenced keyword will have
+!!           undefined results (currently, their alphabetical order
+!!           will define what the Fortran variable values become).
+!!
+!!         o short keywords cannot be combined. -a -b -c is required,
+!!           not -abc even for Boolean keys.
+!!
+!!         o shuffling is not supported. Values must follow their
+!!           keywords.
+!!
+!!         o if a parameter value of just "-" is supplied it is
+!!           converted to the string "stdin".
+!!
+!!         o if the keyword "--" is encountered the rest of the
+!!           command arguments go into the character array "UNUSED".
+!!
+!!         o values not matching a keyword go into the character
+!!           array "UNUSED".
+!!
+!!         o short-name parameters of the form -LETTER VALUE
+!!           map to a NAMELIST name of LETTER_ if uppercase
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 function commandline(definition) result (readme)
 
@@ -541,7 +548,6 @@ character(len=:),allocatable         :: readme             ! stores command line
 integer                              :: ibig
 
    passed_in=''
-
    if(allocated(unnamed))then
        deallocate(unnamed)
    endif
@@ -562,64 +568,68 @@ end function commandline
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine set_args(prototype,help_text,version_text)
-character(len=*),intent(in) :: prototype
+character(len=*),intent(in)                      :: prototype
 character(len=:),intent(in),allocatable,optional :: help_text(:)
 character(len=:),intent(in),allocatable,optional :: version_text(:)
-character(len=:),allocatable :: readme
+character(len=:),allocatable                     :: readme
+character(len=255)                               :: message
    readme=commandline(prototype)
-   call std_args() ! process --help, --version, --usage
+   call check_commandline(0,message,help_text,version_text) ! process --help, --version, --usage
 end subroutine set_args
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      prototype_to_dictionary(3f) - [ARGUMENTS:M_CLI2] parse user command and store tokens into dictionary
-!      (LICENSE:PD)
-! 
-! SYNOPSIS
-! 
-!     subroutine prototype_to_dictionary(string)
-! 
-!      character(len=*),intent(in)     ::  string
-! 
-! DESCRIPTION
-!      given a string of form
-! 
-!        -var value -var value
-! 
-!      define dictionary of form
-! 
-!        keyword(i), value(i)
-! 
-!      o  string values
-! 
-!          o must be delimited with double quotes.
-!          o adjacent double quotes put one double quote into value
-!          o must not be null. A blank is specified as " ", not "".
-! 
-!      o  logical values
-! 
-!          o logical values must not have a value
-! 
-!      o  leading and trailing blanks are removed from unquoted values
-! 
-! 
-! OPTIONS
-!      STRING   string is character input string to define command
-! 
-! RETURNS
-! 
-! EXAMPLE
-! 
-! 
-!     sample program:
-! 
-!     Results:
-! 
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!      prototype_to_dictionary(3f) - [ARGUMENTS:M_CLI2] parse user command and store tokens into dictionary
+!!      (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!
+!!     subroutine prototype_to_dictionary(string)
+!!
+!!      character(len=*),intent(in)     ::  string
+!!
+!!##DESCRIPTION
+!!      given a string of form
+!!
+!!        -var value -var value
+!!
+!!      define dictionary of form
+!!
+!!        keyword(i), value(i)
+!!
+!!      o  string values
+!!
+!!          o must be delimited with double quotes.
+!!          o adjacent double quotes put one double quote into value
+!!          o must not be null. A blank is specified as " ", not "".
+!!
+!!      o  logical values
+!!
+!!          o logical values must not have a value
+!!
+!!      o  leading and trailing blanks are removed from unquoted values
+!!
+!!
+!!##OPTIONS
+!!      STRING   string is character input string to define command
+!!
+!!##RETURNS
+!!
+!!##EXAMPLE
+!!
+!!
+!!
+!!     sample program:
+!!
+!!     Results:
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine prototype_to_dictionary(string)
 implicit none
@@ -756,31 +766,34 @@ end subroutine prototype_to_dictionary
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      update(3f) - [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value
-!      (LICENSE:PD)
-! SYNOPSIS
-! 
-! 
-!     subroutine update(key,val)
-! 
-!      character(len=*),intent(in)           :: key
-!      character(len=*),intent(in),optional  :: val
-! DESCRIPTION
-!      Update internal dictionary in M_CLI2(3fm) module.
-! OPTIONS
-!      key  name of keyword to add, replace, or delete from dictionary
-!      val  if present add or replace value associated with keyword. If not
-!           present remove keyword entry from dictionary.
-! 
-!           If "present" is true, a value will be appended
-! EXAMPLE
-! 
-! 
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!      update(3f) - [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value
+!!      (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!
+!!
+!!     subroutine update(key,val)
+!!
+!!      character(len=*),intent(in)           :: key
+!!      character(len=*),intent(in),optional  :: val
+!!##DESCRIPTION
+!!      Update internal dictionary in M_CLI2(3fm) module.
+!!##OPTIONS
+!!      key  name of keyword to add, replace, or delete from dictionary
+!!      val  if present add or replace value associated with keyword. If not
+!!           present remove keyword entry from dictionary.
+!!
+!!           If "present" is true, a value will be appended
+!!##EXAMPLE
+!!
+!!
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine update(key,val)
 character(len=*),intent(in)           :: key
@@ -824,25 +837,28 @@ end subroutine update
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      wipe_dictionary(3fp) - [ARGUMENTS:M_CLI2] reset private M_CLI2(3fm) dictionary to empty
-!      (LICENSE:PD)
-! SYNOPSIS
-! 
-!      subroutine wipe_dictionary()
-! DESCRIPTION
-!      reset private M_CLI2(3fm) dictionary to empty
-! EXAMPLE
-! 
-! 
-!      program demo_wipe_dictionary
-!      use M_CLI2, only : dictionary
-!         call wipe_dictionary()
-!      end program demo_wipe_dictionary
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!      wipe_dictionary(3fp) - [ARGUMENTS:M_CLI2] reset private M_CLI2(3fm) dictionary to empty
+!!      (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!
+!!      subroutine wipe_dictionary()
+!!##DESCRIPTION
+!!      reset private M_CLI2(3fm) dictionary to empty
+!!##EXAMPLE
+!!
+!!
+!!
+!!      program demo_wipe_dictionary
+!!      use M_CLI2, only : dictionary
+!!         call wipe_dictionary()
+!!      end program demo_wipe_dictionary
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine wipe_dictionary()
    if(allocated(keywords))deallocate(keywords)
@@ -857,16 +873,18 @@ end subroutine wipe_dictionary
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      get(3f) - [ARGUMENTS:M_CLI2] get dictionary value associated with key name in private M_CLI2(3fm) dictionary
-! SYNOPSIS
-! 
-! DESCRIPTION
-!      Get dictionary value associated with key name in private M_CLI2(3fm) dictionary.
-! OPTIONS
-! RETURNS
-! EXAMPLE
-!
+!>
+!!##NAME
+!!      get(3f) - [ARGUMENTS:M_CLI2] get dictionary value associated with key name in private M_CLI2(3fm) dictionary
+!!##SYNOPSIS
+!!
+!!
+!!##DESCRIPTION
+!!      Get dictionary value associated with key name in private M_CLI2(3fm) dictionary.
+!!##OPTIONS
+!!##RETURNS
+!!##EXAMPLE
+!!
 !===================================================================================================================================
 function get(key) result(valout)
 character(len=*),intent(in)   :: key
@@ -883,77 +901,80 @@ end function get
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_CLI2] convert Unix-like command arguments to namelist
-!      (LICENSE:PD)
-! SYNOPSIS
-! 
-! 
-!     subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
-! 
-!      character(len=*)             :: prototype
-!      character(len=:),allocatable :: nml
-! DESCRIPTION
-!      create dictionary with character keywords, values, and value lengths using the routines for maintaining a list from
-!      command line arguments.
-! OPTIONS
-!      prototype
-! RETURNS
-!      nml
-! EXAMPLE
-! 
-! 
-!     Sample program
-!      program demo_prototype_and_cmd_args_to_nlist
-!      use M_CLI2,  only : prototype_and_cmd_args_to_nlist, unnamed
-!      implicit none
-!      character(len=:),allocatable :: readme
-!      character(len=256)           :: message
-!      integer                      :: ios
-!      integer                      :: i
-!      doubleprecision              :: something
-! 
-!      ! define namelist
-!      ! lowercase keywords
-!      logical            :: l,h,v
-!      real               :: p(2)
-!      complex            :: c
-!      doubleprecision    :: x,y,z
-! 
-!      ! uppercase keywords get an underscore
-!      logical            :: l_,h_,v_
-!      character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
-!      integer            :: c_(3)
-!      namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
-! 
-!         ! give command template with default values
-!         ! all values except logicals get a value.
-!         ! strings must be delimited with double quotes
-!         ! A string has to have at least one character as for -A
-!         ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
-!         ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
-!         call prototype_and_cmd_args_to_nlist('&
-!         & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
-!         & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
-!         read(readme,nml=args,iostat=ios,iomsg=message)
-!         if(ios.ne.0)then
-!            write (*,*)'ERROR:',trim(message)
-!            write (*,'("INPUT WAS ",a)')readme
-!            write (*,args)
-!            stop 3
-!         else
-!            something=sqrt(x**2+y**2+z**2)
-!            write (*,*)something,x,y,z
-!            if(size(unnamed).gt.0)then
-!               write (*,'(a)')'files:'
-!               write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!            endif
-!         endif
-!      end program demo_prototype_and_cmd_args_to_nlist
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!      prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_CLI2] convert Unix-like command arguments to namelist
+!!      (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!
+!!
+!!     subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
+!!
+!!      character(len=*)             :: prototype
+!!      character(len=:),allocatable :: nml
+!!##DESCRIPTION
+!!      create dictionary with character keywords, values, and value lengths using the routines for maintaining a list from
+!!      command line arguments.
+!!##OPTIONS
+!!      prototype
+!!##RETURNS
+!!      nml
+!!##EXAMPLE
+!!
+!!
+!!     Sample program
+!!
+!!      program demo_prototype_and_cmd_args_to_nlist
+!!      use M_CLI2,  only : prototype_and_cmd_args_to_nlist, unnamed
+!!      implicit none
+!!      character(len=:),allocatable :: readme
+!!      character(len=256)           :: message
+!!      integer                      :: ios
+!!      integer                      :: i
+!!      doubleprecision              :: something
+!!
+!!      ! define namelist
+!!      ! lowercase keywords
+!!      logical            :: l,h,v
+!!      real               :: p(2)
+!!      complex            :: c
+!!      doubleprecision    :: x,y,z
+!!
+!!      ! uppercase keywords get an underscore
+!!      logical            :: l_,h_,v_
+!!      character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
+!!      integer            :: c_(3)
+!!      namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
+!!
+!!         ! give command template with default values
+!!         ! all values except logicals get a value.
+!!         ! strings must be delimited with double quotes
+!!         ! A string has to have at least one character as for -A
+!!         ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
+!!         ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
+!!         call prototype_and_cmd_args_to_nlist('&
+!!         & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
+!!         & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
+!!         read(readme,nml=args,iostat=ios,iomsg=message)
+!!         if(ios.ne.0)then
+!!            write (*,*)'ERROR:',trim(message)
+!!            write (*,'("INPUT WAS ",a)')readme
+!!            write (*,args)
+!!            stop 3
+!!         else
+!!            something=sqrt(x**2+y**2+z**2)
+!!            write (*,*)something,x,y,z
+!!            if(size(unnamed).gt.0)then
+!!               write (*,'(a)')'files:'
+!!               write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+!!            endif
+!!         endif
+!!      end program demo_prototype_and_cmd_args_to_nlist
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
 implicit none
@@ -1154,86 +1175,89 @@ end subroutine dictionary_to_namelist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!     print_dictionary(3f) - [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandline(3f)
-!     (LICENSE:PD)
-! SYNOPSIS
-! 
-! 
-!     subroutine print_dictionary(header)
-! 
-!      character(len=*),intent(in),optional :: header
-!      logical,intent(in),optional          :: stop
-! DESCRIPTION
-!     Print the internal dictionary created by calls to commandline(3f).
-!     This routine is intended to print the state of the argument list
-!     if an error occurs in using the commandline(3f) procedure..
-! OPTIONS
-!     HEADER  label to print before printing the state of the command
-!             argument list.
-!     STOP    logical value that if true stops the program after displaying
-!             the dictionary.
-! EXAMPLE
-! 
-! 
-!      Typical usage:
-! 
-!       program demo_commandline
-!       use M_CLI2,  only : unnamed, commandline, print_dictionary
-!       implicit none
-!       integer                      :: i
-!       character(len=255)           :: message ! use for I/O error messages
-!       character(len=:),allocatable :: readme  ! stores updated namelist
-!       integer                      :: ios
-!       real               :: x, y, z
-!       logical            :: help, h
-!       equivalence       (help,h)
-!       namelist /args/ x,y,z,help,h
-!       character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
-!       ! initialize namelist from string and then update from command line
-!       readme=cmd
-!       read(readme,nml=args,iostat=ios,iomsg=message)
-!       if(ios.eq.0)then
-!          ! update cmd with options from command line
-!          readme=commandline(cmd)
-!          read(readme,nml=args,iostat=ios,iomsg=message)
-!       endif
-!       if(ios.ne.0)then
-!          write (*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!          call print_dictionary('OPTIONS:')
-!          stop 1
-!       endif
-!       ! all done cracking the command line
-!       ! use the values in your program.
-!       write (*,nml=args)
-!       ! the optional unnamed values on the command line are
-!       ! accumulated in the character array "UNNAMED"
-!       if(size(unnamed).gt.0)then
-!          write (*,'(a)')'files:'
-!          write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!       endif
-!       end program demo_commandline
-! 
-!      Sample output
-! 
-!      Calling the sample program with an unknown
-!      parameter produces the following:
-! 
-!         $ ./print_dictionary -A
-!         UNKNOWN SHORT KEYWORD: -A
-!         KEYWORD             PRESENT  VALUE
-!         z                   F        [3]
-!         y                   F        [2]
-!         x                   F        [1]
-!         help                F        [F]
-!         h                   F        [F]
-! 
-!         STOP 2
-! 
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!     print_dictionary(3f) - [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandline(3f)
+!!     (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!
+!!
+!!     subroutine print_dictionary(header)
+!!
+!!      character(len=*),intent(in),optional :: header
+!!      logical,intent(in),optional          :: stop
+!!##DESCRIPTION
+!!     Print the internal dictionary created by calls to commandline(3f).
+!!     This routine is intended to print the state of the argument list
+!!     if an error occurs in using the commandline(3f) procedure..
+!!##OPTIONS
+!!     HEADER  label to print before printing the state of the command
+!!             argument list.
+!!     STOP    logical value that if true stops the program after displaying
+!!             the dictionary.
+!!##EXAMPLE
+!!
+!!
+!!
+!!      Typical usage:
+!!
+!!       program demo_commandline
+!!       use M_CLI2,  only : unnamed, commandline, print_dictionary
+!!       implicit none
+!!       integer                      :: i
+!!       character(len=255)           :: message ! use for I/O error messages
+!!       character(len=:),allocatable :: readme  ! stores updated namelist
+!!       integer                      :: ios
+!!       real               :: x, y, z
+!!       logical            :: help, h
+!!       equivalence       (help,h)
+!!       namelist /args/ x,y,z,help,h
+!!       character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
+!!       ! initialize namelist from string and then update from command line
+!!       readme=cmd
+!!       read(readme,nml=args,iostat=ios,iomsg=message)
+!!       if(ios.eq.0)then
+!!          ! update cmd with options from command line
+!!          readme=commandline(cmd)
+!!          read(readme,nml=args,iostat=ios,iomsg=message)
+!!       endif
+!!       if(ios.ne.0)then
+!!          write (*,'("ERROR:",i0,1x,a)')ios, trim(message)
+!!          call print_dictionary('OPTIONS:')
+!!          stop 1
+!!       endif
+!!       ! all done cracking the command line
+!!       ! use the values in your program.
+!!       write (*,nml=args)
+!!       ! the optional unnamed values on the command line are
+!!       ! accumulated in the character array "UNNAMED"
+!!       if(size(unnamed).gt.0)then
+!!          write (*,'(a)')'files:'
+!!          write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+!!       endif
+!!       end program demo_commandline
+!!
+!!      Sample output
+!!
+!!      Calling the sample program with an unknown
+!!      parameter produces the following:
+!!
+!!         $ ./print_dictionary -A
+!!         UNKNOWN SHORT KEYWORD: -A
+!!         KEYWORD             PRESENT  VALUE
+!!         z                   F        [3]
+!!         y                   F        [2]
+!!         x                   F        [1]
+!!         help                F        [F]
+!!         h                   F        [F]
+!!
+!!         STOP 2
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine print_dictionary(header,stop)
 character(len=*),intent(in),optional :: header
@@ -1319,230 +1343,225 @@ end function strtok
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine std_args(help_text,version_text)
-     character(len=:),intent(in),allocatable,optional :: help_text(:)
-     character(len=:),intent(in),allocatable,optional :: version_text(:)
-     character(len=255)                               :: message
-     call check_commandline(0,message,help_text,version_text) ! process --help, --version, --usage
-end subroutine std_args
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-! NAME
-!     set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
-!     (LICENSE:PD)
-! 
-! SYNOPSIS
-! 
-! 
-!     subroutine set_args(definition,help_text,version_text)
-! 
-!      character(len=*),intent(in),optional  :: definition
-!      character(len=:),intent(in),allocatable,intent(in) :: help_text
-!      character(len=:),intent(in),allocatable,intent(in) :: version_text
-! DESCRIPTION
-! 
-!     SET_ARGS(3f) requires a unix-like command prototype for defining
-!     arguments and default command-line options. Argument values are then
-!     read using GET_ARGS(3f).
-! 
-! OPTIONS
-! 
-!      DESCRIPTION   composed of all command arguments concatenated
-!                    into a Unix-like command prototype string.
-! 
-!                    o all keywords get a value.
-!                    o logicals must be set to F or T.
-!                    o strings MUST be delimited with double-quotes and
-!                      must be at least one space. Internal
-!                      double-quotes are represented with two double-quotes
-!                    o lists of values should be comma-delimited.
-!                    o long names (--keyword) should be all lowercase
-! 
-!                    DESCRIPTION is pre-defined to act as if started with the
-!                    reserved options '--usage F --help F --version F'.
-! 
-!                    The --help and --version options require the optional
-!                    help_text and version_text values to be provided.
-! 
-!      HELP_TEXT     if present, will be displayed if program is called with
-!                    --help switch, and then the program will terminate. If
-!                    not supplied, the command line initialized string will be
-!                    shown when --help is used on the commandline.
-! 
-!      VERSION_TEXT  if present, will be displayed if program is called with
-!                    --version switch, and then the program will terminate.
-! 
-! USAGE
-!      When using one of the Unix-like command line forms note that
-!      (subject to change) the following variations from other common
-!      command-line parsers:
-! 
-!         o long names do not take the --KEY=VALUE form, just
-!           --KEY VALUE; and long names should be all lowercase and
-!           always more than one character.
-! 
-!         o duplicate keywords are appended together with a space
-!           separator when a command line is executed.
-! 
-!         o numeric keywords are not allowed; but this allows
-!           negative numbers to be used as values.
-! 
-!         o mapping of short names to long names is via an EQUIVALENCE.
-!           Note that allocatable arrays cannot be EQUIVANENCEd.
-! 
-!           Specifying both names of an equivalenced keyword on a command
-!           line will have undefined results (currently, their alphabetical
-!           order will define what the Fortran variable values become).
-! 
-!         o short keywords cannot be combined. -a -b -c is required,
-!           not -abc even for Boolean keys.
-! 
-!         o shuffling is not supported. Values should follow their
-!           keywords.
-! 
-!         o if a parameter value of just "-" is supplied it is
-!           converted to the string "stdin".
-! 
-!         o if the keyword "--" is encountered the rest of the
-!           command arguments go into the character array "UNUSED".
-! 
-!         o values not matching a keyword go into the character
-!           array "UNUSED".
-! 
-! EXAMPLE
-! 
-!   Sample program:
-! 
-!     program demo_set_args
-!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
-!     implicit none
-!     integer                      :: i
-!     integer,parameter            :: dp=kind(0.0d0)
-!     ! DEFINE ARGS
-!     real                         :: x, y, z
-!     real                         :: p(3)
-!     character(len=:),allocatable :: title
-!     logical                      :: l, lbig
-!     !  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!     !   o only quote strings
-!     !   o set all logical values to F or T.
-!     call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-!             & -l F -L F &
-!             & --label " " &
-!             & ')
-!     ! ASSIGN VALUES TO ELEMENTS
-!     ! SCALARS
-!     call get_args('x',x)
-!     call get_args('y',y)
-!     call get_args('z',z)
-!     call get_args('l',l)
-!     call get_args('L',lbig)
-!     ! ALLOCATABLE STRING
-!     call get_args('title',title)
-!     ! NON-ALLOCATABLE ARRAYS
-!     ! for non-allocatable arrays pass size
-!     call get_args('p',p,size(p))
-!     ! USE VALUES
-!     write(*,*)'x=',x
-!     write(*,*)'y=',y
-!     write(*,*)'z=',z
-!     write(*,*)'p=',p
-!     write(*,*)'title=',title
-!     write(*,*)'l=',l
-!     write(*,*)'L=',lbig
-!     if(size(filenames).gt.0)then
-!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
-!     endif
-!     end program demo_set_args
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!     set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
+!!     (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!
+!!
+!!     subroutine set_args(definition,help_text,version_text)
+!!
+!!      character(len=*),intent(in),optional  :: definition
+!!      character(len=:),intent(in),allocatable,intent(in) :: help_text
+!!      character(len=:),intent(in),allocatable,intent(in) :: version_text
+!!##DESCRIPTION
+!!
+!!     SET_ARGS(3f) requires a unix-like command prototype for defining
+!!     arguments and default command-line options. Argument values are then
+!!     read using GET_ARGS(3f).
+!!
+!!##OPTIONS
+!!
+!!      DESCRIPTION   composed of all command arguments concatenated
+!!                    into a Unix-like command prototype string.
+!!
+!!                    o all keywords get a value.
+!!                    o logicals must be set to F or T.
+!!                    o strings MUST be delimited with double-quotes and
+!!                      must be at least one space. Internal
+!!                      double-quotes are represented with two double-quotes
+!!                    o lists of values should be comma-delimited.
+!!                    o long names (--keyword) should be all lowercase
+!!
+!!                    DESCRIPTION is pre-defined to act as if started with the
+!!                    reserved options '--usage F --help F --version F'.
+!!
+!!                    The --help and --version options require the optional
+!!                    help_text and version_text values to be provided.
+!!
+!!      HELP_TEXT     if present, will be displayed if program is called with
+!!                    --help switch, and then the program will terminate. If
+!!                    not supplied, the command line initialized string will be
+!!                    shown when --help is used on the commandline.
+!!
+!!      VERSION_TEXT  if present, will be displayed if program is called with
+!!                    --version switch, and then the program will terminate.
+!!
+!!##USAGE
+!!      When using one of the Unix-like command line forms note that
+!!      (subject to change) the following variations from other common
+!!      command-line parsers:
+!!
+!!         o long names do not take the --KEY=VALUE form, just
+!!           --KEY VALUE; and long names should be all lowercase and
+!!           always more than one character.
+!!
+!!         o duplicate keywords are appended together with a space
+!!           separator when a command line is executed.
+!!
+!!         o numeric keywords are not allowed; but this allows
+!!           negative numbers to be used as values.
+!!
+!!         o mapping of short names to long names is via an EQUIVALENCE.
+!!           Note that allocatable arrays cannot be EQUIVANENCEd.
+!!
+!!           Specifying both names of an equivalenced keyword on a command
+!!           line will have undefined results (currently, their alphabetical
+!!           order will define what the Fortran variable values become).
+!!
+!!         o short keywords cannot be combined. -a -b -c is required,
+!!           not -abc even for Boolean keys.
+!!
+!!         o shuffling is not supported. Values should follow their
+!!           keywords.
+!!
+!!         o if a parameter value of just "-" is supplied it is
+!!           converted to the string "stdin".
+!!
+!!         o if the keyword "--" is encountered the rest of the
+!!           command arguments go into the character array "UNUSED".
+!!
+!!         o values not matching a keyword go into the character
+!!           array "UNUSED".
+!!
+!!##EXAMPLE
+!!
+!!
+!!   Sample program:
+!!
+!!     program demo_set_args
+!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+!!     implicit none
+!!     integer                      :: i
+!!     integer,parameter            :: dp=kind(0.0d0)
+!!     ! DEFINE ARGS
+!!     real                         :: x, y, z
+!!     real                         :: p(3)
+!!     character(len=:),allocatable :: title
+!!     logical                      :: l, lbig
+!!     !  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!!     !   o only quote strings
+!!     !   o set all logical values to F or T.
+!!     call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+!!             & -l F -L F &
+!!             & --label " " &
+!!             & ')
+!!     ! ASSIGN VALUES TO ELEMENTS
+!!     ! SCALARS
+!!     call get_args('x',x)
+!!     call get_args('y',y)
+!!     call get_args('z',z)
+!!     call get_args('l',l)
+!!     call get_args('L',lbig)
+!!     ! ALLOCATABLE STRING
+!!     call get_args('title',title)
+!!     ! NON-ALLOCATABLE ARRAYS
+!!     ! for non-allocatable arrays pass size
+!!     call get_args('p',p,size(p))
+!!     ! USE VALUES
+!!     write(*,*)'x=',x
+!!     write(*,*)'y=',y
+!!     write(*,*)'z=',z
+!!     write(*,*)'p=',p
+!!     write(*,*)'title=',title
+!!     write(*,*)'l=',l
+!!     write(*,*)'L=',lbig
+!!     if(size(filenames).gt.0)then
+!!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+!!     endif
+!!     end program demo_set_args
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
-! NAME
-!     get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments
-!     (LICENSE:PD)
-! 
-! SYNOPSIS
-! 
-! 
-!     subroutine get_args(name,value,magnitude)
-! 
-!      character(len=*),intent(in),optional  :: name
-!      real|integer|logical|character(len=*) :: value
-!      integer,intent(in) :: magnitude
-! 
-! DESCRIPTION
-! 
-!     GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f) has
-!     been called.
-! 
-! OPTIONS
-! 
-!      NAME       name of commandline argument to obtain the value of
-!      VALUE      variable to hold returned value. The kind of the value
-!                 is used to determine the type of returned value
-!      MAGNITUDE  for non-allocatable arrays the size of the array. For
-!                 non-allocatable character variables the length of the
-!                 variable.
-! 
-! 
-! EXAMPLE
-! 
-!   Sample program:
-! 
-!     program demo_get_args
-!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
-!     implicit none
-!     integer                      :: i
-!     integer,parameter            :: dp=kind(0.0d0)
-!     ! DEFINE ARGS
-!     real                         :: x, y, z
-!     real                         :: p(3)
-!     character(len=:),allocatable :: title
-!     logical                      :: l, lbig
-!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!     !   o only quote strings
-!     !   o set all logical values to F or T.
-!     call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-!             & -l F -L F  &
-!             & --label " " &
-!             & ')
-!     ! ASSIGN VALUES TO ELEMENTS
-!     ! SCALARS
-!     call get_args('x',x)
-!     call get_args('y',y)
-!     call get_args('z',z)
-!     call get_args('l',l)
-!     call get_args('L',lbig)
-!     ! ALLOCATABLE STRING
-!     call get_args('title',title)
-!     ! NON-ALLOCATABLE ARRAYS
-!     ! for non-allocatable arrays pass size
-!     call get_args('p',p,size(p))
-!     ! USE VALUES
-!     write(*,*)'x=',x
-!     write(*,*)'y=',y
-!     write(*,*)'z=',z
-!     write(*,*)'p=',p
-!     write(*,*)'title=',title
-!     write(*,*)'l=',l
-!     write(*,*)'L=',lbig
-!     if(size(filenames).gt.0)then
-!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
-!     endif
-!     if(size(unnamed).gt.0)then
-!        write (*,'(a)')'files:'
-!        write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
-!     endif
-!     end program demo_get_args
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
+!>
+!!##NAME
+!!     get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments
+!!     (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!
+!!
+!!     subroutine get_args(name,value,magnitude)
+!!
+!!      character(len=*),intent(in),optional  :: name
+!!      real|integer|logical|character(len=*) :: value
+!!      integer,intent(in) :: magnitude
+!!
+!!##DESCRIPTION
+!!
+!!     GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f) has
+!!     been called.
+!!
+!!##OPTIONS
+!!
+!!      NAME       name of commandline argument to obtain the value of
+!!      VALUE      variable to hold returned value. The kind of the value
+!!                 is used to determine the type of returned value
+!!      MAGNITUDE  for non-allocatable arrays the size of the array. For
+!!                 non-allocatable character variables the length of the
+!!                 variable.
+!!##EXAMPLE
+!!
+!!
+!!   Sample program:
+!!
+!!     program demo_get_args
+!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+!!     implicit none
+!!     integer                      :: i
+!!     integer,parameter            :: dp=kind(0.0d0)
+!!     ! DEFINE ARGS
+!!     real                         :: x, y, z
+!!     real                         :: p(3)
+!!     character(len=:),allocatable :: title
+!!     logical                      :: l, lbig
+!!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!!     !   o only quote strings
+!!     !   o set all logical values to F or T.
+!!     call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+!!             & -l F -L F  &
+!!             & --label " " &
+!!             & ')
+!!     ! ASSIGN VALUES TO ELEMENTS
+!!     ! SCALARS
+!!     call get_args('x',x)
+!!     call get_args('y',y)
+!!     call get_args('z',z)
+!!     call get_args('l',l)
+!!     call get_args('L',lbig)
+!!     ! ALLOCATABLE STRING
+!!     call get_args('title',title)
+!!     ! NON-ALLOCATABLE ARRAYS
+!!     ! for non-allocatable arrays pass size
+!!     call get_args('p',p,size(p))
+!!     ! USE VALUES
+!!     write(*,*)'x=',x
+!!     write(*,*)'y=',y
+!!     write(*,*)'z=',z
+!!     write(*,*)'p=',p
+!!     write(*,*)'title=',title
+!!     write(*,*)'l=',l
+!!     write(*,*)'L=',lbig
+!!     if(size(filenames).gt.0)then
+!!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+!!     endif
+!!     if(size(unnamed).gt.0)then
+!!        write (*,'(a)')'files:'
+!!        write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+!!     endif
+!!     end program demo_get_args
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine get_args_class(keyword,generic,bounds)
 character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
@@ -1851,29 +1870,32 @@ end subroutine get_arg_l
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest argument on command line
-!    (LICENSE:PD)
-! SYNOPSIS
-!    function longest_command_argument() result(ilongest)
-! 
-!     integer :: ilongest
-! 
-! DESCRIPTION
-!    length of longest argument on command line. Useful when allocating storage for holding arguments.
-! RESULT
-!    longest_command_argument  length of longest command argument
-! EXAMPLE
-!   Sample program
-! 
-!    program demo_longest_command_argument
-!    use M_args, only : longest_command_argument
-!       write(*,*)'longest argument is ',longest_command_argument()
-!    end program demo_longest_command_argument
-! AUTHOR
-!    John S. Urban, 2019
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest argument on command line
+!!    (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!    function longest_command_argument() result(ilongest)
+!!
+!!     integer :: ilongest
+!!
+!!##DESCRIPTION
+!!    length of longest argument on command line. Useful when allocating storage for holding arguments.
+!!##RESULT
+!!    longest_command_argument  length of longest command argument
+!!##EXAMPLE
+!!
+!!   Sample program
+!!
+!!      program demo_longest_command_argument
+!!      use M_args, only : longest_command_argument
+!!         write(*,*)'longest argument is ',longest_command_argument()
+!!      end program demo_longest_command_argument
+!!##AUTHOR
+!!    John S. Urban, 2019
+!!##LICENSE
+!!    Public Domain
 function longest_command_argument() result(ilongest)
 integer :: i
 integer :: ilength
@@ -1908,76 +1930,79 @@ end subroutine journal
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    str(3f) - [M_msg] converts any standard scalar type to a string
-!    (LICENSE:PD)
-! SYNOPSIS
-!    function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,nospace)
-! 
-!     class(*),intent(in),optional  :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9
-!     class(*),intent(in),optional  :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj
-!     logical,intent(in),optional   :: nospace
-!     character,len=(:),allocatable :: str
-! 
-! DESCRIPTION
-!    str(3f) builds a space-separated string from up to twenty scalar values.
-! 
-! OPTIONS
-!    g[0-9a-j]   optional value to print the value of after the message. May
-!                be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION,
-!                COMPLEX, or CHARACTER.
-! 
-!                Optionally, all the generic values can be
-!                single-dimensioned arrays. Currently, mixing scalar
-!                arguments and array arguments is not supported.
-! 
-!    nospace     if nospace=.true., then no spaces are added between values
-! RETURNS
-!    str     description to print
-! EXAMPLES
-!   Sample program:
-! 
-!    program demo_msg
-!    use M_msg, only : str
-!    implicit none
-!    character(len=:),allocatable :: pr
-!    character(len=:),allocatable :: frmt
-!    integer                      :: biggest
-! 
-!    pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
-!    write(*,'(a)')pr
-!    pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
-!    write(*,'(a)')pr
-!    pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
-!    write(*,'(a)')pr
-!    pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
-!    write(*,'(a)')pr
-! 
-!    ! create a format on the fly
-!    biggest=huge(0)
-!    frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
-!    write(*,*)'format=',frmt
-! 
-!    ! although it will often work, using str(3f) in an I/O statement is not recommended
-!    ! because if an error occurs str(3f) will try to write while part of an I/O statement
-!    ! which not all compilers can handle and is currently non-standard
-!    write(*,*)str('program will now stop')
-! 
-!    end program demo_msg
-! 
-!  Output
-! 
-!    HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308
-!    real            : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38
-!    doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308
-!    complex         : (3.40282347E+38,1.17549435E-38)
-!     format=(*(i9:,1x))
-!     program will now stop
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    str(3f) - [M_msg] converts any standard scalar type to a string
+!!    (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!    function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,nospace)
+!!
+!!     class(*),intent(in),optional  :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9
+!!     class(*),intent(in),optional  :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj
+!!     logical,intent(in),optional   :: nospace
+!!     character,len=(:),allocatable :: str
+!!
+!!##DESCRIPTION
+!!    str(3f) builds a space-separated string from up to twenty scalar values.
+!!
+!!##OPTIONS
+!!    g[0-9a-j]   optional value to print the value of after the message. May
+!!                be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION,
+!!                COMPLEX, or CHARACTER.
+!!
+!!                Optionally, all the generic values can be
+!!                single-dimensioned arrays. Currently, mixing scalar
+!!                arguments and array arguments is not supported.
+!!
+!!    nospace     if nospace=.true., then no spaces are added between values
+!!##RETURNS
+!!    str     description to print
+!!##EXAMPLES
+!!
+!!   Sample program:
+!!
+!!       program demo_msg
+!!       use M_msg, only : str
+!!       implicit none
+!!       character(len=:),allocatable :: pr
+!!       character(len=:),allocatable :: frmt
+!!       integer                      :: biggest
+!!
+!!       pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
+!!       write(*,'(a)')pr
+!!       pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
+!!       write(*,'(a)')pr
+!!       pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+!!       write(*,'(a)')pr
+!!       pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
+!!       write(*,'(a)')pr
+!!
+!!       ! create a format on the fly
+!!       biggest=huge(0)
+!!       frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+!!       write(*,*)'format=',frmt
+!!
+!!       ! although it will often work, using str(3f) in an I/O statement is not recommended
+!!       ! because if an error occurs str(3f) will try to write while part of an I/O statement
+!!       ! which not all compilers can handle and is currently non-standard
+!!       write(*,*)str('program will now stop')
+!!
+!!       end program demo_msg
+!!
+!!  Output
+!!
+!!     HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308
+!!     real            : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38
+!!     doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308
+!!     complex         : (3.40282347E+38,1.17549435E-38)
+!!      format=(*(i9:,1x))
+!!      program will now stop
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, &
                   & generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, &
                   & nospace)
@@ -2119,65 +2144,68 @@ end function msg_one
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-! upper(3f) - [M_strings:CASE] changes a string to uppercase
-! (LICENSE:PD)
-! 
-! SYNOPSIS
-!    elemental pure function upper(str,begin,end) result (string)
-! 
-!     character(*), intent(in)    :: str
-!     integer,optional,intent(in) :: begin,end
-!     character(len(str))         :: string  ! output string
-! DESCRIPTION
-!      upper(string) returns a copy of the input string with all characters
-!      converted in the optionally specified range to uppercase, assuming
-!      ASCII character sets are being used. If no range is specified the
-!      entire string is converted to uppercase.
-! 
-! OPTIONS
-!    str    string to convert to uppercase
-!    begin  optional starting position in "str" to begin converting to uppercase
-!    end    optional ending position in "str" to stop converting to uppercase
-! 
-! RESULTS
-!    upper  copy of the input string with all characters converted to uppercase
-!           over optionally specified range.
-! 
-! TRIVIA
-!    The terms "uppercase" and "lowercase" date back to the early days of
-!    the mechanical printing press. Individual metal alloy casts of each
-!    needed letter, or punctuation symbol, were meticulously added to a
-!    press block, by hand, before rolling out copies of a page. These
-!    metal casts were stored and organized in wooden cases. The more
-!    often needed miniscule letters were placed closer to hand, in the
-!    lower cases of the work bench. The less often needed, capitalized,
-!    majuscule letters, ended up in the harder to reach upper cases.
-! 
-! EXAMPLE
-!    Sample program:
-! 
-!     program demo_upper
-!     use M_strings, only: upper
-!     implicit none
-!     character(len=:),allocatable  :: s
-!        s=' ABCDEFG abcdefg '
-!        write(*,*) 'mixed-case input string is ....',s
-!        write(*,*) 'upper-case output string is ...',upper(s)
-!        write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
-!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
-!     end program demo_upper
-! 
-!    Expected output
-! 
-!     mixed-case input string is .... ABCDEFG abcdefg
-!     upper-case output string is ... ABCDEFG ABCDEFG
-!     make first character uppercase  ... This is a sentence.
-!     UPPER(3f) is elemental ==>ABC+DEF+GHI
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!! upper(3f) - [M_strings:CASE] changes a string to uppercase
+!! (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    elemental pure function upper(str,begin,end) result (string)
+!!
+!!     character(*), intent(in)    :: str
+!!     integer,optional,intent(in) :: begin,end
+!!     character(len(str))         :: string  ! output string
+!!##DESCRIPTION
+!!      upper(string) returns a copy of the input string with all characters
+!!      converted in the optionally specified range to uppercase, assuming
+!!      ASCII character sets are being used. If no range is specified the
+!!      entire string is converted to uppercase.
+!!
+!!##OPTIONS
+!!    str    string to convert to uppercase
+!!    begin  optional starting position in "str" to begin converting to uppercase
+!!    end    optional ending position in "str" to stop converting to uppercase
+!!
+!!##RESULTS
+!!    upper  copy of the input string with all characters converted to uppercase
+!!           over optionally specified range.
+!!
+!!##TRIVIA
+!!    The terms "uppercase" and "lowercase" date back to the early days of
+!!    the mechanical printing press. Individual metal alloy casts of each
+!!    needed letter, or punctuation symbol, were meticulously added to a
+!!    press block, by hand, before rolling out copies of a page. These
+!!    metal casts were stored and organized in wooden cases. The more
+!!    often needed miniscule letters were placed closer to hand, in the
+!!    lower cases of the work bench. The less often needed, capitalized,
+!!    majuscule letters, ended up in the harder to reach upper cases.
+!!
+!!##EXAMPLE
+!!
+!!    Sample program:
+!!
+!!     program demo_upper
+!!     use M_strings, only: upper
+!!     implicit none
+!!     character(len=:),allocatable  :: s
+!!        s=' ABCDEFG abcdefg '
+!!        write(*,*) 'mixed-case input string is ....',s
+!!        write(*,*) 'upper-case output string is ...',upper(s)
+!!        write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
+!!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
+!!     end program demo_upper
+!!
+!!    Expected output
+!!
+!!     mixed-case input string is .... ABCDEFG abcdefg
+!!     upper-case output string is ... ABCDEFG ABCDEFG
+!!     make first character uppercase  ... This is a sentence.
+!!     UPPER(3f) is elemental ==>ABC+DEF+GHI
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 ! Timing
 !
@@ -2222,61 +2250,64 @@ end function upper
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!    elemental pure function lower(str,begin,end) result (string)
-! 
-!     character(*), intent(in) :: str
-!     integer,optional         :: begin, end
-!     character(len(str))      :: string  ! output string
-! DESCRIPTION
-!      lower(string) returns a copy of the input string with all characters
-!      converted to miniscule over the specified range, assuming ASCII
-!      character sets are being used. If no range is specified the entire
-!      string is converted to miniscule.
-! 
-! OPTIONS
-!    str    string to convert to miniscule
-!    begin  optional starting position in "str" to begin converting to miniscule
-!    end    optional ending position in "str" to stop converting to miniscule
-! 
-! RESULTS
-!    lower  copy of the input string with all characters converted to miniscule
-!           over optionally specified range.
-! 
-! TRIVIA
-!    The terms "uppercase" and "lowercase" date back to the early days of
-!    the mechanical printing press. Individual metal alloy casts of each
-!    needed letter, or punctuation symbol, were meticulously added to a
-!    press block, by hand, before rolling out copies of a page. These
-!    metal casts were stored and organized in wooden cases. The more
-!    often needed miniscule letters were placed closer to hand, in the
-!    lower cases of the work bench. The less often needed, capitalized,
-!    majuscule letters, ended up in the harder to reach upper cases.
-! 
-! EXAMPLE
-!    Sample program:
-! 
-!       program demo_lower
-!       use M_strings, only: lower
-!       implicit none
-!       character(len=:),allocatable  :: s
-!          s=' ABCDEFG abcdefg '
-!          write(*,*) 'mixed-case input string is ....',s
-!          write(*,*) 'lower-case output string is ...',lower(s)
-!       end program demo_lower
-! 
-!    Expected output
-! 
-!       mixed-case input string is .... ABCDEFG abcdefg
-!       lower-case output string is ... abcdefg abcdefg
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    elemental pure function lower(str,begin,end) result (string)
+!!
+!!     character(*), intent(in) :: str
+!!     integer,optional         :: begin, end
+!!     character(len(str))      :: string  ! output string
+!!##DESCRIPTION
+!!      lower(string) returns a copy of the input string with all characters
+!!      converted to miniscule over the specified range, assuming ASCII
+!!      character sets are being used. If no range is specified the entire
+!!      string is converted to miniscule.
+!!
+!!##OPTIONS
+!!    str    string to convert to miniscule
+!!    begin  optional starting position in "str" to begin converting to miniscule
+!!    end    optional ending position in "str" to stop converting to miniscule
+!!
+!!##RESULTS
+!!    lower  copy of the input string with all characters converted to miniscule
+!!           over optionally specified range.
+!!
+!!##TRIVIA
+!!    The terms "uppercase" and "lowercase" date back to the early days of
+!!    the mechanical printing press. Individual metal alloy casts of each
+!!    needed letter, or punctuation symbol, were meticulously added to a
+!!    press block, by hand, before rolling out copies of a page. These
+!!    metal casts were stored and organized in wooden cases. The more
+!!    often needed miniscule letters were placed closer to hand, in the
+!!    lower cases of the work bench. The less often needed, capitalized,
+!!    majuscule letters, ended up in the harder to reach upper cases.
+!!
+!!##EXAMPLE
+!!
+!!    Sample program:
+!!
+!!       program demo_lower
+!!       use M_strings, only: lower
+!!       implicit none
+!!       character(len=:),allocatable  :: s
+!!          s=' ABCDEFG abcdefg '
+!!          write(*,*) 'mixed-case input string is ....',s
+!!          write(*,*) 'lower-case output string is ...',lower(s)
+!!       end program demo_lower
+!!
+!!    Expected output
+!!
+!!       mixed-case input string is .... ABCDEFG abcdefg
+!!       lower-case output string is ... abcdefg abcdefg
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 elemental pure function lower(str,begin,end) result (string)
 
 ! ident_22="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
@@ -2310,47 +2341,50 @@ end function lower
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from string
-!      (LICENSE:PD)
-! 
-! SYNOPSIS
-!    subroutine string_to_value(chars,valu,ierr)
-! 
-!     character(len=*),intent(in)              :: chars   ! input string
-!     integer|real|doubleprecision,intent(out) :: valu
-!     integer,intent(out)                      :: ierr
-! DESCRIPTION
-!       returns a numeric value from a numeric character string.
-! 
-!       works with any g-format input, including integer, real, and
-!       exponential. If the input string begins with "B", "Z", or "O"
-!       and otherwise represents a positive whole number it is assumed to
-!       be a binary, hexadecimal, or octal value. If the string contains
-!       commas they are removed. If the string is of the form NN:MMM... or
-!       NN#MMM then NN is assumed to be the base of the whole number.
-! 
-!       if an error occurs in the READ, IOSTAT is returned in IERR and
-!       value is set to zero. if no error occurs, IERR=0.
-! OPTIONS
-!       CHARS  input string to read numeric value from
-! RETURNS
-!       VALU   numeric value returned. May be INTEGER, REAL, or DOUBLEPRECISION.
-!       IERR   error flag (0 == no error)
-! EXAMPLE
-!   Sample Program:
-! 
-!    program demo_string_to_value
-!     use M_strings, only: string_to_value
-!     character(len=80) :: string
-!        string=' -40.5e-2 '
-!        call string_to_value(string,value,ierr)
-!        write(*,*) 'value of string ['//trim(string)//'] is ',value
-!    end program demo_string_to_value
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from string
+!!      (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine string_to_value(chars,valu,ierr)
+!!
+!!     character(len=*),intent(in)              :: chars   ! input string
+!!     integer|real|doubleprecision,intent(out) :: valu
+!!     integer,intent(out)                      :: ierr
+!!##DESCRIPTION
+!!       returns a numeric value from a numeric character string.
+!!
+!!       works with any g-format input, including integer, real, and
+!!       exponential. If the input string begins with "B", "Z", or "O"
+!!       and otherwise represents a positive whole number it is assumed to
+!!       be a binary, hexadecimal, or octal value. If the string contains
+!!       commas they are removed. If the string is of the form NN:MMM... or
+!!       NN#MMM then NN is assumed to be the base of the whole number.
+!!
+!!       if an error occurs in the READ, IOSTAT is returned in IERR and
+!!       value is set to zero. if no error occurs, IERR=0.
+!!##OPTIONS
+!!       CHARS  input string to read numeric value from
+!!##RETURNS
+!!       VALU   numeric value returned. May be INTEGER, REAL, or DOUBLEPRECISION.
+!!       IERR   error flag (0 == no error)
+!!##EXAMPLE
+!!
+!!   Sample Program:
+!!
+!!     program demo_string_to_value
+!!     use M_strings, only: string_to_value
+!!     character(len=80) :: string
+!!        string=' -40.5e-2 '
+!!        call string_to_value(string,value,ierr)
+!!        write(*,*) 'value of string ['//trim(string)//'] is ',value
+!!     end program demo_string_to_value
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
@@ -2472,142 +2506,145 @@ end function isupper
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!    subroutine split(input_line,array,delimiters,order,nulls)
-! 
-!     character(len=*),intent(in)              :: input_line
-!     character(len=:),allocatable,intent(out) :: array(:)
-!     character(len=*),optional,intent(in)     :: delimiters
-!     character(len=*),optional,intent(in)     :: order
-!     character(len=*),optional,intent(in)     :: nulls
-! DESCRIPTION
-!     SPLIT(3f) parses a string using specified delimiter characters and
-!     store tokens into an allocatable array
-! 
-! OPTIONS
-! 
-!    INPUT_LINE  Input string to tokenize
-! 
-!    ARRAY       Output array of tokens
-! 
-!    DELIMITERS  List of delimiter characters.
-!                The default delimiters are the "whitespace" characters
-!                (space, tab,new line, vertical tab, formfeed, carriage
-!                return, and null). You may specify an alternate set of
-!                delimiter characters.
-! 
-!                Multi-character delimiters are not supported (Each
-!                character in the DELIMITERS list is considered to be
-!                a delimiter).
-! 
-!                Quoting of delimiter characters is not supported.
-! 
-!    ORDER SEQUENTIAL|REVERSE|RIGHT  Order of output array.
-!                By default ARRAY contains the tokens having parsed
-!                the INPUT_LINE from left to right. If ORDER='RIGHT'
-!                or ORDER='REVERSE' the parsing goes from right to left.
-! 
-!    NULLS IGNORE|RETURN|IGNOREEND  Treatment of null fields.
-!                By default adjacent delimiters in the input string
-!                do not create an empty string in the output array. if
-!                NULLS='return' adjacent delimiters create an empty element
-!                in the output ARRAY. If NULLS='ignoreend' then only
-!                trailing delimiters at the right of the string are ignored.
-! 
-! EXAMPLES
-!  Sample program:
-! 
-!    program demo_split
-!    use M_strings, only: split
-!    character(len=*),parameter     :: &
-!    & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
-!    character(len=:),allocatable :: array(:) ! output array of tokens
-!       write(*,*)'INPUT LINE:['//LINE//']'
-!       write(*,'(80("="))')
-!       write(*,*)'typical call:'
-!       CALL split(line,array)
-!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!       write(*,*)'SIZE:',SIZE(array)
-!       write(*,'(80("-"))')
-!       write(*,*)'custom list of delimiters (colon and vertical line):'
-!       CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
-!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!       write(*,*)'SIZE:',SIZE(array)
-!       write(*,'(80("-"))')
-!       write(*,*)&
-!     &'custom list of delimiters, reverse array order and count null fields:'
-!       CALL split(line,array,delimiters=':|',order='reverse',nulls='return')
-!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!       write(*,*)'SIZE:',SIZE(array)
-!       write(*,'(80("-"))')
-!       write(*,*)'INPUT LINE:['//LINE//']'
-!       write(*,*)&
-!       &'default delimiters and reverse array order and return null fields:'
-!       CALL split(line,array,delimiters='',order='reverse',nulls='return')
-!       write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
-!       write(*,*)'SIZE:',SIZE(array)
-!    end program demo_split
-! 
-!   Output
-! 
-!    > INPUT LINE:[  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    ]
-!    > ===========================================================================
-!    >  typical call:
-!    > 1 ==> aBcdef
-!    > 2 ==> ghijklmnop
-!    > 3 ==> qrstuvwxyz
-!    > 4 ==> 1:|:2
-!    > 5 ==> 333|333
-!    > 6 ==> a
-!    > 7 ==> B
-!    > 8 ==> cc
-!    >  SIZE:           8
-!    > --------------------------------------------------------------------------
-!    >  custom list of delimiters (colon and vertical line):
-!    > 1 ==>   aBcdef   ghijklmnop qrstuvwxyz  1
-!    > 2 ==> 2     333
-!    > 3 ==> 333 a B cc
-!    >  SIZE:           3
-!    > --------------------------------------------------------------------------
-!    >  custom list of delimiters, reverse array order and return null fields:
-!    > 1 ==> 333 a B cc
-!    > 2 ==> 2     333
-!    > 3 ==>
-!    > 4 ==>
-!    > 5 ==>   aBcdef   ghijklmnop qrstuvwxyz  1
-!    >  SIZE:           5
-!    > --------------------------------------------------------------------------
-!    >  INPUT LINE:[  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    ]
-!    >  default delimiters and reverse array order and count null fields:
-!    > 1 ==>
-!    > 2 ==>
-!    > 3 ==>
-!    > 4 ==> cc
-!    > 5 ==> B
-!    > 6 ==> a
-!    > 7 ==> 333|333
-!    > 8 ==>
-!    > 9 ==>
-!    > 10 ==>
-!    > 11 ==>
-!    > 12 ==> 1:|:2
-!    > 13 ==>
-!    > 14 ==> qrstuvwxyz
-!    > 15 ==> ghijklmnop
-!    > 16 ==>
-!    > 17 ==>
-!    > 18 ==> aBcdef
-!    > 19 ==>
-!    > 20 ==>
-!    >  SIZE:          20
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine split(input_line,array,delimiters,order,nulls)
+!!
+!!     character(len=*),intent(in)              :: input_line
+!!     character(len=:),allocatable,intent(out) :: array(:)
+!!     character(len=*),optional,intent(in)     :: delimiters
+!!     character(len=*),optional,intent(in)     :: order
+!!     character(len=*),optional,intent(in)     :: nulls
+!!##DESCRIPTION
+!!     SPLIT(3f) parses a string using specified delimiter characters and
+!!     store tokens into an allocatable array
+!!
+!!##OPTIONS
+!!
+!!    INPUT_LINE  Input string to tokenize
+!!
+!!    ARRAY       Output array of tokens
+!!
+!!    DELIMITERS  List of delimiter characters.
+!!                The default delimiters are the "whitespace" characters
+!!                (space, tab,new line, vertical tab, formfeed, carriage
+!!                return, and null). You may specify an alternate set of
+!!                delimiter characters.
+!!
+!!                Multi-character delimiters are not supported (Each
+!!                character in the DELIMITERS list is considered to be
+!!                a delimiter).
+!!
+!!                Quoting of delimiter characters is not supported.
+!!
+!!    ORDER SEQUENTIAL|REVERSE|RIGHT  Order of output array.
+!!                By default ARRAY contains the tokens having parsed
+!!                the INPUT_LINE from left to right. If ORDER='RIGHT'
+!!                or ORDER='REVERSE' the parsing goes from right to left.
+!!
+!!    NULLS IGNORE|RETURN|IGNOREEND  Treatment of null fields.
+!!                By default adjacent delimiters in the input string
+!!                do not create an empty string in the output array. if
+!!                NULLS='return' adjacent delimiters create an empty element
+!!                in the output ARRAY. If NULLS='ignoreend' then only
+!!                trailing delimiters at the right of the string are ignored.
+!!
+!!##EXAMPLES
+!!
+!!  Sample program:
+!!
+!!     program demo_split
+!!     use M_strings, only: split
+!!     character(len=*),parameter     :: &
+!!     & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
+!!     character(len=:),allocatable :: array(:) ! output array of tokens
+!!        write(*,*)'INPUT LINE:['//LINE//']'
+!!        write(*,'(80("="))')
+!!        write(*,*)'typical call:'
+!!        CALL split(line,array)
+!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!        write(*,*)'SIZE:',SIZE(array)
+!!        write(*,'(80("-"))')
+!!        write(*,*)'custom list of delimiters (colon and vertical line):'
+!!        CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
+!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!        write(*,*)'SIZE:',SIZE(array)
+!!        write(*,'(80("-"))')
+!!        write(*,*)&
+!!      &'custom list of delimiters, reverse array order and count null fields:'
+!!        CALL split(line,array,delimiters=':|',order='reverse',nulls='return')
+!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!        write(*,*)'SIZE:',SIZE(array)
+!!        write(*,'(80("-"))')
+!!        write(*,*)'INPUT LINE:['//LINE//']'
+!!        write(*,*)&
+!!        &'default delimiters and reverse array order and return null fields:'
+!!        CALL split(line,array,delimiters='',order='reverse',nulls='return')
+!!        write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+!!        write(*,*)'SIZE:',SIZE(array)
+!!     end program demo_split
+!!
+!!   Output
+!!
+!!    > INPUT LINE:[  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    ]
+!!    > ===========================================================================
+!!    >  typical call:
+!!    > 1 ==> aBcdef
+!!    > 2 ==> ghijklmnop
+!!    > 3 ==> qrstuvwxyz
+!!    > 4 ==> 1:|:2
+!!    > 5 ==> 333|333
+!!    > 6 ==> a
+!!    > 7 ==> B
+!!    > 8 ==> cc
+!!    >  SIZE:           8
+!!    > --------------------------------------------------------------------------
+!!    >  custom list of delimiters (colon and vertical line):
+!!    > 1 ==>   aBcdef   ghijklmnop qrstuvwxyz  1
+!!    > 2 ==> 2     333
+!!    > 3 ==> 333 a B cc
+!!    >  SIZE:           3
+!!    > --------------------------------------------------------------------------
+!!    >  custom list of delimiters, reverse array order and return null fields:
+!!    > 1 ==> 333 a B cc
+!!    > 2 ==> 2     333
+!!    > 3 ==>
+!!    > 4 ==>
+!!    > 5 ==>   aBcdef   ghijklmnop qrstuvwxyz  1
+!!    >  SIZE:           5
+!!    > --------------------------------------------------------------------------
+!!    >  INPUT LINE:[  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    ]
+!!    >  default delimiters and reverse array order and count null fields:
+!!    > 1 ==>
+!!    > 2 ==>
+!!    > 3 ==>
+!!    > 4 ==> cc
+!!    > 5 ==> B
+!!    > 6 ==> a
+!!    > 7 ==> 333|333
+!!    > 8 ==>
+!!    > 9 ==>
+!!    > 10 ==>
+!!    > 11 ==>
+!!    > 12 ==> 1:|:2
+!!    > 13 ==>
+!!    > 14 ==> qrstuvwxyz
+!!    > 15 ==> ghijklmnop
+!!    > 16 ==>
+!!    > 17 ==>
+!!    > 18 ==> aBcdef
+!!    > 19 ==>
+!!    > 20 ==>
+!!    >  SIZE:          20
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -2732,115 +2769,118 @@ integer                       :: imax                   ! length of longest toke
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    replace_str(3f) - [M_strings:EDITING] function globally replaces one substring for another in string
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!    function replace_str(targetline[,old,new|cmd],range,ierr) result (newline)
-! 
-!     character(len=*)                       :: targetline
-!     character(len=*),intent(in),optional   :: old
-!     character(len=*),intent(in),optional   :: new
-!     character(len=*),intent(in),optional   :: cmd
-!     integer,intent(in),optional            :: range(2)
-!     integer,intent(out),optional           :: ierr
-!     logical,intent(in),optional            :: clip
-!     character(len=:),allocatable           :: newline
-! DESCRIPTION
-!    Globally replace one substring for another in string.
-!    Either CMD or OLD and NEW must be specified.
-! 
-! OPTIONS
-!     targetline  input line to be changed
-!     old         old substring to replace
-!     new         new substring
-!     cmd         alternate way to specify old and new string, in
-!                 the form c/old/new/; where "/" can be any character
-!                 not in "old" or "new"
-!     range       if present, only change range(1) to range(2) of occurrences of old string
-!     ierr        error code. iF ier = -1 bad directive, >= 0 then
-!                 count of changes made
-!     clip        whether to return trailing spaces or not. Defaults to .false.
-! RETURNS
-!     newline     allocatable string returned
-! 
-! EXAMPLES
-!   Sample Program:
-! 
-!    program demo_replace_str
-!    use M_strings, only : replace_str
-!    implicit none
-!    character(len=:),allocatable :: targetline
-! 
-!    targetline='this is the input string'
-! 
-!    call testit('th','TH','THis is THe input string')
-! 
-!    ! a null old substring means "at beginning of line"
-!    call testit('','BEFORE:', 'BEFORE:THis is THe input string')
-! 
-!    ! a null new string deletes occurrences of the old substring
-!    call testit('i','', 'BEFORE:THs s THe nput strng')
-! 
-!    write(*,*)'Examples of the use of RANGE='
-! 
-!    targetline=replace_str('a b ab baaa aaaa','a','A')
-!    write(*,*)'replace a with A ['//targetline//']'
-! 
-!    targetline=replace_str('a b ab baaa aaaa','a','A',range=[3,5])
-!    write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
-! 
-!    targetline=replace_str('a b ab baaa aaaa','a','',range=[3,5])
-!    write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
-! 
-!    targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
-!    write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
-! 
-!    contains
-!    subroutine testit(old,new,expected)
-!    character(len=*),intent(in) :: old,new,expected
-!    write(*,*)repeat('=',79)
-!    write(*,*)'STARTED ['//targetline//']'
-!    write(*,*)'OLD['//old//']', ' NEW['//new//']'
-!    targetline=replace_str(targetline,old,new)
-!    write(*,*)'GOT     ['//targetline//']'
-!    write(*,*)'EXPECTED['//expected//']'
-!    write(*,*)'TEST    [',targetline.eq.expected,']'
-!    end subroutine testit
-! 
-!    end program demo_replace_str
-! 
-!   Expected output
-! 
-!     ===============================================================================
-!     STARTED [this is the input string]
-!     OLD[th] NEW[TH]
-!     GOT     [THis is THe input string]
-!     EXPECTED[THis is THe input string]
-!     TEST    [ T ]
-!     ===============================================================================
-!     STARTED [THis is THe input string]
-!     OLD[] NEW[BEFORE:]
-!     GOT     [BEFORE:THis is THe input string]
-!     EXPECTED[BEFORE:THis is THe input string]
-!     TEST    [ T ]
-!     ===============================================================================
-!     STARTED [BEFORE:THis is THe input string]
-!     OLD[i] NEW[]
-!     GOT     [BEFORE:THs s THe nput strng]
-!     EXPECTED[BEFORE:THs s THe nput strng]
-!     TEST    [ T ]
-!     Examples of the use of RANGE=
-!     replace a with A [A b Ab bAAA AAAA]
-!     replace a with A instances 3 to 5 [a b ab bAAA aaaa]
-!     replace a with null instances 3 to 5 [a b ab b aaaa]
-!     replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa]
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    replace_str(3f) - [M_strings:EDITING] function globally replaces one substring for another in string
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    function replace_str(targetline[,old,new|cmd],range,ierr) result (newline)
+!!
+!!     character(len=*)                       :: targetline
+!!     character(len=*),intent(in),optional   :: old
+!!     character(len=*),intent(in),optional   :: new
+!!     character(len=*),intent(in),optional   :: cmd
+!!     integer,intent(in),optional            :: range(2)
+!!     integer,intent(out),optional           :: ierr
+!!     logical,intent(in),optional            :: clip
+!!     character(len=:),allocatable           :: newline
+!!##DESCRIPTION
+!!    Globally replace one substring for another in string.
+!!    Either CMD or OLD and NEW must be specified.
+!!
+!!##OPTIONS
+!!     targetline  input line to be changed
+!!     old         old substring to replace
+!!     new         new substring
+!!     cmd         alternate way to specify old and new string, in
+!!                 the form c/old/new/; where "/" can be any character
+!!                 not in "old" or "new"
+!!     range       if present, only change range(1) to range(2) of occurrences of old string
+!!     ierr        error code. iF ier = -1 bad directive, >= 0 then
+!!                 count of changes made
+!!     clip        whether to return trailing spaces or not. Defaults to .false.
+!!##RETURNS
+!!     newline     allocatable string returned
+!!
+!!##EXAMPLES
+!!
+!!   Sample Program:
+!!
+!!       program demo_replace_str
+!!       use M_strings, only : replace_str
+!!       implicit none
+!!       character(len=:),allocatable :: targetline
+!!
+!!       targetline='this is the input string'
+!!
+!!       call testit('th','TH','THis is THe input string')
+!!
+!!       ! a null old substring means "at beginning of line"
+!!       call testit('','BEFORE:', 'BEFORE:THis is THe input string')
+!!
+!!       ! a null new string deletes occurrences of the old substring
+!!       call testit('i','', 'BEFORE:THs s THe nput strng')
+!!
+!!       write(*,*)'Examples of the use of RANGE='
+!!
+!!       targetline=replace_str('a b ab baaa aaaa','a','A')
+!!       write(*,*)'replace a with A ['//targetline//']'
+!!
+!!       targetline=replace_str('a b ab baaa aaaa','a','A',range=[3,5])
+!!       write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
+!!
+!!       targetline=replace_str('a b ab baaa aaaa','a','',range=[3,5])
+!!       write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
+!!
+!!       targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+!!       write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
+!!
+!!       contains
+!!       subroutine testit(old,new,expected)
+!!       character(len=*),intent(in) :: old,new,expected
+!!       write(*,*)repeat('=',79)
+!!       write(*,*)':STARTED ['//targetline//']'
+!!       write(*,*)':OLD['//old//']', ' NEW['//new//']'
+!!       targetline=replace_str(targetline,old,new)
+!!       write(*,*)':GOT     ['//targetline//']'
+!!       write(*,*)':EXPECTED['//expected//']'
+!!       write(*,*)':TEST    [',targetline.eq.expected,']'
+!!       end subroutine testit
+!!
+!!       end program demo_replace_str
+!!
+!!   Expected output
+!!
+!!     ===============================================================================
+!!     STARTED [this is the input string]
+!!     OLD[th] NEW[TH]
+!!     GOT     [THis is THe input string]
+!!     EXPECTED[THis is THe input string]
+!!     TEST    [ T ]
+!!     ===============================================================================
+!!     STARTED [THis is THe input string]
+!!     OLD[] NEW[BEFORE:]
+!!     GOT     [BEFORE:THis is THe input string]
+!!     EXPECTED[BEFORE:THis is THe input string]
+!!     TEST    [ T ]
+!!     ===============================================================================
+!!     STARTED [BEFORE:THis is THe input string]
+!!     OLD[i] NEW[]
+!!     GOT     [BEFORE:THs s THe nput strng]
+!!     EXPECTED[BEFORE:THs s THe nput strng]
+!!     TEST    [ T ]
+!!     Examples of the use of RANGE=
+!!     replace a with A [A b Ab bAAA AAAA]
+!!     replace a with A instances 3 to 5 [a b ab bAAA aaaa]
+!!     replace a with null instances 3 to 5 [a b ab b aaaa]
+!!     replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine crack_cmd(cmd,old,new,ierr)
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*),intent(in)              :: cmd
@@ -3000,71 +3040,74 @@ end function replace_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed input
-!     (LICENSE:PD)
-! SYNOPSIS
-!   function quote(str,mode,clip) result (quoted_str)
-! 
-!    character(len=*),intent(in)          :: str
-!    character(len=*),optional,intent(in) :: mode
-!    logical,optional,intent(in)          :: clip
-!    character(len=:),allocatable         :: quoted_str
-! DESCRIPTION
-!    Add quotes to a CHARACTER variable as if it was written using
-!    list-directed input. This is particularly useful for processing
-!    strings to add to CSV files.
-! 
-! OPTIONS
-!    str         input string to add quotes to, using the rules of
-!                list-directed input (single quotes are replaced by two adjacent quotes)
-!    mode        alternate quoting methods are supported:
-! 
-!                   DOUBLE   default. replace quote with double quotes
-!                   ESCAPE   replace quotes with backslash-quote instead of double quotes
-! 
-!    clip        default is to trim leading and trailing spaces from the string. If CLIP
-!                is .FALSE. spaces are not trimmed
-! 
-! RESULT
-!    quoted_str  The output string, which is based on adding quotes to STR.
-! EXAMPLE
-!   Sample program:
-! 
-!    program demo_quote
-!    use M_strings, only : quote
-!    implicit none
-!    character(len=:),allocatable :: str
-!    character(len=1024)          :: msg
-!    integer                      :: ios
-!    character(len=80)            :: inline
-!       do
-!          write(*,'(a)',advance='no')'Enter test string:'
-!          read(*,'(a)',iostat=ios,iomsg=msg)inline
-!          if(ios.ne.0)then
-!             write(*,*)trim(inline)
-!             exit
-!          endif
-! 
-!          ! the original string
-!          write(*,'(a)')'ORIGINAL     ['//trim(inline)//']'
-! 
-!          ! the string processed by quote(3f)
-!          str=quote(inline)
-!          write(*,'(a)')'QUOTED     ['//str//']'
-! 
-!          ! write the string list-directed to compare the results
-!          write(*,'(a)',iostat=ios,iomsg=msg) 'LIST DIRECTED:'
-!          write(*,*,iostat=ios,iomsg=msg,delim='none') inline
-!          write(*,*,iostat=ios,iomsg=msg,delim='quote') inline
-!          write(*,*,iostat=ios,iomsg=msg,delim='apostrophe') inline
-!       enddo
-!    end program demo_quote
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed input
+!!     (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!   function quote(str,mode,clip) result (quoted_str)
+!!
+!!    character(len=*),intent(in)          :: str
+!!    character(len=*),optional,intent(in) :: mode
+!!    logical,optional,intent(in)          :: clip
+!!    character(len=:),allocatable         :: quoted_str
+!!##DESCRIPTION
+!!    Add quotes to a CHARACTER variable as if it was written using
+!!    list-directed input. This is particularly useful for processing
+!!    strings to add to CSV files.
+!!
+!!##OPTIONS
+!!    str         input string to add quotes to, using the rules of
+!!                list-directed input (single quotes are replaced by two adjacent quotes)
+!!    mode        alternate quoting methods are supported:
+!!
+!!                   DOUBLE   default. replace quote with double quotes
+!!                   ESCAPE   replace quotes with backslash-quote instead of double quotes
+!!
+!!    clip        default is to trim leading and trailing spaces from the string. If CLIP
+!!                is .FALSE. spaces are not trimmed
+!!
+!!##RESULT
+!!    quoted_str  The output string, which is based on adding quotes to STR.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!     program demo_quote
+!!     use M_strings, only : quote
+!!     implicit none
+!!     character(len=:),allocatable :: str
+!!     character(len=1024)          :: msg
+!!     integer                      :: ios
+!!     character(len=80)            :: inline
+!!        do
+!!           write(*,'(a)',advance='no')'Enter test string:'
+!!           read(*,'(a)',iostat=ios,iomsg=msg)inline
+!!           if(ios.ne.0)then
+!!              write(*,*)trim(inline)
+!!              exit
+!!           endif
+!!
+!!           ! the original string
+!!           write(*,'(a)')'ORIGINAL     ['//trim(inline)//']'
+!!
+!!           ! the string processed by quote(3f)
+!!           str=quote(inline)
+!!           write(*,'(a)')'QUOTED     ['//str//']'
+!!
+!!           ! write the string list-directed to compare the results
+!!           write(*,'(a)',iostat=ios,iomsg=msg) 'LIST DIRECTED:'
+!!           write(*,*,iostat=ios,iomsg=msg,delim='none') inline
+!!           write(*,*,iostat=ios,iomsg=msg,delim='quote') inline
+!!           write(*,*,iostat=ios,iomsg=msg,delim='apostrophe') inline
+!!        enddo
+!!     end program demo_quote
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 function quote(str,mode,clip) result (quoted_str)
 character(len=*),intent(in)          :: str                ! the string to be quoted
 character(len=*),optional,intent(in) :: mode
@@ -3094,75 +3137,78 @@ end function quote
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
-!     (LICENSE:PD)
-! SYNOPSIS
-!   function unquote(quoted_str,esc) result (unquoted_str)
-! 
-!    character(len=*),intent(in)          :: quoted_str
-!    character(len=1),optional,intent(in) :: esc
-!    character(len=:),allocatable         :: unquoted_str
-! DESCRIPTION
-!    Remove quotes from a CHARACTER variable as if it was read using
-!    list-directed input. This is particularly useful for processing
-!    tokens read from input such as CSV files.
-! 
-!    Fortran can now read using list-directed input from an internal file,
-!    which should handle quoted strings, but list-directed input does not
-!    support escape characters, which UNQUOTE(3f) does.
-! OPTIONS
-!    quoted_str  input string to remove quotes from, using the rules of
-!                list-directed input (two adjacent quotes inside a quoted
-!                region are replaced by a single quote, a single quote or
-!                double quote is selected as the delimiter based on which
-!                is encountered first going from left to right, ...)
-!    esc         optional character used to protect the next quote
-!                character from being processed as a quote, but simply as
-!                a plain character.
-! RESULT
-!    unquoted_str  The output string, which is based on removing quotes from quoted_str.
-! EXAMPLE
-!   Sample program:
-! 
-!    program demo_unquote
-!       use M_strings, only : unquote
-!       implicit none
-!       character(len=128)           :: quoted_str
-!       character(len=:),allocatable :: unquoted_str
-!       character(len=1),parameter   :: esc='\'
-!       character(len=1024)          :: msg
-!       integer                      :: ios
-!       character(len=1024)          :: dummy
-!       do
-!          write(*,'(a)',advance='no')'Enter test string:'
-!          read(*,'(a)',iostat=ios,iomsg=msg)quoted_str
-!          if(ios.ne.0)then
-!             write(*,*)trim(msg)
-!             exit
-!          endif
-! 
-!          ! the original string
-!          write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
-! 
-!          ! the string processed by unquote(3f)
-!          unquoted_str=unquote(trim(quoted_str),esc)
-!          write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
-! 
-!          ! read the string list-directed to compare the results
-!          read(quoted_str,*,iostat=ios,iomsg=msg)dummy
-!          if(ios.ne.0)then
-!             write(*,*)trim(msg)
-!          else
-!             write(*,'(a)')'LIST DIRECTED['//trim(dummy)//']'
-!          endif
-!       enddo
-!    end program demo_unquote
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
+!!     (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!   function unquote(quoted_str,esc) result (unquoted_str)
+!!
+!!    character(len=*),intent(in)          :: quoted_str
+!!    character(len=1),optional,intent(in) :: esc
+!!    character(len=:),allocatable         :: unquoted_str
+!!##DESCRIPTION
+!!    Remove quotes from a CHARACTER variable as if it was read using
+!!    list-directed input. This is particularly useful for processing
+!!    tokens read from input such as CSV files.
+!!
+!!    Fortran can now read using list-directed input from an internal file,
+!!    which should handle quoted strings, but list-directed input does not
+!!    support escape characters, which UNQUOTE(3f) does.
+!!##OPTIONS
+!!    quoted_str  input string to remove quotes from, using the rules of
+!!                list-directed input (two adjacent quotes inside a quoted
+!!                region are replaced by a single quote, a single quote or
+!!                double quote is selected as the delimiter based on which
+!!                is encountered first going from left to right, ...)
+!!    esc         optional character used to protect the next quote
+!!                character from being processed as a quote, but simply as
+!!                a plain character.
+!!##RESULT
+!!    unquoted_str  The output string, which is based on removing quotes from quoted_str.
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!       program demo_unquote
+!!       use M_strings, only : unquote
+!!       implicit none
+!!       character(len=128)           :: quoted_str
+!!       character(len=:),allocatable :: unquoted_str
+!!       character(len=1),parameter   :: esc='\'
+!!       character(len=1024)          :: msg
+!!       integer                      :: ios
+!!       character(len=1024)          :: dummy
+!!       do
+!!          write(*,'(a)',advance='no')'Enter test string:'
+!!          read(*,'(a)',iostat=ios,iomsg=msg)quoted_str
+!!          if(ios.ne.0)then
+!!             write(*,*)trim(msg)
+!!             exit
+!!          endif
+!!
+!!          ! the original string
+!!          write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
+!!
+!!          ! the string processed by unquote(3f)
+!!          unquoted_str=unquote(trim(quoted_str),esc)
+!!          write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
+!!
+!!          ! read the string list-directed to compare the results
+!!          read(quoted_str,*,iostat=ios,iomsg=msg)dummy
+!!          if(ios.ne.0)then
+!!             write(*,*)trim(msg)
+!!          else
+!!             write(*,'(a)')'LIST DIRECTED['//trim(dummy)//']'
+!!          endif
+!!       enddo
+!!       end program demo_unquote
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 function unquote(quoted_str,esc) result (unquoted_str)
 character(len=*),intent(in)          :: quoted_str              ! the string to be unquoted
 character(len=1),optional,intent(in) :: esc                     ! escape character
@@ -3231,57 +3277,60 @@ end function unquote
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
-!      (LICENSE:PD)
-! 
-! SYNOPSIS
-!       function v2s(value) result(outstr)
-! 
-!        integer|real|doubleprecision|logical,intent(in ) :: value
-!        character(len=:),allocatable :: outstr
-!        character(len=*),optional,intent(in) :: fmt
-! 
-! DESCRIPTION
-! 
-!    v2s(3f) returns a representation of a numeric value as a
-!    string when given a numeric value of type REAL, DOUBLEPRECISION,
-!    INTEGER or LOGICAL. It creates the strings using internal WRITE()
-!    statements. Trailing zeros are removed from non-zero values, and the
-!    string is left-justified.
-! 
-! OPTIONS
-!    VALUE   input value to be converted to a string
-!    FMT     format can be explicitly given, but is limited to
-!            generating a string of eighty or less characters.
-! 
-! RETURNS
-!    OUTSTR  returned string representing input value,
-! 
-! EXAMPLE
-!   Sample Program:
-! 
-!    program demo_v2s
-!    use M_strings, only: v2s
-!    write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
-!    write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
-!    write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
-!    write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
-!    write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
-!    end program demo_v2s
-! 
-!   Expected output
-! 
-!     The value of 3.0/4.0 is [0.75]
-!     The value of 1234    is [1234]
-!     The value of 0d0     is [0]
-!     The value of .false. is [F]
-!     The value of .true. is  [T]
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!       function v2s(value) result(outstr)
+!!
+!!        integer|real|doubleprecision|logical,intent(in ) :: value
+!!        character(len=:),allocatable :: outstr
+!!        character(len=*),optional,intent(in) :: fmt
+!!
+!!##DESCRIPTION
+!!
+!!    v2s(3f) returns a representation of a numeric value as a
+!!    string when given a numeric value of type REAL, DOUBLEPRECISION,
+!!    INTEGER or LOGICAL. It creates the strings using internal WRITE()
+!!    statements. Trailing zeros are removed from non-zero values, and the
+!!    string is left-justified.
+!!
+!!##OPTIONS
+!!    VALUE   input value to be converted to a string
+!!    FMT     format can be explicitly given, but is limited to
+!!            generating a string of eighty or less characters.
+!!
+!!##RETURNS
+!!    OUTSTR  returned string representing input value,
+!!
+!!##EXAMPLE
+!!
+!!   Sample Program:
+!!
+!!     program demo_v2s
+!!     use M_strings, only: v2s
+!!     write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
+!!     write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
+!!     write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
+!!     write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
+!!     write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
+!!     end program demo_v2s
+!!
+!!   Expected output
+!!
+!!     The value of 3.0/4.0 is [0.75]
+!!     The value of 1234    is [1234]
+!!     The value of 0d0     is [0]
+!!     The value of .false. is [F]
+!!     The value of .true. is  [T]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
@@ -3301,60 +3350,63 @@ end function i2s
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!    function merge_str(str1,str2,expr) result(strout)
-! 
-!     character(len=*),intent(in),optional :: str1
-!     character(len=*),intent(in),optional :: str2
-!     logical,intent(in)              :: expr
-!     character(len=:),allocatable    :: strout
-! DESCRIPTION
-!    merge_str(3f) pads the shorter of str1 and str2 to the longest length
-!    of str1 and str2 and then calls MERGE(padded_str1,padded_str2,expr).
-!    It trims trailing spaces off the result and returns the trimmed
-!    string. This makes it easier to call MERGE(3f) with strings, as
-!    MERGE(3f) requires the strings to be the same length.
-! 
-!    NOTE: STR1 and STR2 are always required even though declared optional.
-!          this is so the call "STR_MERGE(A,B,present(A))" is a valid call.
-!          The parameters STR1 and STR2 when they are optional parameters
-!          can be passed to a procedure if the options are optional on the
-!          called procedure.
-! 
-! OPTIONS
-!    STR1    string to return if the logical expression EXPR is true
-!    STR2    string to return if the logical expression EXPR is false
-!    EXPR    logical expression to evaluate to determine whether to return
-!            STR1 when true, and STR2 when false.
-! RESULT
-!     MERGE_STR  a trimmed string is returned that is otherwise the value
-!                of STR1 or STR2, depending on the logical expression EXPR.
-! 
-! EXAMPLES
-!   Sample Program:
-! 
-!     program demo_merge_str
-!     use M_strings, only : merge_str
-!     implicit none
-!     character(len=:), allocatable :: answer
-!        answer=merge_str('first string', 'second string is longer',10.eq.10)
-!        write(*,'("[",a,"]")') answer
-!        answer=merge_str('first string', 'second string is longer',10.ne.10)
-!        write(*,'("[",a,"]")') answer
-!     end program demo_merge_str
-! 
-!   Expected output
-! 
-!     [first string]
-!     [second string is longer]
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    function merge_str(str1,str2,expr) result(strout)
+!!
+!!     character(len=*),intent(in),optional :: str1
+!!     character(len=*),intent(in),optional :: str2
+!!     logical,intent(in)              :: expr
+!!     character(len=:),allocatable    :: strout
+!!##DESCRIPTION
+!!    merge_str(3f) pads the shorter of str1 and str2 to the longest length
+!!    of str1 and str2 and then calls MERGE(padded_str1,padded_str2,expr).
+!!    It trims trailing spaces off the result and returns the trimmed
+!!    string. This makes it easier to call MERGE(3f) with strings, as
+!!    MERGE(3f) requires the strings to be the same length.
+!!
+!!    NOTE: STR1 and STR2 are always required even though declared optional.
+!!          this is so the call "STR_MERGE(A,B,present(A))" is a valid call.
+!!          The parameters STR1 and STR2 when they are optional parameters
+!!          can be passed to a procedure if the options are optional on the
+!!          called procedure.
+!!
+!!##OPTIONS
+!!    STR1    string to return if the logical expression EXPR is true
+!!    STR2    string to return if the logical expression EXPR is false
+!!    EXPR    logical expression to evaluate to determine whether to return
+!!            STR1 when true, and STR2 when false.
+!!##RESULT
+!!     MERGE_STR  a trimmed string is returned that is otherwise the value
+!!                of STR1 or STR2, depending on the logical expression EXPR.
+!!
+!!##EXAMPLES
+!!
+!!   Sample Program:
+!!
+!!     program demo_merge_str
+!!     use M_strings, only : merge_str
+!!     implicit none
+!!     character(len=:), allocatable :: answer
+!!        answer=merge_str('first string', 'second string is longer',10.eq.10)
+!!        write(*,'("[",a,"]")') answer
+!!        answer=merge_str('first string', 'second string is longer',10.ne.10)
+!!        write(*,'("[",a,"]")') answer
+!!     end program demo_merge_str
+!!
+!!   Expected output
+!!
+!!     [first string]
+!!     [second string is longer]
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
@@ -3385,76 +3437,79 @@ end function merge_str
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-! 
-!    decodebase(3f) - [M_strings:BASE] convert whole number string in base [2-36] to base 10 number
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   logical function decodebase(string,basein,out10)
-! 
-!    character(len=*),intent(in)  :: string
-!    integer,intent(in)           :: basein
-!    integer,intent(out)          :: out10
-! DESCRIPTION
-! 
-!    Convert a numeric string representing a whole number in base BASEIN
-!    to base 10. The function returns FALSE if BASEIN is not in the range
-!    [2..36] or if string STRING contains invalid characters in base BASEIN
-!    or if result OUT10 is too big
-! 
-!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
-! 
-! OPTIONS
-!    string   input string. It represents a whole number in
-!             the base specified by BASEIN unless BASEIN is set
-!             to zero. When BASEIN is zero STRING is assumed to
-!             be of the form BASE#VALUE where BASE represents
-!             the function normally provided by BASEIN.
-!    basein   base of input string; either 0 or from 2 to 36.
-!    out10    output value in base 10
-! 
-! EXAMPLE
-!   Sample program:
-! 
-!    program demo_decodebase
-!    use M_strings, only : codebase, decodebase
-!    implicit none
-!    integer           :: ba,bd
-!    character(len=40) :: x,y
-!    integer           :: r
-! 
-!    print *,' BASE CONVERSION'
-!    write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
-!    write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
-!    INFINITE: do
-!       print *,''
-!       write(*,'("Enter number in start base: ")',advance='no'); read *, x
-!       if(x.eq.'0') exit INFINITE
-!       if(decodebase(x,bd,r)) then
-!          if(codebase(r,ba,y)) then
-!            write(*,'("In base ",I2,": ",A20)')  ba, y
-!          else
-!            print *,'Error in coding number.'
-!          endif
-!       else
-!          print *,'Error in decoding number.'
-!       endif
-!    enddo INFINITE
-! 
-!    end program demo_decodebase
-! 
-! AUTHOR
-!    John S. Urban
-! 
-!       Ref.: "Math matiques en Turbo-Pascal by
-!              M. Ducamp and A. Reverchon (2),
-!              Eyrolles, Paris, 1988".
-! 
-!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
-! 
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!
+!!    decodebase(3f) - [M_strings:BASE] convert whole number string in base [2-36] to base 10 number
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   logical function decodebase(string,basein,out10)
+!!
+!!    character(len=*),intent(in)  :: string
+!!    integer,intent(in)           :: basein
+!!    integer,intent(out)          :: out10
+!!##DESCRIPTION
+!!
+!!    Convert a numeric string representing a whole number in base BASEIN
+!!    to base 10. The function returns FALSE if BASEIN is not in the range
+!!    [2..36] or if string STRING contains invalid characters in base BASEIN
+!!    or if result OUT10 is too big
+!!
+!!    The letters A,B,...,Z represent 10,11,...,36 in the base > 10.
+!!
+!!##OPTIONS
+!!    string   input string. It represents a whole number in
+!!             the base specified by BASEIN unless BASEIN is set
+!!             to zero. When BASEIN is zero STRING is assumed to
+!!             be of the form BASE#VALUE where BASE represents
+!!             the function normally provided by BASEIN.
+!!    basein   base of input string; either 0 or from 2 to 36.
+!!    out10    output value in base 10
+!!
+!!##EXAMPLE
+!!
+!!   Sample program:
+!!
+!!     program demo_decodebase
+!!     use M_strings, only : codebase, decodebase
+!!     implicit none
+!!     integer           :: ba,bd
+!!     character(len=40) :: x,y
+!!     integer           :: r
+!!
+!!     print *,' BASE CONVERSION'
+!!     write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
+!!     write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
+!!     INFINITE: do
+!!        print *,''
+!!        write(*,'("Enter number in start base: ")',advance='no'); read *, x
+!!        if(x.eq.'0') exit INFINITE
+!!        if(decodebase(x,bd,r)) then
+!!           if(codebase(r,ba,y)) then
+!!             write(*,'("In base ",I2,": ",A20)')  ba, y
+!!           else
+!!             print *,'Error in coding number.'
+!!           endif
+!!        else
+!!           print *,'Error in decoding number.'
+!!        endif
+!!     enddo INFINITE
+!!
+!!     end program demo_decodebase
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!
+!!       Ref.: "Math matiques en Turbo-Pascal by
+!!              M. Ducamp and A. Reverchon (2),
+!!              Eyrolles, Paris, 1988".
+!!
+!!    based on a F90 Version By J-P Moreau (www.jpmoreau.fr)
+!!
+!!##LICENSE
+!!    Public Domain
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
@@ -3532,47 +3587,50 @@ end function decodebase
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!    function lenset(str,length) result(strout)
-! 
-!     character(len=*)                     :: str
-!     character(len=length)                :: strout
-!     integer,intent(in)                   :: length
-! DESCRIPTION
-!    lenset(3f) truncates a string or pads it with spaces to the specified
-!    length.
-! OPTIONS
-!    str     input string
-!    length  output string length
-! RESULTS
-!    strout  output string
-! EXAMPLE
-!    Sample Program:
-! 
-!     program demo_lenset
-!      use M_strings, only : lenset
-!      implicit none
-!      character(len=10)            :: string='abcdefghij'
-!      character(len=:),allocatable :: answer
-!         answer=lenset(string,5)
-!         write(*,'("[",a,"]")') answer
-!         answer=lenset(string,20)
-!         write(*,'("[",a,"]")') answer
-!     end program demo_lenset
-! 
-!    Expected output:
-! 
-!     [abcde]
-!     [abcdefghij          ]
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    function lenset(str,length) result(strout)
+!!
+!!     character(len=*)                     :: str
+!!     character(len=length)                :: strout
+!!     integer,intent(in)                   :: length
+!!##DESCRIPTION
+!!    lenset(3f) truncates a string or pads it with spaces to the specified
+!!    length.
+!!##OPTIONS
+!!    str     input string
+!!    length  output string length
+!!##RESULTS
+!!    strout  output string
+!!##EXAMPLE
+!!
+!!    Sample Program:
+!!
+!!     program demo_lenset
+!!      use M_strings, only : lenset
+!!      implicit none
+!!      character(len=10)            :: string='abcdefghij'
+!!      character(len=:),allocatable :: answer
+!!         answer=lenset(string,5)
+!!         write(*,'("[",a,"]")') answer
+!!         answer=lenset(string,20)
+!!         write(*,'("[",a,"]")') answer
+!!     end program demo_lenset
+!!
+!!    Expected output:
+!!
+!!     [abcde]
+!!     [abcdefghij          ]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 function lenset(line,length) result(strout)
 
 ! ident_31="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
@@ -3585,84 +3643,87 @@ end function lenset
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
-!      (LICENSE:PD)
-! 
-! SYNOPSIS
-!    subroutine value_to_string(value,chars[,ilen,ierr,fmt,trimz])
-! 
-!     character(len=*) :: chars  ! minimum of 23 characters required
-!     !--------
-!     ! VALUE may be any <em>one</em> of the following types:
-!     doubleprecision,intent(in)               :: value
-!     real,intent(in)                          :: value
-!     integer,intent(in)                       :: value
-!     logical,intent(in)                       :: value
-!     !--------
-!     character(len=*),intent(out)             :: chars
-!     integer,intent(out),optional             :: ilen
-!     integer,optional                         :: ierr
-!     character(len=*),intent(in),optional     :: fmt
-!     logical,intent(in)                       :: trimz
-! DESCRIPTION
-! 
-!    value_to_string(3f) returns a numeric representation of a numeric
-!    value in a string given a numeric value of type REAL, DOUBLEPRECISION,
-!    INTEGER or LOGICAL. It creates the string using internal writes. It
-!    then removes trailing zeros from non-zero values, and left-justifies
-!    the string.
-! 
-! OPTIONS
-!       VALUE   input value to be converted to a string
-!       FMT     You may specify a specific format that produces a string
-!               up to the length of CHARS; optional.
-!       TRIMZ   If a format is supplied the default is not to try to trim
-!               trailing zeros. Set TRIMZ to .true. to trim zeros from a
-!               string assumed to represent a simple numeric value.
-! 
-! RETURNS
-!       CHARS   returned string representing input value, must be at least
-!               23 characters long; or what is required by optional FMT if longer.
-!       ILEN    position of last non-blank character in returned string; optional.
-!       IERR    If not zero, error occurred; optional.
-! EXAMPLE
-!    Sample program:
-! 
-!      program demo_value_to_string
-!      use M_strings, only: value_to_string
-!      implicit none
-!      character(len=80) :: string
-!      integer           :: ilen
-!         call value_to_string(3.0/4.0,string,ilen)
-!         write(*,*) 'The value is [',string(:ilen),']'
-! 
-!         call value_to_string(3.0/4.0,string,ilen,fmt='')
-!         write(*,*) 'The value is [',string(:ilen),']'
-! 
-!         call value_to_string(3.0/4.0,string,ilen,fmt='("THE VALUE IS ",g0)')
-!         write(*,*) 'The value is [',string(:ilen),']'
-! 
-!         call value_to_string(1234,string,ilen)
-!         write(*,*) 'The value is [',string(:ilen),']'
-! 
-!         call value_to_string(1.0d0/3.0d0,string,ilen)
-!         write(*,*) 'The value is [',string(:ilen),']'
-! 
-!      end program demo_value_to_string
-! 
-!    Expected output
-! 
-!     The value is [0.75]
-!     The value is [      0.7500000000]
-!     The value is [THE VALUE IS .750000000]
-!     The value is [1234]
-!     The value is [0.33333333333333331]
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine value_to_string(value,chars[,ilen,ierr,fmt,trimz])
+!!
+!!     character(len=*) :: chars  ! minimum of 23 characters required
+!!     !--------
+!!     ! VALUE may be any <em>one</em> of the following types:
+!!     doubleprecision,intent(in)               :: value
+!!     real,intent(in)                          :: value
+!!     integer,intent(in)                       :: value
+!!     logical,intent(in)                       :: value
+!!     !--------
+!!     character(len=*),intent(out)             :: chars
+!!     integer,intent(out),optional             :: ilen
+!!     integer,optional                         :: ierr
+!!     character(len=*),intent(in),optional     :: fmt
+!!     logical,intent(in)                       :: trimz
+!!##DESCRIPTION
+!!
+!!    value_to_string(3f) returns a numeric representation of a numeric
+!!    value in a string given a numeric value of type REAL, DOUBLEPRECISION,
+!!    INTEGER or LOGICAL. It creates the string using internal writes. It
+!!    then removes trailing zeros from non-zero values, and left-justifies
+!!    the string.
+!!
+!!##OPTIONS
+!!       VALUE   input value to be converted to a string
+!!       FMT     You may specify a specific format that produces a string
+!!               up to the length of CHARS; optional.
+!!       TRIMZ   If a format is supplied the default is not to try to trim
+!!               trailing zeros. Set TRIMZ to .true. to trim zeros from a
+!!               string assumed to represent a simple numeric value.
+!!
+!!##RETURNS
+!!       CHARS   returned string representing input value, must be at least
+!!               23 characters long; or what is required by optional FMT if longer.
+!!       ILEN    position of last non-blank character in returned string; optional.
+!!       IERR    If not zero, error occurred; optional.
+!!##EXAMPLE
+!!
+!!    Sample program:
+!!
+!!      program demo_value_to_string
+!!      use M_strings, only: value_to_string
+!!      implicit none
+!!      character(len=80) :: string
+!!      integer           :: ilen
+!!         call value_to_string(3.0/4.0,string,ilen)
+!!         write(*,*) 'The value is [',string(:ilen),']'
+!!
+!!         call value_to_string(3.0/4.0,string,ilen,fmt='')
+!!         write(*,*) 'The value is [',string(:ilen),']'
+!!
+!!         call value_to_string(3.0/4.0,string,ilen,fmt='("THE VALUE IS ",g0)')
+!!         write(*,*) 'The value is [',string(:ilen),']'
+!!
+!!         call value_to_string(1234,string,ilen)
+!!         write(*,*) 'The value is [',string(:ilen),']'
+!!
+!!         call value_to_string(1.0d0/3.0d0,string,ilen)
+!!         write(*,*) 'The value is [',string(:ilen),']'
+!!
+!!      end program demo_value_to_string
+!!
+!!    Expected output
+!!
+!!     The value is [0.75]
+!!     The value is [      0.7500000000]
+!!     The value is [THE VALUE IS .750000000]
+!!     The value is [1234]
+!!     The value is [0.33333333333333331]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
 character(len=*),parameter::ident_40="@(#)M_strings::value_to_string(3fp): subroutine returns a string from a value"
@@ -3737,8 +3798,8 @@ character(len=1024)                      :: msg
    if(present(err)) then
       err=err_local
    elseif(err_local.ne.0)then
-      !! cannot currently do I/O from a function being called from I/O
-      !!write(ERROR_UNIT,'(a)')'*value_to_string* WARNING:['//trim(msg)//']'
+      !-! cannot currently do I/O from a function being called from I/O
+      !-!write(ERROR_UNIT,'(a)')'*value_to_string* WARNING:['//trim(msg)//']'
       chars=chars//' *value_to_string* WARNING:['//trim(msg)//']'
    endif
 
@@ -3746,36 +3807,39 @@ end subroutine value_to_string
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    trimzeros_(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
-!    (LICENSE:PD)
-! SYNOPSIS
-!    subroutine trimzeros_(str)
-! 
-!     character(len=*)  :: str
-! DESCRIPTION
-!    TRIMZEROS_(3f) deletes trailing zeros from a string representing a
-!    number. If the resulting string would end in a decimal point, one
-!    trailing zero is added.
-! OPTIONS
-!    str   input string will be assumed to be a numeric value and have trailing
-!          zeros removed
-! EXAMPLES
-!    Sample program:
-! 
-!       program demo_trimzeros_
-!       use M_strings, only : trimzeros_
-!       character(len=:),allocatable :: string
-!          write(*,*)trimzeros_('123.450000000000')
-!          write(*,*)trimzeros_('12345')
-!          write(*,*)trimzeros_('12345.')
-!          write(*,*)trimzeros_('12345.00e3')
-!       end program demo_trimzeros_
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    trimzeros_(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
+!!    (LICENSE:PD)
+!!##SYNOPSIS
+!!
+!!    subroutine trimzeros_(str)
+!!
+!!     character(len=*)  :: str
+!!##DESCRIPTION
+!!    TRIMZEROS_(3f) deletes trailing zeros from a string representing a
+!!    number. If the resulting string would end in a decimal point, one
+!!    trailing zero is added.
+!!##OPTIONS
+!!    str   input string will be assumed to be a numeric value and have trailing
+!!          zeros removed
+!!##EXAMPLES
+!!
+!!    Sample program:
+!!
+!!       program demo_trimzeros_
+!!       use M_strings, only : trimzeros_
+!!       character(len=:),allocatable :: string
+!!          write(*,*)trimzeros_('123.450000000000')
+!!          write(*,*)trimzeros_('12345')
+!!          write(*,*)trimzeros_('12345.')
+!!          write(*,*)trimzeros_('12345.00e3')
+!!       end program demo_trimzeros_
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine trimzeros_(string)
 
 ! ident_32="@(#)M_strings::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
@@ -3821,72 +3885,75 @@ end subroutine trimzeros_
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in string
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!    subroutine substitute(targetline,old,new,ierr,start,end)
-! 
-!     character(len=*)              :: targetline
-!     character(len=*),intent(in)   :: old
-!     character(len=*),intent(in)   :: new
-!     integer,intent(out),optional  :: ierr
-!     integer,intent(in),optional   :: start
-!     integer,intent(in),optional   :: end
-! DESCRIPTION
-!    Globally substitute one substring for another in string.
-! 
-! OPTIONS
-!     TARGETLINE  input line to be changed. Must be long enough to
-!                 hold altered output.
-!     OLD         substring to find and replace
-!     NEW         replacement for OLD substring
-!     IERR        error code. If IER = -1 bad directive, >= 0 then
-!                 count of changes made.
-!     START       sets the left margin to be scanned for OLD in
-!                 TARGETLINE.
-!     END         sets the right margin to be scanned for OLD in
-!                 TARGETLINE.
-! 
-! EXAMPLES
-!   Sample Program:
-! 
-!    program demo_substitute
-!    use M_strings, only : substitute
-!    implicit none
-!    ! must be long enough to hold changed line
-!    character(len=80) :: targetline
-! 
-!    targetline='this is the input string'
-!    write(*,*)'ORIGINAL    : '//trim(targetline)
-! 
-!    ! changes the input to 'THis is THe input string'
-!    call substitute(targetline,'th','TH')
-!    write(*,*)'th => TH    : '//trim(targetline)
-! 
-!    ! a null old substring means "at beginning of line"
-!    ! changes the input to 'BEFORE:this is the input string'
-!    call substitute(targetline,'','BEFORE:')
-!    write(*,*)'"" => BEFORE: '//trim(targetline)
-! 
-!    ! a null new string deletes occurrences of the old substring
-!    ! changes the input to 'ths s the nput strng'
-!    call substitute(targetline,'i','')
-!    write(*,*)'i => ""     : '//trim(targetline)
-! 
-!    end program demo_substitute
-! 
-!   Expected output
-! 
-!     ORIGINAL    : this is the input string
-!     th => TH    : THis is THe input string
-!     "" => BEFORE: BEFORE:THis is THe input string
-!     i => ""     : BEFORE:THs s THe nput strng
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in string
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine substitute(targetline,old,new,ierr,start,end)
+!!
+!!     character(len=*)              :: targetline
+!!     character(len=*),intent(in)   :: old
+!!     character(len=*),intent(in)   :: new
+!!     integer,intent(out),optional  :: ierr
+!!     integer,intent(in),optional   :: start
+!!     integer,intent(in),optional   :: end
+!!##DESCRIPTION
+!!    Globally substitute one substring for another in string.
+!!
+!!##OPTIONS
+!!     TARGETLINE  input line to be changed. Must be long enough to
+!!                 hold altered output.
+!!     OLD         substring to find and replace
+!!     NEW         replacement for OLD substring
+!!     IERR        error code. If IER = -1 bad directive, >= 0 then
+!!                 count of changes made.
+!!     START       sets the left margin to be scanned for OLD in
+!!                 TARGETLINE.
+!!     END         sets the right margin to be scanned for OLD in
+!!                 TARGETLINE.
+!!
+!!##EXAMPLES
+!!
+!!   Sample Program:
+!!
+!!     program demo_substitute
+!!     use M_strings, only : substitute
+!!     implicit none
+!!     ! must be long enough to hold changed line
+!!     character(len=80) :: targetline
+!!
+!!     targetline='this is the input string'
+!!     write(*,*)'ORIGINAL    : '//trim(targetline)
+!!
+!!     ! changes the input to 'THis is THe input string'
+!!     call substitute(targetline,'th','TH')
+!!     write(*,*)'th => TH    : '//trim(targetline)
+!!
+!!     ! a null old substring means "at beginning of line"
+!!     ! changes the input to 'BEFORE:this is the input string'
+!!     call substitute(targetline,'','BEFORE:')
+!!     write(*,*)'"" => BEFORE: '//trim(targetline)
+!!
+!!     ! a null new string deletes occurrences of the old substring
+!!     ! changes the input to 'ths s the nput strng'
+!!     call substitute(targetline,'i','')
+!!     write(*,*)'i => ""     : '//trim(targetline)
+!!
+!!     end program demo_substitute
+!!
+!!   Expected output
+!!
+!!     ORIGINAL    : this is the input string
+!!     th => TH    : THis is THe input string
+!!     "" => BEFORE: BEFORE:THis is THe input string
+!!     i => ""     : BEFORE:THs s THe nput strng
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine substitute(targetline,old,new,ierr,start,end)
 
 ! ident_33="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
@@ -3927,7 +3994,7 @@ integer                        :: ichar
    maxlengthout=len(targetline)                        ! max length of output string
    original_input_length=len_trim(targetline)          ! get non-blank length of input line
    dum1(:)=' '                                         ! initialize string to build output in
-   id=mr-ml                                            ! check for window option !! change to optional parameter(s)
+   id=mr-ml                                            ! check for window option !-! change to optional parameter(s)
 !-----------------------------------------------------------------------------------------------------------------------------------
    len_old=len(old)                                    ! length of old substring to be replaced
    len_new=len(new)                                    ! length of new substring to replace old substring
@@ -4011,123 +4078,126 @@ end subroutine substitute
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine locate(list,value,place,ier,errmsg)
-! 
-!    character(len=:)|doubleprecision|real|integer,allocatable :: list(:)
-!    character(len=*)|doubleprecision|real|integer,intent(in)  :: value
-!    integer, intent(out)                  :: PLACE
-! 
-!    integer, intent(out),optional         :: IER
-!    character(len=*),intent(out),optional :: ERRMSG
-! 
-! DESCRIPTION
-! 
-!    LOCATE(3f) finds the index where the VALUE is found or should
-!    be found in an array. The array must be sorted in descending
-!    order (highest at top). If VALUE is not found it returns the index
-!    where the name should be placed at with a negative sign.
-! 
-!    The array and list must be of the same type (CHARACTER, DOUBLEPRECISION,
-!    REAL,INTEGER)
-! 
-! OPTIONS
-! 
-!    VALUE         the value to locate in the list.
-!    LIST          is the list array.
-! 
-! RETURNS
-!    PLACE         is the subscript that the entry was found at if it is
-!                  greater than zero(0).
-! 
-!                  If PLACE is negative, the absolute value of
-!                  PLACE indicates the subscript value where the
-!                  new entry should be placed in order to keep the
-!                  list alphabetized.
-! 
-!    IER           is zero(0) if no error occurs.
-!                  If an error occurs and IER is not
-!                  present, the program is stopped.
-! 
-!    ERRMSG        description of any error
-! 
-! EXAMPLES
-! 
-!    Find if a string is in a sorted array, and insert the string into
-!    the list if it is not present ...
-! 
-!     program demo_locate
-!     use M_sort, only : sort_shell
-!     use M_list, only : locate
-!     implicit none
-!     character(len=:),allocatable  :: arr(:)
-!     integer                       :: i
-! 
-!     arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
-!     ! make sure sorted in descending order
-!     call sort_shell(arr,order='d')
-! 
-!     call update(arr,'b')
-!     call update(arr,'[')
-!     call update(arr,'c')
-!     call update(arr,'ZZ')
-!     call update(arr,'ZZZZ')
-!     call update(arr,'z')
-! 
-!     contains
-!     subroutine update(arr,string)
-!     character(len=:),allocatable :: arr(:)
-!     character(len=*)             :: string
-!     integer                      :: place, plus, ii, end
-!     ! find where string is or should be
-!     call locate(arr,string,place)
-!     write(*,*)'for "'//string//'" index is ',place, size(arr)
-!     ! if string was not found insert it
-!     if(place.lt.1)then
-!        plus=abs(place)
-!        ii=len(arr)
-!        end=size(arr)
-!        ! empty array
-!        if(end.eq.0)then
-!           arr=[character(len=ii) :: string ]
-!        ! put in front of array
-!        elseif(plus.eq.1)then
-!           arr=[character(len=ii) :: string, arr]
-!        ! put at end of array
-!        elseif(plus.eq.end)then
-!           arr=[character(len=ii) :: arr, string ]
-!        ! put in middle of array
-!        else
-!           arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
-!        endif
-!        ! show array
-!        write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-!     endif
-!     end subroutine update
-!     end program demo_locate
-! 
-!   Results:
-! 
-!     for "b" index is            2           5
-!     for "[" index is           -4           5
-!    SIZE=5 xxx,b,aaa,[,ZZZ,
-!     for "c" index is           -2           6
-!    SIZE=6 xxx,c,b,aaa,[,ZZZ,
-!     for "ZZ" index is           -7           7
-!    SIZE=7 xxx,c,b,aaa,[,ZZZ,,
-!     for "ZZZZ" index is           -6           8
-!    SIZE=8 xxx,c,b,aaa,[,ZZZZ,ZZZ,,
-!     for "z" index is           -1           9
-!    SIZE=9 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,,
-! 
-! AUTHOR
-!    1989,2017 John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine locate(list,value,place,ier,errmsg)
+!!
+!!    character(len=:)|doubleprecision|real|integer,allocatable :: list(:)
+!!    character(len=*)|doubleprecision|real|integer,intent(in)  :: value
+!!    integer, intent(out)                  :: PLACE
+!!
+!!    integer, intent(out),optional         :: IER
+!!    character(len=*),intent(out),optional :: ERRMSG
+!!
+!!##DESCRIPTION
+!!
+!!    LOCATE(3f) finds the index where the VALUE is found or should
+!!    be found in an array. The array must be sorted in descending
+!!    order (highest at top). If VALUE is not found it returns the index
+!!    where the name should be placed at with a negative sign.
+!!
+!!    The array and list must be of the same type (CHARACTER, DOUBLEPRECISION,
+!!    REAL,INTEGER)
+!!
+!!##OPTIONS
+!!
+!!    VALUE         the value to locate in the list.
+!!    LIST          is the list array.
+!!
+!!##RETURNS
+!!    PLACE         is the subscript that the entry was found at if it is
+!!                  greater than zero(0).
+!!
+!!                  If PLACE is negative, the absolute value of
+!!                  PLACE indicates the subscript value where the
+!!                  new entry should be placed in order to keep the
+!!                  list alphabetized.
+!!
+!!    IER           is zero(0) if no error occurs.
+!!                  If an error occurs and IER is not
+!!                  present, the program is stopped.
+!!
+!!    ERRMSG        description of any error
+!!
+!!##EXAMPLES
+!!
+!!
+!!    Find if a string is in a sorted array, and insert the string into
+!!    the list if it is not present ...
+!!
+!!     program demo_locate
+!!     use M_sort, only : sort_shell
+!!     use M_list, only : locate
+!!     implicit none
+!!     character(len=:),allocatable  :: arr(:)
+!!     integer                       :: i
+!!
+!!     arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+!!     ! make sure sorted in descending order
+!!     call sort_shell(arr,order='d')
+!!
+!!     call update(arr,'b')
+!!     call update(arr,'[')
+!!     call update(arr,'c')
+!!     call update(arr,'ZZ')
+!!     call update(arr,'ZZZZ')
+!!     call update(arr,'z')
+!!
+!!     contains
+!!     subroutine update(arr,string)
+!!     character(len=:),allocatable :: arr(:)
+!!     character(len=*)             :: string
+!!     integer                      :: place, plus, ii, end
+!!     ! find where string is or should be
+!!     call locate(arr,string,place)
+!!     write(*,*)'for "'//string//'" index is ',place, size(arr)
+!!     ! if string was not found insert it
+!!     if(place.lt.1)then
+!!        plus=abs(place)
+!!        ii=len(arr)
+!!        end=size(arr)
+!!        ! empty array
+!!        if(end.eq.0)then
+!!           arr=[character(len=ii) :: string ]
+!!        ! put in front of array
+!!        elseif(plus.eq.1)then
+!!           arr=[character(len=ii) :: string, arr]
+!!        ! put at end of array
+!!        elseif(plus.eq.end)then
+!!           arr=[character(len=ii) :: arr, string ]
+!!        ! put in middle of array
+!!        else
+!!           arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+!!        endif
+!!        ! show array
+!!        write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!     endif
+!!     end subroutine update
+!!     end program demo_locate
+!!
+!!   Results:
+!!
+!!     for "b" index is            2           5
+!!     for "[" index is           -4           5
+!!    SIZE=5 xxx,b,aaa,[,ZZZ,
+!!     for "c" index is           -2           6
+!!    SIZE=6 xxx,c,b,aaa,[,ZZZ,
+!!     for "ZZ" index is           -7           7
+!!    SIZE=7 xxx,c,b,aaa,[,ZZZ,,
+!!     for "ZZZZ" index is           -6           8
+!!    SIZE=8 xxx,c,b,aaa,[,ZZZZ,ZZZ,,
+!!     for "z" index is           -1           9
+!!    SIZE=9 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,,
+!!
+!!##AUTHOR
+!!    1989,2017 John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine locate_c(list,value,place,ier,errmsg)
 
 ! ident_34="@(#)M_list::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
@@ -4437,66 +4507,69 @@ end subroutine locate_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine remove(list,place)
-! 
-!    character(len=:)|doubleprecision|real|integer,intent(inout) :: list(:)
-!    integer, intent(out) :: PLACE
-! 
-! DESCRIPTION
-! 
-!    Remove a value from an allocatable array at the specified index.
-!    The array is assumed to be sorted in descending order. It may be of
-!    type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER.
-! 
-! OPTIONS
-! 
-!    list    is the list array.
-!    PLACE   is the subscript for the entry that should be removed
-! 
-! EXAMPLES
-! 
-!    Sample program
-! 
-!     program demo_remove
-!     use M_sort, only : sort_shell
-!     use M_list, only : locate, remove
-!     implicit none
-!     character(len=:),allocatable :: arr(:)
-!     integer                       :: i
-!     integer                       :: end
-! 
-!     arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
-!     ! make sure sorted in descending order
-!     call sort_shell(arr,order='d')
-! 
-!     end=size(arr)
-!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-!     call remove(arr,1)
-!     end=size(arr)
-!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-!     call remove(arr,4)
-!     end=size(arr)
-!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-! 
-!     end program demo_remove
-! 
-!   Results:
-! 
-!    Expected output
-! 
-!     SIZE=9 xxx,bb,b,b,ab,aaa,ZZZ,Z,,
-!     SIZE=8 bb,b,b,ab,aaa,ZZZ,Z,,
-!     SIZE=7 bb,b,b,aaa,ZZZ,Z,,
-! 
-! AUTHOR
-!    1989,2017 John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine remove(list,place)
+!!
+!!    character(len=:)|doubleprecision|real|integer,intent(inout) :: list(:)
+!!    integer, intent(out) :: PLACE
+!!
+!!##DESCRIPTION
+!!
+!!    Remove a value from an allocatable array at the specified index.
+!!    The array is assumed to be sorted in descending order. It may be of
+!!    type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER.
+!!
+!!##OPTIONS
+!!
+!!    list    is the list array.
+!!    PLACE   is the subscript for the entry that should be removed
+!!
+!!##EXAMPLES
+!!
+!!
+!!    Sample program
+!!
+!!     program demo_remove
+!!     use M_sort, only : sort_shell
+!!     use M_list, only : locate, remove
+!!     implicit none
+!!     character(len=:),allocatable :: arr(:)
+!!     integer                       :: i
+!!     integer                       :: end
+!!
+!!     arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
+!!     ! make sure sorted in descending order
+!!     call sort_shell(arr,order='d')
+!!
+!!     end=size(arr)
+!!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!     call remove(arr,1)
+!!     end=size(arr)
+!!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!     call remove(arr,4)
+!!     end=size(arr)
+!!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!
+!!     end program demo_remove
+!!
+!!   Results:
+!!
+!!    Expected output
+!!
+!!     SIZE=9 xxx,bb,b,b,ab,aaa,ZZZ,Z,,
+!!     SIZE=8 bb,b,b,ab,aaa,ZZZ,Z,,
+!!     SIZE=7 bb,b,b,aaa,ZZZ,Z,,
+!!
+!!##AUTHOR
+!!    1989,2017 John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine remove_c(list,place)
 
 ! ident_38="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
@@ -4596,96 +4669,99 @@ end subroutine remove_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    replace(3f) - [M_list] replace entry in a string array at specified position
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine replace(list,value,place)
-! 
-!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
-!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
-!    integer, intent(out)          :: PLACE
-! 
-! DESCRIPTION
-! 
-!    replace a value in an allocatable array at the specified index. Unless the
-!    array needs the string length to increase this is merely an assign of a value
-!    to an array element.
-! 
-!    The array may be of type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER>
-!    It is assumed to be sorted in descending order without duplicate values.
-! 
-!    The value and list must be of the same type.
-! 
-! OPTIONS
-! 
-!    VALUE         the value to place in the array
-!    LIST          is the array.
-!    PLACE         is the subscript that the entry should be placed at
-! 
-! EXAMPLES
-! 
-!   Replace key-value pairs in a dictionary
-! 
-!     program demo_replace
-!     use M_list, only  : insert, locate, replace
-!     ! Find if a key is in a list and insert it
-!     ! into the key list and value list if it is not present
-!     ! or replace the associated value if the key existed
-!     implicit none
-!     character(len=20)            :: key
-!     character(len=100)           :: val
-!     character(len=:),allocatable :: keywords(:)
-!     character(len=:),allocatable :: values(:)
-!     integer                      :: i
-!     integer                      :: place
-!     call update('b','value of b')
-!     call update('a','value of a')
-!     call update('c','value of c')
-!     call update('c','value of c again')
-!     call update('d','value of d')
-!     call update('a','value of a again')
-!     ! show array
-!     write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
-! 
-!     call locate(keywords,'a',place)
-!     if(place.gt.0)then
-!        write(*,*)'The value of "a" is',trim(values(place))
-!     else
-!        write(*,*)'"a" not found'
-!     endif
-! 
-!     contains
-!     subroutine update(key,val)
-!     character(len=*),intent(in)  :: key
-!     character(len=*),intent(in)  :: val
-!     integer                      :: place
-! 
-!     ! find where string is or should be
-!     call locate(keywords,key,place)
-!     ! if string was not found insert it
-!     if(place.lt.1)then
-!        call insert(keywords,key,abs(place))
-!        call insert(values,val,abs(place))
-!     else ! replace
-!        call replace(values,val,place)
-!     endif
-! 
-!     end subroutine update
-!    end program demo_replace
-! 
-!   Expected output
-! 
-!    d==>value of d
-!    c==>value of c again
-!    b==>value of b
-!    a==>value of a again
-! 
-! AUTHOR
-!    1989,2017 John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    replace(3f) - [M_list] replace entry in a string array at specified position
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine replace(list,value,place)
+!!
+!!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
+!!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
+!!    integer, intent(out)          :: PLACE
+!!
+!!##DESCRIPTION
+!!
+!!    replace a value in an allocatable array at the specified index. Unless the
+!!    array needs the string length to increase this is merely an assign of a value
+!!    to an array element.
+!!
+!!    The array may be of type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER>
+!!    It is assumed to be sorted in descending order without duplicate values.
+!!
+!!    The value and list must be of the same type.
+!!
+!!##OPTIONS
+!!
+!!    VALUE         the value to place in the array
+!!    LIST          is the array.
+!!    PLACE         is the subscript that the entry should be placed at
+!!
+!!##EXAMPLES
+!!
+!!
+!!   Replace key-value pairs in a dictionary
+!!
+!!     program demo_replace
+!!     use M_list, only  : insert, locate, replace
+!!     ! Find if a key is in a list and insert it
+!!     ! into the key list and value list if it is not present
+!!     ! or replace the associated value if the key existed
+!!     implicit none
+!!     character(len=20)            :: key
+!!     character(len=100)           :: val
+!!     character(len=:),allocatable :: keywords(:)
+!!     character(len=:),allocatable :: values(:)
+!!     integer                      :: i
+!!     integer                      :: place
+!!     call update('b','value of b')
+!!     call update('a','value of a')
+!!     call update('c','value of c')
+!!     call update('c','value of c again')
+!!     call update('d','value of d')
+!!     call update('a','value of a again')
+!!     ! show array
+!!     write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
+!!
+!!     call locate(keywords,'a',place)
+!!     if(place.gt.0)then
+!!        write(*,*)'The value of "a" is',trim(values(place))
+!!     else
+!!        write(*,*)'"a" not found'
+!!     endif
+!!
+!!     contains
+!!     subroutine update(key,val)
+!!     character(len=*),intent(in)  :: key
+!!     character(len=*),intent(in)  :: val
+!!     integer                      :: place
+!!
+!!     ! find where string is or should be
+!!     call locate(keywords,key,place)
+!!     ! if string was not found insert it
+!!     if(place.lt.1)then
+!!        call insert(keywords,key,abs(place))
+!!        call insert(values,val,abs(place))
+!!     else ! replace
+!!        call replace(values,val,place)
+!!     endif
+!!
+!!     end subroutine update
+!!    end program demo_replace
+!!
+!!   Expected output
+!!
+!!    d==>value of d
+!!    c==>value of c again
+!!    b==>value of b
+!!    a==>value of a again
+!!
+!!##AUTHOR
+!!    1989,2017 John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine replace_c(list,value,place)
 
 ! ident_43="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
@@ -4796,87 +4872,90 @@ end subroutine replace_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    insert(3f) - [M_list] insert entry into a string array at specified position
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine insert(list,value,place)
-! 
-!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
-!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
-!    integer,intent(in)    :: place
-! 
-! DESCRIPTION
-! 
-!    Insert a value into an allocatable array at the specified index.
-!    The list and value must be of the same type (CHARACTER, DOUBLEPRECISION,
-!    REAL, or INTEGER)
-! 
-! OPTIONS
-! 
-!    list    is the list array. Must be sorted in descending order.
-!    value   the value to place in the array
-!    PLACE   is the subscript that the entry should be placed at
-! 
-! EXAMPLES
-! 
-!    Find if a string is in a sorted array, and insert the string into
-!    the list if it is not present ...
-! 
-!     program demo_insert
-!     use M_sort, only : sort_shell
-!     use M_list, only : locate, insert
-!     implicit none
-!     character(len=:),allocatable :: arr(:)
-!     integer                       :: i
-! 
-!     arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
-!     ! make sure sorted in descending order
-!     call sort_shell(arr,order='d')
-!     ! add or replace values
-!     call update(arr,'b')
-!     call update(arr,'[')
-!     call update(arr,'c')
-!     call update(arr,'ZZ')
-!     call update(arr,'ZZZ')
-!     call update(arr,'ZZZZ')
-!     call update(arr,'')
-!     call update(arr,'z')
-! 
-!     contains
-!     subroutine update(arr,string)
-!     character(len=:),allocatable :: arr(:)
-!     character(len=*)             :: string
-!     integer                      :: place, end
-! 
-!     end=size(arr)
-!     ! find where string is or should be
-!     call locate(arr,string,place)
-!     ! if string was not found insert it
-!     if(place.lt.1)then
-!        call insert(arr,string,abs(place))
-!     endif
-!     ! show array
-!     end=size(arr)
-!     write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-! 
-!     end subroutine update
-!     end program demo_insert
-! 
-!   Results:
-! 
-!     array is now SIZE=5 xxx,b,aaa,ZZZ,,
-!     array is now SIZE=6 xxx,b,aaa,[,ZZZ,,
-!     array is now SIZE=7 xxx,c,b,aaa,[,ZZZ,,
-!     array is now SIZE=8 xxx,c,b,aaa,[,ZZZ,ZZ,,
-!     array is now SIZE=9 xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
-!     array is now SIZE=10 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
-! 
-! AUTHOR
-!    1989,2017 John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    insert(3f) - [M_list] insert entry into a string array at specified position
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine insert(list,value,place)
+!!
+!!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
+!!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
+!!    integer,intent(in)    :: place
+!!
+!!##DESCRIPTION
+!!
+!!    Insert a value into an allocatable array at the specified index.
+!!    The list and value must be of the same type (CHARACTER, DOUBLEPRECISION,
+!!    REAL, or INTEGER)
+!!
+!!##OPTIONS
+!!
+!!    list    is the list array. Must be sorted in descending order.
+!!    value   the value to place in the array
+!!    PLACE   is the subscript that the entry should be placed at
+!!
+!!##EXAMPLES
+!!
+!!
+!!    Find if a string is in a sorted array, and insert the string into
+!!    the list if it is not present ...
+!!
+!!     program demo_insert
+!!     use M_sort, only : sort_shell
+!!     use M_list, only : locate, insert
+!!     implicit none
+!!     character(len=:),allocatable :: arr(:)
+!!     integer                       :: i
+!!
+!!     arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+!!     ! make sure sorted in descending order
+!!     call sort_shell(arr,order='d')
+!!     ! add or replace values
+!!     call update(arr,'b')
+!!     call update(arr,'[')
+!!     call update(arr,'c')
+!!     call update(arr,'ZZ')
+!!     call update(arr,'ZZZ')
+!!     call update(arr,'ZZZZ')
+!!     call update(arr,'')
+!!     call update(arr,'z')
+!!
+!!     contains
+!!     subroutine update(arr,string)
+!!     character(len=:),allocatable :: arr(:)
+!!     character(len=*)             :: string
+!!     integer                      :: place, end
+!!
+!!     end=size(arr)
+!!     ! find where string is or should be
+!!     call locate(arr,string,place)
+!!     ! if string was not found insert it
+!!     if(place.lt.1)then
+!!        call insert(arr,string,abs(place))
+!!     endif
+!!     ! show array
+!!     end=size(arr)
+!!     write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+!!
+!!     end subroutine update
+!!     end program demo_insert
+!!
+!!   Results:
+!!
+!!     array is now SIZE=5 xxx,b,aaa,ZZZ,,
+!!     array is now SIZE=6 xxx,b,aaa,[,ZZZ,,
+!!     array is now SIZE=7 xxx,c,b,aaa,[,ZZZ,,
+!!     array is now SIZE=8 xxx,c,b,aaa,[,ZZZ,ZZ,,
+!!     array is now SIZE=9 xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
+!!     array is now SIZE=10 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,
+!!
+!!##AUTHOR
+!!    1989,2017 John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine insert_c(list,value,place)
 
 ! ident_48="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
@@ -5015,63 +5094,66 @@ end subroutine insert_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine dict_delete(key,dict)
-! 
-!    character(len=*),intent(in) :: key
-!    type(dictionary)            :: dict
-! 
-! DESCRIPTION
-! 
-!    Find if a string is in a sorted array, and delete the string
-!    from the dictionary if it is present.
-! 
-! OPTIONS
-! 
-!    KEY           the key name to find and delete from the dictionary.
-!    DICTIONARY    the dictionary.
-! 
-! EXAMPLES
-! 
-!    delete a key from a dictionary by name.
-! 
-!     program demo_dict_delete
-!     use M_list, only : dictionary
-!     implicit none
-!     type(dictionary) :: caps
-!     integer                       :: i
-!     call caps%set(caps,'A','aye')
-!     call caps%set(caps,'B','bee')
-!     call caps%set(caps,'C','see')
-!     call caps%set(caps,'D','dee')
-! 
-!     write(*,101)(trim(arr(i)),i=1,size(caps%keys)) ! show array
-!     call  caps%del(caps,'A')
-!     call  caps%del(caps,'C')
-!     call  caps%del(caps,'z')
-!     write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
-!     101 format (1x,*("[",a,"]",:,","))
-!     end program demo_dict_delete
-! 
-!    Results:
-! 
-!     [z],[xxx],[c],[b],[b],[aaa],[ZZZ],[ZZ]
-!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
-!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
-!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
-!     [z],[xxx],[aaa],[ZZZ],[ZZ]
-!     [z],[xxx],[aaa],[ZZZ]
-!     [z],[xxx],[aaa],[ZZZ]
-!     [xxx],[aaa],[ZZZ]
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine dict_delete(key,dict)
+!!
+!!    character(len=*),intent(in) :: key
+!!    type(dictionary)            :: dict
+!!
+!!##DESCRIPTION
+!!
+!!    Find if a string is in a sorted array, and delete the string
+!!    from the dictionary if it is present.
+!!
+!!##OPTIONS
+!!
+!!    KEY           the key name to find and delete from the dictionary.
+!!    DICTIONARY    the dictionary.
+!!
+!!##EXAMPLES
+!!
+!!
+!!    delete a key from a dictionary by name.
+!!
+!!     program demo_dict_delete
+!!     use M_list, only : dictionary
+!!     implicit none
+!!     type(dictionary) :: caps
+!!     integer                       :: i
+!!     call caps%set(caps,'A','aye')
+!!     call caps%set(caps,'B','bee')
+!!     call caps%set(caps,'C','see')
+!!     call caps%set(caps,'D','dee')
+!!
+!!     write(*,101)(trim(arr(i)),i=1,size(caps%keys)) ! show array
+!!     call  caps%del(caps,'A')
+!!     call  caps%del(caps,'C')
+!!     call  caps%del(caps,'z')
+!!     write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+!!     101 format (1x,*("[",a,"]",:,","))
+!!     end program demo_dict_delete
+!!
+!!    Results:
+!!
+!!     [z],[xxx],[c],[b],[b],[aaa],[ZZZ],[ZZ]
+!!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
+!!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
+!!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
+!!     [z],[xxx],[aaa],[ZZZ],[ZZ]
+!!     [z],[xxx],[aaa],[ZZZ]
+!!     [z],[xxx],[aaa],[ZZZ]
+!!     [xxx],[aaa],[ZZZ]
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine dict_delete(self,key)
 
 ! ident_53="@(#)M_list::dict_delete(3f): remove string from sorted allocatable string array if present"
@@ -5091,65 +5173,68 @@ end subroutine dict_delete
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given key
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine dict_get(dict,key,value)
-! 
-!    type(dictionary)            :: dict
-!    character(len=*),intent(in) :: key
-!    character(len=*),intent(in) :: VALUE
-! 
-! DESCRIPTION
-! 
-!    get a value given a key from a key-value dictionary
-! 
-!    If key is not found in dictionary , return a blank
-! 
-! OPTIONS
-! 
-!    DICT     is the dictionary.
-!    KEY      key name
-!    VALUE    value associated with key
-! 
-! EXAMPLES
-! 
-!     program demo_locate
-!     use M_list, only : dictionary
-!     implicit none
-!     type(dictionary)             :: table
-!     integer          :: i
-! 
-!     call table%set('A','value for A')
-!     call table%set('B','value for B')
-!     call table%set('C','value for C')
-!     call table%set('D','value for D')
-!     call table%set('E','value for E')
-!     call table%set('F','value for F')
-!     call table%set('G','value for G')
-!     write(*,*)table%get('A')
-!     write(*,*)table%get('B')
-!     write(*,*)table%get('C')
-!     write(*,*)table%get('D')
-!     write(*,*)table%get('E')
-!     write(*,*)table%get('F')
-!     write(*,*)table%get('G')
-!     write(*,*)table%get('H')
-!     end program demo_locate
-! 
-!    Results:
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given key
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine dict_get(dict,key,value)
+!!
+!!    type(dictionary)            :: dict
+!!    character(len=*),intent(in) :: key
+!!    character(len=*),intent(in) :: VALUE
+!!
+!!##DESCRIPTION
+!!
+!!    get a value given a key from a key-value dictionary
+!!
+!!    If key is not found in dictionary , return a blank
+!!
+!!##OPTIONS
+!!
+!!    DICT     is the dictionary.
+!!    KEY      key name
+!!    VALUE    value associated with key
+!!
+!!##EXAMPLES
+!!
+!!
+!!     program demo_locate
+!!     use M_list, only : dictionary
+!!     implicit none
+!!     type(dictionary)             :: table
+!!     integer          :: i
+!!
+!!     call table%set('A','value for A')
+!!     call table%set('B','value for B')
+!!     call table%set('C','value for C')
+!!     call table%set('D','value for D')
+!!     call table%set('E','value for E')
+!!     call table%set('F','value for F')
+!!     call table%set('G','value for G')
+!!     write(*,*)table%get('A')
+!!     write(*,*)table%get('B')
+!!     write(*,*)table%get('C')
+!!     write(*,*)table%get('D')
+!!     write(*,*)table%get('E')
+!!     write(*,*)table%get('F')
+!!     write(*,*)table%get('G')
+!!     write(*,*)table%get('H')
+!!     end program demo_locate
+!!
+!!    Results:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 function dict_get(self,key) result(value)
 
 ! ident_54="@(#)M_list::dict_get(3f): get value of key-value pair in dictionary, given key"
 
-!!class(dictionary),intent(inout) :: self
+!-!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
 character(len=*),intent(in)     :: key
 character(len=:),allocatable    :: value
@@ -5164,51 +5249,54 @@ end function dict_get
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-! NAME
-!    dict_add(3f) - [M_list] add or replace a key-value pair in a dictionary
-!    (LICENSE:PD)
-! 
-! SYNOPSIS
-!   subroutine dict_add(dict,key,value)
-! 
-!    type(dictionary)            :: dict
-!    character(len=*),intent(in) :: key
-!    character(len=*),intent(in) :: VALUE
-! 
-! DESCRIPTION
-!    Add or replace a key-value pair in a dictionary.
-! 
-! OPTIONS
-!    DICT     is the dictionary.
-!    key      key name
-!    VALUE    value associated with key
-! 
-! EXAMPLES
-!    If string is not found in a sorted array, insert the string
-! 
-!     program demo_add
-!     use M_list, only : dictionary
-!     implicit none
-!     type(dictionary) :: dict
-!     integer          :: i
-! 
-!     call dict%set('A','b')
-!     call dict%set('B','^')
-!     call dict%set('C',' ')
-!     call dict%set('D','c')
-!     call dict%set('E','ZZ')
-!     call dict%set('F','ZZZZ')
-!     call dict%set('G','z')
-!     call dict%set('A','new value for A')
-!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
-!     end program demo_add
-! 
-!    Results:
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
+!>
+!!##NAME
+!!    dict_add(3f) - [M_list] add or replace a key-value pair in a dictionary
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!   subroutine dict_add(dict,key,value)
+!!
+!!    type(dictionary)            :: dict
+!!    character(len=*),intent(in) :: key
+!!    character(len=*),intent(in) :: VALUE
+!!
+!!##DESCRIPTION
+!!    Add or replace a key-value pair in a dictionary.
+!!
+!!##OPTIONS
+!!    DICT     is the dictionary.
+!!    key      key name
+!!    VALUE    value associated with key
+!!
+!!##EXAMPLES
+!!
+!!    If string is not found in a sorted array, insert the string
+!!
+!!     program demo_add
+!!     use M_list, only : dictionary
+!!     implicit none
+!!     type(dictionary) :: dict
+!!     integer          :: i
+!!
+!!     call dict%set('A','b')
+!!     call dict%set('B','^')
+!!     call dict%set('C',' ')
+!!     call dict%set('D','c')
+!!     call dict%set('E','ZZ')
+!!     call dict%set('F','ZZZZ')
+!!     call dict%set('G','z')
+!!     call dict%set('A','new value for A')
+!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
+!!     end program demo_add
+!!
+!!    Results:
+!!
+!!##AUTHOR
+!!    John S. Urban
+!!##LICENSE
+!!    Public Domain
 subroutine dict_add(self,key,value)
 
 ! ident_55="@(#)M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required"

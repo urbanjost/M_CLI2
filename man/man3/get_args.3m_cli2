@@ -46,9 +46,6 @@ is used to determine the type of returned value
 for non-allocatable arrays the size of the array. For
 non-allocatable character variables the length of the
 variable.
-.RE
-.PP
-
 .SH EXAMPLE
 
 Sample program:

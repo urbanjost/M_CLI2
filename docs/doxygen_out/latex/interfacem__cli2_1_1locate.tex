@@ -1,0 +1,155 @@
+\hypertarget{interfacem__cli2_1_1locate}{}\section{m\+\_\+cli2\+:\+:locate Interface Reference}
+\label{interfacem__cli2_1_1locate}\index{m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_a59a1546b8eab776a0ba5594b6b90ae72}{locate\+\_\+c}} (list, value, place, ier, errmsg)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+locate(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_ac8d6a83fb2617b1a370d6f4142cfbf6b}{locate\+\_\+d}} (list, value, place, ier, errmsg)
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_a93368b61603fe74c498b1190a502c271}{locate\+\_\+r}} (list, value, place, ier, errmsg)
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_a4bc5036ad18af931624efb52459bdef3}{locate\+\_\+i}} (list, value, place, ier, errmsg)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__cli2_1_1locate_a59a1546b8eab776a0ba5594b6b90ae72}\label{interfacem__cli2_1_1locate_a59a1546b8eab776a0ba5594b6b90ae72}} 
+\index{m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}!locate\+\_\+c@{locate\+\_\+c}}
+\index{locate\+\_\+c@{locate\+\_\+c}!m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}}
+\subsubsection{\texorpdfstring{locate\+\_\+c()}{locate\_c()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::locate\+::locate\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+locate(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine locate(list,value,place,ier,errmsg)
+
+character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,allocatable \+:\+: list(\+:) character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: value integer, intent(out) \+:\+: P\+L\+A\+CE
+
+integer, intent(out),optional \+:\+: I\+ER character(len=$\ast$),intent(out),optional \+:\+: E\+R\+R\+M\+SG
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}LOCATE(3f) finds the index where the VALUE is found or should
+be found in an array. The array must be sorted in descending
+order (highest at top). If VALUE is not found it returns the index
+where the name should be placed at with a negative sign.
+
+The array and list must be of the same type (CHARACTER, DOUBLEPRECISION,
+REAL,INTEGER)
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}VALUE         the value to locate in the list.
+LIST          is the list array.
+\end{DoxyVerb}
+
+
+\subsubsection*{R\+E\+T\+U\+R\+NS}
+
+P\+L\+A\+CE is the subscript that the entry was found at if it is greater than zero(0).
+
+If P\+L\+A\+CE is negative, the absolute value of P\+L\+A\+CE indicates the subscript value where the new entry should be placed in order to keep the list alphabetized.
+
+I\+ER is zero(0) if no error occurs. If an error occurs and I\+ER is not present, the program is stopped.
+
+E\+R\+R\+M\+SG description of any error
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+\begin{DoxyVerb}Find if a string is in a sorted array, and insert the string into
+the list if it is not present ...
+
+ program demo_locate
+ use M_sort, only : sort_shell
+ use M_list, only : locate
+ implicit none
+ character(len=:),allocatable  :: arr(:)
+ integer                       :: i
+
+ arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+ ! make sure sorted in descending order
+ call sort_shell(arr,order='d')
+
+ call update(arr,'b')
+ call update(arr,'[')
+ call update(arr,'c')
+ call update(arr,'ZZ')
+ call update(arr,'ZZZZ')
+ call update(arr,'z')
+
+ contains
+ subroutine update(arr,string)
+ character(len=:),allocatable :: arr(:)
+ character(len=*)             :: string
+ integer                      :: place, plus, ii, end
+ ! find where string is or should be
+ call locate(arr,string,place)
+ write(*,*)'for "'//string//'" index is ',place, size(arr)
+ ! if string was not found insert it
+ if(place.lt.1)then
+    plus=abs(place)
+    ii=len(arr)
+    end=size(arr)
+    ! empty array
+    if(end.eq.0)then
+       arr=[character(len=ii) :: string ]
+    ! put in front of array
+    elseif(plus.eq.1)then
+       arr=[character(len=ii) :: string, arr]
+    ! put at end of array
+    elseif(plus.eq.end)then
+       arr=[character(len=ii) :: arr, string ]
+    ! put in middle of array
+    else
+       arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+    endif
+    ! show array
+    write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+ endif
+ end subroutine update
+ end program demo_locate
+\end{DoxyVerb}
+
+
+Results\+:
+
+for \char`\"{}b\char`\"{} index is 2 5 for \char`\"{}\mbox{[}\char`\"{} index is -\/4 5 S\+I\+ZE=5 xxx,b,aaa,\mbox{[},Z\+ZZ, for \char`\"{}c\char`\"{} index is -\/2 6 S\+I\+ZE=6 xxx,c,b,aaa,\mbox{[},Z\+ZZ, for \char`\"{}\+Z\+Z\char`\"{} index is -\/7 7 S\+I\+ZE=7 xxx,c,b,aaa,\mbox{[},Z\+ZZ,, for \char`\"{}\+Z\+Z\+Z\+Z\char`\"{} index is -\/6 8 S\+I\+ZE=8 xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,, for \char`\"{}z\char`\"{} index is -\/1 9 S\+I\+ZE=9 z,xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,,
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{interfacem__cli2_1_1locate_ac8d6a83fb2617b1a370d6f4142cfbf6b}\label{interfacem__cli2_1_1locate_ac8d6a83fb2617b1a370d6f4142cfbf6b}} 
+\index{m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}!locate\+\_\+d@{locate\+\_\+d}}
+\index{locate\+\_\+d@{locate\+\_\+d}!m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}}
+\subsubsection{\texorpdfstring{locate\+\_\+d()}{locate\_d()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::locate\+::locate\+\_\+d (\begin{DoxyParamCaption}\item[{doubleprecision, dimension(\+:), allocatable}]{list,  }\item[{doubleprecision, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__cli2_1_1locate_a4bc5036ad18af931624efb52459bdef3}\label{interfacem__cli2_1_1locate_a4bc5036ad18af931624efb52459bdef3}} 
+\index{m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}!locate\+\_\+i@{locate\+\_\+i}}
+\index{locate\+\_\+i@{locate\+\_\+i}!m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}}
+\subsubsection{\texorpdfstring{locate\+\_\+i()}{locate\_i()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::locate\+::locate\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__cli2_1_1locate_a93368b61603fe74c498b1190a502c271}\label{interfacem__cli2_1_1locate_a93368b61603fe74c498b1190a502c271}} 
+\index{m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}!locate\+\_\+r@{locate\+\_\+r}}
+\index{locate\+\_\+r@{locate\+\_\+r}!m\+\_\+cli2\+::locate@{m\+\_\+cli2\+::locate}}
+\subsubsection{\texorpdfstring{locate\+\_\+r()}{locate\_r()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::locate\+::locate\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{real, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/urbanjs/venus/\+V600/github/\+M\+\_\+\+C\+L\+I2/src/\mbox{\hyperlink{M__CLI2_8f90}{M\+\_\+\+C\+L\+I2.\+f90}}\end{DoxyCompactItemize}
