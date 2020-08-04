@@ -59,17 +59,53 @@ PLACE         is the subscript that the entry should be placed at
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Replace key-\/value pairs in a dictionary
+Replace key-\/value pairs in a dictionary \begin{DoxyVerb}program demo_replace
+use M_list, only  : insert, locate, replace
+! Find if a key is in a list and insert it
+! into the key list and value list if it is not present
+! or replace the associated value if the key existed
+implicit none
+character(len=20)            :: key
+character(len=100)           :: val
+character(len=:),allocatable :: keywords(:)
+character(len=:),allocatable :: values(:)
+integer                      :: i
+integer                      :: place
+call update('b','value of b')
+call update('a','value of a')
+call update('c','value of c')
+call update('c','value of c again')
+call update('d','value of d')
+call update('a','value of a again')
+! show array
+write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
 
-program demo\+\_\+replace use M\+\_\+list, only \+: insert, locate, replace ! Find if a key is in a list and insert it ! into the key list and value list if it is not present ! or replace the associated value if the key existed implicit none character(len=20) \+:\+: key character(len=100) \+:\+: val character(len=\+:),allocatable \+:\+: keywords(\+:) character(len=\+:),allocatable \+:\+: values(\+:) integer \+:\+: i integer \+:\+: place call update(\textquotesingle{}b\textquotesingle{},\textquotesingle{}value of b\textquotesingle{}) call update(\textquotesingle{}a\textquotesingle{},\textquotesingle{}value of a\textquotesingle{}) call update(\textquotesingle{}c\textquotesingle{},\textquotesingle{}value of c\textquotesingle{}) call update(\textquotesingle{}c\textquotesingle{},\textquotesingle{}value of c again\textquotesingle{}) call update(\textquotesingle{}d\textquotesingle{},\textquotesingle{}value of d\textquotesingle{}) call update(\textquotesingle{}a\textquotesingle{},\textquotesingle{}value of a again\textquotesingle{}) ! show array write($\ast$,\textquotesingle{}($\ast$(a,\char`\"{}==$>$\char`\"{},a,/))\textquotesingle{})(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
+call locate(keywords,'a',place)
+if(place.gt.0)then
+   write(*,*)'The value of "a" is',trim(values(place))
+else
+   write(*,*)'"a" not found'
+endif
 
-call locate(keywords,\textquotesingle{}a\textquotesingle{},place) if(place.\+gt.\+0)then write($\ast$,$\ast$)\textquotesingle{}The value of \char`\"{}a\char`\"{} is\textquotesingle{},trim(values(place)) else write($\ast$,$\ast$)\textquotesingle{}\char`\"{}a\char`\"{} not found\textquotesingle{} endif
+contains
+subroutine update(key,val)
+character(len=*),intent(in)  :: key
+character(len=*),intent(in)  :: val
+integer                      :: place
 
-contains subroutine update(key,val) character(len=$\ast$),intent(in) \+:\+: key character(len=$\ast$),intent(in) \+:\+: val integer \+:\+: place
+! find where string is or should be
+call locate(keywords,key,place)
+! if string was not found insert it
+if(place.lt.1)then
+   call insert(keywords,key,abs(place))
+   call insert(values,val,abs(place))
+else ! replace
+   call replace(values,val,place)
+endif
 
-! find where string is or should be call locate(keywords,key,place) ! if string was not found insert it if(place.\+lt.\+1)then call insert(keywords,key,abs(place)) call insert(values,val,abs(place)) else ! replace call replace(values,val,place) endif
-
-end subroutine update end program demo\+\_\+replace
+end subroutine update
+\end{DoxyVerb}
+ end program demo\+\_\+replace
 
 Expected output
 

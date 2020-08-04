@@ -50,9 +50,15 @@ C\+H\+A\+RS input string to read numeric value from \subsubsection*{R\+E\+T\+U\+
 
 V\+A\+LU numeric value returned. May be I\+N\+T\+E\+G\+ER, R\+E\+AL, or D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON. I\+E\+RR error flag (0 == no error) \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample Program\+:
-
-program demo\+\_\+string\+\_\+to\+\_\+value use M\+\_\+strings, only\+: \mbox{\hyperlink{interfacem__cli2_1_1string__to__value}{string\+\_\+to\+\_\+value}} character(len=80) \+:\+: string string=\textquotesingle{} -\/40.\+5e-\/2 \textquotesingle{} call string\+\_\+to\+\_\+value(string,value,ierr) write($\ast$,$\ast$) \textquotesingle{}value of string \mbox{[}\textquotesingle{}//trim(string)//\textquotesingle{}\mbox{]} is \textquotesingle{},value end program demo\+\_\+string\+\_\+to\+\_\+value \subsubsection*{A\+U\+T\+H\+OR}
+Sample Program\+: \begin{DoxyVerb} program demo_string_to_value
+ use M_strings, only: string_to_value
+ character(len=80) :: string
+    string=' -40.5e-2 '
+    call string_to_value(string,value,ierr)
+    write(*,*) 'value of string ['//trim(string)//'] is ',value
+ end program demo_string_to_value
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 

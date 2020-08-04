@@ -452,8 +452,48 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) </p
 <p>o if the keyword "--" is encountered the rest of the command arguments go into the character array "UNUSED".</p>
 <p>o values not matching a keyword go into the character array "UNUSED".</p>
 <h2>EXAMPLE</h2>
-<p>Sample program:</p>
-<p>program demo_set_args use M_CLI2, only : filenames=&gt;unnamed, set_args, <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>, unnamed implicit none integer :: i integer,parameter :: dp=kind(0.0d0) ! DEFINE ARGS real :: x, y, z real :: p(3) character(len=:),allocatable :: title logical :: l, lbig ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE ! o only quote strings ! o set all logical values to F or T. call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 &ndash;title "my title" &amp; &amp; -l F -L F &amp; &amp; &ndash;label " " &amp; &amp; ') ! ASSIGN VALUES TO ELEMENTS ! SCALARS call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('x',x) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('y',y) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('z',z) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('l',l) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('L',lbig) ! ALLOCATABLE STRING call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('title',title) ! NON-ALLOCATABLE ARRAYS ! for non-allocatable arrays pass size call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('p',p,size(p)) ! USE VALUES write(*,*)'x=',x write(*,*)'y=',y write(*,*)'z=',z write(*,*)'p=',p write(*,*)'title=',title write(*,*)'l=',l write(*,*)'L=',lbig if(size(filenames).gt.0)then write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames)) endif end program demo_set_args </p><h2>AUTHOR</h2>
+<p>Sample program: </p><pre class="fragment">program demo_set_args
+use M_CLI2,  only : filenames=&gt;unnamed, set_args, get_args, unnamed
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+!  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &amp;
+        &amp; -l F -L F &amp;
+        &amp; --label " " &amp;
+        &amp; ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args('p',p,size(p))
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+end program demo_set_args
+</pre> <h2>AUTHOR</h2>
 <p>John S. Urban, 2019 </p><h2>LICENSE</h2>
 <p>Public Domain </p><h2>NAME</h2>
 <p>get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments (LICENSE:PD)</p>
@@ -474,8 +514,52 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) </p
              non-allocatable character variables the length of the
              variable.
 </pre> <h2>EXAMPLE</h2>
-<p>Sample program:</p>
-<p>program demo_get_args use M_CLI2, only : filenames=&gt;unnamed, set_args, <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>, unnamed implicit none integer :: i integer,parameter :: dp=kind(0.0d0) ! DEFINE ARGS real :: x, y, z real :: p(3) character(len=:),allocatable :: title logical :: l, lbig ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE ! o only quote strings ! o set all logical values to F or T. call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 &ndash;title "my title" &amp; &amp; -l F -L F &amp; &amp; &ndash;label " " &amp; &amp; ') ! ASSIGN VALUES TO ELEMENTS ! SCALARS call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('x',x) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('y',y) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('z',z) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('l',l) call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('L',lbig) ! ALLOCATABLE STRING call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('title',title) ! NON-ALLOCATABLE ARRAYS ! for non-allocatable arrays pass size call <a class="el" href="interfacem__cli2_1_1get__args.html">get_args</a>('p',p,size(p)) ! USE VALUES write(*,*)'x=',x write(*,*)'y=',y write(*,*)'z=',z write(*,*)'p=',p write(*,*)'title=',title write(*,*)'l=',l write(*,*)'L=',lbig if(size(filenames).gt.0)then write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames)) endif if(size(unnamed).gt.0)then write (*,'(a)')'files:' write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed)) endif end program demo_get_args </p><h2>AUTHOR</h2>
+<p>Sample program: </p><pre class="fragment">program demo_get_args
+use M_CLI2,  only : filenames=&gt;unnamed, set_args, get_args, unnamed
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &amp;
+        &amp; -l F -L F  &amp;
+        &amp; --label " " &amp;
+        &amp; ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args('p',p,size(p))
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+if(size(unnamed).gt.0)then
+   write (*,'(a)')'files:'
+   write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+endif
+end program demo_get_args
+</pre> <h2>AUTHOR</h2>
 <p>John S. Urban, 2019 </p><h2>LICENSE</h2>
 <p>Public Domain </p>
 

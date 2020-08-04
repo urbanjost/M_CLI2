@@ -157,9 +157,49 @@ o values not matching a keyword go into the character array \char`\"{}\+U\+N\+U\
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+:
-
-program demo\+\_\+set\+\_\+args use M\+\_\+\+C\+L\+I2, only \+: filenames=$>$unnamed, set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed implicit none integer \+:\+: i integer,parameter \+:\+: dp=kind(0.\+0d0) ! D\+E\+F\+I\+NE A\+R\+GS real \+:\+: x, y, z real \+:\+: p(3) character(len=\+:),allocatable \+:\+: title logical \+:\+: l, lbig ! D\+E\+F\+I\+NE A\+ND P\+A\+R\+SE (TO S\+ET I\+N\+I\+T\+I\+AL V\+A\+L\+U\+ES) C\+O\+M\+M\+A\+ND L\+I\+NE ! o only quote strings ! o set all logical values to F or T. call set\+\_\+args(\textquotesingle{} -\/x 1 -\/y 2 -\/z 3 -\/p -\/1,-\/2,-\/3 --title \char`\"{}my title\char`\"{} \& \& -\/l F -\/L F \& \& --label \char`\"{} \char`\"{} \& \& \textquotesingle{}) ! A\+S\+S\+I\+GN V\+A\+L\+U\+ES TO E\+L\+E\+M\+E\+N\+TS ! S\+C\+A\+L\+A\+RS call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}x\textquotesingle{},x) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}y\textquotesingle{},y) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}z\textquotesingle{},z) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}l\textquotesingle{},l) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}L\textquotesingle{},lbig) ! A\+L\+L\+O\+C\+A\+T\+A\+B\+LE S\+T\+R\+I\+NG call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}title\textquotesingle{},title) ! N\+O\+N-\/\+A\+L\+L\+O\+C\+A\+T\+A\+B\+LE A\+R\+R\+A\+YS ! for non-\/allocatable arrays pass size call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}p\textquotesingle{},p,size(p)) ! U\+SE V\+A\+L\+U\+ES write($\ast$,$\ast$)\textquotesingle{}x=\textquotesingle{},x write($\ast$,$\ast$)\textquotesingle{}y=\textquotesingle{},y write($\ast$,$\ast$)\textquotesingle{}z=\textquotesingle{},z write($\ast$,$\ast$)\textquotesingle{}p=\textquotesingle{},p write($\ast$,$\ast$)\textquotesingle{}title=\textquotesingle{},title write($\ast$,$\ast$)\textquotesingle{}l=\textquotesingle{},l write($\ast$,$\ast$)\textquotesingle{}L=\textquotesingle{},lbig if(size(filenames).gt.\+0)then write($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{})(i,\textquotesingle{}\mbox{[}\textquotesingle{},filenames(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(filenames)) endif end program demo\+\_\+set\+\_\+args \subsubsection*{A\+U\+T\+H\+OR}
+Sample program\+: \begin{DoxyVerb}program demo_set_args
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+!  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+        & -l F -L F &
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args('p',p,size(p))
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+end program demo_set_args
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -195,9 +235,53 @@ get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
 \end{DoxyVerb}
  \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+:
-
-program demo\+\_\+get\+\_\+args use M\+\_\+\+C\+L\+I2, only \+: filenames=$>$unnamed, set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed implicit none integer \+:\+: i integer,parameter \+:\+: dp=kind(0.\+0d0) ! D\+E\+F\+I\+NE A\+R\+GS real \+:\+: x, y, z real \+:\+: p(3) character(len=\+:),allocatable \+:\+: title logical \+:\+: l, lbig ! D\+E\+F\+I\+NE A\+ND P\+A\+R\+SE (TO S\+ET I\+N\+I\+T\+I\+AL V\+A\+L\+U\+ES) C\+O\+M\+M\+A\+ND L\+I\+NE ! o only quote strings ! o set all logical values to F or T. call set\+\_\+args(\textquotesingle{} -\/x 1 -\/y 2 -\/z 3 -\/p -\/1,-\/2,-\/3 --title \char`\"{}my title\char`\"{} \& \& -\/l F -\/L F \& \& --label \char`\"{} \char`\"{} \& \& \textquotesingle{}) ! A\+S\+S\+I\+GN V\+A\+L\+U\+ES TO E\+L\+E\+M\+E\+N\+TS ! S\+C\+A\+L\+A\+RS call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}x\textquotesingle{},x) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}y\textquotesingle{},y) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}z\textquotesingle{},z) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}l\textquotesingle{},l) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}L\textquotesingle{},lbig) ! A\+L\+L\+O\+C\+A\+T\+A\+B\+LE S\+T\+R\+I\+NG call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}title\textquotesingle{},title) ! N\+O\+N-\/\+A\+L\+L\+O\+C\+A\+T\+A\+B\+LE A\+R\+R\+A\+YS ! for non-\/allocatable arrays pass size call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}p\textquotesingle{},p,size(p)) ! U\+SE V\+A\+L\+U\+ES write($\ast$,$\ast$)\textquotesingle{}x=\textquotesingle{},x write($\ast$,$\ast$)\textquotesingle{}y=\textquotesingle{},y write($\ast$,$\ast$)\textquotesingle{}z=\textquotesingle{},z write($\ast$,$\ast$)\textquotesingle{}p=\textquotesingle{},p write($\ast$,$\ast$)\textquotesingle{}title=\textquotesingle{},title write($\ast$,$\ast$)\textquotesingle{}l=\textquotesingle{},l write($\ast$,$\ast$)\textquotesingle{}L=\textquotesingle{},lbig if(size(filenames).gt.\+0)then write($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{})(i,\textquotesingle{}\mbox{[}\textquotesingle{},filenames(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(filenames)) endif if(size(unnamed).gt.\+0)then write ($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}files\+:\textquotesingle{} write ($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{}) (i,\textquotesingle{}\mbox{[}\textquotesingle{},unnamed(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(unnamed)) endif end program demo\+\_\+get\+\_\+args \subsubsection*{A\+U\+T\+H\+OR}
+Sample program\+: \begin{DoxyVerb}program demo_get_args
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+        & -l F -L F  &
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args('p',p,size(p))
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+if(size(unnamed).gt.0)then
+   write (*,'(a)')'files:'
+   write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+endif
+end program demo_get_args
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 

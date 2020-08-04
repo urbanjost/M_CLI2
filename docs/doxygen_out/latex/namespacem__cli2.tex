@@ -279,70 +279,68 @@ In this method a call is made to obtain the value for each argument.
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}Sample program using type conversion routines
-
- program demo_M_CLI2
- use M_CLI2,  only : filenames=>unnamed, set_args, get_args
- implicit none
- integer                      :: i
- integer,parameter            :: dp=kind(0.0d0)
- !
- ! DEFINE ARGS
- real                         :: x, y, z
- real                         :: p(3)
- real(kind=dp),allocatable    :: point(:)
- character(len=:),allocatable :: title
- character(len=40)            :: label
- logical                      :: l, lbig
- logical,allocatable          :: logicals(:)
- logical                      :: logi(3)
- !
- ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
- !   o only quote strings
- !   o set all logical values to F or T.
- call set_args('                         &
-         & -x 1 -y 2 -z 3                &
-         & -p -1 -2 -3                   &
-         & --point 11.11, 22.22, 33.33e0 &
-         & --title "my title" -l F -L F  &
-         & --logicals  F F F F F         &
-         & -logi F T F                   &
-         ! note space between quotes is required
-         & --label " " &
-         & ')
- ! ASSIGN VALUES TO ELEMENTS
- call get_args('x',x)         ! SCALARS
- call get_args('y',y)
- call get_args('z',z)
- call get_args('l',l)
- call get_args('L',lbig)
- call get_args('title',title) ! ALLOCATABLE STRING
- call get_args('point',point) ! ALLOCATABLE ARRAYS
- call get_args('logicals',logicals)
- !
- ! for NON-ALLOCATABLE VARIABLES
- call get_args('label',label,len(label)) ! for non-allocatable string pass length
- call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
- call get_args('logi',logi,size(logi))
- !
- ! USE VALUES
- write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
- write(*,*)'p=',p
- write(*,*)'point=',point
- write(*,*)'title=',title
- write(*,*)'label=',label
- write(*,*)'l=',l
- write(*,*)'L=',lbig
- write(*,*)'logicals=',logicals
- write(*,*)'logi=',logi
- !
- ! unnamed strings
- !
- if(size(filenames).gt.0)then
-    write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
- endif
- !
- end program demo_M_CLI2
+Sample program using type conversion routines \begin{DoxyVerb}program demo_M_CLI2
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+!
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+real(kind=dp),allocatable    :: point(:)
+character(len=:),allocatable :: title
+character(len=40)            :: label
+logical                      :: l, lbig
+logical,allocatable          :: logicals(:)
+logical                      :: logi(3)
+!
+! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args('                         &
+        & -x 1 -y 2 -z 3                &
+        & -p -1 -2 -3                   &
+        & --point 11.11, 22.22, 33.33e0 &
+        & --title "my title" -l F -L F  &
+        & --logicals  F F F F F         &
+        & -logi F T F                   &
+        ! note space between quotes is required
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+call get_args('x',x)         ! SCALARS
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+call get_args('title',title) ! ALLOCATABLE STRING
+call get_args('point',point) ! ALLOCATABLE ARRAYS
+call get_args('logicals',logicals)
+!
+! for NON-ALLOCATABLE VARIABLES
+call get_args('label',label,len(label)) ! for non-allocatable string pass length
+call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
+call get_args('logi',logi,size(logi))
+!
+! USE VALUES
+write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
+write(*,*)'p=',p
+write(*,*)'point=',point
+write(*,*)'title=',title
+write(*,*)'label=',label
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+write(*,*)'logicals=',logicals
+write(*,*)'logi=',logi
+!
+! unnamed strings
+!
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+!
+end program demo_M_CLI2
 \end{DoxyVerb}
 
 
@@ -409,9 +407,15 @@ C\+H\+A\+RS input string to read numeric value from \subsubsection*{R\+E\+T\+U\+
 
 V\+A\+LU numeric value returned. May be I\+N\+T\+E\+G\+ER, R\+E\+AL, or D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON. I\+E\+RR error flag (0 == no error) \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample Program\+:
-
-program demo\+\_\+string\+\_\+to\+\_\+value use M\+\_\+strings, only\+: \mbox{\hyperlink{interfacem__cli2_1_1string__to__value}{string\+\_\+to\+\_\+value}} character(len=80) \+:\+: string string=\textquotesingle{} -\/40.\+5e-\/2 \textquotesingle{} call string\+\_\+to\+\_\+value(string,value,ierr) write($\ast$,$\ast$) \textquotesingle{}value of string \mbox{[}\textquotesingle{}//trim(string)//\textquotesingle{}\mbox{]} is \textquotesingle{},value end program demo\+\_\+string\+\_\+to\+\_\+value \subsubsection*{A\+U\+T\+H\+OR}
+Sample Program\+: \begin{DoxyVerb} program demo_string_to_value
+ use M_strings, only: string_to_value
+ character(len=80) :: string
+    string=' -40.5e-2 '
+    call string_to_value(string,value,ierr)
+    write(*,*) 'value of string ['//trim(string)//'] is ',value
+ end program demo_string_to_value
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -483,41 +487,39 @@ If the optional text values are supplied they will be displayed by --help and --
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}Typical usage:
+Typical usage\+: \begin{DoxyVerb} program demo_commandline
+ use M_CLI2,  only : unnamed, commandline, check_commandline
+ implicit none
+ integer                      :: i
+ character(len=255)           :: message ! use for I/O error messages
+ character(len=:),allocatable :: readme  ! stores updated namelist
+ character(len=:),allocatable :: version_text(:), help_text(:)
+ integer                      :: ios
 
-  program demo_commandline
-  use M_CLI2,  only : unnamed, commandline, check_commandline
-  implicit none
-  integer                      :: i
-  character(len=255)           :: message ! use for I/O error messages
-  character(len=:),allocatable :: readme  ! stores updated namelist
-  character(len=:),allocatable :: version_text(:), help_text(:)
-  integer                      :: ios
+ real               :: x, y, z
+ logical            :: help, h
+ equivalence       (help,h)
+ namelist /args/ x,y,z,help,h
+ character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
 
-  real               :: x, y, z
-  logical            :: help, h
-  equivalence       (help,h)
-  namelist /args/ x,y,z,help,h
-  character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
+ ! initialize namelist from string and then update from command line
+ readme=commandline(cmd)
+ write (*,*)'README=',readme
+ read(readme,nml=args,iostat=ios,iomsg=message)
+ version_text=[character(len=80) :: "version 1.0","author: me"]
+ help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
+ call check_commandline(ios,message,help_text,version_text)
 
-  ! initialize namelist from string and then update from command line
-  readme=commandline(cmd)
-  write (*,*)'README=',readme
-  read(readme,nml=args,iostat=ios,iomsg=message)
-  version_text=[character(len=80) :: "version 1.0","author: me"]
-  help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
-  call check_commandline(ios,message,help_text,version_text)
-
-  ! all done cracking the command line
-  ! use the values in your program.
-  write (*,nml=args)
-  ! the optional unnamed values on the command line are
-  ! accumulated in the character array "UNNAMED"
-  if(size(unnamed).gt.0)then
-     write (*,'(a)')'files:'
-     write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
-  endif
-  end program demo_commandline \end{DoxyVerb}
+ ! all done cracking the command line
+ ! use the values in your program.
+ write (*,nml=args)
+ ! the optional unnamed values on the command line are
+ ! accumulated in the character array "UNNAMED"
+ if(size(unnamed).gt.0)then
+    write (*,'(a)')'files:'
+    write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+ endif
+ end program demo_commandline \end{DoxyVerb}
  
 
 References get(), journal(), passed\+\_\+in, print\+\_\+dictionary(), and substitute().
@@ -782,48 +784,48 @@ newline allocatable string returned
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Sample Program\+: \begin{DoxyVerb}program demo_replace_str
-use M_strings, only : replace_str
-implicit none
-character(len=:),allocatable :: targetline
+Sample Program\+: \begin{DoxyVerb}  program demo_replace_str
+  use M_strings, only : replace_str
+  implicit none
+  character(len=:),allocatable :: targetline
 
-targetline='this is the input string'
+  targetline='this is the input string'
 
-call testit('th','TH','THis is THe input string')
+  call testit('th','TH','THis is THe input string')
 
-! a null old substring means "at beginning of line"
-call testit('','BEFORE:', 'BEFORE:THis is THe input string')
+  ! a null old substring means "at beginning of line"
+  call testit('','BEFORE:', 'BEFORE:THis is THe input string')
 
-! a null new string deletes occurrences of the old substring
-call testit('i','', 'BEFORE:THs s THe nput strng')
+  ! a null new string deletes occurrences of the old substring
+  call testit('i','', 'BEFORE:THs s THe nput strng')
 
-write(*,*)'Examples of the use of RANGE='
+  write(*,*)'Examples of the use of RANGE='
 
-targetline=replace_str('a b ab baaa aaaa','a','A')
-write(*,*)'replace a with A ['//targetline//']'
+  targetline=replace_str('a b ab baaa aaaa','a','A')
+  write(*,*)'replace a with A ['//targetline//']'
 
-targetline=replace_str('a b ab baaa aaaa','a','A',range=[3,5])
-write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
+  targetline=replace_str('a b ab baaa aaaa','a','A',range=[3,5])
+  write(*,*)'replace a with A instances 3 to 5 ['//targetline//']'
 
-targetline=replace_str('a b ab baaa aaaa','a','',range=[3,5])
-write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
+  targetline=replace_str('a b ab baaa aaaa','a','',range=[3,5])
+  write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
 
-targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
-write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
+  targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+  write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
 
-contains
-subroutine testit(old,new,expected)
-character(len=*),intent(in) :: old,new,expected
-write(*,*)repeat('=',79)
-write(*,*)':STARTED ['//targetline//']'
-write(*,*)':OLD['//old//']', ' NEW['//new//']'
-targetline=replace_str(targetline,old,new)
-write(*,*)':GOT     ['//targetline//']'
-write(*,*)':EXPECTED['//expected//']'
-write(*,*)':TEST    [',targetline.eq.expected,']'
-end subroutine testit
+  contains
+  subroutine testit(old,new,expected)
+  character(len=*),intent(in) :: old,new,expected
+  write(*,*)repeat('=',79)
+  write(*,*)':STARTED ['//targetline//']'
+  write(*,*)':OLD['//old//']', ' NEW['//new//']'
+  targetline=replace_str(targetline,old,new)
+  write(*,*)':GOT     ['//targetline//']'
+  write(*,*)':EXPECTED['//expected//']'
+  write(*,*)':TEST    [',targetline.eq.expected,']'
+  end subroutine testit
 
-end program demo_replace_str
+  end program demo_replace_str
 \end{DoxyVerb}
 
 
@@ -890,13 +892,34 @@ string input string. It represents a whole number in the base specified by B\+A\
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+:
+Sample program\+: \begin{DoxyVerb} program demo_decodebase
+ use M_strings, only : codebase, decodebase
+ implicit none
+ integer           :: ba,bd
+ character(len=40) :: x,y
+ integer           :: r
 
-program demo\+\_\+decodebase use M\+\_\+strings, only \+: codebase, decodebase implicit none integer \+:\+: ba,bd character(len=40) \+:\+: x,y integer \+:\+: r
+ print *,' BASE CONVERSION'
+ write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
+ write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
+ INFINITE: do
+    print *,''
+    write(*,'("Enter number in start base: ")',advance='no'); read *, x
+    if(x.eq.'0') exit INFINITE
+    if(decodebase(x,bd,r)) then
+       if(codebase(r,ba,y)) then
+         write(*,'("In base ",I2,": ",A20)')  ba, y
+       else
+         print *,'Error in coding number.'
+       endif
+    else
+       print *,'Error in decoding number.'
+    endif
+ enddo INFINITE
 
-print $\ast$,\textquotesingle{} B\+A\+SE C\+O\+N\+V\+E\+R\+S\+I\+ON\textquotesingle{} write($\ast$,\textquotesingle{}(\char`\"{}\+Start   Base (2 to 36)\+: \char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{}); read $\ast$, bd write($\ast$,\textquotesingle{}(\char`\"{}\+Arrival Base (2 to 36)\+: \char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{}); read $\ast$, ba I\+N\+F\+I\+N\+I\+TE\+: do print $\ast$,\textquotesingle{}\textquotesingle{} write($\ast$,\textquotesingle{}(\char`\"{}\+Enter number in start base\+: \char`\"{})\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{}); read $\ast$, x if(x.\+eq.\textquotesingle{}0\textquotesingle{}) exit I\+N\+F\+I\+N\+I\+TE if(decodebase(x,bd,r)) then if(codebase(r,ba,y)) then write($\ast$,\textquotesingle{}(\char`\"{}\+In base \char`\"{},I2,\char`\"{}\+: \char`\"{},A20)\textquotesingle{}) ba, y else print $\ast$,\textquotesingle{}Error in coding number.\textquotesingle{} endif else print $\ast$,\textquotesingle{}Error in decoding number.\textquotesingle{} endif enddo I\+N\+F\+I\+N\+I\+TE
+ end program demo_decodebase
+\end{DoxyVerb}
 
-end program demo\+\_\+decodebase
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -954,28 +977,26 @@ D\+I\+CT is the dictionary. key key name V\+A\+L\+UE value associated with key
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb}If string is not found in a sorted array, insert the string
+If string is not found in a sorted array, insert the string \begin{DoxyVerb}program demo_add
+use M_list, only : dictionary
+implicit none
+type(dictionary) :: dict
+integer          :: i
 
- program demo_add
- use M_list, only : dictionary
- implicit none
- type(dictionary) :: dict
- integer          :: i
-
- call dict%set('A','b')
- call dict%set('B','^')
- call dict%set('C',' ')
- call dict%set('D','c')
- call dict%set('E','ZZ')
- call dict%set('F','ZZZZ')
- call dict%set('G','z')
- call dict%set('A','new value for A')
- write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
- end program demo_add
-
-Results:
+call dict%set('A','b')
+call dict%set('B','^')
+call dict%set('C',' ')
+call dict%set('D','c')
+call dict%set('E','ZZ')
+call dict%set('F','ZZZZ')
+call dict%set('G','z')
+call dict%set('A','new value for A')
+write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
+end program demo_add
 \end{DoxyVerb}
 
+
+Results\+:
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -1015,38 +1036,29 @@ DICTIONARY    the dictionary.
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb}delete a key from a dictionary by name.
+delete a key from a dictionary by name. \begin{DoxyVerb}program demo_dict_delete
+use M_list, only : dictionary
+implicit none
+type(dictionary) :: caps
+integer                       :: i
+call caps%set(caps,'A','aye')
+call caps%set(caps,'B','bee')
+call caps%set(caps,'C','see')
+call caps%set(caps,'D','dee')
 
- program demo_dict_delete
- use M_list, only : dictionary
- implicit none
- type(dictionary) :: caps
- integer                       :: i
- call caps%set(caps,'A','aye')
- call caps%set(caps,'B','bee')
- call caps%set(caps,'C','see')
- call caps%set(caps,'D','dee')
-
- write(*,101)(trim(arr(i)),i=1,size(caps%keys)) ! show array
- call  caps%del(caps,'A')
- call  caps%del(caps,'C')
- call  caps%del(caps,'z')
- write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
- 101 format (1x,*("[",a,"]",:,","))
- end program demo_dict_delete
-
-Results:
-
- [z],[xxx],[c],[b],[b],[aaa],[ZZZ],[ZZ]
- [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
- [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
- [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
- [z],[xxx],[aaa],[ZZZ],[ZZ]
- [z],[xxx],[aaa],[ZZZ]
- [z],[xxx],[aaa],[ZZZ]
- [xxx],[aaa],[ZZZ]
+write(*,101)(trim(arr(i)),i=1,size(caps%keys)) ! show array
+call  caps%del(caps,'A')
+call  caps%del(caps,'C')
+call  caps%del(caps,'z')
+write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
+101 format (1x,*("[",a,"]",:,","))
+end program demo_dict_delete
 \end{DoxyVerb}
 
+
+Results\+:
+
+\mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}c\mbox{]},\mbox{[}b\mbox{]},\mbox{[}b\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]},\mbox{[}ZZ\mbox{]} \mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}b\mbox{]},\mbox{[}b\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]},\mbox{[}ZZ\mbox{]} \mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}b\mbox{]},\mbox{[}b\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]},\mbox{[}ZZ\mbox{]} \mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}b\mbox{]},\mbox{[}b\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]},\mbox{[}ZZ\mbox{]} \mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]},\mbox{[}ZZ\mbox{]} \mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]} \mbox{[}z\mbox{]},\mbox{[}xxx\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]} \mbox{[}xxx\mbox{]},\mbox{[}aaa\mbox{]},\mbox{[}Z\+ZZ\mbox{]}
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -1088,32 +1100,32 @@ VALUE    value associated with key
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb} program demo_locate
- use M_list, only : dictionary
- implicit none
- type(dictionary)             :: table
- integer          :: i
+Sample program \begin{DoxyVerb}program demo_locate
+use M_list, only : dictionary
+implicit none
+type(dictionary)             :: table
+integer          :: i
 
- call table%set('A','value for A')
- call table%set('B','value for B')
- call table%set('C','value for C')
- call table%set('D','value for D')
- call table%set('E','value for E')
- call table%set('F','value for F')
- call table%set('G','value for G')
- write(*,*)table%get('A')
- write(*,*)table%get('B')
- write(*,*)table%get('C')
- write(*,*)table%get('D')
- write(*,*)table%get('E')
- write(*,*)table%get('F')
- write(*,*)table%get('G')
- write(*,*)table%get('H')
- end program demo_locate
-
-Results:
+call table%set('A','value for A')
+call table%set('B','value for B')
+call table%set('C','value for C')
+call table%set('D','value for D')
+call table%set('E','value for E')
+call table%set('F','value for F')
+call table%set('G','value for G')
+write(*,*)table%get('A')
+write(*,*)table%get('B')
+write(*,*)table%get('C')
+write(*,*)table%get('D')
+write(*,*)table%get('E')
+write(*,*)table%get('F')
+write(*,*)table%get('G')
+write(*,*)table%get('H')
+end program demo_locate
 \end{DoxyVerb}
 
+
+Results\+:
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -1405,9 +1417,49 @@ o values not matching a keyword go into the character array \char`\"{}\+U\+N\+U\
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+:
-
-program demo\+\_\+set\+\_\+args use M\+\_\+\+C\+L\+I2, only \+: filenames=$>$unnamed, set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed implicit none integer \+:\+: i integer,parameter \+:\+: dp=kind(0.\+0d0) ! D\+E\+F\+I\+NE A\+R\+GS real \+:\+: x, y, z real \+:\+: p(3) character(len=\+:),allocatable \+:\+: title logical \+:\+: l, lbig ! D\+E\+F\+I\+NE A\+ND P\+A\+R\+SE (TO S\+ET I\+N\+I\+T\+I\+AL V\+A\+L\+U\+ES) C\+O\+M\+M\+A\+ND L\+I\+NE ! o only quote strings ! o set all logical values to F or T. call set\+\_\+args(\textquotesingle{} -\/x 1 -\/y 2 -\/z 3 -\/p -\/1,-\/2,-\/3 --title \char`\"{}my title\char`\"{} \& \& -\/l F -\/L F \& \& --label \char`\"{} \char`\"{} \& \& \textquotesingle{}) ! A\+S\+S\+I\+GN V\+A\+L\+U\+ES TO E\+L\+E\+M\+E\+N\+TS ! S\+C\+A\+L\+A\+RS call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}x\textquotesingle{},x) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}y\textquotesingle{},y) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}z\textquotesingle{},z) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}l\textquotesingle{},l) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}L\textquotesingle{},lbig) ! A\+L\+L\+O\+C\+A\+T\+A\+B\+LE S\+T\+R\+I\+NG call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}title\textquotesingle{},title) ! N\+O\+N-\/\+A\+L\+L\+O\+C\+A\+T\+A\+B\+LE A\+R\+R\+A\+YS ! for non-\/allocatable arrays pass size call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}p\textquotesingle{},p,size(p)) ! U\+SE V\+A\+L\+U\+ES write($\ast$,$\ast$)\textquotesingle{}x=\textquotesingle{},x write($\ast$,$\ast$)\textquotesingle{}y=\textquotesingle{},y write($\ast$,$\ast$)\textquotesingle{}z=\textquotesingle{},z write($\ast$,$\ast$)\textquotesingle{}p=\textquotesingle{},p write($\ast$,$\ast$)\textquotesingle{}title=\textquotesingle{},title write($\ast$,$\ast$)\textquotesingle{}l=\textquotesingle{},l write($\ast$,$\ast$)\textquotesingle{}L=\textquotesingle{},lbig if(size(filenames).gt.\+0)then write($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{})(i,\textquotesingle{}\mbox{[}\textquotesingle{},filenames(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(filenames)) endif end program demo\+\_\+set\+\_\+args \subsubsection*{A\+U\+T\+H\+OR}
+Sample program\+: \begin{DoxyVerb}program demo_set_args
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+!  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+        & -l F -L F &
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args('p',p,size(p))
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+end program demo_set_args
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -1443,9 +1495,53 @@ get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
 \end{DoxyVerb}
  \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+:
-
-program demo\+\_\+get\+\_\+args use M\+\_\+\+C\+L\+I2, only \+: filenames=$>$unnamed, set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed implicit none integer \+:\+: i integer,parameter \+:\+: dp=kind(0.\+0d0) ! D\+E\+F\+I\+NE A\+R\+GS real \+:\+: x, y, z real \+:\+: p(3) character(len=\+:),allocatable \+:\+: title logical \+:\+: l, lbig ! D\+E\+F\+I\+NE A\+ND P\+A\+R\+SE (TO S\+ET I\+N\+I\+T\+I\+AL V\+A\+L\+U\+ES) C\+O\+M\+M\+A\+ND L\+I\+NE ! o only quote strings ! o set all logical values to F or T. call set\+\_\+args(\textquotesingle{} -\/x 1 -\/y 2 -\/z 3 -\/p -\/1,-\/2,-\/3 --title \char`\"{}my title\char`\"{} \& \& -\/l F -\/L F \& \& --label \char`\"{} \char`\"{} \& \& \textquotesingle{}) ! A\+S\+S\+I\+GN V\+A\+L\+U\+ES TO E\+L\+E\+M\+E\+N\+TS ! S\+C\+A\+L\+A\+RS call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}x\textquotesingle{},x) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}y\textquotesingle{},y) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}z\textquotesingle{},z) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}l\textquotesingle{},l) call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}L\textquotesingle{},lbig) ! A\+L\+L\+O\+C\+A\+T\+A\+B\+LE S\+T\+R\+I\+NG call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}title\textquotesingle{},title) ! N\+O\+N-\/\+A\+L\+L\+O\+C\+A\+T\+A\+B\+LE A\+R\+R\+A\+YS ! for non-\/allocatable arrays pass size call \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}(\textquotesingle{}p\textquotesingle{},p,size(p)) ! U\+SE V\+A\+L\+U\+ES write($\ast$,$\ast$)\textquotesingle{}x=\textquotesingle{},x write($\ast$,$\ast$)\textquotesingle{}y=\textquotesingle{},y write($\ast$,$\ast$)\textquotesingle{}z=\textquotesingle{},z write($\ast$,$\ast$)\textquotesingle{}p=\textquotesingle{},p write($\ast$,$\ast$)\textquotesingle{}title=\textquotesingle{},title write($\ast$,$\ast$)\textquotesingle{}l=\textquotesingle{},l write($\ast$,$\ast$)\textquotesingle{}L=\textquotesingle{},lbig if(size(filenames).gt.\+0)then write($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{})(i,\textquotesingle{}\mbox{[}\textquotesingle{},filenames(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(filenames)) endif if(size(unnamed).gt.\+0)then write ($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}files\+:\textquotesingle{} write ($\ast$,\textquotesingle{}(i6.\+6,3a)\textquotesingle{}) (i,\textquotesingle{}\mbox{[}\textquotesingle{},unnamed(i),\textquotesingle{}\mbox{]}\textquotesingle{},i=1,size(unnamed)) endif end program demo\+\_\+get\+\_\+args \subsubsection*{A\+U\+T\+H\+OR}
+Sample program\+: \begin{DoxyVerb}program demo_get_args
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+        & -l F -L F  &
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args('p',p,size(p))
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+if(size(unnamed).gt.0)then
+   write (*,'(a)')'files:'
+   write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+endif
+end program demo_get_args
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -1680,9 +1776,16 @@ O\+U\+T\+S\+TR returned string representing input value,
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample Program\+:
+Sample Program\+: \begin{DoxyVerb}program demo_v2s
+use M_strings, only: v2s
+write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
+write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
+write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
+write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
+write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
+end program demo_v2s
+\end{DoxyVerb}
 
-program demo\+\_\+v2s use M\+\_\+strings, only\+: \mbox{\hyperlink{interfacem__cli2_1_1v2s}{v2s}} write($\ast$,$\ast$) \textquotesingle{}The value of 3.\+0/4.0 is \mbox{[}\textquotesingle{}//v2s(3.\+0/4.0)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of 1234 is \mbox{[}\textquotesingle{}//v2s(1234)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of 0d0 is \mbox{[}\textquotesingle{}//v2s(0d0)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of .false. is \mbox{[}\textquotesingle{}//v2s(.false.)//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$) \textquotesingle{}The value of .true. is \mbox{[}\textquotesingle{}//v2s(.true.)//\textquotesingle{}\mbox{]}\textquotesingle{} end program demo\+\_\+v2s
 
 Expected output
 
@@ -1739,48 +1842,45 @@ PLACE   is the subscript that the entry should be placed at
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb}Find if a string is in a sorted array, and insert the string into
-the list if it is not present ...
+Find if a string is in a sorted array, and insert the string into the list if it is not present ... \begin{DoxyVerb}program demo_insert
+use M_sort, only : sort_shell
+use M_list, only : locate, insert
+implicit none
+character(len=:),allocatable :: arr(:)
+integer                       :: i
 
- program demo_insert
- use M_sort, only : sort_shell
- use M_list, only : locate, insert
- implicit none
- character(len=:),allocatable :: arr(:)
- integer                       :: i
+arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
+! add or replace values
+call update(arr,'b')
+call update(arr,'[')
+call update(arr,'c')
+call update(arr,'ZZ')
+call update(arr,'ZZZ')
+call update(arr,'ZZZZ')
+call update(arr,'')
+call update(arr,'z')
 
- arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
- ! make sure sorted in descending order
- call sort_shell(arr,order='d')
- ! add or replace values
- call update(arr,'b')
- call update(arr,'[')
- call update(arr,'c')
- call update(arr,'ZZ')
- call update(arr,'ZZZ')
- call update(arr,'ZZZZ')
- call update(arr,'')
- call update(arr,'z')
+contains
+subroutine update(arr,string)
+character(len=:),allocatable :: arr(:)
+character(len=*)             :: string
+integer                      :: place, end
 
- contains
- subroutine update(arr,string)
- character(len=:),allocatable :: arr(:)
- character(len=*)             :: string
- integer                      :: place, end
+end=size(arr)
+! find where string is or should be
+call locate(arr,string,place)
+! if string was not found insert it
+if(place.lt.1)then
+   call insert(arr,string,abs(place))
+endif
+! show array
+end=size(arr)
+write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
 
- end=size(arr)
- ! find where string is or should be
- call locate(arr,string,place)
- ! if string was not found insert it
- if(place.lt.1)then
-    call insert(arr,string,abs(place))
- endif
- ! show array
- end=size(arr)
- write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-
- end subroutine update
- end program demo_insert
+end subroutine update
+end program demo_insert
 \end{DoxyVerb}
 
 
@@ -1870,25 +1970,22 @@ str input string length output string length \subsubsection*{R\+E\+S\+U\+L\+TS}
 
 strout output string \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}Sample Program:
-
- program demo_lenset
-  use M_strings, only : lenset
-  implicit none
-  character(len=10)            :: string='abcdefghij'
-  character(len=:),allocatable :: answer
-     answer=lenset(string,5)
-     write(*,'("[",a,"]")') answer
-     answer=lenset(string,20)
-     write(*,'("[",a,"]")') answer
- end program demo_lenset
-
-Expected output:
-
- [abcde]
- [abcdefghij          ]
+Sample Program\+: \begin{DoxyVerb}program demo_lenset
+ use M_strings, only : lenset
+ implicit none
+ character(len=10)            :: string='abcdefghij'
+ character(len=:),allocatable :: answer
+    answer=lenset(string,5)
+    write(*,'("[",a,"]")') answer
+    answer=lenset(string,20)
+    write(*,'("[",a,"]")') answer
+end program demo_lenset
 \end{DoxyVerb}
 
+
+Expected output\+:
+
+\mbox{[}abcde\mbox{]} \mbox{[}abcdefghij \mbox{]}
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -1952,58 +2049,55 @@ E\+R\+R\+M\+SG description of any error
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb}Find if a string is in a sorted array, and insert the string into
-the list if it is not present ...
+Find if a string is in a sorted array, and insert the string into the list if it is not present ... \begin{DoxyVerb}program demo_locate
+use M_sort, only : sort_shell
+use M_list, only : locate
+implicit none
+character(len=:),allocatable  :: arr(:)
+integer                       :: i
 
- program demo_locate
- use M_sort, only : sort_shell
- use M_list, only : locate
- implicit none
- character(len=:),allocatable  :: arr(:)
- integer                       :: i
+arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
 
- arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
- ! make sure sorted in descending order
- call sort_shell(arr,order='d')
+call update(arr,'b')
+call update(arr,'[')
+call update(arr,'c')
+call update(arr,'ZZ')
+call update(arr,'ZZZZ')
+call update(arr,'z')
 
- call update(arr,'b')
- call update(arr,'[')
- call update(arr,'c')
- call update(arr,'ZZ')
- call update(arr,'ZZZZ')
- call update(arr,'z')
-
- contains
- subroutine update(arr,string)
- character(len=:),allocatable :: arr(:)
- character(len=*)             :: string
- integer                      :: place, plus, ii, end
- ! find where string is or should be
- call locate(arr,string,place)
- write(*,*)'for "'//string//'" index is ',place, size(arr)
- ! if string was not found insert it
- if(place.lt.1)then
-    plus=abs(place)
-    ii=len(arr)
-    end=size(arr)
-    ! empty array
-    if(end.eq.0)then
-       arr=[character(len=ii) :: string ]
-    ! put in front of array
-    elseif(plus.eq.1)then
-       arr=[character(len=ii) :: string, arr]
-    ! put at end of array
-    elseif(plus.eq.end)then
-       arr=[character(len=ii) :: arr, string ]
-    ! put in middle of array
-    else
-       arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
-    endif
-    ! show array
-    write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
- endif
- end subroutine update
- end program demo_locate
+contains
+subroutine update(arr,string)
+character(len=:),allocatable :: arr(:)
+character(len=*)             :: string
+integer                      :: place, plus, ii, end
+! find where string is or should be
+call locate(arr,string,place)
+write(*,*)'for "'//string//'" index is ',place, size(arr)
+! if string was not found insert it
+if(place.lt.1)then
+   plus=abs(place)
+   ii=len(arr)
+   end=size(arr)
+   ! empty array
+   if(end.eq.0)then
+      arr=[character(len=ii) :: string ]
+   ! put in front of array
+   elseif(plus.eq.1)then
+      arr=[character(len=ii) :: string, arr]
+   ! put at end of array
+   elseif(plus.eq.end)then
+      arr=[character(len=ii) :: arr, string ]
+   ! put in middle of array
+   else
+      arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+   endif
+   ! show array
+   write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+endif
+end subroutine update
+end program demo_locate
 \end{DoxyVerb}
 
 
@@ -2055,9 +2149,12 @@ length of longest argument on command line. Useful when allocating storage for h
 
 longest\+\_\+command\+\_\+argument length of longest command argument \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program
-
-program demo\+\_\+longest\+\_\+command\+\_\+argument use M\+\_\+args, only \+: longest\+\_\+command\+\_\+argument write($\ast$,$\ast$)\textquotesingle{}longest argument is \textquotesingle{},\mbox{\hyperlink{namespacem__cli2_a7240f12031027172b87fde623bd77958}{longest\+\_\+command\+\_\+argument()}} end program demo\+\_\+longest\+\_\+command\+\_\+argument \subsubsection*{A\+U\+T\+H\+OR}
+Sample program \begin{DoxyVerb} program demo_longest_command_argument
+ use M_args, only : longest_command_argument
+    write(*,*)'longest argument is ',longest_command_argument()
+ end program demo_longest_command_argument
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -2106,23 +2203,20 @@ The terms \char`\"{}uppercase\char`\"{} and \char`\"{}lowercase\char`\"{} date b
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}Sample program:
+Sample program\+: \begin{DoxyVerb}  program demo_lower
+  use M_strings, only: lower
+  implicit none
+  character(len=:),allocatable  :: s
+     s=' ABCDEFG abcdefg '
+     write(*,*) 'mixed-case input string is ....',s
+     write(*,*) 'lower-case output string is ...',lower(s)
+  end program demo_lower
+\end{DoxyVerb}
 
-   program demo_lower
-   use M_strings, only: lower
-   implicit none
-   character(len=:),allocatable  :: s
-      s=' ABCDEFG abcdefg '
-      write(*,*) 'mixed-case input string is ....',s
-      write(*,*) 'lower-case output string is ...',lower(s)
-   end program demo_lower
 
 Expected output
 
-   mixed-case input string is .... ABCDEFG abcdefg
-   lower-case output string is ... abcdefg abcdefg
-\end{DoxyVerb}
- \subsubsection*{A\+U\+T\+H\+OR}
+mixed-\/case input string is .... A\+B\+C\+D\+E\+FG abcdefg lower-\/case output string is ... abcdefg abcdefg \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -2168,9 +2262,17 @@ M\+E\+R\+G\+E\+\_\+\+S\+TR a trimmed string is returned that is otherwise the va
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Sample Program\+:
+Sample Program\+: \begin{DoxyVerb}program demo_merge_str
+use M_strings, only : merge_str
+implicit none
+character(len=:), allocatable :: answer
+   answer=merge_str('first string', 'second string is longer',10.eq.10)
+   write(*,'("[",a,"]")') answer
+   answer=merge_str('first string', 'second string is longer',10.ne.10)
+   write(*,'("[",a,"]")') answer
+end program demo_merge_str
+\end{DoxyVerb}
 
-program demo\+\_\+merge\+\_\+str use M\+\_\+strings, only \+: merge\+\_\+str implicit none character(len=\+:), allocatable \+:\+: answer answer=merge\+\_\+str(\textquotesingle{}first string\textquotesingle{}, \textquotesingle{}second string is longer\textquotesingle{},10.\+eq.\+10) write($\ast$,\textquotesingle{}(\char`\"{}\mbox{[}\char`\"{},a,\char`\"{}\mbox{]}\char`\"{})\textquotesingle{}) answer answer=merge\+\_\+str(\textquotesingle{}first string\textquotesingle{}, \textquotesingle{}second string is longer\textquotesingle{},10.\+ne.\+10) write($\ast$,\textquotesingle{}(\char`\"{}\mbox{[}\char`\"{},a,\char`\"{}\mbox{]}\char`\"{})\textquotesingle{}) answer end program demo\+\_\+merge\+\_\+str
 
 Expected output
 
@@ -2243,33 +2345,33 @@ nospace if nospace=.true., then no spaces are added between values \subsubsectio
 
 str description to print \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Sample program\+: \begin{DoxyVerb}program demo_msg
-use M_msg, only : str
-implicit none
-character(len=:),allocatable :: pr
-character(len=:),allocatable :: frmt
-integer                      :: biggest
+Sample program\+: \begin{DoxyVerb}  program demo_msg
+  use M_msg, only : str
+  implicit none
+  character(len=:),allocatable :: pr
+  character(len=:),allocatable :: frmt
+  integer                      :: biggest
 
-pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
-write(*,'(a)')pr
-pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
-write(*,'(a)')pr
-pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
-write(*,'(a)')pr
-pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
-write(*,'(a)')pr
+  pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
+  write(*,'(a)')pr
+  pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
+  write(*,'(a)')pr
+  pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+  write(*,'(a)')pr
+  pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
+  write(*,'(a)')pr
 
-! create a format on the fly
-biggest=huge(0)
-frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
-write(*,*)'format=',frmt
+  ! create a format on the fly
+  biggest=huge(0)
+  frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+  write(*,*)'format=',frmt
 
-! although it will often work, using str(3f) in an I/O statement is not recommended
-! because if an error occurs str(3f) will try to write while part of an I/O statement
-! which not all compilers can handle and is currently non-standard
-write(*,*)str('program will now stop')
+  ! although it will often work, using str(3f) in an I/O statement is not recommended
+  ! because if an error occurs str(3f) will try to write while part of an I/O statement
+  ! which not all compilers can handle and is currently non-standard
+  write(*,*)str('program will now stop')
 
-end program demo_msg
+  end program demo_msg
 \end{DoxyVerb}
 
 
@@ -2312,59 +2414,57 @@ Print the internal dictionary created by calls to commandline(3f). This routine 
 
 H\+E\+A\+D\+ER label to print before printing the state of the command argument list. S\+T\+OP logical value that if true stops the program after displaying the dictionary. \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}  Typical usage:
+Typical usage\+: \begin{DoxyVerb}  program demo_commandline
+  use M_CLI2,  only : unnamed, commandline, print_dictionary
+  implicit none
+  integer                      :: i
+  character(len=255)           :: message ! use for I/O error messages
+  character(len=:),allocatable :: readme  ! stores updated namelist
+  integer                      :: ios
+  real               :: x, y, z
+  logical            :: help, h
+  equivalence       (help,h)
+  namelist /args/ x,y,z,help,h
+  character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
+  ! initialize namelist from string and then update from command line
+  readme=cmd
+  read(readme,nml=args,iostat=ios,iomsg=message)
+  if(ios.eq.0)then
+     ! update cmd with options from command line
+     readme=commandline(cmd)
+     read(readme,nml=args,iostat=ios,iomsg=message)
+  endif
+  if(ios.ne.0)then
+     write (*,'("ERROR:",i0,1x,a)')ios, trim(message)
+     call print_dictionary('OPTIONS:')
+     stop 1
+  endif
+  ! all done cracking the command line
+  ! use the values in your program.
+  write (*,nml=args)
+  ! the optional unnamed values on the command line are
+  ! accumulated in the character array "UNNAMED"
+  if(size(unnamed).gt.0)then
+     write (*,'(a)')'files:'
+     write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+  endif
+  end program demo_commandline
 
-   program demo_commandline
-   use M_CLI2,  only : unnamed, commandline, print_dictionary
-   implicit none
-   integer                      :: i
-   character(len=255)           :: message ! use for I/O error messages
-   character(len=:),allocatable :: readme  ! stores updated namelist
-   integer                      :: ios
-   real               :: x, y, z
-   logical            :: help, h
-   equivalence       (help,h)
-   namelist /args/ x,y,z,help,h
-   character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
-   ! initialize namelist from string and then update from command line
-   readme=cmd
-   read(readme,nml=args,iostat=ios,iomsg=message)
-   if(ios.eq.0)then
-      ! update cmd with options from command line
-      readme=commandline(cmd)
-      read(readme,nml=args,iostat=ios,iomsg=message)
-   endif
-   if(ios.ne.0)then
-      write (*,'("ERROR:",i0,1x,a)')ios, trim(message)
-      call print_dictionary('OPTIONS:')
-      stop 1
-   endif
-   ! all done cracking the command line
-   ! use the values in your program.
-   write (*,nml=args)
-   ! the optional unnamed values on the command line are
-   ! accumulated in the character array "UNNAMED"
-   if(size(unnamed).gt.0)then
-      write (*,'(a)')'files:'
-      write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-   endif
-   end program demo_commandline
+ Sample output
 
-  Sample output
+ Calling the sample program with an unknown
+ parameter produces the following:
 
-  Calling the sample program with an unknown
-  parameter produces the following:
+    $ ./print_dictionary -A
+    UNKNOWN SHORT KEYWORD: -A
+    KEYWORD             PRESENT  VALUE
+    z                   F        [3]
+    y                   F        [2]
+    x                   F        [1]
+    help                F        [F]
+    h                   F        [F]
 
-     $ ./print_dictionary -A
-     UNKNOWN SHORT KEYWORD: -A
-     KEYWORD             PRESENT  VALUE
-     z                   F        [3]
-     y                   F        [2]
-     x                   F        [1]
-     help                F        [F]
-     h                   F        [F]
-
-     STOP 2
+    STOP 2
 \end{DoxyVerb}
 
 
@@ -2405,54 +2505,52 @@ prototype \subsubsection*{R\+E\+T\+U\+R\+NS}
 
 nml \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb} Sample program
+Sample program \begin{DoxyVerb} program demo_prototype_and_cmd_args_to_nlist
+ use M_CLI2,  only : prototype_and_cmd_args_to_nlist, unnamed
+ implicit none
+ character(len=:),allocatable :: readme
+ character(len=256)           :: message
+ integer                      :: ios
+ integer                      :: i
+ doubleprecision              :: something
 
-  program demo_prototype_and_cmd_args_to_nlist
-  use M_CLI2,  only : prototype_and_cmd_args_to_nlist, unnamed
-  implicit none
-  character(len=:),allocatable :: readme
-  character(len=256)           :: message
-  integer                      :: ios
-  integer                      :: i
-  doubleprecision              :: something
+ ! define namelist
+ ! lowercase keywords
+ logical            :: l,h,v
+ real               :: p(2)
+ complex            :: c
+ doubleprecision    :: x,y,z
 
-  ! define namelist
-  ! lowercase keywords
-  logical            :: l,h,v
-  real               :: p(2)
-  complex            :: c
-  doubleprecision    :: x,y,z
+ ! uppercase keywords get an underscore
+ logical            :: l_,h_,v_
+ character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
+ integer            :: c_(3)
+ namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
 
-  ! uppercase keywords get an underscore
-  logical            :: l_,h_,v_
-  character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
-  integer            :: c_(3)
-  namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
-
-     ! give command template with default values
-     ! all values except logicals get a value.
-     ! strings must be delimited with double quotes
-     ! A string has to have at least one character as for -A
-     ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
-     ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
-     call prototype_and_cmd_args_to_nlist('&
-     & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
-     & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
-     read(readme,nml=args,iostat=ios,iomsg=message)
-     if(ios.ne.0)then
-        write (*,*)'ERROR:',trim(message)
-        write (*,'("INPUT WAS ",a)')readme
-        write (*,args)
-        stop 3
-     else
-        something=sqrt(x**2+y**2+z**2)
-        write (*,*)something,x,y,z
-        if(size(unnamed).gt.0)then
-           write (*,'(a)')'files:'
-           write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-        endif
-     endif
-  end program demo_prototype_and_cmd_args_to_nlist
+    ! give command template with default values
+    ! all values except logicals get a value.
+    ! strings must be delimited with double quotes
+    ! A string has to have at least one character as for -A
+    ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
+    ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
+    call prototype_and_cmd_args_to_nlist('&
+    & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
+    & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
+    read(readme,nml=args,iostat=ios,iomsg=message)
+    if(ios.ne.0)then
+       write (*,*)'ERROR:',trim(message)
+       write (*,'("INPUT WAS ",a)')readme
+       write (*,args)
+       stop 3
+    else
+       something=sqrt(x**2+y**2+z**2)
+       write (*,*)something,x,y,z
+       if(size(unnamed).gt.0)then
+          write (*,'(a)')'files:'
+          write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+       endif
+    endif
+ end program demo_prototype_and_cmd_args_to_nlist
 \end{DoxyVerb}
  \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -2526,9 +2624,7 @@ S\+T\+R\+I\+NG string is character input string to define command
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb} sample program:
-
- Results:
+sample program\+: \begin{DoxyVerb}Results:
 \end{DoxyVerb}
 
 
@@ -2585,15 +2681,37 @@ clip default is to trim leading and trailing spaces from the string. If C\+L\+IP
 
 quoted\+\_\+str The output string, which is based on adding quotes to S\+TR. \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+:
+Sample program\+: \begin{DoxyVerb}program demo_quote
+use M_strings, only : quote
+implicit none
+character(len=:),allocatable :: str
+character(len=1024)          :: msg
+integer                      :: ios
+character(len=80)            :: inline
+   do
+      write(*,'(a)',advance='no')'Enter test string:'
+      read(*,'(a)',iostat=ios,iomsg=msg)inline
+      if(ios.ne.0)then
+         write(*,*)trim(inline)
+         exit
+      endif
 
-program demo\+\_\+quote use M\+\_\+strings, only \+: quote implicit none character(len=\+:),allocatable \+:\+: str character(len=1024) \+:\+: msg integer \+:\+: ios character(len=80) \+:\+: inline do write($\ast$,\textquotesingle{}(a)\textquotesingle{},advance=\textquotesingle{}no\textquotesingle{})\textquotesingle{}Enter test string\+:\textquotesingle{} read($\ast$,\textquotesingle{}(a)\textquotesingle{},iostat=ios,iomsg=msg)inline if(ios.\+ne.\+0)then write($\ast$,$\ast$)trim(inline) exit endif
+      ! the original string
+      write(*,'(a)')'ORIGINAL     ['//trim(inline)//']'
 
-! the original string write($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}O\+R\+I\+G\+I\+N\+AL \mbox{[}\textquotesingle{}//trim(inline)//\textquotesingle{}\mbox{]}\textquotesingle{}
+      ! the string processed by quote(3f)
+      str=quote(inline)
+      write(*,'(a)')'QUOTED     ['//str//']'
 
-! the string processed by quote(3f) str=quote(inline) write($\ast$,\textquotesingle{}(a)\textquotesingle{})\textquotesingle{}Q\+U\+O\+T\+ED \mbox{[}\textquotesingle{}//str//\textquotesingle{}\mbox{]}\textquotesingle{}
+      ! write the string list-directed to compare the results
+      write(*,'(a)',iostat=ios,iomsg=msg) 'LIST DIRECTED:'
+      write(*,*,iostat=ios,iomsg=msg,delim='none') inline
+      write(*,*,iostat=ios,iomsg=msg,delim='quote') inline
+      write(*,*,iostat=ios,iomsg=msg,delim='apostrophe') inline
+   enddo
+end program demo_quote
+\end{DoxyVerb}
 
-! write the string list-\/directed to compare the results write($\ast$,\textquotesingle{}(a)\textquotesingle{},iostat=ios,iomsg=msg) \textquotesingle{}L\+I\+ST D\+I\+R\+E\+C\+T\+ED\+:\textquotesingle{} write($\ast$,$\ast$,iostat=ios,iomsg=msg,delim=\textquotesingle{}none\textquotesingle{}) inline write($\ast$,$\ast$,iostat=ios,iomsg=msg,delim=\textquotesingle{}quote\textquotesingle{}) inline write($\ast$,$\ast$,iostat=ios,iomsg=msg,delim=\textquotesingle{}apostrophe\textquotesingle{}) inline enddo end program demo\+\_\+quote
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -2652,30 +2770,28 @@ PLACE   is the subscript for the entry that should be removed
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb}Sample program
+Sample program \begin{DoxyVerb}program demo_remove
+use M_sort, only : sort_shell
+use M_list, only : locate, remove
+implicit none
+character(len=:),allocatable :: arr(:)
+integer                       :: i
+integer                       :: end
 
- program demo_remove
- use M_sort, only : sort_shell
- use M_list, only : locate, remove
- implicit none
- character(len=:),allocatable :: arr(:)
- integer                       :: i
- integer                       :: end
+arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
 
- arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
- ! make sure sorted in descending order
- call sort_shell(arr,order='d')
+end=size(arr)
+write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+call remove(arr,1)
+end=size(arr)
+write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+call remove(arr,4)
+end=size(arr)
+write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
 
- end=size(arr)
- write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
- call remove(arr,1)
- end=size(arr)
- write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
- call remove(arr,4)
- end=size(arr)
- write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-
- end program demo_remove
+end program demo_remove
 \end{DoxyVerb}
 
 
@@ -2754,17 +2870,53 @@ PLACE         is the subscript that the entry should be placed at
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Replace key-\/value pairs in a dictionary
+Replace key-\/value pairs in a dictionary \begin{DoxyVerb}program demo_replace
+use M_list, only  : insert, locate, replace
+! Find if a key is in a list and insert it
+! into the key list and value list if it is not present
+! or replace the associated value if the key existed
+implicit none
+character(len=20)            :: key
+character(len=100)           :: val
+character(len=:),allocatable :: keywords(:)
+character(len=:),allocatable :: values(:)
+integer                      :: i
+integer                      :: place
+call update('b','value of b')
+call update('a','value of a')
+call update('c','value of c')
+call update('c','value of c again')
+call update('d','value of d')
+call update('a','value of a again')
+! show array
+write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
 
-program demo\+\_\+replace use M\+\_\+list, only \+: insert, locate, replace ! Find if a key is in a list and insert it ! into the key list and value list if it is not present ! or replace the associated value if the key existed implicit none character(len=20) \+:\+: key character(len=100) \+:\+: val character(len=\+:),allocatable \+:\+: keywords(\+:) character(len=\+:),allocatable \+:\+: values(\+:) integer \+:\+: i integer \+:\+: place call update(\textquotesingle{}b\textquotesingle{},\textquotesingle{}value of b\textquotesingle{}) call update(\textquotesingle{}a\textquotesingle{},\textquotesingle{}value of a\textquotesingle{}) call update(\textquotesingle{}c\textquotesingle{},\textquotesingle{}value of c\textquotesingle{}) call update(\textquotesingle{}c\textquotesingle{},\textquotesingle{}value of c again\textquotesingle{}) call update(\textquotesingle{}d\textquotesingle{},\textquotesingle{}value of d\textquotesingle{}) call update(\textquotesingle{}a\textquotesingle{},\textquotesingle{}value of a again\textquotesingle{}) ! show array write($\ast$,\textquotesingle{}($\ast$(a,\char`\"{}==$>$\char`\"{},a,/))\textquotesingle{})(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
+call locate(keywords,'a',place)
+if(place.gt.0)then
+   write(*,*)'The value of "a" is',trim(values(place))
+else
+   write(*,*)'"a" not found'
+endif
 
-call locate(keywords,\textquotesingle{}a\textquotesingle{},place) if(place.\+gt.\+0)then write($\ast$,$\ast$)\textquotesingle{}The value of \char`\"{}a\char`\"{} is\textquotesingle{},trim(values(place)) else write($\ast$,$\ast$)\textquotesingle{}\char`\"{}a\char`\"{} not found\textquotesingle{} endif
+contains
+subroutine update(key,val)
+character(len=*),intent(in)  :: key
+character(len=*),intent(in)  :: val
+integer                      :: place
 
-contains subroutine update(key,val) character(len=$\ast$),intent(in) \+:\+: key character(len=$\ast$),intent(in) \+:\+: val integer \+:\+: place
+! find where string is or should be
+call locate(keywords,key,place)
+! if string was not found insert it
+if(place.lt.1)then
+   call insert(keywords,key,abs(place))
+   call insert(values,val,abs(place))
+else ! replace
+   call replace(values,val,place)
+endif
 
-! find where string is or should be call locate(keywords,key,place) ! if string was not found insert it if(place.\+lt.\+1)then call insert(keywords,key,abs(place)) call insert(values,val,abs(place)) else ! replace call replace(values,val,place) endif
-
-end subroutine update end program demo\+\_\+replace
+end subroutine update
+\end{DoxyVerb}
+ end program demo\+\_\+replace
 
 Expected output
 
@@ -2899,9 +3051,38 @@ NULLS IGNORE|RETURN|IGNOREEND  Treatment of null fields.
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Sample program\+:
+Sample program\+: \begin{DoxyVerb}program demo_split
+use M_strings, only: split
+character(len=*),parameter     :: &
+& line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
+character(len=:),allocatable :: array(:) ! output array of tokens
+   write(*,*)'INPUT LINE:['//LINE//']'
+   write(*,'(80("="))')
+   write(*,*)'typical call:'
+   CALL split(line,array)
+   write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+   write(*,*)'SIZE:',SIZE(array)
+   write(*,'(80("-"))')
+   write(*,*)'custom list of delimiters (colon and vertical line):'
+   CALL split(line,array,delimiters=':|',order='sequential',nulls='ignore')
+   write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+   write(*,*)'SIZE:',SIZE(array)
+   write(*,'(80("-"))')
+   write(*,*)&
+ &'custom list of delimiters, reverse array order and count null fields:'
+   CALL split(line,array,delimiters=':|',order='reverse',nulls='return')
+   write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+   write(*,*)'SIZE:',SIZE(array)
+   write(*,'(80("-"))')
+   write(*,*)'INPUT LINE:['//LINE//']'
+   write(*,*)&
+   &'default delimiters and reverse array order and return null fields:'
+   CALL split(line,array,delimiters='',order='reverse',nulls='return')
+   write(*,'(i0," ==> ",a)')(i,trim(array(i)),i=1,size(array))
+   write(*,*)'SIZE:',SIZE(array)
+end program demo_split
+\end{DoxyVerb}
 
-program demo\+\_\+split use M\+\_\+strings, only\+: split character(len=$\ast$),parameter \+:\+: \& \& line=\textquotesingle{} a\+Bcdef ghijklmnop qrstuvwxyz 1\+:$\vert$\+:2 333$\vert$333 a B cc \textquotesingle{} character(len=\+:),allocatable \+:\+: array(\+:) ! output array of tokens write($\ast$,$\ast$)\textquotesingle{}I\+N\+P\+UT L\+I\+NE\+:\mbox{[}\textquotesingle{}//\+L\+I\+N\+E//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,\textquotesingle{}(80(\char`\"{}=\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}typical call\+:\textquotesingle{} C\+A\+LL split(line,array) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) write($\ast$,\textquotesingle{}(80(\char`\"{}-\/\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}custom list of delimiters (colon and vertical line)\+:\textquotesingle{} C\+A\+LL split(line,array,delimiters=\textquotesingle{}\+:$\vert$\textquotesingle{},order=\textquotesingle{}sequential\textquotesingle{},nulls=\textquotesingle{}ignore\textquotesingle{}) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) write($\ast$,\textquotesingle{}(80(\char`\"{}-\/\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\& \&\textquotesingle{}custom list of delimiters, reverse array order and count null fields\+:\textquotesingle{} C\+A\+LL split(line,array,delimiters=\textquotesingle{}\+:$\vert$\textquotesingle{},order=\textquotesingle{}reverse\textquotesingle{},nulls=\textquotesingle{}return\textquotesingle{}) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) write($\ast$,\textquotesingle{}(80(\char`\"{}-\/\char`\"{}))\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}I\+N\+P\+UT L\+I\+NE\+:\mbox{[}\textquotesingle{}//\+L\+I\+N\+E//\textquotesingle{}\mbox{]}\textquotesingle{} write($\ast$,$\ast$)\& \&\textquotesingle{}default delimiters and reverse array order and return null fields\+:\textquotesingle{} C\+A\+LL split(line,array,delimiters=\textquotesingle{}\textquotesingle{},order=\textquotesingle{}reverse\textquotesingle{},nulls=\textquotesingle{}return\textquotesingle{}) write($\ast$,\textquotesingle{}(i0,\char`\"{} ==$>$ \char`\"{},a)\textquotesingle{})(i,trim(array(i)),i=1,size(array)) write($\ast$,$\ast$)\textquotesingle{}S\+I\+ZE\+:\textquotesingle{},S\+I\+Z\+E(array) end program demo\+\_\+split
 
 Output
 
@@ -2973,19 +3154,32 @@ T\+A\+R\+G\+E\+T\+L\+I\+NE input line to be changed. Must be long enough to hold
 
 \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-Sample Program\+:
+Sample Program\+: \begin{DoxyVerb}program demo_substitute
+use M_strings, only : substitute
+implicit none
+! must be long enough to hold changed line
+character(len=80) :: targetline
 
-program demo\+\_\+substitute use M\+\_\+strings, only \+: substitute implicit none ! must be long enough to hold changed line character(len=80) \+:\+: targetline
+targetline='this is the input string'
+write(*,*)'ORIGINAL    : '//trim(targetline)
 
-targetline=\textquotesingle{}this is the input string\textquotesingle{} write($\ast$,$\ast$)\textquotesingle{}O\+R\+I\+G\+I\+N\+AL \+: \textquotesingle{}//trim(targetline)
+! changes the input to 'THis is THe input string'
+call substitute(targetline,'th','TH')
+write(*,*)'th => TH    : '//trim(targetline)
 
-! changes the input to \textquotesingle{}T\+His is T\+He input string\textquotesingle{} call substitute(targetline,\textquotesingle{}th\textquotesingle{},\textquotesingle{}TH\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}th =$>$ TH \+: \textquotesingle{}//trim(targetline)
+! a null old substring means "at beginning of line"
+! changes the input to 'BEFORE:this is the input string'
+call substitute(targetline,'','BEFORE:')
+write(*,*)'"" => BEFORE: '//trim(targetline)
 
-! a null old substring means \char`\"{}at beginning of line\char`\"{} ! changes the input to \textquotesingle{}B\+E\+F\+O\+RE\+:this is the input string\textquotesingle{} call substitute(targetline,\textquotesingle{}\textquotesingle{},\textquotesingle{}B\+E\+F\+O\+RE\+:\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}\char`\"{}\char`\"{} =$>$ B\+E\+F\+O\+RE\+: \textquotesingle{}//trim(targetline)
+! a null new string deletes occurrences of the old substring
+! changes the input to 'ths s the nput strng'
+call substitute(targetline,'i','')
+write(*,*)'i => ""     : '//trim(targetline)
 
-! a null new string deletes occurrences of the old substring ! changes the input to \textquotesingle{}ths s the nput strng\textquotesingle{} call substitute(targetline,\textquotesingle{}i\textquotesingle{},\textquotesingle{}\textquotesingle{}) write($\ast$,$\ast$)\textquotesingle{}i =$>$ \char`\"{}\char`\"{} \+: \textquotesingle{}//trim(targetline)
+end program demo_substitute
+\end{DoxyVerb}
 
-end program demo\+\_\+substitute
 
 Expected output
 
@@ -3031,16 +3225,14 @@ T\+R\+I\+M\+Z\+E\+R\+O\+S\+\_\+(3f) deletes trailing zeros from a string represe
 
 str input string will be assumed to be a numeric value and have trailing zeros removed \subsubsection*{E\+X\+A\+M\+P\+L\+ES}
 
-\begin{DoxyVerb}Sample program:
-
-   program demo_trimzeros_
-   use M_strings, only : trimzeros_
-   character(len=:),allocatable :: string
-      write(*,*)trimzeros_('123.450000000000')
-      write(*,*)trimzeros_('12345')
-      write(*,*)trimzeros_('12345.')
-      write(*,*)trimzeros_('12345.00e3')
-   end program demo_trimzeros_
+Sample program\+: \begin{DoxyVerb}  program demo_trimzeros_
+  use M_strings, only : trimzeros_
+  character(len=:),allocatable :: string
+     write(*,*)trimzeros_('123.450000000000')
+     write(*,*)trimzeros_('12345')
+     write(*,*)trimzeros_('12345.')
+     write(*,*)trimzeros_('12345.00e3')
+  end program demo_trimzeros_
 \end{DoxyVerb}
 
 
@@ -3079,39 +3271,39 @@ quoted\+\_\+str input string to remove quotes from, using the rules of list-\/di
 
 unquoted\+\_\+str The output string, which is based on removing quotes from quoted\+\_\+str. \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-Sample program\+: \begin{DoxyVerb}program demo_unquote
-use M_strings, only : unquote
-implicit none
-character(len=128)           :: quoted_str
-character(len=:),allocatable :: unquoted_str
-character(len=1),parameter   :: esc='\'
-character(len=1024)          :: msg
-integer                      :: ios
-character(len=1024)          :: dummy
-do
-   write(*,'(a)',advance='no')'Enter test string:'
-   read(*,'(a)',iostat=ios,iomsg=msg)quoted_str
-   if(ios.ne.0)then
-      write(*,*)trim(msg)
-      exit
-   endif
+Sample program\+: \begin{DoxyVerb}  program demo_unquote
+  use M_strings, only : unquote
+  implicit none
+  character(len=128)           :: quoted_str
+  character(len=:),allocatable :: unquoted_str
+  character(len=1),parameter   :: esc='\'
+  character(len=1024)          :: msg
+  integer                      :: ios
+  character(len=1024)          :: dummy
+  do
+     write(*,'(a)',advance='no')'Enter test string:'
+     read(*,'(a)',iostat=ios,iomsg=msg)quoted_str
+     if(ios.ne.0)then
+        write(*,*)trim(msg)
+        exit
+     endif
 
-   ! the original string
-   write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
+     ! the original string
+     write(*,'(a)')'QUOTED       ['//trim(quoted_str)//']'
 
-   ! the string processed by unquote(3f)
-   unquoted_str=unquote(trim(quoted_str),esc)
-   write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
+     ! the string processed by unquote(3f)
+     unquoted_str=unquote(trim(quoted_str),esc)
+     write(*,'(a)')'UNQUOTED     ['//unquoted_str//']'
 
-   ! read the string list-directed to compare the results
-   read(quoted_str,*,iostat=ios,iomsg=msg)dummy
-   if(ios.ne.0)then
-      write(*,*)trim(msg)
-   else
-      write(*,'(a)')'LIST DIRECTED['//trim(dummy)//']'
-   endif
-enddo
-end program demo_unquote
+     ! read the string list-directed to compare the results
+     read(quoted_str,*,iostat=ios,iomsg=msg)dummy
+     if(ios.ne.0)then
+        write(*,*)trim(msg)
+     else
+        write(*,'(a)')'LIST DIRECTED['//trim(dummy)//']'
+     endif
+  enddo
+  end program demo_unquote
 \end{DoxyVerb}
 
 
@@ -3219,27 +3411,22 @@ The terms \char`\"{}uppercase\char`\"{} and \char`\"{}lowercase\char`\"{} date b
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}Sample program:
+Sample program\+: \begin{DoxyVerb}program demo_upper
+use M_strings, only: upper
+implicit none
+character(len=:),allocatable  :: s
+   s=' ABCDEFG abcdefg '
+   write(*,*) 'mixed-case input string is ....',s
+   write(*,*) 'upper-case output string is ...',upper(s)
+   write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
+   write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
+end program demo_upper
+\end{DoxyVerb}
 
- program demo_upper
- use M_strings, only: upper
- implicit none
- character(len=:),allocatable  :: s
-    s=' ABCDEFG abcdefg '
-    write(*,*) 'mixed-case input string is ....',s
-    write(*,*) 'upper-case output string is ...',upper(s)
-    write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
-    write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
- end program demo_upper
 
 Expected output
 
- mixed-case input string is .... ABCDEFG abcdefg
- upper-case output string is ... ABCDEFG ABCDEFG
- make first character uppercase  ... This is a sentence.
- UPPER(3f) is elemental ==>ABC+DEF+GHI
-\end{DoxyVerb}
- \subsubsection*{A\+U\+T\+H\+OR}
+mixed-\/case input string is .... A\+B\+C\+D\+E\+FG abcdefg upper-\/case output string is ... A\+B\+C\+D\+E\+FG A\+B\+C\+D\+E\+FG make first character uppercase ... This is a sentence. U\+P\+P\+E\+R(3f) is elemental ==$>$A\+B\+C+\+D\+E\+F+\+G\+HI \subsubsection*{A\+U\+T\+H\+OR}
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
@@ -3298,39 +3485,33 @@ V\+A\+L\+UE input value to be converted to a string F\+MT You may specify a spec
 
 C\+H\+A\+RS returned string representing input value, must be at least 23 characters long; or what is required by optional F\+MT if longer. I\+L\+EN position of last non-\/blank character in returned string; optional. I\+E\+RR If not zero, error occurred; optional. \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}Sample program:
+Sample program\+: \begin{DoxyVerb} program demo_value_to_string
+ use M_strings, only: value_to_string
+ implicit none
+ character(len=80) :: string
+ integer           :: ilen
+    call value_to_string(3.0/4.0,string,ilen)
+    write(*,*) 'The value is [',string(:ilen),']'
 
-  program demo_value_to_string
-  use M_strings, only: value_to_string
-  implicit none
-  character(len=80) :: string
-  integer           :: ilen
-     call value_to_string(3.0/4.0,string,ilen)
-     write(*,*) 'The value is [',string(:ilen),']'
+    call value_to_string(3.0/4.0,string,ilen,fmt='')
+    write(*,*) 'The value is [',string(:ilen),']'
 
-     call value_to_string(3.0/4.0,string,ilen,fmt='')
-     write(*,*) 'The value is [',string(:ilen),']'
+    call value_to_string(3.0/4.0,string,ilen,fmt='("THE VALUE IS ",g0)')
+    write(*,*) 'The value is [',string(:ilen),']'
 
-     call value_to_string(3.0/4.0,string,ilen,fmt='("THE VALUE IS ",g0)')
-     write(*,*) 'The value is [',string(:ilen),']'
+    call value_to_string(1234,string,ilen)
+    write(*,*) 'The value is [',string(:ilen),']'
 
-     call value_to_string(1234,string,ilen)
-     write(*,*) 'The value is [',string(:ilen),']'
+    call value_to_string(1.0d0/3.0d0,string,ilen)
+    write(*,*) 'The value is [',string(:ilen),']'
 
-     call value_to_string(1.0d0/3.0d0,string,ilen)
-     write(*,*) 'The value is [',string(:ilen),']'
+ end program demo_value_to_string
+\end{DoxyVerb}
 
-  end program demo_value_to_string
 
 Expected output
 
- The value is [0.75]
- The value is [      0.7500000000]
- The value is [THE VALUE IS .750000000]
- The value is [1234]
- The value is [0.33333333333333331]
-\end{DoxyVerb}
-
+The value is \mbox{[}0.\+75\mbox{]} The value is \mbox{[} 0.\+7500000000\mbox{]} The value is \mbox{[}T\+HE V\+A\+L\+UE IS .750000000\mbox{]} The value is \mbox{[}1234\mbox{]} The value is \mbox{[}0.\+33333333333333331\mbox{]}
 
 \subsubsection*{A\+U\+T\+H\+OR}
 
@@ -3370,10 +3551,10 @@ subroutine \mbox{\hyperlink{namespacem__cli2_ab1525b0419475486f520ef502daa5e94}{
 
 reset private M\+\_\+\+C\+L\+I2(3fm) dictionary to empty \subsubsection*{E\+X\+A\+M\+P\+LE}
 
-\begin{DoxyVerb}  program demo_wipe_dictionary
-  use M_CLI2, only : dictionary
-     call wipe_dictionary()
-  end program demo_wipe_dictionary
+Sample program\+: \begin{DoxyVerb} program demo_wipe_dictionary
+ use M_CLI2, only : dictionary
+    call wipe_dictionary()
+ end program demo_wipe_dictionary
 \end{DoxyVerb}
  \subsubsection*{A\+U\+T\+H\+OR}
 

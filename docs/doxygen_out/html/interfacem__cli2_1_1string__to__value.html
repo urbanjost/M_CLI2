@@ -186,8 +186,14 @@ string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from 
 <p>if an error occurs in the READ, IOSTAT is returned in IERR and value is set to zero. if no error occurs, IERR=0. </p><h2>OPTIONS</h2>
 <p>CHARS input string to read numeric value from </p><h2>RETURNS</h2>
 <p>VALU numeric value returned. May be INTEGER, REAL, or DOUBLEPRECISION. IERR error flag (0 == no error) </p><h2>EXAMPLE</h2>
-<p>Sample Program:</p>
-<p>program demo_string_to_value use M_strings, only: <a class="el" href="interfacem__cli2_1_1string__to__value.html">string_to_value</a> character(len=80) :: string string=' -40.5e-2 ' call string_to_value(string,value,ierr) write(*,*) 'value of string ['//trim(string)//'] is ',value end program demo_string_to_value </p><h2>AUTHOR</h2>
+<p>Sample Program: </p><pre class="fragment"> program demo_string_to_value
+ use M_strings, only: string_to_value
+ character(len=80) :: string
+    string=' -40.5e-2 '
+    call string_to_value(string,value,ierr)
+    write(*,*) 'value of string ['//trim(string)//'] is ',value
+ end program demo_string_to_value
+</pre> <h2>AUTHOR</h2>
 <p>John S. Urban </p><h2>LICENSE</h2>
 <p>Public Domain </p>
 

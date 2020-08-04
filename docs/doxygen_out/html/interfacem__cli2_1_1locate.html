@@ -163,58 +163,55 @@ LIST          is the list array.
 <p>IER is zero(0) if no error occurs. If an error occurs and IER is not present, the program is stopped.</p>
 <p>ERRMSG description of any error</p>
 <h2>EXAMPLES</h2>
-<pre class="fragment">Find if a string is in a sorted array, and insert the string into
-the list if it is not present ...
+<p>Find if a string is in a sorted array, and insert the string into the list if it is not present ... </p><pre class="fragment">program demo_locate
+use M_sort, only : sort_shell
+use M_list, only : locate
+implicit none
+character(len=:),allocatable  :: arr(:)
+integer                       :: i
 
- program demo_locate
- use M_sort, only : sort_shell
- use M_list, only : locate
- implicit none
- character(len=:),allocatable  :: arr(:)
- integer                       :: i
+arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
 
- arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
- ! make sure sorted in descending order
- call sort_shell(arr,order='d')
+call update(arr,'b')
+call update(arr,'[')
+call update(arr,'c')
+call update(arr,'ZZ')
+call update(arr,'ZZZZ')
+call update(arr,'z')
 
- call update(arr,'b')
- call update(arr,'[')
- call update(arr,'c')
- call update(arr,'ZZ')
- call update(arr,'ZZZZ')
- call update(arr,'z')
-
- contains
- subroutine update(arr,string)
- character(len=:),allocatable :: arr(:)
- character(len=*)             :: string
- integer                      :: place, plus, ii, end
- ! find where string is or should be
- call locate(arr,string,place)
- write(*,*)'for "'//string//'" index is ',place, size(arr)
- ! if string was not found insert it
- if(place.lt.1)then
-    plus=abs(place)
-    ii=len(arr)
-    end=size(arr)
-    ! empty array
-    if(end.eq.0)then
-       arr=[character(len=ii) :: string ]
-    ! put in front of array
-    elseif(plus.eq.1)then
-       arr=[character(len=ii) :: string, arr]
-    ! put at end of array
-    elseif(plus.eq.end)then
-       arr=[character(len=ii) :: arr, string ]
-    ! put in middle of array
-    else
-       arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
-    endif
-    ! show array
-    write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
- endif
- end subroutine update
- end program demo_locate
+contains
+subroutine update(arr,string)
+character(len=:),allocatable :: arr(:)
+character(len=*)             :: string
+integer                      :: place, plus, ii, end
+! find where string is or should be
+call locate(arr,string,place)
+write(*,*)'for "'//string//'" index is ',place, size(arr)
+! if string was not found insert it
+if(place.lt.1)then
+   plus=abs(place)
+   ii=len(arr)
+   end=size(arr)
+   ! empty array
+   if(end.eq.0)then
+      arr=[character(len=ii) :: string ]
+   ! put in front of array
+   elseif(plus.eq.1)then
+      arr=[character(len=ii) :: string, arr]
+   ! put at end of array
+   elseif(plus.eq.end)then
+      arr=[character(len=ii) :: arr, string ]
+   ! put in middle of array
+   else
+      arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+   endif
+   ! show array
+   write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+endif
+end subroutine update
+end program demo_locate
 </pre><p>Results:</p>
 <p>for "b" index is 2 5 for "[" index is -4 5 SIZE=5 xxx,b,aaa,[,ZZZ, for "c" index is -2 6 SIZE=6 xxx,c,b,aaa,[,ZZZ, for "ZZ" index is -7 7 SIZE=7 xxx,c,b,aaa,[,ZZZ,, for "ZZZZ" index is -6 8 SIZE=8 xxx,c,b,aaa,[,ZZZZ,ZZZ,, for "z" index is -1 9 SIZE=9 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,,</p>
 <h2>AUTHOR</h2>

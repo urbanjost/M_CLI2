@@ -135,9 +135,15 @@ string is left-justified.
 <h2>RETURNS</h2>
 <p>OUTSTR returned string representing input value,</p>
 <h2>EXAMPLE</h2>
-<p>Sample Program:</p>
-<p>program demo_v2s use M_strings, only: <a class="el" href="interfacem__cli2_1_1v2s.html">v2s</a> write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']' write(*,*) 'The value of 1234 is ['//v2s(1234)//']' write(*,*) 'The value of 0d0 is ['//v2s(0d0)//']' write(*,*) 'The value of .false. is ['//v2s(.false.)//']' write(*,*) 'The value of .true. is ['//v2s(.true.)//']' end program demo_v2s</p>
-<p>Expected output</p>
+<p>Sample Program: </p><pre class="fragment">program demo_v2s
+use M_strings, only: v2s
+write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
+write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
+write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
+write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
+write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
+end program demo_v2s
+</pre><p>Expected output</p>
 <p>The value of 3.0/4.0 is [0.75] The value of 1234 is [1234] The value of 0d0 is [0] The value of .false. is [F] The value of .true. is [T]</p>
 <h2>AUTHOR</h2>
 <p>John S. Urban </p><h2>LICENSE</h2>

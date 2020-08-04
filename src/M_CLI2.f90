@@ -21,7 +21,7 @@
 !!##EXAMPLE
 !!
 !!
-!!    Sample program using type conversion routines
+!! Sample program using type conversion routines
 !!
 !!     program demo_M_CLI2
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
@@ -286,7 +286,7 @@ contains
 !!##EXAMPLE
 !!
 !!
-!!    Typical usage:
+!! Typical usage:
 !!
 !!      program demo_commandline
 !!      use M_CLI2,  only : unnamed, commandline, check_commandline
@@ -620,9 +620,7 @@ end subroutine set_args
 !!
 !!##EXAMPLE
 !!
-!!
-!!
-!!     sample program:
+!! sample program:
 !!
 !!     Results:
 !!
@@ -789,7 +787,6 @@ end subroutine prototype_to_dictionary
 !!##EXAMPLE
 !!
 !!
-!!
 !!##AUTHOR
 !!      John S. Urban, 2019
 !!##LICENSE
@@ -849,7 +846,7 @@ end subroutine update
 !!      reset private M_CLI2(3fm) dictionary to empty
 !!##EXAMPLE
 !!
-!!
+!! Sample program:
 !!
 !!      program demo_wipe_dictionary
 !!      use M_CLI2, only : dictionary
@@ -923,7 +920,7 @@ end function get
 !!##EXAMPLE
 !!
 !!
-!!     Sample program
+!! Sample program
 !!
 !!      program demo_prototype_and_cmd_args_to_nlist
 !!      use M_CLI2,  only : prototype_and_cmd_args_to_nlist, unnamed
@@ -1200,7 +1197,7 @@ end subroutine dictionary_to_namelist
 !!
 !!
 !!
-!!      Typical usage:
+!! Typical usage:
 !!
 !!       program demo_commandline
 !!       use M_CLI2,  only : unnamed, commandline, print_dictionary
@@ -1430,7 +1427,7 @@ end function strtok
 !!##EXAMPLE
 !!
 !!
-!!   Sample program:
+!! Sample program:
 !!
 !!     program demo_set_args
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
@@ -1511,7 +1508,7 @@ end function strtok
 !!##EXAMPLE
 !!
 !!
-!!   Sample program:
+!! Sample program:
 !!
 !!     program demo_get_args
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
@@ -1886,7 +1883,7 @@ end subroutine get_arg_l
 !!    longest_command_argument  length of longest command argument
 !!##EXAMPLE
 !!
-!!   Sample program
+!! Sample program
 !!
 !!      program demo_longest_command_argument
 !!      use M_args, only : longest_command_argument
@@ -1960,7 +1957,7 @@ end subroutine journal
 !!    str     description to print
 !!##EXAMPLES
 !!
-!!   Sample program:
+!! Sample program:
 !!
 !!       program demo_msg
 !!       use M_msg, only : str
@@ -2183,7 +2180,7 @@ end function msg_one
 !!
 !!##EXAMPLE
 !!
-!!    Sample program:
+!! Sample program:
 !!
 !!     program demo_upper
 !!     use M_strings, only: upper
@@ -2289,7 +2286,7 @@ end function upper
 !!
 !!##EXAMPLE
 !!
-!!    Sample program:
+!! Sample program:
 !!
 !!       program demo_lower
 !!       use M_strings, only: lower
@@ -2372,15 +2369,15 @@ end function lower
 !!       IERR   error flag (0 == no error)
 !!##EXAMPLE
 !!
-!!   Sample Program:
+!! Sample Program:
 !!
-!!     program demo_string_to_value
-!!     use M_strings, only: string_to_value
-!!     character(len=80) :: string
-!!        string=' -40.5e-2 '
-!!        call string_to_value(string,value,ierr)
-!!        write(*,*) 'value of string ['//trim(string)//'] is ',value
-!!     end program demo_string_to_value
+!!      program demo_string_to_value
+!!      use M_strings, only: string_to_value
+!!      character(len=80) :: string
+!!         string=' -40.5e-2 '
+!!         call string_to_value(string,value,ierr)
+!!         write(*,*) 'value of string ['//trim(string)//'] is ',value
+!!      end program demo_string_to_value
 !!##AUTHOR
 !!    John S. Urban
 !!##LICENSE
@@ -2556,7 +2553,7 @@ end function isupper
 !!
 !!##EXAMPLES
 !!
-!!  Sample program:
+!! Sample program:
 !!
 !!     program demo_split
 !!     use M_strings, only: split
@@ -2806,7 +2803,7 @@ integer                       :: imax                   ! length of longest toke
 !!
 !!##EXAMPLES
 !!
-!!   Sample Program:
+!! Sample Program:
 !!
 !!       program demo_replace_str
 !!       use M_strings, only : replace_str
@@ -3072,7 +3069,7 @@ end function replace_str
 !!    quoted_str  The output string, which is based on adding quotes to STR.
 !!##EXAMPLE
 !!
-!!   Sample program:
+!! Sample program:
 !!
 !!     program demo_quote
 !!     use M_strings, only : quote
@@ -3169,7 +3166,7 @@ end function quote
 !!    unquoted_str  The output string, which is based on removing quotes from quoted_str.
 !!##EXAMPLE
 !!
-!!   Sample program:
+!! Sample program:
 !!
 !!       program demo_unquote
 !!       use M_strings, only : unquote
@@ -3308,7 +3305,7 @@ end function unquote
 !!
 !!##EXAMPLE
 !!
-!!   Sample Program:
+!! Sample Program:
 !!
 !!     program demo_v2s
 !!     use M_strings, only: v2s
@@ -3387,7 +3384,7 @@ end function i2s
 !!
 !!##EXAMPLES
 !!
-!!   Sample Program:
+!! Sample Program:
 !!
 !!     program demo_merge_str
 !!     use M_strings, only : merge_str
@@ -3470,34 +3467,34 @@ end function merge_str
 !!
 !!##EXAMPLE
 !!
-!!   Sample program:
+!! Sample program:
 !!
-!!     program demo_decodebase
-!!     use M_strings, only : codebase, decodebase
-!!     implicit none
-!!     integer           :: ba,bd
-!!     character(len=40) :: x,y
-!!     integer           :: r
+!!      program demo_decodebase
+!!      use M_strings, only : codebase, decodebase
+!!      implicit none
+!!      integer           :: ba,bd
+!!      character(len=40) :: x,y
+!!      integer           :: r
 !!
-!!     print *,' BASE CONVERSION'
-!!     write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
-!!     write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
-!!     INFINITE: do
-!!        print *,''
-!!        write(*,'("Enter number in start base: ")',advance='no'); read *, x
-!!        if(x.eq.'0') exit INFINITE
-!!        if(decodebase(x,bd,r)) then
-!!           if(codebase(r,ba,y)) then
-!!             write(*,'("In base ",I2,": ",A20)')  ba, y
-!!           else
-!!             print *,'Error in coding number.'
-!!           endif
-!!        else
-!!           print *,'Error in decoding number.'
-!!        endif
-!!     enddo INFINITE
+!!      print *,' BASE CONVERSION'
+!!      write(*,'("Start   Base (2 to 36): ")',advance='no'); read *, bd
+!!      write(*,'("Arrival Base (2 to 36): ")',advance='no'); read *, ba
+!!      INFINITE: do
+!!         print *,''
+!!         write(*,'("Enter number in start base: ")',advance='no'); read *, x
+!!         if(x.eq.'0') exit INFINITE
+!!         if(decodebase(x,bd,r)) then
+!!            if(codebase(r,ba,y)) then
+!!              write(*,'("In base ",I2,": ",A20)')  ba, y
+!!            else
+!!              print *,'Error in coding number.'
+!!            endif
+!!         else
+!!            print *,'Error in decoding number.'
+!!         endif
+!!      enddo INFINITE
 !!
-!!     end program demo_decodebase
+!!      end program demo_decodebase
 !!
 !!##AUTHOR
 !!    John S. Urban
@@ -3609,7 +3606,7 @@ end function decodebase
 !!    strout  output string
 !!##EXAMPLE
 !!
-!!    Sample Program:
+!! Sample Program:
 !!
 !!     program demo_lenset
 !!      use M_strings, only : lenset
@@ -3688,7 +3685,7 @@ end function lenset
 !!       IERR    If not zero, error occurred; optional.
 !!##EXAMPLE
 !!
-!!    Sample program:
+!! Sample program:
 !!
 !!      program demo_value_to_string
 !!      use M_strings, only: value_to_string
@@ -3825,7 +3822,7 @@ end subroutine value_to_string
 !!          zeros removed
 !!##EXAMPLES
 !!
-!!    Sample program:
+!! Sample program:
 !!
 !!       program demo_trimzeros_
 !!       use M_strings, only : trimzeros_
@@ -3917,7 +3914,7 @@ end subroutine trimzeros_
 !!
 !!##EXAMPLES
 !!
-!!   Sample Program:
+!! Sample Program:
 !!
 !!     program demo_substitute
 !!     use M_strings, only : substitute
@@ -4127,8 +4124,8 @@ end subroutine substitute
 !!##EXAMPLES
 !!
 !!
-!!    Find if a string is in a sorted array, and insert the string into
-!!    the list if it is not present ...
+!! Find if a string is in a sorted array, and insert the string into
+!! the list if it is not present ...
 !!
 !!     program demo_locate
 !!     use M_sort, only : sort_shell
@@ -4533,7 +4530,7 @@ end subroutine locate_i
 !!##EXAMPLES
 !!
 !!
-!!    Sample program
+!! Sample program
 !!
 !!     program demo_remove
 !!     use M_sort, only : sort_shell
@@ -4702,7 +4699,7 @@ end subroutine remove_i
 !!##EXAMPLES
 !!
 !!
-!!   Replace key-value pairs in a dictionary
+!! Replace key-value pairs in a dictionary
 !!
 !!     program demo_replace
 !!     use M_list, only  : insert, locate, replace
@@ -4900,8 +4897,8 @@ end subroutine replace_i
 !!##EXAMPLES
 !!
 !!
-!!    Find if a string is in a sorted array, and insert the string into
-!!    the list if it is not present ...
+!! Find if a string is in a sorted array, and insert the string into
+!! the list if it is not present ...
 !!
 !!     program demo_insert
 !!     use M_sort, only : sort_shell
@@ -5119,7 +5116,7 @@ end subroutine insert_i
 !!##EXAMPLES
 !!
 !!
-!!    delete a key from a dictionary by name.
+!! delete a key from a dictionary by name.
 !!
 !!     program demo_dict_delete
 !!     use M_list, only : dictionary
@@ -5201,6 +5198,8 @@ end subroutine dict_delete
 !!##EXAMPLES
 !!
 !!
+!! Sample program
+!!
 !!     program demo_locate
 !!     use M_list, only : dictionary
 !!     implicit none
@@ -5272,7 +5271,7 @@ end function dict_get
 !!
 !!##EXAMPLES
 !!
-!!    If string is not found in a sorted array, insert the string
+!! If string is not found in a sorted array, insert the string
 !!
 !!     program demo_add
 !!     use M_list, only : dictionary
