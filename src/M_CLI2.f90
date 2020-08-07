@@ -476,7 +476,7 @@ end subroutine check_commandline
 !!
 !!##OPTIONS
 !!
-!!      DESCRIPTION   composed of all command arguments concatenated
+!!      DEFINITION    composed of all command arguments concatenated
 !!                    into a Unix-like command prototype string.
 !!
 !!                    o all keywords get a value.
@@ -1494,7 +1494,7 @@ end function strtok
 !!
 !!
 !!
-!!     subroutine get_args(name,value)
+!!     subroutine get_args(name,value,delimiters)
 !!
 !!      character(len=*),intent(in) :: name
 !!      real|integer|logical|complex) :: value
@@ -1505,20 +1505,25 @@ end function strtok
 !!         or
 !!      character(len=:),allocatable :: value(:)
 !!
+!!      character(len=*),intent(in),optional :: delimiters
+!!
 !!##DESCRIPTION
 !!
 !!     GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
 !!     has been called. For fixed-length CHARACTER variables
-!!     see GET_ARGS_FIXED_LENGTH(3f).  for fixed-size arrays see
+!!     see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
 !!     GET_ARGS_FIXED_SIZE(3f).
 !!
 !!##OPTIONS
 !!
-!!      NAME       name of commandline argument to obtain the value of
-!!      VALUE      variable to hold returned value. The kind of the value
+!!     NAME        name of commandline argument to obtain the value of
+!!     VALUE       variable to hold returned value. The kind of the value
 !!                 is used to determine the type of returned value. May
 !!                 be a scalar or allocatable array. If type is CHARACTER
 !!                 the scalar must have an allocatable length.
+!!     DELIMITERS  By default the delimiter for array values are comma,
+!!                 colon, and whitespace. A string containing an alternate
+!!                 list of delimiter characters may be supplied.
 !!
 !!##EXAMPLE
 !!
@@ -1579,7 +1584,9 @@ end function strtok
 !!##SYNOPSIS
 !!
 !!    subroutine get_args_fixed_length(name,value)
+!!
 !!     character(len=:),allocatable :: value
+!!     character(len=*),intent(in),optional :: delimiters
 !!
 !!##DESCRIPTION
 !!
@@ -1590,8 +1597,13 @@ end function strtok
 !!##OPTIONS
 !!
 !!    NAME   name of commandline argument to obtain the value of
+!!
 !!    VALUE  variable to hold returned value.
 !!           Must be a fixed-length CHARACTER variable.
+!!
+!!    DELIMITERS  By default the delimiter for array values are comma,
+!!                colon, and whitespace. A string containing an alternate
+!!                list of delimiter characters may be supplied.
 !!
 !!##EXAMPLE
 !!
@@ -1629,6 +1641,8 @@ end function strtok
 !!        or
 !!     character(len=MMM) :: value(NNN)
 !!
+!!     character(len=*),intent(in),optional :: delimiters
+!!
 !!##DESCRIPTION
 !!
 !!    GET_ARGS_FIXED_SIZE(3f) returns the value of keywords for
@@ -1637,12 +1651,16 @@ end function strtok
 !!    be specified.
 !!
 !!##OPTIONS
+!!         NAME   name of commandline argument to obtain the value of
 !!
-!!    NAME   name of commandline argument to obtain the value of
-!!    VALUE  variable to hold returned values. The kind of the value
-!!           is used to determine the type of returned value.
-!!           Must be a fixed-size  array. If type is CHARACTER the
-!!           length must also be fixed.
+!!         VALUE  variable to hold returned values. The kind of the value
+!!                is used to determine the type of returned value.
+!!                Must be a fixed-size  array. If type is CHARACTER the
+!!                length must also be fixed.
+!!
+!!    DELIMITERS  By default the delimiter for array values are comma,
+!!                colon, and whitespace. A string containing an alternate
+!!                list of delimiter characters may be supplied.
 !!
 !!##EXAMPLE
 !!
@@ -1693,16 +1711,17 @@ end function strtok
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
-subroutine get_fixedarray_class(keyword,generic)
-character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
-class(*)                    :: generic(:)
+subroutine get_fixedarray_class(keyword,generic,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+class(*)                             :: generic(:)
+character(len=*),intent(in),optional :: delimiters
    select type(generic)
-    type is (character(len=*));  call get_fixedarray_fixed_length_c(keyword,generic)
-    type is (integer);           call get_fixedarray_i(keyword,generic)
-    type is (real);              call get_fixedarray_r(keyword,generic)
-    type is (complex);           call get_fixed_size_complex(keyword,generic)
-    type is (real(kind=dp));     call get_fixedarray_d(keyword,generic)
-    type is (logical);           call get_fixedarray_l(keyword,generic)
+    type is (character(len=*));  call get_fixedarray_fixed_length_c(keyword,generic,delimiters)
+    type is (integer);           call get_fixedarray_i(keyword,generic,delimiters)
+    type is (real);              call get_fixedarray_r(keyword,generic,delimiters)
+    type is (complex);           call get_fixed_size_complex(keyword,generic,delimiters)
+    type is (real(kind=dp));     call get_fixedarray_d(keyword,generic,delimiters)
+    type is (logical);           call get_fixedarray_l(keyword,generic,delimiters)
     class default
       stop '*get_fixedarray_class* crud -- procedure does not know about this type'
    end select
@@ -1786,28 +1805,31 @@ character(len=:),allocatable          :: val
    enddo
 end subroutine get_anyarray_d
 !===================================================================================================================================
-subroutine get_anyarray_i(keyword,iarray)
-character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
-integer,allocatable         :: iarray(:)
-real(kind=dp),allocatable   :: darray(:)    ! function type
-   call get_anyarray_d(keyword,darray)
+subroutine get_anyarray_i(keyword,iarray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+integer,allocatable                  :: iarray(:)
+character(len=*),intent(in),optional :: delimiters
+real(kind=dp),allocatable            :: darray(:)    ! function type
+   call get_anyarray_d(keyword,darray,delimiters)
    iarray=nint(darray)
 end subroutine get_anyarray_i
 !===================================================================================================================================
-subroutine get_anyarray_r(keyword,rarray)
-character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
-real,allocatable            :: rarray(:)
-real(kind=dp),allocatable   :: darray(:)    ! function type
-   call get_anyarray_d(keyword,darray)
+subroutine get_anyarray_r(keyword,rarray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+real,allocatable                     :: rarray(:)
+character(len=*),intent(in),optional :: delimiters
+real(kind=dp),allocatable            :: darray(:)    ! function type
+   call get_anyarray_d(keyword,darray,delimiters)
 rarray=real(darray)
 end subroutine get_anyarray_r
 !===================================================================================================================================
-subroutine get_anyarray_x(keyword,xarray)
-character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
-complex,allocatable         :: xarray(:)
-real(kind=dp),allocatable   :: darray(:)    ! function type
-integer                     :: half,sz
-   call get_anyarray_d(keyword,darray)
+subroutine get_anyarray_x(keyword,xarray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+complex,allocatable                  :: xarray(:)
+character(len=*),intent(in),optional :: delimiters
+real(kind=dp),allocatable            :: darray(:)    ! function type
+integer                              :: half,sz
+   call get_anyarray_d(keyword,darray,delimiters)
    sz=size(darray)
    half=sz/2
    if(sz.ne.half+half)then
@@ -1868,12 +1890,13 @@ end subroutine get_fixed_length_any_size_cxxxx
 !===================================================================================================================================
 ! return non-allocatable arrays
 !===================================================================================================================================
-subroutine get_fixedarray_i(keyword,iarray)
-character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
-integer                          :: iarray(:)
-real(kind=dp),allocatable        :: darray(:)    ! function type
-integer                          :: dsize
-   call get_anyarray_d(keyword,darray)
+subroutine get_fixedarray_i(keyword,iarray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+integer                              :: iarray(:)
+character(len=*),intent(in),optional :: delimiters
+real(kind=dp),allocatable            :: darray(:)    ! function type
+integer                              :: dsize
+   call get_anyarray_d(keyword,darray,delimiters)
    dsize=size(darray)
    if(ubound(iarray,dim=1).eq.dsize)then
       iarray=darray
@@ -1883,12 +1906,13 @@ integer                          :: dsize
    endif
 end subroutine get_fixedarray_i
 !===================================================================================================================================
-subroutine get_fixedarray_r(keyword,rarray)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
-real                          :: rarray(:)
-real,allocatable              :: darray(:)    ! function type
-integer                       :: dsize
-   call get_anyarray_r(keyword,darray)
+subroutine get_fixedarray_r(keyword,rarray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+real                                 :: rarray(:)
+character(len=*),intent(in),optional :: delimiters
+real,allocatable                     :: darray(:)    ! function type
+integer                              :: dsize
+   call get_anyarray_r(keyword,darray,delimiters)
    dsize=size(darray)
    if(ubound(rarray,dim=1).eq.dsize)then
       rarray=darray
@@ -1898,13 +1922,14 @@ integer                       :: dsize
    endif
 end subroutine get_fixedarray_r
 !===================================================================================================================================
-subroutine get_fixed_size_complex(keyword,xarray)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
-complex                       :: xarray(:)
-complex,allocatable           :: darray(:)    ! function type
-integer                       :: half, sz
-integer                       :: dsize
-   call get_anyarray_x(keyword,darray)
+subroutine get_fixed_size_complex(keyword,xarray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+complex                              :: xarray(:)
+character(len=*),intent(in),optional :: delimiters
+complex,allocatable                  :: darray(:)    ! function type
+integer                              :: half, sz
+integer                              :: dsize
+   call get_anyarray_x(keyword,darray,delimiters)
    dsize=size(darray)
    sz=dsize*2
    half=sz/2
@@ -1920,12 +1945,13 @@ integer                       :: dsize
    endif
 end subroutine get_fixed_size_complex
 !===================================================================================================================================
-subroutine get_fixedarray_d(keyword,darr)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
-real(kind=dp)                 :: darr(:)
-real(kind=dp),allocatable     :: darray(:)    ! function type
-integer                       :: dsize
-   call get_anyarray_d(keyword,darray)
+subroutine get_fixedarray_d(keyword,darr,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+real(kind=dp)                        :: darr(:)
+character(len=*),intent(in),optional :: delimiters
+real(kind=dp),allocatable            :: darray(:)    ! function type
+integer                              :: dsize
+   call get_anyarray_d(keyword,darray,delimiters)
    dsize=size(darray)
    if(ubound(darr,dim=1).eq.dsize)then
       darr=darray
@@ -1935,12 +1961,13 @@ integer                       :: dsize
    endif
 end subroutine get_fixedarray_d
 !===================================================================================================================================
-subroutine get_fixedarray_l(keyword,larray)
-character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
-logical                          :: larray(:)
-logical,allocatable              :: darray(:)    ! function type
-integer                          :: dsize
-   call get_anyarray_l(keyword,darray)
+subroutine get_fixedarray_l(keyword,larray,delimiters)
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+logical                              :: larray(:)
+character(len=*),intent(in),optional :: delimiters
+logical,allocatable                  :: darray(:)    ! function type
+integer                              :: dsize
+   call get_anyarray_l(keyword,darray,delimiters)
    dsize=size(darray)
    if(ubound(larray,dim=1).eq.dsize)then
       larray=darray

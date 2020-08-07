@@ -15,7 +15,14 @@
 .nf
 .fam C
 subroutine \fBget_args_fixed_length\fP(name,value)
-\fBcharacter\fP(len=:),allocatable :: value
+.PP
+.nf
+.fam C
+    character(len=:),allocatable :: value
+    character(len=*),intent(in),optional :: delimiters
+
+.fam T
+.fi
 .fam T
 .fi
 .SH DESCRIPTION
@@ -32,6 +39,11 @@ name of commandline argument to obtain the value of
 .B VALUE
 variable to hold returned value.
 Must be a fixed-length CHARACTER variable.
+.TP
+.B DELIMITERS
+By default the delimiter for array values are comma,
+colon, and whitespace. A string containing an alternate
+list of delimiter characters may be supplied.
 .SH EXAMPLE
 Sample program:
 .PP

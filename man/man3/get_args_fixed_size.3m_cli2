@@ -22,6 +22,8 @@ subroutine \fBget_args_fixed_size\fP(name,value)
        or
     character(len=MMM) :: value(NNN)
 
+    character(len=*),intent(in),optional :: delimiters
+
 .fam T
 .fi
 .fam T
@@ -33,7 +35,6 @@ fixed-size arrays after \fBSET_ARGS\fP(3f) has been called.
 On input on the command line all values of the array must
 be specified.
 .SH OPTIONS
-
 .TP
 .B NAME
 name of commandline argument to obtain the value of
@@ -46,6 +47,13 @@ is used to determine the type of returned value.
 .B Must be a fixed-size
 array. If type is CHARACTER the
 length must also be fixed.
+.RE
+.RE
+.TP
+.B DELIMITERS
+By default the delimiter for array values are comma,
+colon, and whitespace. A string containing an alternate
+list of delimiter characters may be supplied.
 .SH EXAMPLE
 Sample program:
 .PP

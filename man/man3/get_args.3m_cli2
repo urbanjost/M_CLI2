@@ -16,7 +16,7 @@
 .fam C
 
 
-\fBsubroutine\fP \fBget_args\fP(name,value)
+\fBsubroutine\fP \fBget_args\fP(name,value,delimiters)
 .PP
 .nf
 .fam C
@@ -29,6 +29,8 @@
         or
      character(len=:),allocatable :: value(:)
 
+     character(len=*),intent(in),optional :: delimiters
+
 .fam T
 .fi
 .fam T
@@ -37,9 +39,7 @@
 
 \fBGET_ARGS\fP(3f) returns the value of keywords after \fBSET_ARGS\fP(3f)
 has been called. For fixed-length CHARACTER variables
-.TP
-.B see \fBGET_ARGS_FIXED_LENGTH\fP(3f).
-for fixed-size arrays see
+see \fBGET_ARGS_FIXED_LENGTH\fP(3f). For fixed-size arrays see
 \fBGET_ARGS_FIXED_SIZE\fP(3f).
 .SH OPTIONS
 
@@ -52,6 +52,11 @@ variable to hold returned value. The kind of the value
 is used to determine the type of returned value. May
 be a scalar or allocatable array. If type is CHARACTER
 the scalar must have an allocatable length.
+.TP
+.B DELIMITERS
+By default the delimiter for array values are comma,
+colon, and whitespace. A string containing an alternate
+list of delimiter characters may be supplied.
 .SH EXAMPLE
 
 Sample program:

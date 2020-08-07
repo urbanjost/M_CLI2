@@ -1,64 +1,49 @@
 program demo4
-use M_CLI2,  only : set_args, get_args, get_args_fixed_length, get_args_fixed_size, unnamed
+use M_CLI2,  only : set_args, get_args, get_args_fixed_size
 implicit none
+integer,parameter              :: dp=kind(0.0d0)
 
-character(len=10)              :: x, y      ! fixed-length scalars
-character(len=:),allocatable   :: z         ! allocatable scalars
-
-character(len=:),allocatable   :: alloc(:)  ! allocatable array with allocatable length
 character(len=20),allocatable  :: flen(:)   ! allocatable array with fixed length
 character(len=4)               :: fixed(2)  ! fixed-size array wih fixed length
-integer                        :: i
-   ! CHARACTER VALUES
-   !
-   !  o if a fixed size ! array is used the size must be passed and all values must be specified
-   !
-   !  o default delimiters are whitespace, comma and colon. Note that whitespace delimiters should
-   !    not be used in the definition, but are OK on command input if the entire parameter value
-   !    is quoted. You can change the delimiters for input values.
-   !  o unnamed variables are always parsed on whitespace
-   call set_args('-x "A" -y "BBBBBBB" -z "C" -alloc "a,b,ccccccccccccc,d" -flen "aa,bbbbbbbbb" -fixed "one,two"')
 
-!-interface  get_args;  module  procedure  get_scalar_anylength_c;  end  interface ! any length
-   call get_args('z',z)
-   call get_args('alloc',alloc)
-   call get_args_fixed_length('x',x)       ! fixed length scalar
-   call get_args_fixed_length('y',y)       ! fixed length scalar
-   call get_args_fixed_size('flen',flen)   ! fixed length array
+integer,allocatable            :: integers(:)
+real,allocatable               :: reals(:)
+real(kind=dp),allocatable      :: doubles(:)
+real(kind=dp),allocatable      :: normal(:)
+complex,allocatable            :: complexs(:)
+character(len=:),allocatable   :: characters(:)  ! allocatable array with allocatable length
+
+   ! ARRAY DELIMITERS
+   !
+   ! NOTE SET_ARGS(3f) DELIMITERS MUST MATCH WHAT IS USED IN GET_ARGS*(3f)
+   !
+   call set_args('-flen A,B,C -fixed X,Y --integers z --reals 111/222/333 -normal , --doubles | --complexs 0!0 --characters @')
    call get_args_fixed_size('fixed',fixed) ! fixed length and fixed size array
+   call get_args('integers',integers,delimiters='abcdefghijklmnopqrstuvwxyz')
+   call get_args('reals',reals,delimiters='/')
+   call get_args('doubles',doubles,delimiters='|')
+   call get_args('complexs',complexs,delimiters='!')
+   call get_args('normal',normal)
+   call get_args('characters',characters,delimiters='@')
 
-   write(*,*)'x=',x
-   write(*,*)'y=',y
-   write(*,*)'z=',z
-   write(*,'(a,*("[",a,"]":,1x))')'alloc=',alloc
-   write(*,*)'flen=',flen
-   write(*,'(a,*("[",a,"]":,1x))')'fixed=',fixed
-   do i=1,size(unnamed)
-      write(*,*)i,unnamed(i)
-   enddo
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(characters),'characters=',characters
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(integers),'integers=',integers
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(reals),'reals=',reals
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(doubles),'doubles=',doubles
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(complexs),'complexs=',complexs
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(normal),'normal=',normal
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(fixed),'fixed=',fixed
 end program demo4
 !==================================================================================================================================
-!-! return allocatable arrays
-!-interface get_args; module procedure get_anyarray_d; end interface ! any size array
-!-interface get_args; module procedure get_anyarray_i; end interface ! any size array
-!-interface get_args; module procedure get_anyarray_r; end interface ! any size array
-!-interface get_args; module procedure get_anyarray_x; end interface ! any size array
-!-interface get_args; module procedure get_anyarray_c; end interface ! any size array and any length
-!-interface get_args; module procedure get_anyarray_l; end interface ! any size array
-!-! return scalar
-!-interface get_args; module procedure get_scalar_d;       end interface
-!-interface get_args; module procedure get_scalar_i;       end interface
-!-interface get_args; module procedure get_scalar_real;    end interface
-!-interface get_args; module procedure get_scalar_complex; end interface
-!-interface get_args; module procedure get_scalar_logical; end interface
-!-! return non-allocatable arrays
-!-! said in conflict with get_args_*. Using class to get around that
-!-! that did not work either. Adding size parameter
-!-interface get_args_fixed_size; module procedure get_fixedarray_class;  end interface !any length string, fixed size array
-!-!interface get_args; module procedure get_fixedarray_d; end interface
-!-!interface get_args; module procedure get_fixedarray_i; end interface
-!-!interface get_args; module procedure get_fixedarray_r; end interface
-!-!interface get_args; module procedure get_fixedarray_l; end interface
-!-!interface get_args; module procedure get_fixedarray_fixed_length_c;   end interface
-!-interface get_args_fixed_length; module procedure get_fixed_length_any_size_cxxxx; end interface ! fixed length any size array
-!-!interface get_args_fixed_length; module procedure get_scalar_fixed_length_c;  end interface  ! fixed length and size array
+! EXAMPLE CALL
+! demo7 -integers 1a2b3c4d5e6 -reals 1/2/3/4 -doubles '40|50|60' -complexs '2!3!4!5' --characters aaa@BBBB@c,d,e
+! EXPECTED OUTPUT
+! 3 characters=[aaa  ] [BBBB ] [c,d,e]
+! 6 integers=[1] [2] [3] [4] [5] [6]
+! 4 reals=[1.00000000] [2.00000000] [3.00000000] [4.00000000]
+! 3 doubles=[40.000000000000000] [50.000000000000000] [60.000000000000000]
+! 0 normal=[
+! 2 complexs=[2.00000000] [3.00000000] [4.00000000] [5.00000000]
+! 2 fixed=[X   ] [Y   ]
+!==================================================================================================================================
+! DOES NOT WORK AT THE MOMENT!call get_args_fixed_size('flen',flen)   ! fixed length array
