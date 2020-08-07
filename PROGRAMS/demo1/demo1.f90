@@ -1,11 +1,12 @@
 program demo1
 use M_CLI2,  only : set_args, get_args, unnamed
+use M_CLI2,  only : get_args_fixed_size, get_args_fixed_length
 implicit none
 integer            :: i
 
 !! DECLARE "ARGS"
 real               :: x, y, z
-real               :: point(3),p(3)
+real               :: point(3), p(3)
 character(len=80)  :: title
 logical            :: l, l_
 equivalence(point,p)
@@ -22,9 +23,9 @@ equivalence(point,p)
    call get_args('x',x)
    call get_args('y',y)
    call get_args('z',z)
-   call get_args('point',point,size(point))
-   call get_args('p',p,size(p))
-   call get_args('title',title,len(title))
+   call get_args_fixed_size('point',point)
+   call get_args_fixed_size('p',p)
+   call get_args_fixed_length('title',title)
    call get_args('l',l)
    call get_args('L',l_)
    !! USE THE VALUES IN YOUR PROGRAM.

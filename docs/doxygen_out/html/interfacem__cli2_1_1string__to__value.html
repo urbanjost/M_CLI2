@@ -80,7 +80,7 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:ad579c3183bd46ec64ac2f6517b71da0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af221de32e1c7dd6915ea45dc3a0147ed"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1string__to__value.html#af221de32e1c7dd6915ea45dc3a0147ed">a2i</a> (chars, valu, ierr)</td></tr>
 <tr class="memdesc:af221de32e1c7dd6915ea45dc3a0147ed"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
-string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from string (LICENSE:PD)  <a href="#af221de32e1c7dd6915ea45dc3a0147ed">More...</a><br /></td></tr>
+string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from string (LICENSE:PD)  <a href="#af221de32e1c7dd6915ea45dc3a0147ed">More...</a><br /></td></tr>
 <tr class="separator:af221de32e1c7dd6915ea45dc3a0147ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function/Subroutine Documentation</h2>
@@ -173,7 +173,7 @@ string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from 
 </div><div class="memdoc">
 
 <p><h2>NAME</h2>
-string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from string (LICENSE:PD) </p>
+string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from string (LICENSE:PD) </p>
 <h2>SYNOPSIS</h2>
 <pre class="fragment">subroutine string_to_value(chars,valu,ierr)
 
@@ -187,7 +187,7 @@ string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from 
 <p>CHARS input string to read numeric value from </p><h2>RETURNS</h2>
 <p>VALU numeric value returned. May be INTEGER, REAL, or DOUBLEPRECISION. IERR error flag (0 == no error) </p><h2>EXAMPLE</h2>
 <p>Sample Program: </p><pre class="fragment"> program demo_string_to_value
- use M_strings, only: string_to_value
+ use M_CLI2, only: string_to_value
  character(len=80) :: string
     string=' -40.5e-2 '
     call string_to_value(string,value,ierr)

@@ -1,0 +1,361 @@
+\hypertarget{interfacem__cli2_1_1get__args__fixed__size}{}\section{m\+\_\+cli2\+:\+:get\+\_\+args\+\_\+fixed\+\_\+size Interface Reference}
+\label{interfacem__cli2_1_1get__args__fixed__size}\index{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size@{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size}}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__size_af6328f5272a7af47ab3262035de6725d}{get\+\_\+fixedarray\+\_\+class}} (keyword, generic)
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__cli2_1_1get__args__fixed__size_af6328f5272a7af47ab3262035de6725d}\label{interfacem__cli2_1_1get__args__fixed__size_af6328f5272a7af47ab3262035de6725d}} 
+\index{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size@{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size}!get\+\_\+fixedarray\+\_\+class@{get\+\_\+fixedarray\+\_\+class}}
+\index{get\+\_\+fixedarray\+\_\+class@{get\+\_\+fixedarray\+\_\+class}!m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size@{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size}}
+\subsubsection{\texorpdfstring{get\+\_\+fixedarray\+\_\+class()}{get\_fixedarray\_class()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size\+::get\+\_\+fixedarray\+\_\+class (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{class($\ast$), dimension(\+:)}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\subsubsection*{N\+A\+ME}
+
+set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} subroutine set_args(definition,help_text,version_text)
+
+  character(len=*),intent(in),optional  :: definition
+  character(len=:),intent(in),allocatable,intent(in) :: help_text
+  character(len=:),intent(in),allocatable,intent(in) :: version_text
+\end{DoxyVerb}
+ \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb} SET_ARGS(3f) requires a unix-like command prototype for defining
+ arguments and default command-line options. Argument values are then
+ read using GET_ARGS(3f).
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  DESCRIPTION   composed of all command arguments concatenated
+                into a Unix-like command prototype string.
+
+                o all keywords get a value.
+                o logicals must be set to F or T.
+                o strings MUST be delimited with double-quotes and
+                  must be at least one space. Internal
+                  double-quotes are represented with two double-quotes
+                o lists of values should be comma-delimited.
+                o long names (--keyword) should be all lowercase
+
+                DESCRIPTION is pre-defined to act as if started with the
+                reserved options '--usage F --help F --version F'.
+
+                The --help and --version options require the optional
+                help_text and version_text values to be provided.
+
+  HELP_TEXT     if present, will be displayed if program is called with
+                --help switch, and then the program will terminate. If
+                not supplied, the command line initialized string will be
+                shown when --help is used on the commandline.
+
+  VERSION_TEXT  if present, will be displayed if program is called with
+                --version switch, and then the program will terminate.
+\end{DoxyVerb}
+
+
+\subsubsection*{U\+S\+A\+GE}
+
+When using one of the Unix-\/like command line forms note that (subject to change) the following variations from other common command-\/line parsers\+:
+
+o long names do not take the --K\+EY=V\+A\+L\+UE form, just --K\+EY V\+A\+L\+UE; and long names should be all lowercase and always more than one character.
+
+o duplicate keywords are appended together with a space separator when a command line is executed.
+
+o numeric keywords are not allowed; but this allows negative numbers to be used as values.
+
+o mapping of short names to long names is via an E\+Q\+U\+I\+V\+A\+L\+E\+N\+CE. Note that allocatable arrays cannot be E\+Q\+U\+I\+V\+A\+N\+E\+N\+C\+Ed.
+
+Specifying both names of an equivalenced keyword on a command line will have undefined results (currently, their alphabetical order will define what the Fortran variable values become).
+
+o short keywords cannot be combined. -\/a -\/b -\/c is required, not -\/abc even for Boolean keys.
+
+o shuffling is not supported. Values should follow their keywords.
+
+o if a parameter value of just \char`\"{}-\/\char`\"{} is supplied it is converted to the string \char`\"{}stdin\char`\"{}.
+
+o if the keyword \char`\"{}-\/-\/\char`\"{} is encountered the rest of the command arguments go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}.
+
+o values not matching a keyword go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}.
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+: \begin{DoxyVerb}program demo_set_args
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+use M_CLI2,  only : get_args_fixed_size
+implicit none
+integer                      :: i
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+!  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+        & -l F -L F &
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+! for non-allocatable arrays pass size
+call get_args_fixed_size('p',p)
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+end program demo_set_args
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \subsubsection*{N\+A\+ME}
+
+get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} return keyword values when parsing command line arguments (L\+I\+C\+E\+N\+SE\+:PD)
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb} subroutine get_args(name,value)
+
+  character(len=*),intent(in) :: name
+  real|integer|logical|complex) :: value
+     or
+  character(len=:),allocatable :: value
+     or
+  real|integer|logical|complex),allocatable :: value(:)
+     or
+  character(len=:),allocatable :: value(:)
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb} GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
+ has been called. For fixed-length CHARACTER variables
+ see GET_ARGS_FIXED_LENGTH(3f).  for fixed-size arrays see
+ GET_ARGS_FIXED_SIZE(3f).
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}  NAME       name of commandline argument to obtain the value of
+  VALUE      variable to hold returned value. The kind of the value
+             is used to determine the type of returned value. May
+             be a scalar or allocatable array. If type is CHARACTER
+             the scalar must have an allocatable length.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+: \begin{DoxyVerb}program demo_get_args
+use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
+implicit none
+integer                      :: i
+integer,parameter            :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                         :: x, y, z
+real                         :: p(3)
+character(len=:),allocatable :: title
+logical                      :: l, lbig
+! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
+        & -l F -L F  &
+        & --label " " &
+        & ')
+! ASSIGN VALUES TO ELEMENTS
+! SCALARS
+call get_args('x',x)
+call get_args('y',y)
+call get_args('z',z)
+call get_args('l',l)
+call get_args('L',lbig)
+! ALLOCATABLE STRING
+call get_args('title',title)
+! NON-ALLOCATABLE ARRAYS
+call get_args_fixed_size('p',p)
+! USE VALUES
+write(*,*)'x=',x
+write(*,*)'y=',y
+write(*,*)'z=',z
+write(*,*)'p=',p
+write(*,*)'title=',title
+write(*,*)'l=',l
+write(*,*)'L=',lbig
+if(size(filenames).gt.0)then
+   write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+endif
+end program demo_get_args
+\end{DoxyVerb}
+ \subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \subsubsection*{N\+A\+ME}
+
+get\+\_\+args\+\_\+fixed\+\_\+length(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} return keyword values for fixed-\/length string when parsing command line arguments (L\+I\+C\+E\+N\+SE\+:PD)
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine get_args_fixed_length(name,value)
+ character(len=:),allocatable :: value
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}GET_ARGS_fixed_length(3f) returns the value of a string
+keyword when the string value is a fixed-length CHARACTER
+variable.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}NAME   name of commandline argument to obtain the value of
+VALUE  variable to hold returned value.
+       Must be a fixed-length CHARACTER variable.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+: \begin{DoxyVerb}program demo_get_args_fixed_length
+use M_CLI2,  only : set_args, get_args_fixed_length
+implicit none
+! DEFINE ARGS
+character(len=80)   :: title
+call set_args(' &
+   & -title "my title" &
+   & ')
+! ASSIGN VALUES TO ELEMENTS
+   call get_args_fixed_length('title',title)
+! USE VALUES
+   write(*,*)'title=',title
+end program demo_get_args_fixed_length
+\end{DoxyVerb}
+
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \subsubsection*{N\+A\+ME}
+
+get\+\_\+args\+\_\+fixed\+\_\+size(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} return keyword values for fixed-\/size array when parsing command line arguments (L\+I\+C\+E\+N\+SE\+:PD)
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+\begin{DoxyVerb}subroutine get_args_fixed_size(name,value)
+
+ real|integer|logical|complex :: value(NNN)
+    or
+ character(len=MMM) :: value(NNN)
+\end{DoxyVerb}
+
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}GET_ARGS_FIXED_SIZE(3f) returns the value of keywords for
+fixed-size arrays after SET_ARGS(3f) has been called.
+On input on the command line all values of the array must
+be specified.
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}NAME   name of commandline argument to obtain the value of
+VALUE  variable to hold returned values. The kind of the value
+       is used to determine the type of returned value.
+       Must be a fixed-size  array. If type is CHARACTER the
+       length must also be fixed.
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+LE}
+
+Sample program\+: \begin{DoxyVerb}program demo_get_args_fixed_size
+use M_CLI2,  only : set_args, get_args_fixed_size
+implicit none
+integer,parameter   :: dp=kind(0.0d0)
+! DEFINE ARGS
+real                :: x(2)
+real(kind=dp)       :: y(2)
+integer             :: p(3)
+character(len=80)   :: title(1)
+logical             :: l(4), lbig(4)
+complex             :: cmp(2)
+! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!   o only quote strings
+!   o set all logical values to F or T.
+call set_args(' &
+   & -x 10.0,20.0 &
+   & -y 11.0,22.0 &
+   & -p -1,-2,-3 &
+   & -title "my title" &
+   & -l F,T,F,T -L T,F,T,F  &
+   & --cmp 111,222.0,333.0e0,4444 &
+   & ')
+! ASSIGN VALUES TO ELEMENTS
+   call get_args_fixed_size('x',x)
+   call get_args_fixed_size('y',y)
+   call get_args_fixed_size('p',p)
+   call get_args_fixed_size('title',title)
+   call get_args_fixed_size('l',l)
+   call get_args_fixed_size('L',lbig)
+   call get_args_fixed_size('cmp',cmp)
+! USE VALUES
+   write(*,*)'x=',x
+   write(*,*)'p=',p
+   write(*,*)'title=',title
+   write(*,*)'l=',l
+   write(*,*)'L=',lbig
+   write(*,*)'cmp=',cmp
+end program demo_get_args_fixed_size
+\end{DoxyVerb}
+ Results\+:
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain 
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/urbanjs/venus/\+V600/github/\+M\+\_\+\+C\+L\+I2/src/\mbox{\hyperlink{M__CLI2_8f90}{M\+\_\+\+C\+L\+I2.\+f90}}\end{DoxyCompactItemize}

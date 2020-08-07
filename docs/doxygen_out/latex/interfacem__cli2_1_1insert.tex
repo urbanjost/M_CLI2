@@ -6,7 +6,7 @@
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_af1a1ef419e4e9d4653fce92182e0e0c2}{insert\+\_\+c}} (list, value, place)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
-insert(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+insert(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_afbcad9e7123fdec1b5c996adc6076a26}{insert\+\_\+d}} (list, value, place)
 \item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_a647342bf6669248878fd990a9d92ef2e}{insert\+\_\+r}} (list, value, place)
@@ -28,7 +28,7 @@ subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_a48dedb7035fb157485c81de9
 
 \subsubsection*{N\+A\+ME}
 
-insert(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
+insert(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
 
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
@@ -56,7 +56,7 @@ PLACE   is the subscript that the entry should be placed at
 
 Find if a string is in a sorted array, and insert the string into the list if it is not present ... \begin{DoxyVerb}program demo_insert
 use M_sort, only : sort_shell
-use M_list, only : locate, insert
+use M_CLI2, only : locate, insert
 implicit none
 character(len=:),allocatable :: arr(:)
 integer                       :: i

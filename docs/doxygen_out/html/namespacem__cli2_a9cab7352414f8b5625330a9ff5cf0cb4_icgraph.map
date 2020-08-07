@@ -1,14 +1,15 @@
 <map id="m_cli2::unquote" name="m_cli2::unquote">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="NAMEupdate(3f) &#45; [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value (LICENSE:PD) S..." alt="" coords="196,63,315,90"/>
-<area shape="rect" id="node9" href="$namespacem__cli2.html#a5c2f92a26d8dbec57ded73d9e29de686" title="m_cli2::get_args_c" alt="" coords="184,114,327,141"/>
-<area shape="rect" id="node10" href="$namespacem__cli2.html#a07ab75edc4b65340919a625dc7defedb" title="m_cli2::get_args_cc" alt="" coords="180,165,331,191"/>
-<area shape="rect" id="node12" href="$namespacem__cli2.html#a2809fae3588cb1e09efa1985a6e5d4a7" title="m_cli2::get_arg_c" alt="" coords="187,215,323,242"/>
-<area shape="rect" id="node13" href="$namespacem__cli2.html#a9848bf0f579798f69fd83737e118d5cb" title="m_cli2::get_arg_cx" alt="" coords="183,266,327,293"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#a14896d00e509cbc32f4df993a8d6f75b" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="596,5,752,47"/>
-<area shape="rect" id="node7" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="596,71,752,112"/>
-<area shape="rect" id="node8" href="$M__CLI2_8f90.html#aa26f90016621d1ee43d3b5b66316532b" title="ifnull" alt="" coords="436,114,491,141"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a46f31858773ff1b4cf96329a14130bf2" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to n..." alt="" coords="800,39,967,80"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a85c38a938a7dd9a749daf8effe45c109" title="NAMEcommandline(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) ..." alt="" coords="1015,46,1177,73"/>
-<area shape="rect" id="node6" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="1225,46,1353,73"/>
-<area shape="rect" id="node11" href="$namespacem__cli2.html#a5ecc06d6d44134b8ef7c71f1eab8aa86" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="379,165,548,191"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="NAMEupdate(3f) &#45; [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value (LICENSE:PD) S..." alt="" coords="211,63,330,90"/>
+<area shape="rect" id="node9" href="$namespacem__cli2.html#a448e8e24406f4bdbc14f26a940cbbc2c" title="m_cli2::get_anyarray_c" alt="" coords="184,114,357,141"/>
+<area shape="rect" id="node10" href="$namespacem__cli2.html#abc31389c45dcd95b8db641b59b98b447" title="m_cli2::get_fixed_length\l_any_size_cxxxx" alt="" coords="180,165,361,207"/>
+<area shape="rect" id="node11" href="$namespacem__cli2.html#a8000c5e05f6c84ba17350d4a00850a6a" title="m_cli2::get_fixedarray\l_fixed_length_c" alt="" coords="187,231,354,272"/>
+<area shape="rect" id="node13" href="$namespacem__cli2.html#a7429381c83a021ba3ffb32ed58e17a0e" title="m_cli2::get_scalar\l_anylength_c" alt="" coords="201,296,341,337"/>
+<area shape="rect" id="node14" href="$namespacem__cli2.html#a9dcc99d34db1771959a1461274ae073e" title="m_cli2::get_scalar\l_fixed_length_c" alt="" coords="201,361,341,403"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a14896d00e509cbc32f4df993a8d6f75b" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="624,5,780,47"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="624,71,780,112"/>
+<area shape="rect" id="node8" href="$M__CLI2_8f90.html#aa26f90016621d1ee43d3b5b66316532b" title="ifnull" alt="" coords="465,114,520,141"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a46f31858773ff1b4cf96329a14130bf2" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to n..." alt="" coords="828,39,995,80"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a85c38a938a7dd9a749daf8effe45c109" title="NAMEcommandline(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) ..." alt="" coords="1043,46,1205,73"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="1253,46,1381,73"/>
+<area shape="rect" id="node12" href="$namespacem__cli2.html#a2661b2b4b9ad7886d84d8972552a4af4" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="409,231,576,272"/>
 </map>

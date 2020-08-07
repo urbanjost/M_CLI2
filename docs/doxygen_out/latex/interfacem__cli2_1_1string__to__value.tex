@@ -8,7 +8,7 @@ subroutine \mbox{\hyperlink{interfacem__cli2_1_1string__to__value_ad579c3183bd46
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1string__to__value_af221de32e1c7dd6915ea45dc3a0147ed}{a2i}} (chars, valu, ierr)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
-string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} subroutine returns numeric value from string (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\end{DoxyCompactItemize}
+string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\+:N\+U\+M\+E\+R\+IC\mbox{]} subroutine returns numeric value from string (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Member Function/\+Subroutine Documentation}
@@ -28,7 +28,7 @@ string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbo
 
 \subsubsection*{N\+A\+ME}
 
-string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+strings\+:N\+U\+M\+E\+R\+IC\mbox{]} subroutine returns numeric value from string (L\+I\+C\+E\+N\+SE\+:PD) 
+string\+\_\+to\+\_\+value(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\+:N\+U\+M\+E\+R\+IC\mbox{]} subroutine returns numeric value from string (L\+I\+C\+E\+N\+SE\+:PD) 
 
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
@@ -51,7 +51,7 @@ C\+H\+A\+RS input string to read numeric value from \subsubsection*{R\+E\+T\+U\+
 V\+A\+LU numeric value returned. May be I\+N\+T\+E\+G\+ER, R\+E\+AL, or D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON. I\+E\+RR error flag (0 == no error) \subsubsection*{E\+X\+A\+M\+P\+LE}
 
 Sample Program\+: \begin{DoxyVerb} program demo_string_to_value
- use M_strings, only: string_to_value
+ use M_CLI2, only: string_to_value
  character(len=80) :: string
     string=' -40.5e-2 '
     call string_to_value(string,value,ierr)

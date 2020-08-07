@@ -78,7 +78,7 @@ $(function() {
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a6981d9d92e581945d4528568b6457c29"><td class="memItemLeft" align="right" valign="top">character(len=:) function, allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1str.html#a6981d9d92e581945d4528568b6457c29">msg_scalar</a> (generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, nospace)</td></tr>
 <tr class="memdesc:a6981d9d92e581945d4528568b6457c29"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
-str(3f) - [M_msg] converts any standard scalar type to a string (LICENSE:PD) </p><h2>SYNOPSIS</h2>
+str(3f) - [M_CLI2] converts any standard scalar type to a string (LICENSE:PD) </p><h2>SYNOPSIS</h2>
  <a href="#a6981d9d92e581945d4528568b6457c29">More...</a><br /></td></tr>
 <tr class="separator:a6981d9d92e581945d4528568b6457c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac020bc195a094be93216e056337f1c12"><td class="memItemLeft" align="right" valign="top">character(len=:) function, allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1str.html#ac020bc195a094be93216e056337f1c12">msg_one</a> (generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, nospace)</td></tr>
@@ -324,7 +324,7 @@ str(3f) - [M_msg] converts any standard scalar type to a string (LICENSE:PD) </p
 </div><div class="memdoc">
 
 <p><h2>NAME</h2>
-str(3f) - [M_msg] converts any standard scalar type to a string (LICENSE:PD) </p><h2>SYNOPSIS</h2>
+str(3f) - [M_CLI2] converts any standard scalar type to a string (LICENSE:PD) </p><h2>SYNOPSIS</h2>
 </p>
 <p>function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,nospace)</p>
 <p>class(*),intent(in),optional :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9 class(*),intent(in),optional :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj logical,intent(in),optional :: nospace character,len=(:),allocatable :: str</p>
@@ -336,7 +336,7 @@ str(3f) - [M_msg] converts any standard scalar type to a string (LICENSE:PD) </p
 <p>nospace if nospace=.true., then no spaces are added between values </p><h2>RETURNS</h2>
 <p>str description to print </p><h2>EXAMPLES</h2>
 <p>Sample program: </p><pre class="fragment">  program demo_msg
-  use M_msg, only : str
+  use M_CLI2, only : str
   implicit none
   character(len=:),allocatable :: pr
   character(len=:),allocatable :: frmt

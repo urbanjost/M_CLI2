@@ -1,5 +1,6 @@
            program demo_get_args
-           use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+           use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+           use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
            implicit none
            integer                      :: i
            integer,parameter            :: dp=kind(0.0d0)
@@ -25,8 +26,7 @@
            ! ALLOCATABLE STRING
            call get_args('title',title)
            ! NON-ALLOCATABLE ARRAYS
-           ! for non-allocatable arrays pass size
-           call get_args('p',p,size(p))
+           call get_args_fixed_size('p',p)
            ! USE VALUES
            write(*,*)'x=',x
            write(*,*)'y=',y
@@ -37,9 +37,5 @@
            write(*,*)'L=',lbig
            if(size(filenames).gt.0)then
               write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
-           endif
-           if(size(unnamed).gt.0)then
-              write (*,'(a)')'files:'
-              write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
            endif
            end program demo_get_args

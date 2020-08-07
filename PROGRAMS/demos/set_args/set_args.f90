@@ -1,8 +1,8 @@
            program demo_set_args
            use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+           use M_CLI2,  only : get_args_fixed_size
            implicit none
            integer                      :: i
-           integer,parameter            :: dp=kind(0.0d0)
            ! DEFINE ARGS
            real                         :: x, y, z
            real                         :: p(3)
@@ -26,7 +26,7 @@
            call get_args('title',title)
            ! NON-ALLOCATABLE ARRAYS
            ! for non-allocatable arrays pass size
-           call get_args('p',p,size(p))
+           call get_args_fixed_size('p',p)
            ! USE VALUES
            write(*,*)'x=',x
            write(*,*)'y=',y

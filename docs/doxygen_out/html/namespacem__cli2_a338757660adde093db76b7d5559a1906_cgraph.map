@@ -1,0 +1,10 @@
+<map id="m_cli2::get_scalar_d" name="m_cli2::get_scalar_d">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#aaede1f28172778cf45f4b6c04967bbbd" title="m_cli2::get_anyarray_d" alt="" coords="208,83,383,109"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="815,133,933,160"/>
+<area shape="rect" id="node9" href="$namespacem__cli2.html#acbd726aa5c13b005a14c06d58915cb9a" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandli..." alt="" coords="208,133,383,160"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f" title="m_cli2::replace_str" alt="" coords="431,159,576,185"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="453,57,554,84"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a710b26995119aee101959555b1bac8e2" title="NAMEreplace_str(3f) &#45; [M_CLI2:EDITING] function globally replaces one substring for another in string..." alt="" coords="624,209,767,236"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a" title="m_cli2::strtok" alt="" coords="819,209,929,236"/>
+<area shape="rect" id="node8" href="$namespacem__cli2.html#a6d2d93ab8471667e632bf7a0e95ebd13" title="NAMElower(3f) &#45; [M_CLI2:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="641,57,750,84"/>
+</map>

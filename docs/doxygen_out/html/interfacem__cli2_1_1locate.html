@@ -78,7 +78,7 @@ $(function() {
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a59a1546b8eab776a0ba5594b6b90ae72"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1locate.html#a59a1546b8eab776a0ba5594b6b90ae72">locate_c</a> (list, value, place, ier, errmsg)</td></tr>
 <tr class="memdesc:a59a1546b8eab776a0ba5594b6b90ae72"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
-locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array (LICENSE:PD)  <a href="#a59a1546b8eab776a0ba5594b6b90ae72">More...</a><br /></td></tr>
+locate(3f) - [M_CLI2] finds the index where a string is found or should be in a sorted array (LICENSE:PD)  <a href="#a59a1546b8eab776a0ba5594b6b90ae72">More...</a><br /></td></tr>
 <tr class="separator:a59a1546b8eab776a0ba5594b6b90ae72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8d6a83fb2617b1a370d6f4142cfbf6b"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1locate.html#ac8d6a83fb2617b1a370d6f4142cfbf6b">locate_d</a> (list, value, place, ier, errmsg)</td></tr>
 <tr class="separator:ac8d6a83fb2617b1a370d6f4142cfbf6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,7 +141,7 @@ locate(3f) - [M_list] finds the index where a string is found or should be in a 
 </div><div class="memdoc">
 
 <p><h2>NAME</h2>
-locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array (LICENSE:PD) </p>
+locate(3f) - [M_CLI2] finds the index where a string is found or should be in a sorted array (LICENSE:PD) </p>
 <h2>SYNOPSIS</h2>
 <p>subroutine locate(list,value,place,ier,errmsg)</p>
 <p>character(len=:)|doubleprecision|real|integer,allocatable :: list(:) character(len=*)|doubleprecision|real|integer,intent(in) :: value integer, intent(out) :: PLACE</p>
@@ -165,7 +165,7 @@ LIST          is the list array.
 <h2>EXAMPLES</h2>
 <p>Find if a string is in a sorted array, and insert the string into the list if it is not present ... </p><pre class="fragment">program demo_locate
 use M_sort, only : sort_shell
-use M_list, only : locate
+use M_CLI2, only : locate
 implicit none
 character(len=:),allocatable  :: arr(:)
 integer                       :: i

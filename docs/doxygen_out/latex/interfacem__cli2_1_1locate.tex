@@ -6,7 +6,7 @@
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_a59a1546b8eab776a0ba5594b6b90ae72}{locate\+\_\+c}} (list, value, place, ier, errmsg)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
-locate(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+locate(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_ac8d6a83fb2617b1a370d6f4142cfbf6b}{locate\+\_\+d}} (list, value, place, ier, errmsg)
 \item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_a93368b61603fe74c498b1190a502c271}{locate\+\_\+r}} (list, value, place, ier, errmsg)
@@ -26,7 +26,7 @@ subroutine \mbox{\hyperlink{interfacem__cli2_1_1locate_a4bc5036ad18af931624efb52
 
 \subsubsection*{N\+A\+ME}
 
-locate(3f) -\/ \mbox{[}M\+\_\+list\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) 
+locate(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} finds the index where a string is found or should be in a sorted array (L\+I\+C\+E\+N\+SE\+:PD) 
 
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
@@ -69,7 +69,7 @@ E\+R\+R\+M\+SG description of any error
 
 Find if a string is in a sorted array, and insert the string into the list if it is not present ... \begin{DoxyVerb}program demo_locate
 use M_sort, only : sort_shell
-use M_list, only : locate
+use M_CLI2, only : locate
 implicit none
 character(len=:),allocatable  :: arr(:)
 integer                       :: i

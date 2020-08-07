@@ -9,8 +9,8 @@
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!
-!!     use M_CLI2, only : set_args, get_args, unnamed ! argument type conversion
+!!     use M_CLI2, only : set_args, get_args, unnamed
+!!     use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
 !!
 !!##DESCRIPTION
 !!     Allow for command line parsing much like standard Unix command line
@@ -20,28 +20,29 @@
 !!
 !!##EXAMPLE
 !!
-!!
 !! Sample program using type conversion routines
 !!
 !!     program demo_M_CLI2
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+!!     use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
 !!     implicit none
 !!     integer                      :: i
 !!     integer,parameter            :: dp=kind(0.0d0)
 !!     !
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
-!!     real                         :: p(3)
 !!     real(kind=dp),allocatable    :: point(:)
-!!     character(len=:),allocatable :: title
-!!     character(len=40)            :: label
 !!     logical                      :: l, lbig
 !!     logical,allocatable          :: logicals(:)
-!!     logical                      :: logi(3)
+!!     character(len=:),allocatable :: title    ! VARIABLE LENGTH
+!!     character(len=40)            :: label    ! FIXED LENGTH
+!!     real                         :: p(3)     ! FIXED SIZE
+!!     logical                      :: logi(3)  ! FIXED SIZE
 !!     !
 !!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
 !!     !   o only quote strings
 !!     !   o set all logical values to F or T.
+!!     !   o value delimiter is comma, colon, or space
 !!     call set_args('                         &
 !!             & -x 1 -y 2 -z 3                &
 !!             & -p -1 -2 -3                   &
@@ -63,9 +64,9 @@
 !!     call get_args('logicals',logicals)
 !!     !
 !!     ! for NON-ALLOCATABLE VARIABLES
-!!     call get_args('label',label,len(label)) ! for non-allocatable string pass length
-!!     call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
-!!     call get_args('logi',logi,size(logi))
+!!     call get_args_fixed_length('label',label) ! for non-allocatable string
+!!     call get_args_fixed_size('p',p)           ! for non-allocatable arrays
+!!     call get_args_fixed_size('logi',logi)
 !!     !
 !!     ! USE VALUES
 !!     write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
@@ -106,6 +107,8 @@ private                             :: check_commandline
 character(len=:),allocatable,public :: unnamed(:)
 public                              :: set_args
 public                              :: get_args
+public                              :: get_args_fixed_size
+public                              :: get_args_fixed_length
 
 private :: wipe_dictionary
 private :: prototype_to_dictionary
@@ -145,29 +148,34 @@ type dictionary
 end type dictionary
 !==================================================================================================================================
 ! return allocatable arrays
-interface  get_args;  module  procedure  get_args_d;  end interface
-interface  get_args;  module  procedure  get_args_i;  end interface
-interface  get_args;  module  procedure  get_args_r;  end interface
-interface  get_args;  module  procedure  get_args_c;  end interface
-interface  get_args;  module  procedure  get_args_l;  end interface
+interface  get_args;  module  procedure  get_anyarray_d;  end interface  ! any size array
+interface  get_args;  module  procedure  get_anyarray_i;  end interface  ! any size array
+interface  get_args;  module  procedure  get_anyarray_r;  end interface  ! any size array
+interface  get_args;  module  procedure  get_anyarray_x;  end interface  ! any size array
+interface  get_args;  module  procedure  get_anyarray_c;  end interface  ! any size array and any length
+interface  get_args;  module  procedure  get_anyarray_l;  end interface  ! any size array
 ! return scalars
-interface  get_args;  module  procedure  get_arg_d;   end interface
-interface  get_args;  module  procedure  get_arg_i;   end interface
-interface  get_args;  module  procedure  get_arg_r;   end interface
-interface  get_args;  module  procedure  get_arg_c;   end interface
-interface  get_args;  module  procedure  get_arg_cx;  end interface
-interface  get_args;  module  procedure  get_arg_l;   end interface
+interface  get_args;  module  procedure  get_scalar_d;            end  interface
+interface  get_args;  module  procedure  get_scalar_i;            end  interface
+interface  get_args;  module  procedure  get_scalar_real;         end  interface
+interface  get_args;  module  procedure  get_scalar_complex;      end  interface
+interface  get_args;  module  procedure  get_scalar_anylength_c;  end  interface ! any length
+interface  get_args;  module  procedure  get_scalar_logical;      end  interface
+
 ! return non-allocatable arrays
 ! said in conflict with get_args_*. Using class to get around that
-interface   get_args;  module  procedure  get_args_class;  end interface
 ! that did not work either. Adding size parameter
-!interface   get_args;  module  procedure  get_args_dd;   end interface
-!interface   get_args;  module  procedure  get_args_ii;   end interface
-!interface   get_args;  module  procedure  get_args_rr;   end interface
-!interface   get_args;  module  procedure  get_args_cc;   end interface
-!interface   get_args;  module  procedure  get_args_ll;   end interface
+interface  get_args_fixed_size;  module  procedure  get_fixedarray_class;  end interface !any length string, fixed size array
+!interface   get_args;  module  procedure  get_fixedarray_d;   end interface
+!interface   get_args;  module  procedure  get_fixedarray_i;   end interface
+!interface   get_args;  module  procedure  get_fixedarray_r;   end interface
+!interface   get_args;  module  procedure  get_fixedarray_l;   end interface
+!interface   get_args;  module  procedure  get_fixedarray_fixed_length_c;   end interface
+
+interface   get_args_fixed_length;  module  procedure  get_fixed_length_any_size_cxxxx; end interface  ! fixed length any size array
+interface   get_args_fixed_length;  module  procedure  get_scalar_fixed_length_c;  end interface  ! fixed length and size array
 !===================================================================================================================================
-! ident_1="@(#)M_msg::str(3f): {msg_scalar,msg_one}"
+! ident_1="@(#)M_CLI2::str(3f): {msg_scalar,msg_one}"
 
 private str
 interface str
@@ -175,60 +183,60 @@ interface str
 end interface str
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-! ident_2="@(#)M_strings::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)"
+! ident_2="@(#)M_CLI2::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)"
 
 interface string_to_value
    module procedure a2d, a2i
 end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-! ident_3="@(#)M_strings::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(r2s,i2s)"
+! ident_3="@(#)M_CLI2::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(r2s,i2s)"
 
 interface v2s
    module procedure i2s
 end interface
 !===================================================================================================================================
 
-public locate        ! [M_list] find PLACE in sorted character array where value can be found or should be placed
+private locate        ! [M_CLI2] find PLACE in sorted character array where value can be found or should be placed
    private locate_c
    private locate_d
    private locate_r
    private locate_i
-public insert        ! [M_list] insert entry into a sorted allocatable array at specified position
+private insert        ! [M_CLI2] insert entry into a sorted allocatable array at specified position
    private insert_c
    private insert_d
    private insert_r
    private insert_i
    private insert_l
-public replace       ! [M_list] replace entry by index from a sorted allocatable array if it is present
+private replace       ! [M_CLI2] replace entry by index from a sorted allocatable array if it is present
    private replace_c
    private replace_d
    private replace_r
    private replace_i
    private replace_l
-public remove        ! [M_list] delete entry by index from a sorted allocatable array if it is present
+private remove        ! [M_CLI2] delete entry by index from a sorted allocatable array if it is present
    private remove_c
    private remove_d
    private remove_r
    private remove_i
    private remove_l
 
-! ident_4="@(#)M_list::locate(3f): Generic subroutine locates where element is or should be in sorted allocatable array"
+! ident_4="@(#)M_CLI2::locate(3f): Generic subroutine locates where element is or should be in sorted allocatable array"
 interface locate
    module procedure locate_c, locate_d, locate_r, locate_i
 end interface
 
-! ident_5="@(#)M_list::insert(3f): Generic subroutine inserts element into allocatable array at specified position"
+! ident_5="@(#)M_CLI2::insert(3f): Generic subroutine inserts element into allocatable array at specified position"
 interface insert
    module procedure insert_c, insert_d, insert_r, insert_i, insert_l
 end interface
 
-! ident_6="@(#)M_list::replace(3f): Generic subroutine replaces element from allocatable array at specified position"
+! ident_6="@(#)M_CLI2::replace(3f): Generic subroutine replaces element from allocatable array at specified position"
 interface replace
    module procedure replace_c, replace_d, replace_r, replace_i, replace_l
 end interface
 
-! ident_7="@(#)M_list::remove(3f): Generic subroutine deletes element from allocatable array at specified position"
+! ident_7="@(#)M_CLI2::remove(3f): Generic subroutine deletes element from allocatable array at specified position"
 interface remove
    module procedure remove_c, remove_d, remove_r, remove_i, remove_l
 end interface
@@ -1431,9 +1439,9 @@ end function strtok
 !!
 !!     program demo_set_args
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+!!     use M_CLI2,  only : get_args_fixed_size
 !!     implicit none
 !!     integer                      :: i
-!!     integer,parameter            :: dp=kind(0.0d0)
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
 !!     real                         :: p(3)
@@ -1457,7 +1465,7 @@ end function strtok
 !!     call get_args('title',title)
 !!     ! NON-ALLOCATABLE ARRAYS
 !!     ! for non-allocatable arrays pass size
-!!     call get_args('p',p,size(p))
+!!     call get_args_fixed_size('p',p)
 !!     ! USE VALUES
 !!     write(*,*)'x=',x
 !!     write(*,*)'y=',y
@@ -1486,32 +1494,40 @@ end function strtok
 !!
 !!
 !!
-!!     subroutine get_args(name,value,magnitude)
+!!     subroutine get_args(name,value)
 !!
-!!      character(len=*),intent(in),optional  :: name
-!!      real|integer|logical|character(len=*) :: value
-!!      integer,intent(in) :: magnitude
+!!      character(len=*),intent(in) :: name
+!!      real|integer|logical|complex) :: value
+!!         or
+!!      character(len=:),allocatable :: value
+!!         or
+!!      real|integer|logical|complex),allocatable :: value(:)
+!!         or
+!!      character(len=:),allocatable :: value(:)
 !!
 !!##DESCRIPTION
 !!
-!!     GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f) has
-!!     been called.
+!!     GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
+!!     has been called. For fixed-length CHARACTER variables
+!!     see GET_ARGS_FIXED_LENGTH(3f).  for fixed-size arrays see
+!!     GET_ARGS_FIXED_SIZE(3f).
 !!
 !!##OPTIONS
 !!
 !!      NAME       name of commandline argument to obtain the value of
 !!      VALUE      variable to hold returned value. The kind of the value
-!!                 is used to determine the type of returned value
-!!      MAGNITUDE  for non-allocatable arrays the size of the array. For
-!!                 non-allocatable character variables the length of the
-!!                 variable.
+!!                 is used to determine the type of returned value. May
+!!                 be a scalar or allocatable array. If type is CHARACTER
+!!                 the scalar must have an allocatable length.
+!!
 !!##EXAMPLE
 !!
 !!
 !! Sample program:
 !!
 !!     program demo_get_args
-!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+!!     use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
 !!     implicit none
 !!     integer                      :: i
 !!     integer,parameter            :: dp=kind(0.0d0)
@@ -1537,8 +1553,7 @@ end function strtok
 !!     ! ALLOCATABLE STRING
 !!     call get_args('title',title)
 !!     ! NON-ALLOCATABLE ARRAYS
-!!     ! for non-allocatable arrays pass size
-!!     call get_args('p',p,size(p))
+!!     call get_args_fixed_size('p',p)
 !!     ! USE VALUES
 !!     write(*,*)'x=',x
 !!     write(*,*)'y=',y
@@ -1550,41 +1565,159 @@ end function strtok
 !!     if(size(filenames).gt.0)then
 !!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
 !!     endif
-!!     if(size(unnamed).gt.0)then
-!!        write (*,'(a)')'files:'
-!!        write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
-!!     endif
 !!     end program demo_get_args
 !!##AUTHOR
 !!      John S. Urban, 2019
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
-subroutine get_args_class(keyword,generic,bounds)
+!>
+!!##NAME
+!!    get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line arguments
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine get_args_fixed_length(name,value)
+!!     character(len=:),allocatable :: value
+!!
+!!##DESCRIPTION
+!!
+!!    GET_ARGS_fixed_length(3f) returns the value of a string
+!!    keyword when the string value is a fixed-length CHARACTER
+!!    variable.
+!!
+!!##OPTIONS
+!!
+!!    NAME   name of commandline argument to obtain the value of
+!!    VALUE  variable to hold returned value.
+!!           Must be a fixed-length CHARACTER variable.
+!!
+!!##EXAMPLE
+!!
+!! Sample program:
+!!
+!!     program demo_get_args_fixed_length
+!!     use M_CLI2,  only : set_args, get_args_fixed_length
+!!     implicit none
+!!     ! DEFINE ARGS
+!!     character(len=80)   :: title
+!!     call set_args(' &
+!!        & -title "my title" &
+!!        & ')
+!!     ! ASSIGN VALUES TO ELEMENTS
+!!        call get_args_fixed_length('title',title)
+!!     ! USE VALUES
+!!        write(*,*)'title=',title
+!!     end program demo_get_args_fixed_length
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
+!===================================================================================================================================
+!>
+!!##NAME
+!!    get_args_fixed_size(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-size array when parsing command line arguments
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    subroutine get_args_fixed_size(name,value)
+!!
+!!     real|integer|logical|complex :: value(NNN)
+!!        or
+!!     character(len=MMM) :: value(NNN)
+!!
+!!##DESCRIPTION
+!!
+!!    GET_ARGS_FIXED_SIZE(3f) returns the value of keywords for
+!!    fixed-size arrays after SET_ARGS(3f) has been called.
+!!    On input on the command line all values of the array must
+!!    be specified.
+!!
+!!##OPTIONS
+!!
+!!    NAME   name of commandline argument to obtain the value of
+!!    VALUE  variable to hold returned values. The kind of the value
+!!           is used to determine the type of returned value.
+!!           Must be a fixed-size  array. If type is CHARACTER the
+!!           length must also be fixed.
+!!
+!!##EXAMPLE
+!!
+!! Sample program:
+!!
+!!     program demo_get_args_fixed_size
+!!     use M_CLI2,  only : set_args, get_args_fixed_size
+!!     implicit none
+!!     integer,parameter   :: dp=kind(0.0d0)
+!!     ! DEFINE ARGS
+!!     real                :: x(2)
+!!     real(kind=dp)       :: y(2)
+!!     integer             :: p(3)
+!!     character(len=80)   :: title(1)
+!!     logical             :: l(4), lbig(4)
+!!     complex             :: cmp(2)
+!!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!!     !   o only quote strings
+!!     !   o set all logical values to F or T.
+!!     call set_args(' &
+!!        & -x 10.0,20.0 &
+!!        & -y 11.0,22.0 &
+!!        & -p -1,-2,-3 &
+!!        & -title "my title" &
+!!        & -l F,T,F,T -L T,F,T,F  &
+!!        & --cmp 111,222.0,333.0e0,4444 &
+!!        & ')
+!!     ! ASSIGN VALUES TO ELEMENTS
+!!        call get_args_fixed_size('x',x)
+!!        call get_args_fixed_size('y',y)
+!!        call get_args_fixed_size('p',p)
+!!        call get_args_fixed_size('title',title)
+!!        call get_args_fixed_size('l',l)
+!!        call get_args_fixed_size('L',lbig)
+!!        call get_args_fixed_size('cmp',cmp)
+!!     ! USE VALUES
+!!        write(*,*)'x=',x
+!!        write(*,*)'p=',p
+!!        write(*,*)'title=',title
+!!        write(*,*)'l=',l
+!!        write(*,*)'L=',lbig
+!!        write(*,*)'cmp=',cmp
+!!     end program demo_get_args_fixed_size
+!!   Results:
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
+!===================================================================================================================================
+subroutine get_fixedarray_class(keyword,generic)
 character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
 class(*)                    :: generic(:)
-integer                     :: bounds
    select type(generic)
-    type is (character(len=*));  call get_args_cc(keyword,generic)
-    type is (integer);           call get_args_ii(keyword,generic)
-    type is (real);              call get_args_rr(keyword,generic)
-    type is (real(kind=dp));     call get_args_dd(keyword,generic)
-    type is (logical);           call get_args_ll(keyword,generic)
+    type is (character(len=*));  call get_fixedarray_fixed_length_c(keyword,generic)
+    type is (integer);           call get_fixedarray_i(keyword,generic)
+    type is (real);              call get_fixedarray_r(keyword,generic)
+    type is (complex);           call get_fixed_size_complex(keyword,generic)
+    type is (real(kind=dp));     call get_fixedarray_d(keyword,generic)
+    type is (logical);           call get_fixedarray_l(keyword,generic)
     class default
-      stop '*get_args_class* crud -- procedure does not know about this type'
+      stop '*get_fixedarray_class* crud -- procedure does not know about this type'
    end select
-end subroutine get_args_class
+end subroutine get_fixedarray_class
 !===================================================================================================================================
 ! return allocatable arrays
 !===================================================================================================================================
-subroutine get_args_l(keyword,larray)
+subroutine get_anyarray_l(keyword,larray,delimiters)
 
-! ident_12="@(#)M_CLI2::get_args_l(3f): given keyword fetch logical array from string in dictionary(F on err)"
+! ident_12="@(#)M_CLI2::get_anyarray_l(3f): given keyword fetch logical array from string in dictionary(F on err)"
 
 character(len=*),intent(in)  :: keyword                    ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
 logical,allocatable          :: larray(:)                  ! convert value to an array
+character(len=*),intent(in),optional   :: delimiters
 character(len=:),allocatable :: carray(:)                  ! convert value to an array
-character(len=*),parameter   :: dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'
 character(len=:),allocatable :: val
 integer                      :: i
 integer                      :: place
@@ -1592,9 +1725,9 @@ integer                      :: ichar                      ! point to first char
    call locate(keywords,keyword,place)                     ! find where string is or should be
    if(place.gt.0)then                                      ! if string was found
       val=values(place)(:counts(place))
-      call split(adjustl(upper(val)),carray,delimiters=dlim)  ! convert value to uppercase, trimmed; then parse into array
+      call split(adjustl(upper(val)),carray,delimiters=delimiters)  ! convert value to uppercase, trimmed; then parse into array
    else
-      call journal('sc','*get_args* unknown keyword ',keyword)
+      call journal('sc','*get_anyarray_l* unknown keyword ',keyword)
       stop
    endif
    if(size(carray).gt.0)then                                  ! if not a null string
@@ -1610,254 +1743,343 @@ integer                      :: ichar                      ! point to first char
          case('T','Y',' '); larray(i)=.true.               ! anything starting with "T" or "Y" or a blank is TRUE (true,yes,...)
          case('F','N');     larray(i)=.false.              ! assume this is false or no
          case default
-            call journal('sc',"*get_args* bad logical expression for "//trim(keyword)//'='//carray(i))
+            call journal('sc',"*get_anyarray_l* bad logical expression for "//trim(keyword)//'='//carray(i))
          end select
       enddo
    else                                                       ! for a blank string return one T
       allocate(larray(1))                                     ! allocate output array
       larray(1)=.true.
    endif
-end subroutine get_args_l
+end subroutine get_anyarray_l
 !===================================================================================================================================
-subroutine get_args_d(keyword,darray)
+subroutine get_anyarray_d(keyword,darray,delimiters)
 
-! ident_13="@(#)M_CLI2::get_args_d(3f): given keyword fetch dble value array from Language Dictionary (0 on err)"
+! ident_13="@(#)M_CLI2::get_anyarray_d(3f): given keyword fetch dble value array from Language Dictionary (0 on err)"
 
 character(len=*),intent(in)           :: keyword      ! keyword to retrieve value for from dictionary
 real(kind=dp),allocatable,intent(out) :: darray(:)    ! function type
+character(len=*),intent(in),optional  :: delimiters
 
 character(len=:),allocatable          :: carray(:)    ! convert value to an array using split(3f)
 integer                               :: i
 integer                               :: place
 integer                               :: ierr
 character(len=:),allocatable          :: val
-character(len=*),parameter            :: dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'
 !-----------------------------------------------------------------------------------------------------------------------------------
    call locate(keywords,keyword,place)                ! find where string is or should be
    if(place.gt.0)then                                 ! if string was found
       val=values(place)(:counts(place))
-      call split(val,carray,delimiters=dlim)          ! find value associated with keyword and split it into an array
+      val=replace_str(val,'(','')
+      val=replace_str(val,')','')
+      call split(val,carray,delimiters=delimiters)    ! find value associated with keyword and split it into an array
    else
-      call journal('sc','*get_args* unknown keyword ',keyword)
+      call journal('sc','*get_anyarray_d* unknown keyword ',keyword)
       stop
    endif
    allocate(darray(size(carray)))                     ! create the output array
    do i=1,size(carray)
       call string_to_value(carray(i), darray(i),ierr) ! convert the string to a numeric value
       if(ierr.ne.0)then
-         call journal('sc','*get_args* unreadable value',carray(i),'for keyword',keyword)
+         call journal('sc','*get_anyarray_d* unreadable value',carray(i),'for keyword',keyword)
          stop
       endif
    enddo
-end subroutine get_args_d
+end subroutine get_anyarray_d
 !===================================================================================================================================
-subroutine get_args_i(keyword,iarray)
-character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
-integer,allocatable              :: iarray(:)
-real(kind=dp),allocatable        :: darray(:)    ! function type
-   call get_args_d(keyword,darray)
+subroutine get_anyarray_i(keyword,iarray)
+character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
+integer,allocatable         :: iarray(:)
+real(kind=dp),allocatable   :: darray(:)    ! function type
+   call get_anyarray_d(keyword,darray)
    iarray=nint(darray)
-end subroutine get_args_i
+end subroutine get_anyarray_i
 !===================================================================================================================================
-subroutine get_args_r(keyword,rarray)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
-real,allocatable  :: rarray(:)
-   real(kind=dp),allocatable     :: darray(:)    ! function type
-   call get_args_d(keyword,darray)
+subroutine get_anyarray_r(keyword,rarray)
+character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
+real,allocatable            :: rarray(:)
+real(kind=dp),allocatable   :: darray(:)    ! function type
+   call get_anyarray_d(keyword,darray)
 rarray=real(darray)
-end subroutine get_args_r
+end subroutine get_anyarray_r
 !===================================================================================================================================
-subroutine get_args_c(keyword,strings)
+subroutine get_anyarray_x(keyword,xarray)
+character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
+complex,allocatable         :: xarray(:)
+real(kind=dp),allocatable   :: darray(:)    ! function type
+integer                     :: half,sz
+   call get_anyarray_d(keyword,darray)
+   sz=size(darray)
+   half=sz/2
+   if(sz.ne.half+half)then
+      call journal('sc','*get_anyarray_x* uneven number of values defining complex value ',keyword,' values=',sz)
+      stop
+   endif
+   xarray=cmplx(real(darray(1::2)),real(darray(2::2)))
+end subroutine get_anyarray_x
+!===================================================================================================================================
+subroutine get_anyarray_c(keyword,strings,delimiters)
 
-! ident_14="@(#)M_kracken::get_args_cc(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_14="@(#)M_CLI2::get_anyarray_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
-! Thmeis routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
-character(len=*),parameter    :: dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'
-character(len=:),allocatable  :: strings(:)
-character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
-integer                       :: place
-character(len=:),allocatable  :: val
+! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
+character(len=*),intent(in)          :: keyword       ! name to look up in dictionary
+character(len=:),allocatable         :: strings(:)
+character(len=*),intent(in),optional :: delimiters
+integer                              :: place
+character(len=:),allocatable         :: val
    call locate(keywords,keyword,place)                ! find where string is or should be
    if(place > 0)then                                  ! if index is valid return strings
       val=unquote(values(place)(:counts(place)))
-      call split(val,strings,delimiters=dlim)         ! find value associated with keyword and split it into an array
+      call split(val,strings,delimiters=delimiters)   ! find value associated with keyword and split it into an array
    else
-      call journal('sc','*get_args* unknown keyword ',keyword)
+      call journal('sc','*get_anyarray_c* unknown keyword ',keyword)
       stop
    endif
-end subroutine get_args_c
+end subroutine get_anyarray_c
 !===================================================================================================================================
-! return non-allocatable arrays
-!===================================================================================================================================
-subroutine get_args_ii(keyword,iarray)
-character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
-integer                          :: iarray(:)
-real(kind=dp),allocatable        :: darray(:)    ! function type
-   call get_args_d(keyword,darray)
-   if(ubound(iarray,dim=1).eq.size(darray))then
-      iarray=darray
-   else
-      call journal('sc','*get_args* wrong number of values for keyword',keyword,'got',size(darray),'expected',size(iarray))
-      stop
-   endif
-end subroutine get_args_ii
-!===================================================================================================================================
-subroutine get_args_rr(keyword,rarray)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
-real                          :: rarray(:)
-real(kind=dp),allocatable     :: darray(:)    ! function type
-   call get_args_d(keyword,darray)
-   if(ubound(rarray,dim=1).eq.size(darray))then
-      rarray=darray
-   else
-      call journal('sc','*get_args* wrong number of values for keyword',keyword,'got',size(darray),'expected',size(rarray))
-      stop
-   endif
-end subroutine get_args_rr
-!===================================================================================================================================
-subroutine get_args_dd(keyword,darr)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
-real(kind=dp)                 :: darr(:)
-real(kind=dp),allocatable     :: darray(:)    ! function type
-   call get_args_d(keyword,darray)
-   if(ubound(darr,dim=1).eq.size(darray))then
-      darr=darray
-   else
-      call journal('sc','*get_args* wrong number of values for keyword',keyword,'got',size(darray),'expected',size(darr))
-      stop
-   endif
-end subroutine get_args_dd
-!===================================================================================================================================
-subroutine get_args_ll(keyword,larray)
-character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
-logical                          :: larray(:)
-logical,allocatable              :: darray(:)    ! function type
-   call get_args_l(keyword,darray)
-   if(ubound(larray,dim=1).eq.size(darray))then
-      larray=darray
-   else
-      call journal('sc','*get_args* wrong number of values for keyword',keyword,'got',size(darray),'expected',size(larray))
-      stop
-   endif
-end subroutine get_args_ll
-!===================================================================================================================================
-subroutine get_args_cc(keyword,strings)
+subroutine get_fixed_length_any_size_cxxxx(keyword,strings,delimiters)
 
-! ident_15="@(#)M_kracken::get_args_cc(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_15="@(#)M_CLI2::get_fixed_length_any_size_cxxxx(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
-character(len=*),parameter    :: dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'
-character(len=*)              :: strings(:)
-character(len=:),allocatable  :: str(:)
-character(len=*),intent(in)   :: keyword          ! name to look up in dictionary
-integer                       :: place
-character(len=:),allocatable  :: val
-   call locate(keywords,keyword,place)            ! find where string is or should be
-   if(place > 0)then                              ! if index is valid return strings
+character(len=*),intent(in)          :: keyword       ! name to look up in dictionary
+character(len=*),allocatable         :: strings(:)
+character(len=*),intent(in),optional :: delimiters
+character(len=:),allocatable         :: strings_a(:)
+integer                              :: place
+character(len=:),allocatable         :: val
+   call locate(keywords,keyword,place)                ! find where string is or should be
+   if(place > 0)then                                  ! if index is valid return strings
       val=unquote(values(place)(:counts(place)))
-      call split(val,str,delimiters=dlim)         ! find value associated with keyword and split it into an array
-      if(size(str)<=size(strings))then
-         strings=''
-         strings(:size(strings))=str
+      call split(val,strings_a,delimiters=delimiters)   ! find value associated with keyword and split it into an array
+      if(len(strings_a).le.len(strings))then
+         strings=strings_a
       else
-         call journal('sc','*get_args* wrong number of values for keyword',keyword,'got',size(str),'expected at most',size(strings))
+         call journal('sc','*get_fixed_length_any_size_cxxxx* values to long. Longest is',len(strings_a),'allowed is',len(strings))
+         call journal('sc','*get_fixed_length_any_size_cxxxx* keyword=',keyword,'strings=')
+         write(*,'(3x,a)')strings
          stop
       endif
    else
-      call journal('sc','*get_args* unknown keyword ',keyword)
+      call journal('sc','*get_fixed_length_any_size_cxxxx* unknown keyword ',keyword)
       stop
    endif
-end subroutine get_args_cc
+end subroutine get_fixed_length_any_size_cxxxx
+!===================================================================================================================================
+! return non-allocatable arrays
+!===================================================================================================================================
+subroutine get_fixedarray_i(keyword,iarray)
+character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
+integer                          :: iarray(:)
+real(kind=dp),allocatable        :: darray(:)    ! function type
+integer                          :: dsize
+   call get_anyarray_d(keyword,darray)
+   dsize=size(darray)
+   if(ubound(iarray,dim=1).eq.dsize)then
+      iarray=darray
+   else
+      call journal('sc','*get_fixedarray_i* wrong number of values for keyword',keyword,'got',dsize,'expected',size(iarray))
+      call print_dictionary('USAGE:',stop=.true.)
+   endif
+end subroutine get_fixedarray_i
+!===================================================================================================================================
+subroutine get_fixedarray_r(keyword,rarray)
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+real                          :: rarray(:)
+real,allocatable              :: darray(:)    ! function type
+integer                       :: dsize
+   call get_anyarray_r(keyword,darray)
+   dsize=size(darray)
+   if(ubound(rarray,dim=1).eq.dsize)then
+      rarray=darray
+   else
+      call journal('sc','*get_fixedarray_r* wrong number of values for keyword',keyword,'got',dsize,'expected',size(rarray))
+      call print_dictionary('USAGE:',stop=.true.)
+   endif
+end subroutine get_fixedarray_r
+!===================================================================================================================================
+subroutine get_fixed_size_complex(keyword,xarray)
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+complex                       :: xarray(:)
+complex,allocatable           :: darray(:)    ! function type
+integer                       :: half, sz
+integer                       :: dsize
+   call get_anyarray_x(keyword,darray)
+   dsize=size(darray)
+   sz=dsize*2
+   half=sz/2
+   if(sz.ne.half+half)then
+      call journal('sc','*get_fixed_size_complex* uneven number of values defining complex value ',keyword,' values=',sz)
+      stop
+   endif
+   if(ubound(xarray,dim=1).eq.dsize)then
+      xarray=darray
+   else
+      call journal('sc','*get_fixed_size_complex* wrong number of values for keyword',keyword,'got',dsize,'expected',size(xarray))
+      call print_dictionary('USAGE:',stop=.true.)
+   endif
+end subroutine get_fixed_size_complex
+!===================================================================================================================================
+subroutine get_fixedarray_d(keyword,darr)
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+real(kind=dp)                 :: darr(:)
+real(kind=dp),allocatable     :: darray(:)    ! function type
+integer                       :: dsize
+   call get_anyarray_d(keyword,darray)
+   dsize=size(darray)
+   if(ubound(darr,dim=1).eq.dsize)then
+      darr=darray
+   else
+      call journal('sc','*get_fixedarray_d* wrong number of values for keyword',keyword,'got',dsize,'expected',size(darr))
+      call print_dictionary('USAGE:',stop=.true.)
+   endif
+end subroutine get_fixedarray_d
+!===================================================================================================================================
+subroutine get_fixedarray_l(keyword,larray)
+character(len=*),intent(in)      :: keyword      ! keyword to retrieve value for from dictionary
+logical                          :: larray(:)
+logical,allocatable              :: darray(:)    ! function type
+integer                          :: dsize
+   call get_anyarray_l(keyword,darray)
+   dsize=size(darray)
+   if(ubound(larray,dim=1).eq.dsize)then
+      larray=darray
+   else
+      call journal('sc','*get_fixedarray_l* wrong number of values for keyword',keyword,'got',dsize,'expected',size(larray))
+      call print_dictionary('USAGE:',stop=.true.)
+   endif
+end subroutine get_fixedarray_l
+!===================================================================================================================================
+subroutine get_fixedarray_fixed_length_c(keyword,strings,delimiters)
+
+! ident_16="@(#)M_CLI2::get_fixedarray_fixed_length_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+
+! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
+character(len=*)                     :: strings(:)
+character(len=*),intent(in),optional :: delimiters
+character(len=:),allocatable         :: str(:)
+character(len=*),intent(in)          :: keyword   ! name to look up in dictionary
+integer                              :: place
+integer                              :: ssize
+character(len=:),allocatable         :: val
+   call locate(keywords,keyword,place)            ! find where string is or should be
+   if(place > 0)then                              ! if index is valid return strings
+    val=unquote(values(place)(:counts(place)))
+    call split(val,str,delimiters=delimiters)   ! find value associated with keyword and split it into an array
+    ssize=size(str)
+    if(ssize==size(strings))then
+      strings(:ssize)=str
+    else
+      call journal('sc','*get_fixedarray_fixed_length_c* wrong number of values for keyword',&
+         & keyword,'got',ssize,'expected ',size(strings)) !,ubound(strings,dim=1)
+      call print_dictionary('USAGE:',stop=.true.)
+    endif
+   else
+      call journal('sc','*get_fixedarray_fixed_length_c* unknown keyword ',keyword)
+      stop
+   endif
+end subroutine get_fixedarray_fixed_length_c
 !===================================================================================================================================
 ! return scalars
 !===================================================================================================================================
-subroutine get_arg_d(keyword,d)
+subroutine get_scalar_d(keyword,d)
 character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
 real(kind=dp)                 :: d
 real(kind=dp),allocatable     :: darray(:)    ! function type
-   call get_args_d(keyword,darray)
+   call get_anyarray_d(keyword,darray)
    if(size(darray).eq.1)then
       d=darray(1)
    else
-      call journal('sc','*get_args* incorrect number of values for keyword',keyword,'expected one found',size(darray))
-      stop
+      call journal('sc','*get_anyarray_d* incorrect number of values for keyword',keyword,'expected one found',size(darray))
+      call print_dictionary('USAGE:',stop=.true.)
    endif
-end subroutine get_arg_d
+end subroutine get_scalar_d
 !===================================================================================================================================
-subroutine get_arg_r(keyword,r)
+subroutine get_scalar_real(keyword,r)
 character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
 real,intent(out)              :: r
 real(kind=dp)                 :: d
-   call get_arg_d(keyword,d)
+   call get_scalar_d(keyword,d)
    r=real(d)
-end subroutine get_arg_r
+end subroutine get_scalar_real
 !===================================================================================================================================
-subroutine get_arg_i(keyword,i)
+subroutine get_scalar_i(keyword,i)
 character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
 integer,intent(out)           :: i
 real(kind=dp)                 :: d
-   call get_arg_d(keyword,d)
+   call get_scalar_d(keyword,d)
    i=nint(d)
-end subroutine get_arg_i
+end subroutine get_scalar_i
 !===================================================================================================================================
-subroutine get_arg_c(keyword,strings)
+subroutine get_scalar_anylength_c(keyword,string)
 
-! ident_16="@(#)M_kracken::get_arg_cc(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_17="@(#)M_CLI2::get_scalar_anylength_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
 
 ! Thmeis routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
-character(len=*),parameter    :: dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'
-character(len=:),allocatable  :: strings
+character(len=:),allocatable  :: string
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
 integer                       :: place
    call locate(keywords,keyword,place)                ! find where string is or should be
-   if(place > 0)then                                  ! if index is valid return strings
-      strings=unquote(values(place)(:counts(place)))
+   if(place > 0)then                                  ! if index is valid return string
+      string=unquote(values(place)(:counts(place)))
    else
-      call journal('sc','*get_args* unknown keyword ',keyword)
+      call journal('sc','*get_anyarray_c* unknown keyword ',keyword)
       stop
    endif
-end subroutine get_arg_c
+end subroutine get_scalar_anylength_c
 !===================================================================================================================================
-subroutine get_arg_cx(keyword,strings,length)
+subroutine get_scalar_fixed_length_c(keyword,string)
 
-! ident_17="@(#)M_kracken::get_arg_cx(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_18="@(#)M_CLI2::get_scalar_fixed_length_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
 
 ! Thmeis routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
-character(len=*),parameter    :: dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'
-character(len=*)              :: strings
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
+character(len=*)              :: string
 integer                       :: place
-integer                       :: length
+integer                       :: unlen
    call locate(keywords,keyword,place)                ! find where string is or should be
-   if(place > 0)then                                  ! if index is valid return strings
-      strings=unquote(values(place)(:counts(place)))
+   if(place > 0)then                                  ! if index is valid return string
+      string=unquote(values(place)(:counts(place)))
    else
-      call journal('sc','*get_args* unknown keyword ',keyword)
+      call journal('sc','*get_scalar_fixed_length_c* unknown keyword ',keyword)
       stop
    endif
-   if(counts(place)>len(strings))then
-      call journal('sc','*get_args* value too long for',keyword,'allowed is',len(strings),&
-      & 'input string [',values(place),'] is',counts(place))
+   unlen=len_trim(unquote(values(place)(:counts(place))))
+   if(unlen>len(string))then
+      call journal('sc','*get_scalar_fixed_length_c* value too long for',keyword,'allowed is',len(string),&
+      & 'input string [',values(place),'] is',unlen)
       stop
    endif
-end subroutine get_arg_cx
+end subroutine get_scalar_fixed_length_c
 !===================================================================================================================================
-subroutine get_arg_l(keyword,l)
+subroutine get_scalar_complex(keyword,x)
+character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
+complex,intent(out)         :: x
+real(kind=dp)               :: d(2)
+   call get_fixedarray_d(keyword,d)
+   if(size(d).eq.2)then
+      x=cmplx(d(1),d(2))
+   else
+      call journal('sc','*get_scalar_complex* incorrect number of values for keyword',keyword,'expected two found',size(d))
+      stop
+   endif
+end subroutine get_scalar_complex
+!===================================================================================================================================
+subroutine get_scalar_logical(keyword,l)
 character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
 logical                       :: l
 logical,allocatable           :: larray(:)    ! function type
-   call get_args_l(keyword,larray)
+   call get_anyarray_l(keyword,larray)
    if(size(larray).eq.1)then
       l=larray(1)
    else
-      call journal('sc','*get_args* incorrect number of values for keyword',keyword,'expected one found',size(larray))
+      call journal('sc','*get_anyarray_l* incorrect number of values for keyword',keyword,'expected one found',size(larray))
       stop
    endif
-end subroutine get_arg_l
+end subroutine get_scalar_logical
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-!JSU
 !use M_strings,                     only : ISUPPER, UPPER, LOWER, QUOTE, REPLACE_STR=>REPLACE, UNQUOTE, SPLIT, STRING_TO_VALUE
 !use M_list,                        only : insert, locate, remove, replace
 !use M_journal,                     only : JOURNAL
@@ -1913,23 +2135,24 @@ end function longest_command_argument
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, nospace)
+subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, nospace)
 implicit none
 
-! ident_18="@(#)M_journal::journal(3f): writes a message to a string composed of any standard scalar types"
+! ident_19="@(#)M_CLI2::journal(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: where
 class(*),intent(in)           :: g0
 class(*),intent(in),optional  :: g1, g2, g3, g4, g5, g6, g7, g8 ,g9
+class(*),intent(in),optional  :: ga, gb, gc, gd, ge, gf, gg, gh ,gi, gj
 logical,intent(in),optional   :: nospace
-write(*,'(a)')str(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9,nospace)
+write(*,'(a)')str(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj ,nospace)
 end subroutine journal
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
-!!    str(3f) - [M_msg] converts any standard scalar type to a string
+!!    str(3f) - [M_CLI2] converts any standard scalar type to a string
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -1960,7 +2183,7 @@ end subroutine journal
 !! Sample program:
 !!
 !!       program demo_msg
-!!       use M_msg, only : str
+!!       use M_CLI2, only : str
 !!       implicit none
 !!       character(len=:),allocatable :: pr
 !!       character(len=:),allocatable :: frmt
@@ -2005,7 +2228,7 @@ function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, 
                   & nospace)
 implicit none
 
-! ident_19="@(#)M_msg::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
+! ident_20="@(#)M_CLI2::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic0, generic1, generic2, generic3, generic4
 class(*),intent(in),optional  :: generic5, generic6, generic7, generic8, generic9
@@ -2077,7 +2300,7 @@ end function msg_scalar
 function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-! ident_20="@(#)M_msg::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
+! ident_21="@(#)M_CLI2::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
 
 class(*),intent(in)           :: generic0(:)
 class(*),intent(in),optional  :: generic1(:), generic2(:), generic3(:), generic4(:), generic5(:)
@@ -2143,7 +2366,7 @@ end function msg_one
 !===================================================================================================================================
 !>
 !!##NAME
-!! upper(3f) - [M_strings:CASE] changes a string to uppercase
+!! upper(3f) - [M_CLI2:CASE] changes a string to uppercase
 !! (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -2183,7 +2406,7 @@ end function msg_one
 !! Sample program:
 !!
 !!     program demo_upper
-!!     use M_strings, only: upper
+!!     use M_CLI2, only: upper
 !!     implicit none
 !!     character(len=:),allocatable  :: s
 !!        s=' ABCDEFG abcdefg '
@@ -2217,7 +2440,7 @@ end function msg_one
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
 
-! ident_21="@(#)M_strings::upper(3f): Changes a string to uppercase"
+! ident_22="@(#)M_CLI2::upper(3f): Changes a string to uppercase"
 
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
@@ -2249,7 +2472,7 @@ end function upper
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lower(3f) - [M_strings:CASE] changes a string to lowercase over specified range
+!!    lower(3f) - [M_CLI2:CASE] changes a string to lowercase over specified range
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -2289,7 +2512,7 @@ end function upper
 !! Sample program:
 !!
 !!       program demo_lower
-!!       use M_strings, only: lower
+!!       use M_CLI2, only: lower
 !!       implicit none
 !!       character(len=:),allocatable  :: s
 !!          s=' ABCDEFG abcdefg '
@@ -2307,7 +2530,7 @@ end function upper
 !!    Public Domain
 elemental pure function lower(str,begin,end) result (string)
 
-! ident_22="@(#)M_strings::lower(3f): Changes a string to lowercase over specified range"
+! ident_23="@(#)M_CLI2::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
 character(len(str))          :: string
@@ -2340,7 +2563,7 @@ end function lower
 !===================================================================================================================================
 !>
 !!##NAME
-!!      string_to_value(3f) - [M_strings:NUMERIC] subroutine returns numeric value from string
+!!      string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from string
 !!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -2372,7 +2595,7 @@ end function lower
 !! Sample Program:
 !!
 !!      program demo_string_to_value
-!!      use M_strings, only: string_to_value
+!!      use M_CLI2, only: string_to_value
 !!      character(len=80) :: string
 !!         string=' -40.5e-2 '
 !!         call string_to_value(string,value,ierr)
@@ -2385,7 +2608,7 @@ end function lower
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
-! ident_23="@(#)M_strings::a2i(3fp): subroutine returns integer value from string"
+! ident_24="@(#)M_CLI2::a2i(3fp): subroutine returns integer value from string"
 
 character(len=*),intent(in) :: chars                      ! input string
 integer,intent(out)         :: valu                       ! value read from input string
@@ -2406,7 +2629,7 @@ end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr,onerr)
 
-! ident_24="@(#)M_strings::a2d(3fp): subroutine returns double value from string"
+! ident_25="@(#)M_CLI2::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -2489,7 +2712,7 @@ end subroutine a2d
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
 
-! ident_25="@(#)M_strings::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+! ident_26="@(#)M_CLI2::isupper(3f): returns true if character is an uppercase letter (A-Z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -2505,7 +2728,7 @@ end function isupper
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split(3f) - [M_strings:TOKENS] parse string into an array using specified delimiters
+!!    split(3f) - [M_CLI2:TOKENS] parse string into an array using specified delimiters
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -2556,7 +2779,7 @@ end function isupper
 !! Sample program:
 !!
 !!     program demo_split
-!!     use M_strings, only: split
+!!     use M_CLI2, only: split
 !!     character(len=*),parameter     :: &
 !!     & line='  aBcdef   ghijklmnop qrstuvwxyz  1:|:2     333|333 a B cc    '
 !!     character(len=:),allocatable :: array(:) ! output array of tokens
@@ -2645,7 +2868,7 @@ end function isupper
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-! ident_26="@(#)M_strings::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
+! ident_27="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2682,10 +2905,10 @@ integer                       :: imax                   ! length of longest toke
       if(delimiters.ne.'')then                                       ! if DELIMITERS was specified and not null use it
          dlim=delimiters
       else                                                           ! DELIMITERS was specified on call as empty string
-         dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0) ! use default delimiter when not specified
+         dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:' ! use default delimiter when not specified
       endif
    else                                                              ! no delimiter value was specified
-      dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)    ! use default delimiter when not specified
+      dlim=' '//char(9)//char(10)//char(11)//char(12)//char(13)//char(0)//',:'    ! use default delimiter when not specified
    endif
    idlim=len(dlim)                                                   ! dlim a lot of blanks on some machines if dlim is a big string
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -2768,7 +2991,7 @@ integer                       :: imax                   ! length of longest toke
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace_str(3f) - [M_strings:EDITING] function globally replaces one substring for another in string
+!!    replace_str(3f) - [M_CLI2:EDITING] function globally replaces one substring for another in string
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -2806,7 +3029,7 @@ integer                       :: imax                   ! length of longest toke
 !! Sample Program:
 !!
 !!       program demo_replace_str
-!!       use M_strings, only : replace_str
+!!       use M_CLI2, only : replace_str
 !!       implicit none
 !!       character(len=:),allocatable :: targetline
 !!
@@ -2925,7 +3148,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 function replace_str(targetline,old,new,ierr,cmd,range) result (newline)
 
-! ident_27="@(#)M_strings::replace_str(3f): Globally replace one substring for another in string"
+! ident_28="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
@@ -3039,7 +3262,7 @@ end function replace_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!     quote(3f) - [M_strings:QUOTES] add quotes to string as if written with list-directed input
+!!     quote(3f) - [M_CLI2:QUOTES] add quotes to string as if written with list-directed input
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3072,7 +3295,7 @@ end function replace_str
 !! Sample program:
 !!
 !!     program demo_quote
-!!     use M_strings, only : quote
+!!     use M_CLI2, only : quote
 !!     implicit none
 !!     character(len=:),allocatable :: str
 !!     character(len=1024)          :: msg
@@ -3136,7 +3359,7 @@ end function quote
 !===================================================================================================================================
 !>
 !!##NAME
-!!     unquote(3f) - [M_strings:QUOTES] remove quotes from string as if read with list-directed input
+!!     unquote(3f) - [M_CLI2:QUOTES] remove quotes from string as if read with list-directed input
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3169,7 +3392,7 @@ end function quote
 !! Sample program:
 !!
 !!       program demo_unquote
-!!       use M_strings, only : unquote
+!!       use M_CLI2, only : unquote
 !!       implicit none
 !!       character(len=128)           :: quoted_str
 !!       character(len=:),allocatable :: unquoted_str
@@ -3276,7 +3499,7 @@ end function unquote
 !===================================================================================================================================
 !>
 !!##NAME
-!!      v2s(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      v2s(3f) - [M_CLI2:NUMERIC] return numeric string from a numeric value
 !!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3308,7 +3531,7 @@ end function unquote
 !! Sample Program:
 !!
 !!     program demo_v2s
-!!     use M_strings, only: v2s
+!!     use M_CLI2, only: v2s
 !!     write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
 !!     write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
 !!     write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
@@ -3331,7 +3554,7 @@ end function unquote
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-! ident_28="@(#)M_strings::i2s(3fp): private function returns string given integer value"
+! ident_29="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -3349,7 +3572,7 @@ end function i2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str(3f) - [M_strings:LENGTH] pads strings to same length and then calls MERGE(3f)
+!!    merge_str(3f) - [M_CLI2:LENGTH] pads strings to same length and then calls MERGE(3f)
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3387,7 +3610,7 @@ end function i2s
 !! Sample Program:
 !!
 !!     program demo_merge_str
-!!     use M_strings, only : merge_str
+!!     use M_CLI2, only : merge_str
 !!     implicit none
 !!     character(len=:), allocatable :: answer
 !!        answer=merge_str('first string', 'second string is longer',10.eq.10)
@@ -3408,7 +3631,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-! ident_29="@(#)M_strings::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+! ident_30="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in),optional :: str1
 character(len=*),intent(in),optional :: str2
@@ -3437,7 +3660,7 @@ end function merge_str
 !>
 !!##NAME
 !!
-!!    decodebase(3f) - [M_strings:BASE] convert whole number string in base [2-36] to base 10 number
+!!    decodebase(3f) - [M_CLI2:BASE] convert whole number string in base [2-36] to base 10 number
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3470,7 +3693,7 @@ end function merge_str
 !! Sample program:
 !!
 !!      program demo_decodebase
-!!      use M_strings, only : codebase, decodebase
+!!      use M_CLI2, only : codebase, decodebase
 !!      implicit none
 !!      integer           :: ba,bd
 !!      character(len=40) :: x,y
@@ -3510,7 +3733,7 @@ end function merge_str
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
-! ident_30="@(#)M_strings::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+! ident_31="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -3586,7 +3809,7 @@ end function decodebase
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset(3f) - [M_strings:LENGTH] return string trimmed or padded to specified length
+!!    lenset(3f) - [M_CLI2:LENGTH] return string trimmed or padded to specified length
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3609,7 +3832,7 @@ end function decodebase
 !! Sample Program:
 !!
 !!     program demo_lenset
-!!      use M_strings, only : lenset
+!!      use M_CLI2, only : lenset
 !!      implicit none
 !!      character(len=10)            :: string='abcdefghij'
 !!      character(len=:),allocatable :: answer
@@ -3630,7 +3853,7 @@ end function decodebase
 !!    Public Domain
 function lenset(line,length) result(strout)
 
-! ident_31="@(#)M_strings::lenset(3f): return string trimmed or padded to specified length"
+! ident_32="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -3642,7 +3865,7 @@ end function lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string(3f) - [M_strings:NUMERIC] return numeric string from a numeric value
+!!      value_to_string(3f) - [M_CLI2:NUMERIC] return numeric string from a numeric value
 !!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3688,7 +3911,7 @@ end function lenset
 !! Sample program:
 !!
 !!      program demo_value_to_string
-!!      use M_strings, only: value_to_string
+!!      use M_CLI2, only: value_to_string
 !!      implicit none
 !!      character(len=80) :: string
 !!      integer           :: ilen
@@ -3723,7 +3946,7 @@ end function lenset
 !!    Public Domain
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
-character(len=*),parameter::ident_40="@(#)M_strings::value_to_string(3fp): subroutine returns a string from a value"
+! ident_33="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
 
 class(*),intent(in)                      :: gval
 character(len=*),intent(out)             :: chars
@@ -3806,7 +4029,7 @@ end subroutine value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!    trimzeros_(3fp) - [M_strings:NUMERIC] Delete trailing zeros from numeric decimal string
+!!    trimzeros_(3fp) - [M_CLI2:NUMERIC] Delete trailing zeros from numeric decimal string
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3825,7 +4048,7 @@ end subroutine value_to_string
 !! Sample program:
 !!
 !!       program demo_trimzeros_
-!!       use M_strings, only : trimzeros_
+!!       use M_CLI2, only : trimzeros_
 !!       character(len=:),allocatable :: string
 !!          write(*,*)trimzeros_('123.450000000000')
 !!          write(*,*)trimzeros_('12345')
@@ -3839,7 +4062,7 @@ end subroutine value_to_string
 !!    Public Domain
 subroutine trimzeros_(string)
 
-! ident_32="@(#)M_strings::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
+! ident_34="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -3884,7 +4107,7 @@ end subroutine trimzeros_
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute(3f) - [M_strings:EDITING] subroutine globally substitutes one substring for another in string
+!!    substitute(3f) - [M_CLI2:EDITING] subroutine globally substitutes one substring for another in string
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3917,7 +4140,7 @@ end subroutine trimzeros_
 !! Sample Program:
 !!
 !!     program demo_substitute
-!!     use M_strings, only : substitute
+!!     use M_CLI2, only : substitute
 !!     implicit none
 !!     ! must be long enough to hold changed line
 !!     character(len=80) :: targetline
@@ -3953,7 +4176,7 @@ end subroutine trimzeros_
 !!    Public Domain
 subroutine substitute(targetline,old,new,ierr,start,end)
 
-! ident_33="@(#)M_strings::substitute(3f): Globally substitute one substring for another in string"
+! ident_35="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*)               :: targetline         ! input line to be changed
@@ -4077,7 +4300,7 @@ end subroutine substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    locate(3f) - [M_list] finds the index where a string is found or should be in a sorted array
+!!    locate(3f) - [M_CLI2] finds the index where a string is found or should be in a sorted array
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4129,7 +4352,7 @@ end subroutine substitute
 !!
 !!     program demo_locate
 !!     use M_sort, only : sort_shell
-!!     use M_list, only : locate
+!!     use M_CLI2, only : locate
 !!     implicit none
 !!     character(len=:),allocatable  :: arr(:)
 !!     integer                       :: i
@@ -4197,7 +4420,7 @@ end subroutine substitute
 !!    Public Domain
 subroutine locate_c(list,value,place,ier,errmsg)
 
-! ident_34="@(#)M_list::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
+! ident_36="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place
@@ -4269,7 +4492,7 @@ integer                                 :: error
 end subroutine locate_c
 subroutine locate_d(list,value,place,ier,errmsg)
 
-! ident_35="@(#)M_list::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
+! ident_37="@(#)M_CLI2::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4347,7 +4570,7 @@ integer                                :: error
 end subroutine locate_d
 subroutine locate_r(list,value,place,ier,errmsg)
 
-! ident_36="@(#)M_list::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
+! ident_38="@(#)M_CLI2::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4425,7 +4648,7 @@ integer                                :: error
 end subroutine locate_r
 subroutine locate_i(list,value,place,ier,errmsg)
 
-! ident_37="@(#)M_list::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
+! ident_39="@(#)M_CLI2::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4506,7 +4729,7 @@ end subroutine locate_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    remove(3f) - [M_list] remove entry from an allocatable array at specified position
+!!    remove(3f) - [M_CLI2] remove entry from an allocatable array at specified position
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4534,7 +4757,7 @@ end subroutine locate_i
 !!
 !!     program demo_remove
 !!     use M_sort, only : sort_shell
-!!     use M_list, only : locate, remove
+!!     use M_CLI2, only : locate, remove
 !!     implicit none
 !!     character(len=:),allocatable :: arr(:)
 !!     integer                       :: i
@@ -4569,7 +4792,7 @@ end subroutine locate_i
 !!    Public Domain
 subroutine remove_c(list,place)
 
-! ident_38="@(#)M_list::remove_c(3fp): remove string from allocatable string array at specified position"
+! ident_40="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -4588,7 +4811,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_d(list,place)
 
-! ident_39="@(#)M_list::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
+! ident_41="@(#)M_CLI2::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
 
 doubleprecision,allocatable  :: list(:)
 integer,intent(in)           :: place
@@ -4607,7 +4830,7 @@ integer                      :: end
 end subroutine remove_d
 subroutine remove_r(list,place)
 
-! ident_40="@(#)M_list::remove_r(3fp): remove value from allocatable array at specified position"
+! ident_42="@(#)M_CLI2::remove_r(3fp): remove value from allocatable array at specified position"
 
 real,allocatable    :: list(:)
 integer,intent(in)  :: place
@@ -4626,7 +4849,7 @@ integer             :: end
 end subroutine remove_r
 subroutine remove_l(list,place)
 
-! ident_41="@(#)M_list::remove_l(3fp): remove value from allocatable array at specified position"
+! ident_43="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
 
 logical,allocatable    :: list(:)
 integer,intent(in)     :: place
@@ -4646,7 +4869,7 @@ integer                :: end
 end subroutine remove_l
 subroutine remove_i(list,place)
 
-! ident_42="@(#)M_list::remove_i(3fp): remove value from allocatable array at specified position"
+! ident_44="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -4668,7 +4891,7 @@ end subroutine remove_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace(3f) - [M_list] replace entry in a string array at specified position
+!!    replace(3f) - [M_CLI2] replace entry in a string array at specified position
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4702,7 +4925,7 @@ end subroutine remove_i
 !! Replace key-value pairs in a dictionary
 !!
 !!     program demo_replace
-!!     use M_list, only  : insert, locate, replace
+!!     use M_CLI2, only  : insert, locate, replace
 !!     ! Find if a key is in a list and insert it
 !!     ! into the key list and value list if it is not present
 !!     ! or replace the associated value if the key existed
@@ -4761,7 +4984,7 @@ end subroutine remove_i
 !!    Public Domain
 subroutine replace_c(list,value,place)
 
-! ident_43="@(#)M_list::replace_c(3fp): replace string in allocatable string array at specified position"
+! ident_45="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -4788,7 +5011,7 @@ integer                      :: end
 end subroutine replace_c
 subroutine replace_d(list,value,place)
 
-! ident_44="@(#)M_list::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
+! ident_46="@(#)M_CLI2::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)   :: value
 doubleprecision,allocatable  :: list(:)
@@ -4808,7 +5031,7 @@ integer                      :: end
 end subroutine replace_d
 subroutine replace_r(list,value,place)
 
-! ident_45="@(#)M_list::replace_r(3fp): place value into allocatable array at specified position"
+! ident_47="@(#)M_CLI2::replace_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -4828,7 +5051,7 @@ integer               :: end
 end subroutine replace_r
 subroutine replace_l(list,value,place)
 
-! ident_46="@(#)M_list::replace_l(3fp): place value into allocatable array at specified position"
+! ident_48="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -4848,7 +5071,7 @@ integer               :: end
 end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-! ident_47="@(#)M_list::replace_i(3fp): place value into allocatable array at specified position"
+! ident_49="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -4871,7 +5094,7 @@ end subroutine replace_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    insert(3f) - [M_list] insert entry into a string array at specified position
+!!    insert(3f) - [M_CLI2] insert entry into a string array at specified position
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4902,7 +5125,7 @@ end subroutine replace_i
 !!
 !!     program demo_insert
 !!     use M_sort, only : sort_shell
-!!     use M_list, only : locate, insert
+!!     use M_CLI2, only : locate, insert
 !!     implicit none
 !!     character(len=:),allocatable :: arr(:)
 !!     integer                       :: i
@@ -4955,7 +5178,7 @@ end subroutine replace_i
 !!    Public Domain
 subroutine insert_c(list,value,place)
 
-! ident_48="@(#)M_list::insert_c(3fp): place string into allocatable string array at specified position"
+! ident_50="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -4989,7 +5212,7 @@ integer                      :: end
 end subroutine insert_c
 subroutine insert_r(list,value,place)
 
-! ident_49="@(#)M_list::insert_r(3fp): place real value into allocatable array at specified position"
+! ident_51="@(#)M_CLI2::insert_r(3fp): place real value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -5016,7 +5239,7 @@ integer               :: end
 end subroutine insert_r
 subroutine insert_d(list,value,place)
 
-! ident_50="@(#)M_list::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
+! ident_52="@(#)M_CLI2::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)       :: value
 doubleprecision,allocatable      :: list(:)
@@ -5040,7 +5263,7 @@ integer                          :: end
 end subroutine insert_d
 subroutine insert_l(list,value,place)
 
-! ident_51="@(#)M_list::insert_l(3fp): place value into allocatable array at specified position"
+! ident_53="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5065,7 +5288,7 @@ integer               :: end
 end subroutine insert_l
 subroutine insert_i(list,value,place)
 
-! ident_52="@(#)M_list::insert_i(3fp): place value into allocatable array at specified position"
+! ident_54="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -5093,7 +5316,7 @@ end subroutine insert_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dict_delete(3f) - [M_list] delete entry by name from an allocatable sorted string array if it is present
+!!    dict_delete(3f) - [M_CLI2] delete entry by name from an allocatable sorted string array if it is present
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5119,7 +5342,7 @@ end subroutine insert_i
 !! delete a key from a dictionary by name.
 !!
 !!     program demo_dict_delete
-!!     use M_list, only : dictionary
+!!     use M_CLI2, only : dictionary
 !!     implicit none
 !!     type(dictionary) :: caps
 !!     integer                       :: i
@@ -5153,7 +5376,7 @@ end subroutine insert_i
 !!    Public Domain
 subroutine dict_delete(self,key)
 
-! ident_53="@(#)M_list::dict_delete(3f): remove string from sorted allocatable string array if present"
+! ident_55="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5172,7 +5395,7 @@ end subroutine dict_delete
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dict_get(3f) - [M_list] get value of key-value pair in a dictionary given key
+!!    dict_get(3f) - [M_CLI2] get value of key-value pair in a dictionary given key
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5201,7 +5424,7 @@ end subroutine dict_delete
 !! Sample program
 !!
 !!     program demo_locate
-!!     use M_list, only : dictionary
+!!     use M_CLI2, only : dictionary
 !!     implicit none
 !!     type(dictionary)             :: table
 !!     integer          :: i
@@ -5231,7 +5454,7 @@ end subroutine dict_delete
 !!    Public Domain
 function dict_get(self,key) result(value)
 
-! ident_54="@(#)M_list::dict_get(3f): get value of key-value pair in dictionary, given key"
+! ident_56="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
 
 !-!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
@@ -5250,7 +5473,7 @@ end function dict_get
 !===================================================================================================================================
 !>
 !!##NAME
-!!    dict_add(3f) - [M_list] add or replace a key-value pair in a dictionary
+!!    dict_add(3f) - [M_CLI2] add or replace a key-value pair in a dictionary
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5274,7 +5497,7 @@ end function dict_get
 !! If string is not found in a sorted array, insert the string
 !!
 !!     program demo_add
-!!     use M_list, only : dictionary
+!!     use M_CLI2, only : dictionary
 !!     implicit none
 !!     type(dictionary) :: dict
 !!     integer          :: i
@@ -5298,7 +5521,7 @@ end function dict_get
 !!    Public Domain
 subroutine dict_add(self,key,value)
 
-! ident_55="@(#)M_list::dict_add(3f): place key-value pair into dictionary, adding the key if required"
+! ident_57="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key

@@ -28,7 +28,8 @@ logical            :: l, l_
 contains
    subroutine parse()
    !! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
-   use M_CLI2, only : set_args, get_args
+   use M_CLI2,  only : set_args, get_args, unnamed
+   use M_CLI2,  only : get_args_fixed_size,get_args_fixed_length
    character(len=:),allocatable  :: help_text(:), version_text(:)
 
    !! DEFINE COMMAND PROTOTYPE
@@ -72,8 +73,8 @@ contains
       call get_args('x',x)
       call get_args('y',y)
       call get_args('z',z)
-      call get_args('point',point,size(point))
-      call get_args('title',title,len(title))
+      call get_args_fixed_size('point',point)
+      call get_args_fixed_length('title',title)
       call get_args('l',l)
       call get_args('L',l_)
 

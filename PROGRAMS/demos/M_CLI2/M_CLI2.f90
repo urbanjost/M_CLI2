@@ -1,22 +1,24 @@
            program demo_M_CLI2
            use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+           use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
            implicit none
            integer                      :: i
            integer,parameter            :: dp=kind(0.0d0)
            !
            ! DEFINE ARGS
            real                         :: x, y, z
-           real                         :: p(3)
            real(kind=dp),allocatable    :: point(:)
-           character(len=:),allocatable :: title
-           character(len=40)            :: label
            logical                      :: l, lbig
            logical,allocatable          :: logicals(:)
-           logical                      :: logi(3)
+           character(len=:),allocatable :: title    ! VARIABLE LENGTH
+           character(len=40)            :: label    ! FIXED LENGTH
+           real                         :: p(3)     ! FIXED SIZE
+           logical                      :: logi(3)  ! FIXED SIZE
            !
            ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
            !   o only quote strings
            !   o set all logical values to F or T.
+           !   o value delimiter is comma, colon, or space
            call set_args('                         &
                    & -x 1 -y 2 -z 3                &
                    & -p -1 -2 -3                   &
@@ -38,9 +40,9 @@
            call get_args('logicals',logicals)
            !
            ! for NON-ALLOCATABLE VARIABLES
-           call get_args('label',label,len(label)) ! for non-allocatable string pass length
-           call get_args('p',p,size(p))            ! for non-allocatable arrays pass size
-           call get_args('logi',logi,size(logi))
+           call get_args_fixed_length('label',label) ! for non-allocatable string
+           call get_args_fixed_size('p',p)           ! for non-allocatable arrays
+           call get_args_fixed_size('logi',logi)
            !
            ! USE VALUES
            write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z

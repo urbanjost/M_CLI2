@@ -1,6 +1,6 @@
 <map id="m_cli2::a2d" name="m_cli2::a2d">
 <area shape="rect" id="node2" href="$namespacem__cli2.html#a1029304d495b2bf791e03cfab5983bbb" title="NAME" alt="" coords="151,5,301,32"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a60a4588aa350fd58640b11f049915111" title="m_cli2::journal" alt="" coords="349,81,468,108"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a76af7f7c39e6755e024890d85d488704" title="NAMEsubstitute(3f) &#45; [M_strings:EDITING] subroutine globally substitutes one substring for another in..." alt="" coords="157,107,295,133"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#afa7a2419002024ff6d950c5d905ddd7a" title="NAMEupper(3f) &#45; [M_strings:CASE] changes a string to uppercase (LICENSE:PD) " alt="" coords="353,5,464,32"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="349,81,468,108"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a76af7f7c39e6755e024890d85d488704" title="NAMEsubstitute(3f) &#45; [M_CLI2:EDITING] subroutine globally substitutes one substring for another in st..." alt="" coords="157,107,295,133"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#afa7a2419002024ff6d950c5d905ddd7a" title="NAMEupper(3f) &#45; [M_CLI2:CASE] changes a string to uppercase (LICENSE:PD) " alt="" coords="353,5,464,32"/>
 </map>
