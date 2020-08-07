@@ -1,8 +1,5 @@
 # M_CLI2.f90 and associated files
 
-### UNDER CONSTRUCTION -- USES A LOT OF OTHER MODULES AND
-### WANT IT SELF-CONTAINED
-
 ![parse](docs/images/parse.png)
 
 ## NAME
