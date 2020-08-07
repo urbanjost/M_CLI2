@@ -12,8 +12,10 @@
 ## DESCRIPTION
 
    M_CLI2(3f) is a Fortran module that will crack the command line when
-   given a prototype string that looks very much like an
-   invocation of the program.
+   given a prototype string that looks very much like an invocation of
+   the program. A call to get_args(3f) or one of its varients is then
+   made for each parameter name to set the variables appropriately in
+   the program.
 
 ## DOWNLOAD
    ```bash
@@ -46,8 +48,9 @@
 **This is how the interface works --**
 
 * Pass in a string that looks like the command you would use to execute the program with all values specified.
-  Now all the values in the prototype should be updated using values from the command line and ready to use.
-* you read the results with the get_args(3f) procedure
+  Now all the values in the prototype should be updated using values from the command line and ready to query.
+* you read the results with the get_args(3f) procedure or one of its variants (if you want to use fixed length.
+  CHARACTER variables or fixed-size arrays).
 
 
 ## DOCUMENTATION
