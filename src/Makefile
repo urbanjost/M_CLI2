@@ -35,7 +35,7 @@ clean:
 	$(F90) $(F90FLAGS) -c $<
 .PHONY: help
 help:
-	: make    '-- build M_CLI2 module'
+	: all     '-- build M_CLI2 module'
 	: run     '-- run manpage demo programs'
 	: man     '-- show all manpages as text'
 	: clean   '-- clean directory of object files and executables'

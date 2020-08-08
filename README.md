@@ -56,10 +56,10 @@ These demo programs provide templates for the most common usage:
 - [demo1](PROGRAMS/demo1/demo1.f90) full usage
 - [demo2](PROGRAMS/demo2/demo2.f90) putting everything including **help** and **version** information into a contained procedure.
 - [demo3](PROGRAMS/demo3/demo3.f90) example of **basic** use
-- [demo4](PROGRAMS/demo3/demo4.f90) _COMPLEX_ type values
-- [demo4](PROGRAMS/demo3/demo5.f90) _CHARACTER_ type values
+- [demo4](PROGRAMS/demo4/demo4.f90) _COMPLEX_ type values
+- [demo5](PROGRAMS/demo5/demo5.f90) _CHARACTER_ type values
 - [demo6](PROGRAMS/demo6/demo6.f90) a complicated example showing how to create a command with subcommands
-- [demo6](PROGRAMS/demo6/demo7.f90) controlling array delimiter characters
+- [demo7](PROGRAMS/demo7/demo7.f90) controlling array delimiter characters
 
 ### manpages
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module

@@ -136,22 +136,17 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) </p
  read using GET_ARGS(3f).
 </pre><h2>OPTIONS</h2>
 <pre class="fragment">  DESCRIPTION   composed of all command arguments concatenated
-                into a Unix-like command prototype string.
+                into a Unix-like command prototype string. For
+                example:
 
-                o all keywords get a value.
-                o logicals must be set to F or T.
-                o strings MUST be delimited with double-quotes and
-                  must be at least one space. Internal double-quotes
-                  are represented with two double-quotes
-                o lists of values should be comma-delimited unless a
-                  user-specified delimiter is used. The prototype
-                  must use the same array delimiters as the call to
-                  the family of get_args*(3f) called.
-                o long names (--keyword) should be all lowercase
+                  call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
 
                 The DESCRIPTION string is pre-defined to act as if
                 started with the reserved options '--usage F --help
                 F --version F'.
+
+                See "DEFINING THE PROTOTYPE" for details.
+
 
                 The --help and --version options require the optional
                 help_text and version_text values to be provided.
@@ -163,62 +158,74 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) </p
 
   VERSION_TEXT  if present, will be displayed if program is called with
                 --version switch, and then the program will terminate.
-</pre><h2>USAGE</h2>
-<p>When using one of the Unix-like command line forms note that (subject to change) the following variations from other common command-line parsers:</p>
+</pre><h2>DEFINING THE PROTOTYPE</h2>
+<p>o all keywords on the prototype get a value. o logicals must be set to F or T. o strings MUST be delimited with double-quotes and must be at least one space. Internal double-quotes are represented with two double-quotes o numeric keywords are not allowed; but this allows negative numbers to be used as values. o lists of values should be comma-delimited unless a user-specified delimiter is used. The prototype must use the same array delimiters as the call to the family of get_args*(3f) called. o long names (&ndash;keyword) should be all lowercase o to define a zero-length allocatable array make the value a delimiter (usually a comma). </p><h2>USAGE</h2>
+<p>When invoking the program line note that (subject to change) the following variations from other common command-line parsers:</p>
 <p>o long names do not take the &ndash;KEY=VALUE form, just &ndash;KEY VALUE; and long names should be all lowercase and always more than one character.</p>
 <p>o duplicate keywords are appended together with a space separator when a command line is executed.</p>
-<p>o numeric keywords are not allowed; but this allows negative numbers to be used as values.</p>
-<p>o mapping of short names to long names is via an EQUIVALENCE. Then the second of the names should only be called with a GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE. for that name.</p>
-<p>Note that allocatable arrays cannot be EQUIVANENCEd in Fortran.</p>
+<p>o mapping of short names to long names is via an EQUIVALENCE or pointer. The second of the names should only be called with a GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE. for that name.</p>
+<p>Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.</p>
 <p>Specifying both names of an equivalenced keyword on a command line will have undefined results (currently, their alphabetical order will define what the Fortran variable values become).</p>
 <p>o short keywords cannot be combined. -a -b -c is required, not -abc even for Boolean keys.</p>
 <p>o shuffling is not supported. Values should follow their keywords.</p>
 <p>o if a parameter value of just "-" is supplied it is converted to the string "stdin".</p>
-<p>o if the keyword "--" is encountered the rest of the command arguments go into the character array "UNUSED".</p>
 <p>o values not matching a keyword go into the character array "UNUSED".</p>
+<p>o if the keyword "--" is encountered the rest of the command arguments go into the character array "UNUSED".</p>
 <h2>EXAMPLE</h2>
 <p>Sample program: </p><pre class="fragment">program demo_set_args
 use M_CLI2,  only : filenames=&gt;unnamed, set_args, get_args, unnamed
 use M_CLI2,  only : get_args_fixed_size
 implicit none
 integer                      :: i
+!
 ! DEFINE ARGS
 real                         :: x, y, z
 real                         :: p(3)
 character(len=:),allocatable :: title
 logical                      :: l, lbig
-!  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!   o only quote strings
-!   o set all logical values to F or T.
-call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &amp;
-        &amp; -l F -L F &amp;
-        &amp; --label " " &amp;
-        &amp; ')
+integer,allocatable          :: ints(:)
+!
+!  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
+!  AND READ COMMAND LINE
+call set_args(' &amp;
+   ! reals
+   &amp; -x 1 -y 2.3 -z 3.4e2 &amp;
+   ! integer array
+   &amp; -p -1,-2,-3 &amp;
+   ! only but always quote strings
+   &amp; --title "my title" &amp;
+   ! set all logical values to F or T.
+   &amp; -l F -L F &amp;
+   ! set allocatable to zero length if you like by using a delimiter
+   &amp; -ints , &amp;
+   ! string should be a single character at a minimum
+   &amp; --label " " &amp;
+   &amp; ')
 ! ASSIGN VALUES TO ELEMENTS
-! SCALARS
+!     SCALARS
 call get_args('x',x)
 call get_args('y',y)
 call get_args('z',z)
 call get_args('l',l)
 call get_args('L',lbig)
-! ALLOCATABLE STRING
-call get_args('title',title)
-! NON-ALLOCATABLE ARRAYS
-! for non-allocatable arrays pass size
-call get_args_fixed_size('p',p)
+call get_args('ints',ints)      ! ALLOCATABLE ARRAY
+call get_args('title',title)    ! ALLOCATABLE STRING
+call get_args_fixed_size('p',p) ! NON-ALLOCATABLE ARRAY
 ! USE VALUES
 write(*,*)'x=',x
 write(*,*)'y=',y
 write(*,*)'z=',z
 write(*,*)'p=',p
 write(*,*)'title=',title
+write(*,*)'ints=',ints
 write(*,*)'l=',l
 write(*,*)'L=',lbig
+! UNNAMED VALUES
 if(size(filenames).gt.0)then
    write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
 endif
 end program demo_set_args
-</pre> <h2>AUTHOR</h2>
+</pre><h2>AUTHOR</h2>
 <p>John S. Urban, 2019 </p><h2>LICENSE</h2>
 <p>Public Domain </p><h2>NAME</h2>
 <p>get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments (LICENSE:PD)</p>
