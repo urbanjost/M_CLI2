@@ -62,12 +62,13 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <A HREF=#1>Synopsis</A><BR>
 <A HREF=#2>Description</A><BR>
 <A HREF=#3>Options</A><BR>
-<A HREF=#4>Usage</A><BR>
-<A HREF=#5>Example</A><BR>
-<A HREF=#6>Author</A><BR>
-<A HREF=#7>License</A><BR>
+<A HREF=#4>Defining The Prototype</A><BR>
+<A HREF=#5>Usage</A><BR>
+<A HREF=#6>Example</A><BR>
+<A HREF=#7>Author</A><BR>
+<A HREF=#8>License</A><BR>
 </BLOCKQUOTE>
-<A name=8>
+<A name=9>
 
      <H3>SYNOPSIS</H3>
 
@@ -105,14 +106,58 @@ read using <B>GET_ARGS</B>(3f).
 <TR valign=top><TD colspan=2>
 <B><A HREF=#2>DESCRIPTION</A></B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 composed of all command arguments concatenated
-into a Unix-like command prototype string.
-<TABLE width=100% cellpadding=3><!-- tsb: composed of all command arguments concatenated
+into a Unix-like command prototype string. For
+example:
+</TD></TR>
+<TR><TD colspan=2>
+<PRE>
+                     call set_args(&#146;-L F -ints 10,20,30 -title "my title" -R 10.3&#146;)
+<P>
+</PRE>
+</TD></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+The DESCRIPTION string is pre-defined to act as if
+started with the reserved options &#146;<B>--usage</B> F <B>--help</B>
+F <B>--version</B> F&#146;.
+<P>
+See "DEFINING THE PROTOTYPE" for details.
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<P>
+<P>
+<BLOCKQUOTE>
+The <B>--help</B> and <B>--version</B> options require the optional
+help_text and version_text values to be provided.
+</BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb: The <B>--help</B> and <B>--version</B> options require the optional
  -->
 <TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>HELP_TEXT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+if present, will be displayed if program is called with
+<B>--help</B> switch, and then the program will terminate. If
+not supplied, the command line initialized string will be
+shown when <B>--help</B> is used on the commandline.
+<TABLE width=100% cellpadding=3><!-- tsb: if present, will be displayed if program is called with
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>VERSION_TEXT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+if present, will be displayed if program is called with
+<B>--version</B> switch, and then the program will terminate.
+</TD></TR>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE><A name=4>
+
+     <H3>DEFINING THE PROTOTYPE</H3>
+
+</A>
+<BLOCKQUOTE>
+<TABLE cellpadding=3>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-all keywords get a value.
+all keywords on the prototype get a value.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -129,6 +174,12 @@ are represented with two double-quotes
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
+numeric keywords are not allowed; but this allows
+negative numbers to be used as values.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
 lists of values should be comma-delimited unless a
 user-specified delimiter is used. The prototype
 must use the same array delimiters as the call to
@@ -139,37 +190,23 @@ o
 </TD><TD>
 long names (<B>--keyword</B>) should be all lowercase
 </TD></TR>
-<TR></TR></TABLE>The DESCRIPTION string is pre-defined to act as if
-started with the reserved options &#146;<B>--usage</B> F <B>--help</B>
-F <B>--version</B> F&#146;.
-<P>
-The <B>--help</B> and <B>--version</B> options require the optional
-help_text and version_text values to be provided.
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>HELP_TEXT</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
-if present, will be displayed if program is called with
-<B>--help</B> switch, and then the program will terminate. If
-not supplied, the command line initialized string will be
-shown when <B>--help</B> is used on the commandline.
-</TD></TR>
-<TR valign=top><TD colspan=2>
-<B>VERSION_TEXT</B> </TD></TR><TR valign=top><TD width=3%>&nbsp;</TD><TD>
-if present, will be displayed if program is called with
-<B>--version</B> switch, and then the program will terminate.
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+to define a zero-length allocatable array make the
+value a delimiter (usually a comma).
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-<A name=4>
+<A name=5>
 
      <H3>USAGE</H3>
 
 </A>
 <BLOCKQUOTE>
-When using one of the Unix-like command line forms note that
-(subject to change) the following variations from other common
-command-line parsers:
+When invoking the program line note that (subject to change) the
+following variations from other common command-line parsers:
 <BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb: When using one of the Unix-like command line forms note that
+<TABLE cellpadding=3><!-- tsb: When invoking the program line note that (subject to change) the
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=3%>
@@ -188,18 +225,13 @@ separator when a command line is executed.
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-numeric keywords are not allowed; but this allows
-negative numbers to be used as values.
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-mapping of short names to long names is via an EQUIVALENCE.
-Then the second of the names should only be called with a
+mapping of short names to long names is via an EQUIVALENCE or
+pointer.
+The second of the names should only be called with a
 GET_ARGS*(3f) routine if the <B>SPECIFIED</B>(3f) function is .TRUE.
 for that name.
 <P>
-Note that allocatable arrays cannot be EQUIVANENCEd in Fortran.
+Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 <P>
 Specifying both names of an equivalenced keyword on a command
 line will have undefined results (currently, their alphabetical
@@ -226,18 +258,18 @@ converted to the string "stdin".
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-if the keyword "--" is encountered the rest of the
-command arguments go into the character array "UNUSED".
+values not matching a keyword go into the character
+array "UNUSED".
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-values not matching a keyword go into the character
-array "UNUSED".
+if the keyword "--" is encountered the rest of the
+command arguments go into the character array "UNUSED".
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 </BLOCKQUOTE>
-<A name=5>
+<A name=6>
 
      <H3>EXAMPLE</H3>
 
@@ -252,45 +284,58 @@ Sample program:
     use M_CLI2,  only : get_args_fixed_size
     implicit none
     integer                      :: i
+    !
     ! DEFINE ARGS
     real                         :: x, y, z
     real                         :: p(3)
     character(len=:),allocatable :: title
     logical                      :: l, lbig
-    !  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-    !   o only quote strings
-    !   o set all logical values to F or T.
-    call set_args(&#146; -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-            & -l F -L F &
-            & --label " " &
-            & &#146;)
+    integer,allocatable          :: ints(:)
+    !
+    !  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
+    !  AND READ COMMAND LINE
+    call set_args(&#146; &
+       ! reals
+       & -x 1 -y 2.3 -z 3.4e2 &
+       ! integer array
+       & -p -1,-2,-3 &
+       ! only but always quote strings
+       & --title "my title" &
+       ! set all logical values to F or T.
+       & -l F -L F &
+       ! set allocatable to zero length if you like by using a delimiter
+       & -ints , &
+       ! string should be a single character at a minimum
+       & --label " " &
+       & &#146;)
     ! ASSIGN VALUES TO ELEMENTS
-    ! SCALARS
+    !     SCALARS
     call get_args(&#146;x&#146;,x)
     call get_args(&#146;y&#146;,y)
     call get_args(&#146;z&#146;,z)
     call get_args(&#146;l&#146;,l)
     call get_args(&#146;L&#146;,lbig)
-    ! ALLOCATABLE STRING
-    call get_args(&#146;title&#146;,title)
-    ! NON-ALLOCATABLE ARRAYS
-    ! for non-allocatable arrays pass size
-    call get_args_fixed_size(&#146;p&#146;,p)
+    call get_args(&#146;ints&#146;,ints)      ! ALLOCATABLE ARRAY
+    call get_args(&#146;title&#146;,title)    ! ALLOCATABLE STRING
+    call get_args_fixed_size(&#146;p&#146;,p) ! NON-ALLOCATABLE ARRAY
     ! USE VALUES
     write(*,*)&#146;x=&#146;,x
     write(*,*)&#146;y=&#146;,y
     write(*,*)&#146;z=&#146;,z
     write(*,*)&#146;p=&#146;,p
     write(*,*)&#146;title=&#146;,title
+    write(*,*)&#146;ints=&#146;,ints
     write(*,*)&#146;l=&#146;,l
     write(*,*)&#146;L=&#146;,lbig
+    ! UNNAMED VALUES
     if(size(filenames).gt.0)then
        write(*,&#146;(i6.6,3a)&#146;)(i,&#146;[&#146;,filenames(i),&#146;]&#146;,i=1,size(filenames))
     endif
     end program demo_set_args
+<P>
 </PRE>
 </BLOCKQUOTE>
-<A name=6>
+<A name=7>
 
      <H3>AUTHOR</H3>
 
@@ -298,7 +343,7 @@ Sample program:
 <BLOCKQUOTE>
 John S. Urban, 2019
 </BLOCKQUOTE>
-<A name=7>
+<A name=8>
 
      <H3>LICENSE</H3>
 
@@ -307,7 +352,7 @@ John S. Urban, 2019
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>August 07, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from a2eb7c0f-7191-4feb-8253-79163abbc016 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>August 08, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from ded0ad07-f8ff-4218-8c44-8cb5510753fa using man macros.</FONT>
 <br><br><center><img src="images/set_args.gif"></center>
 </div>
 </div>

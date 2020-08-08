@@ -806,7 +806,7 @@ end subroutine prototype_to_dictionary
 !!
 !!##SYNOPSIS
 !!
-!!    function specified(name)
+!!    elemental impure function specified(name)
 !!
 !!     character(len=*),intent(in) :: name
 !!     logical :: specified
@@ -828,33 +828,62 @@ end subroutine prototype_to_dictionary
 !!
 !! Sample program:
 !!
-!!     program demo_specified
-!!     use M_CLI2,  only : set_args, get_args, specified
-!!     implicit none
-!!     ! DEFINE ARGS
-!!     character(len=:),allocatable   :: title
-!!     integer                        :: flag,f
-!!     equivalence (flag,f)
-!!        call set_args(' -title "my title" -flag 1 -f 1')
-!!     ! ASSIGN VALUES TO ELEMENTS
-!!        call get_args('title',title)
+!!    program demo_specified
+!!    use M_CLI2,  only : set_args, get_args, specified
+!!    implicit none
+!!    ! DEFINE ARGS
+!!    character(len=:),allocatable   :: title
 !!
-!!        ! if equivalenced, call the long name and then only call the short name
-!!        ! if the short name was present on the command line
-!!        call get_args('flag',flag)
-!!        if(specified('f'))call get_args('f',f)
+!!    ! EQUIVALENCING TWO VALUES
+!!    integer                        :: flag,f
+!!    equivalence (flag,f)
 !!
-!!     ! USE VALUES
-!!        write(*,*)'title=',title
-!!        write(*,*)'flag=',flag,' f=',f
-!!     end program demo_specified
+!!    ! POINTER FOR TWO VALUES
+!!    integer,target,allocatable     :: ints(:)
+!!    integer,pointer                :: i(:)
+!!
+!!    ! REALLY DO NOT NEED TO USE EQUIVALENCE OR POINTER IF DO NOT SPECIFY BOTH NAMES ON COMMAND LINE
+!!    real,allocatable               :: twonames(:)
+!!
+!!    integer :: longest
+!!
+!!    ! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED NAMES
+!!       call set_args(' -title "my title" -flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3')
+!!    ! ASSIGN VALUES TO ELEMENTS
+!!       call get_args('title',title)
+!!
+!!       ! if equivalenced, call the long name and then only call the short name
+!!       ! if the short name was present on the command line
+!!       ! WITH EQUIVALENCE
+!!       call get_args('flag',flag); if(specified('f'))call get_args('f',f)
+!!       ! WITH POINTER
+!!       call get_args('ints',ints); i=>ints;if(specified('i'))call get_args('i',ints)
+!!       ! WITHOUT EQUIVALENCE OR POINTER
+!!       call get_args('twonames',twonames);if(specified('T'))call get_args('T',twonames)
+!!
+!!       ! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE ANY(3f) and ALL(3f)
+!!       longest=len('twonames')
+!!       ! gfortran bug?
+!!       !write(*,*)specified([character(len=longest) :: 'twonames','T'])
+!!       !write(*,*)'ANY:',any(specified([character(len=longest) :: 'twonames','T']))
+!!       !write(*,*)'ALL:',all(specified([character(len=longest) :: 'twonames','T']))
+!!       write(*,*)specified(['twonames','T       '])
+!!       write(*,*)'ANY:',any(specified(['twonames','T       ']))
+!!       write(*,*)'ALL:',all(specified(['twonames','T       ']))
+!!
+!!    ! USE VALUES
+!!       write(*,*)'title=',title
+!!       write(*,*)'flag=',flag,' f=',f
+!!       write(*,*)'ints=',ints,' i=',i
+!!       write(*,*)'twonames=',twonames
+!!    end program demo_specified
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
-function specified(key)
+elemental impure function specified(key)
 character(len=*),intent(in) :: key
 logical                     :: specified
 integer                     :: place
@@ -1439,22 +1468,17 @@ end function strtok
 !!##OPTIONS
 !!
 !!      DESCRIPTION   composed of all command arguments concatenated
-!!                    into a Unix-like command prototype string.
+!!                    into a Unix-like command prototype string. For
+!!                    example:
 !!
-!!                    o all keywords get a value.
-!!                    o logicals must be set to F or T.
-!!                    o strings MUST be delimited with double-quotes and
-!!                      must be at least one space. Internal double-quotes
-!!                      are represented with two double-quotes
-!!                    o lists of values should be comma-delimited unless a
-!!                      user-specified delimiter is used. The prototype
-!!                      must use the same array delimiters as the call to
-!!                      the family of get_args*(3f) called.
-!!                    o long names (--keyword) should be all lowercase
+!!                      call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
 !!
 !!                    The DESCRIPTION string is pre-defined to act as if
 !!                    started with the reserved options '--usage F --help
 !!                    F --version F'.
+!!
+!!                    See "DEFINING THE PROTOTYPE" for details.
+!!
 !!
 !!                    The --help and --version options require the optional
 !!                    help_text and version_text values to be provided.
@@ -1467,10 +1491,24 @@ end function strtok
 !!      VERSION_TEXT  if present, will be displayed if program is called with
 !!                    --version switch, and then the program will terminate.
 !!
+!!##DEFINING THE PROTOTYPE
+!!         o all keywords on the prototype get a value.
+!!         o logicals must be set to F or T.
+!!         o strings MUST be delimited with double-quotes and
+!!           must be at least one space. Internal double-quotes
+!!           are represented with two double-quotes
+!!         o numeric keywords are not allowed; but this allows
+!!           negative numbers to be used as values.
+!!         o lists of values should be comma-delimited unless a
+!!           user-specified delimiter is used. The prototype
+!!           must use the same array delimiters as the call to
+!!           the family of get_args*(3f) called.
+!!         o long names (--keyword) should be all lowercase
+!!         o to define a zero-length allocatable array make the
+!!           value a delimiter (usually a comma).
 !!##USAGE
-!!      When using one of the Unix-like command line forms note that
-!!      (subject to change) the following variations from other common
-!!      command-line parsers:
+!!      When invoking the program line note that (subject to change) the
+!!      following variations from other common command-line parsers:
 !!
 !!         o long names do not take the --KEY=VALUE form, just
 !!           --KEY VALUE; and long names should be all lowercase and
@@ -1479,15 +1517,13 @@ end function strtok
 !!         o duplicate keywords are appended together with a space
 !!           separator when a command line is executed.
 !!
-!!         o numeric keywords are not allowed; but this allows
-!!           negative numbers to be used as values.
-!!
-!!         o mapping of short names to long names is via an EQUIVALENCE.
-!!           Then the second of the names should only be called with a
+!!         o mapping of short names to long names is via an EQUIVALENCE or
+!!           pointer.
+!!           The second of the names should only be called with a
 !!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
 !!           for that name.
 !!
-!!           Note that allocatable arrays cannot be EQUIVANENCEd in Fortran.
+!!           Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 !!
 !!           Specifying both names of an equivalenced keyword on a command
 !!           line will have undefined results (currently, their alphabetical
@@ -1502,11 +1538,11 @@ end function strtok
 !!         o if a parameter value of just "-" is supplied it is
 !!           converted to the string "stdin".
 !!
-!!         o if the keyword "--" is encountered the rest of the
-!!           command arguments go into the character array "UNUSED".
-!!
 !!         o values not matching a keyword go into the character
 !!           array "UNUSED".
+!!
+!!         o if the keyword "--" is encountered the rest of the
+!!           command arguments go into the character array "UNUSED".
 !!
 !!##EXAMPLE
 !!
@@ -1518,42 +1554,55 @@ end function strtok
 !!     use M_CLI2,  only : get_args_fixed_size
 !!     implicit none
 !!     integer                      :: i
+!!     !
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
 !!     real                         :: p(3)
 !!     character(len=:),allocatable :: title
 !!     logical                      :: l, lbig
-!!     !  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!!     !   o only quote strings
-!!     !   o set all logical values to F or T.
-!!     call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-!!             & -l F -L F &
-!!             & --label " " &
-!!             & ')
+!!     integer,allocatable          :: ints(:)
+!!     !
+!!     !  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
+!!     !  AND READ COMMAND LINE
+!!     call set_args(' &
+!!        ! reals
+!!        & -x 1 -y 2.3 -z 3.4e2 &
+!!        ! integer array
+!!        & -p -1,-2,-3 &
+!!        ! only but always quote strings
+!!        & --title "my title" &
+!!        ! set all logical values to F or T.
+!!        & -l F -L F &
+!!        ! set allocatable to zero length if you like by using a delimiter
+!!        & -ints , &
+!!        ! string should be a single character at a minimum
+!!        & --label " " &
+!!        & ')
 !!     ! ASSIGN VALUES TO ELEMENTS
-!!     ! SCALARS
+!!     !     SCALARS
 !!     call get_args('x',x)
 !!     call get_args('y',y)
 !!     call get_args('z',z)
 !!     call get_args('l',l)
 !!     call get_args('L',lbig)
-!!     ! ALLOCATABLE STRING
-!!     call get_args('title',title)
-!!     ! NON-ALLOCATABLE ARRAYS
-!!     ! for non-allocatable arrays pass size
-!!     call get_args_fixed_size('p',p)
+!!     call get_args('ints',ints)      ! ALLOCATABLE ARRAY
+!!     call get_args('title',title)    ! ALLOCATABLE STRING
+!!     call get_args_fixed_size('p',p) ! NON-ALLOCATABLE ARRAY
 !!     ! USE VALUES
 !!     write(*,*)'x=',x
 !!     write(*,*)'y=',y
 !!     write(*,*)'z=',z
 !!     write(*,*)'p=',p
 !!     write(*,*)'title=',title
+!!     write(*,*)'ints=',ints
 !!     write(*,*)'l=',l
 !!     write(*,*)'L=',lbig
+!!     ! UNNAMED VALUES
 !!     if(size(filenames).gt.0)then
 !!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
 !!     endif
 !!     end program demo_set_args
+!!
 !!##AUTHOR
 !!      John S. Urban, 2019
 !!##LICENSE

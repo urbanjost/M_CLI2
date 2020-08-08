@@ -3,38 +3,50 @@
            use M_CLI2,  only : get_args_fixed_size
            implicit none
            integer                      :: i
+           !
            ! DEFINE ARGS
            real                         :: x, y, z
            real                         :: p(3)
            character(len=:),allocatable :: title
            logical                      :: l, lbig
-           !  DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-           !   o only quote strings
-           !   o set all logical values to F or T.
-           call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-                   & -l F -L F &
-                   & --label " " &
-                   & ')
+           integer,allocatable          :: ints(:)
+           !
+           !  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
+           !  AND READ COMMAND LINE
+           call set_args(' &
+              ! reals
+              & -x 1 -y 2.3 -z 3.4e2 &
+              ! integer array
+              & -p -1,-2,-3 &
+              ! only but always quote strings
+              & --title "my title" &
+              ! set all logical values to F or T.
+              & -l F -L F &
+              ! set allocatable to zero length if you like by using a delimiter
+              & -ints , &
+              ! string should be a single character at a minimum
+              & --label " " &
+              & ')
            ! ASSIGN VALUES TO ELEMENTS
-           ! SCALARS
+           !     SCALARS
            call get_args('x',x)
            call get_args('y',y)
            call get_args('z',z)
            call get_args('l',l)
            call get_args('L',lbig)
-           ! ALLOCATABLE STRING
-           call get_args('title',title)
-           ! NON-ALLOCATABLE ARRAYS
-           ! for non-allocatable arrays pass size
-           call get_args_fixed_size('p',p)
+           call get_args('ints',ints)      ! ALLOCATABLE ARRAY
+           call get_args('title',title)    ! ALLOCATABLE STRING
+           call get_args_fixed_size('p',p) ! NON-ALLOCATABLE ARRAY
            ! USE VALUES
            write(*,*)'x=',x
            write(*,*)'y=',y
            write(*,*)'z=',z
            write(*,*)'p=',p
            write(*,*)'title=',title
+           write(*,*)'ints=',ints
            write(*,*)'l=',l
            write(*,*)'L=',lbig
+           ! UNNAMED VALUES
            if(size(filenames).gt.0)then
               write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
            endif
