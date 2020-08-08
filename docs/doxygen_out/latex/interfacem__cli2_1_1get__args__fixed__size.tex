@@ -3,18 +3,18 @@
 \subsection*{Private Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-subroutine \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__size_af6328f5272a7af47ab3262035de6725d}{get\+\_\+fixedarray\+\_\+class}} (keyword, generic)
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__size_a93e683afd3e70009ae1a584df4268c3f}{get\+\_\+fixedarray\+\_\+class}} (keyword, generic, delimiters)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{Member Function/\+Subroutine Documentation}
-\mbox{\Hypertarget{interfacem__cli2_1_1get__args__fixed__size_af6328f5272a7af47ab3262035de6725d}\label{interfacem__cli2_1_1get__args__fixed__size_af6328f5272a7af47ab3262035de6725d}} 
+\mbox{\Hypertarget{interfacem__cli2_1_1get__args__fixed__size_a93e683afd3e70009ae1a584df4268c3f}\label{interfacem__cli2_1_1get__args__fixed__size_a93e683afd3e70009ae1a584df4268c3f}} 
 \index{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size@{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size}!get\+\_\+fixedarray\+\_\+class@{get\+\_\+fixedarray\+\_\+class}}
 \index{get\+\_\+fixedarray\+\_\+class@{get\+\_\+fixedarray\+\_\+class}!m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size@{m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size}}
 \subsubsection{\texorpdfstring{get\+\_\+fixedarray\+\_\+class()}{get\_fixedarray\_class()}}
-{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size\+::get\+\_\+fixedarray\+\_\+class (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{class($\ast$), dimension(\+:)}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::get\+\_\+args\+\_\+fixed\+\_\+size\+::get\+\_\+fixedarray\+\_\+class (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{keyword,  }\item[{class($\ast$), dimension(\+:)}]{generic,  }\item[{character(len=$\ast$), intent(in), optional}]{delimiters }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
@@ -46,13 +46,17 @@ set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
                 o all keywords get a value.
                 o logicals must be set to F or T.
                 o strings MUST be delimited with double-quotes and
-                  must be at least one space. Internal
-                  double-quotes are represented with two double-quotes
-                o lists of values should be comma-delimited.
+                  must be at least one space. Internal double-quotes
+                  are represented with two double-quotes
+                o lists of values should be comma-delimited unless a
+                  user-specified delimiter is used. The prototype
+                  must use the same array delimiters as the call to
+                  the family of get_args*(3f) called.
                 o long names (--keyword) should be all lowercase
 
-                DESCRIPTION is pre-defined to act as if started with the
-                reserved options '--usage F --help F --version F'.
+                The DESCRIPTION string is pre-defined to act as if
+                started with the reserved options '--usage F --help
+                F --version F'.
 
                 The --help and --version options require the optional
                 help_text and version_text values to be provided.
@@ -77,7 +81,9 @@ o duplicate keywords are appended together with a space separator when a command
 
 o numeric keywords are not allowed; but this allows negative numbers to be used as values.
 
-o mapping of short names to long names is via an E\+Q\+U\+I\+V\+A\+L\+E\+N\+CE. Note that allocatable arrays cannot be E\+Q\+U\+I\+V\+A\+N\+E\+N\+C\+Ed.
+o mapping of short names to long names is via an E\+Q\+U\+I\+V\+A\+L\+E\+N\+CE. Then the second of the names should only be called with a G\+E\+T\+\_\+\+A\+R\+G\+S$\ast$(3f) routine if the S\+P\+E\+C\+I\+F\+I\+E\+D(3f) function is .T\+R\+UE. for that name.
+
+Note that allocatable arrays cannot be E\+Q\+U\+I\+V\+A\+N\+E\+N\+C\+Ed in Fortran.
 
 Specifying both names of an equivalenced keyword on a command line will have undefined results (currently, their alphabetical order will define what the Fortran variable values become).
 
@@ -145,7 +151,7 @@ get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
 
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
-\begin{DoxyVerb} subroutine get_args(name,value)
+\begin{DoxyVerb} subroutine get_args(name,value,delimiters)
 
   character(len=*),intent(in) :: name
   real|integer|logical|complex) :: value
@@ -155,6 +161,8 @@ get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
   real|integer|logical|complex),allocatable :: value(:)
      or
   character(len=:),allocatable :: value(:)
+
+  character(len=*),intent(in),optional :: delimiters
 \end{DoxyVerb}
 
 
@@ -162,18 +170,21 @@ get\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
 
 \begin{DoxyVerb} GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
  has been called. For fixed-length CHARACTER variables
- see GET_ARGS_FIXED_LENGTH(3f).  for fixed-size arrays see
+ see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
  GET_ARGS_FIXED_SIZE(3f).
 \end{DoxyVerb}
 
 
 \subsubsection*{O\+P\+T\+I\+O\+NS}
 
-\begin{DoxyVerb}  NAME       name of commandline argument to obtain the value of
-  VALUE      variable to hold returned value. The kind of the value
+\begin{DoxyVerb} NAME        name of commandline argument to obtain the value of
+ VALUE       variable to hold returned value. The kind of the value
              is used to determine the type of returned value. May
              be a scalar or allocatable array. If type is CHARACTER
              the scalar must have an allocatable length.
+ DELIMITERS  By default the delimiter for array values are comma,
+             colon, and whitespace. A string containing an alternate
+             list of delimiter characters may be supplied.
 \end{DoxyVerb}
 
 
@@ -232,7 +243,9 @@ get\+\_\+args\+\_\+fixed\+\_\+length(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
 \begin{DoxyVerb}subroutine get_args_fixed_length(name,value)
+
  character(len=:),allocatable :: value
+ character(len=*),intent(in),optional :: delimiters
 \end{DoxyVerb}
 
 
@@ -247,8 +260,13 @@ variable.
 \subsubsection*{O\+P\+T\+I\+O\+NS}
 
 \begin{DoxyVerb}NAME   name of commandline argument to obtain the value of
+
 VALUE  variable to hold returned value.
        Must be a fixed-length CHARACTER variable.
+
+DELIMITERS  By default the delimiter for array values are comma,
+            colon, and whitespace. A string containing an alternate
+            list of delimiter characters may be supplied.
 \end{DoxyVerb}
 
 
@@ -285,6 +303,8 @@ get\+\_\+args\+\_\+fixed\+\_\+size(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+
  real|integer|logical|complex :: value(NNN)
     or
  character(len=MMM) :: value(NNN)
+
+ character(len=*),intent(in),optional :: delimiters
 \end{DoxyVerb}
 
 
@@ -299,13 +319,11 @@ be specified.
 
 \subsubsection*{O\+P\+T\+I\+O\+NS}
 
-\begin{DoxyVerb}NAME   name of commandline argument to obtain the value of
-VALUE  variable to hold returned values. The kind of the value
-       is used to determine the type of returned value.
-       Must be a fixed-size  array. If type is CHARACTER the
-       length must also be fixed.
-\end{DoxyVerb}
+N\+A\+ME name of commandline argument to obtain the value of
 
+V\+A\+L\+UE variable to hold returned values. The kind of the value is used to determine the type of returned value. Must be a fixed-\/size array. If type is C\+H\+A\+R\+A\+C\+T\+ER the length must also be fixed.
+
+D\+E\+L\+I\+M\+I\+T\+E\+RS By default the delimiter for array values are comma, colon, and whitespace. A string containing an alternate list of delimiter characters may be supplied.
 
 \subsubsection*{E\+X\+A\+M\+P\+LE}
 

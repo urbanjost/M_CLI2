@@ -5,7 +5,7 @@
 <area shape="rect" id="node20" href="$namespacem__cli2.html#a14896d00e509cbc32f4df993a8d6f75b" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="471,270,627,311"/>
 <area shape="rect" id="node3" href="$namespacem__cli2.html#aa92e8ad0300d4e324e29eae1ab9d04b4" title="NAMEget(3f) &#45; [ARGUMENTS:M_CLI2] get dictionary value associated with key name in private M_CLI2(3fm)..." alt="" coords="696,67,791,93"/>
 <area shape="rect" id="node4" href="$M__CLI2_8f90.html#aa26f90016621d1ee43d3b5b66316532b" title="ifnull" alt="" coords="521,168,576,195"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="NAMEupdate(3f) &#45; [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value (LICENSE:PD) S..." alt="" coords="684,219,803,245"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="m_cli2::update" alt="" coords="684,219,803,245"/>
 <area shape="rect" id="node7" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_CLI2:QUOTES] add quotes to string as if written with list&#45;directed input (LICENSE:..." alt="" coords="1025,219,1136,245"/>
 <area shape="rect" id="node15" href="$namespacem__cli2.html#afa7a2419002024ff6d950c5d905ddd7a" title="NAMEupper(3f) &#45; [M_CLI2:CASE] changes a string to uppercase (LICENSE:PD) " alt="" coords="688,143,799,169"/>
 <area shape="rect" id="node16" href="$namespacem__cli2.html#acbd726aa5c13b005a14c06d58915cb9a" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandli..." alt="" coords="461,67,636,93"/>

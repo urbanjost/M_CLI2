@@ -1,6 +1,7 @@
 program demo1
 use M_CLI2,  only : set_args, get_args, unnamed
 use M_CLI2,  only : get_args_fixed_size, get_args_fixed_length
+use M_CLI2,  only : specified ! only needed if equivalence keynames
 implicit none
 integer            :: i
 
@@ -23,9 +24,15 @@ equivalence(point,p)
    call get_args('x',x)
    call get_args('y',y)
    call get_args('z',z)
+
+   ! note these are equivalenced so one of the calls must be conditional
    call get_args_fixed_size('point',point)
-   call get_args_fixed_size('p',p)
+   if(specified('p')) call get_args_fixed_size('p',p)
+
+   ! if for some reason you want to use a fixed-length string use
+   ! get_args_fixed_length(3f) instead of get_args(3f)
    call get_args_fixed_length('title',title)
+
    call get_args('l',l)
    call get_args('L',l_)
    !! USE THE VALUES IN YOUR PROGRAM.

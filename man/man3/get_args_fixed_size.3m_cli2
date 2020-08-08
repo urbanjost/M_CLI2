@@ -41,14 +41,9 @@ name of commandline argument to obtain the value of
 .TP
 .B VALUE
 variable to hold returned values. The kind of the value
-is used to determine the type of returned value.
-.RS
-.TP
-.B Must be a fixed-size
-array. If type is CHARACTER the
-length must also be fixed.
-.RE
-.RE
+is used to determine the type of returned value. Must be
+a fixed-size array. If type is CHARACTER the length must
+also be fixed.
 .TP
 .B DELIMITERS
 By default the delimiter for array values are comma,

@@ -8,6 +8,5 @@ var searchData=
   ['insert_5fi',['insert_i',['../interfacem__cli2_1_1insert.html#a50fcaf89ea5907952b521845dd434835',1,'m_cli2::insert::insert_i()'],['../namespacem__cli2.html#afa6f00a57f1252ba5daa0c440a23ffbb',1,'m_cli2::insert_i()']]],
   ['insert_5fl',['insert_l',['../interfacem__cli2_1_1insert.html#a48dedb7035fb157485c81de9fc245659',1,'m_cli2::insert::insert_l()'],['../namespacem__cli2.html#a7e5ee66813d8f6db9d48ebdc350a6b3e',1,'m_cli2::insert_l()']]],
   ['insert_5fr',['insert_r',['../interfacem__cli2_1_1insert.html#a647342bf6669248878fd990a9d92ef2e',1,'m_cli2::insert::insert_r()'],['../namespacem__cli2.html#ae43e655d3678fcc31824a3e9db3daae1',1,'m_cli2::insert_r()']]],
-  ['isupper',['isupper',['../namespacem__cli2.html#ad33ebc8ed3953d8cd91bd8c90a49b59d',1,'m_cli2']]],
-  ['isupper_2e3m_5fcli2_2etxt',['isupper.3m_cli2.txt',['../isupper_83m__cli2_8txt.html',1,'']]]
+  ['isupper',['isupper',['../namespacem__cli2.html#ad33ebc8ed3953d8cd91bd8c90a49b59d',1,'m_cli2']]]
 ];

@@ -75,10 +75,12 @@ subroutine, private \mbox{\hyperlink{namespacem__cli2_a14896d00e509cbc32f4df993a
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 prototype\+\_\+to\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} parse user command and store tokens into dictionary (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb}{m\+\_\+cli2\+::update}} (key, val)
+logical function, public \mbox{\hyperlink{namespacem__cli2_a2b85feed10ad5507a7181c5434c46541}{m\+\_\+cli2\+::specified}} (key)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 update(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} update internal dictionary given keyword and value (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb}{m\+\_\+cli2\+::update}} (key, val)
+\item 
 subroutine, private \mbox{\hyperlink{namespacem__cli2_ab1525b0419475486f520ef502daa5e94}{m\+\_\+cli2\+::wipe\+\_\+dictionary}} ()
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
@@ -103,7 +105,7 @@ subroutine \mbox{\hyperlink{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}{
 print\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} print internal dictionary created by calls to commandline(3f) (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
 logical function \mbox{\hyperlink{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a}{m\+\_\+cli2\+::strtok}} (source\+\_\+string, itoken, token\+\_\+start, token\+\_\+end, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a2661b2b4b9ad7886d84d8972552a4af4}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+class}} (keyword, generic)
+subroutine \mbox{\hyperlink{namespacem__cli2_a6d8c1c441ac15f9a2882e50459d39565}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+class}} (keyword, generic, delimiters)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
@@ -111,25 +113,25 @@ subroutine \mbox{\hyperlink{namespacem__cli2_a47cc758d20b655bc21672c31289e54ce}{
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_aaede1f28172778cf45f4b6c04967bbbd}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+d}} (keyword, darray, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a59a81f1de8b6dda98bebb9324563aef8}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+i}} (keyword, iarray)
+subroutine \mbox{\hyperlink{namespacem__cli2_ad314315dd5c93abff5168265f5ff0e4e}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+i}} (keyword, iarray, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a0ac55a17678d4f6a9d339b2d85709fae}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+r}} (keyword, rarray)
+subroutine \mbox{\hyperlink{namespacem__cli2_a8f1d5223b075f23d513c94548a1ebf09}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+r}} (keyword, rarray, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a6c709b34848f66f5a4c539be6cbfc670}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+x}} (keyword, xarray)
+subroutine \mbox{\hyperlink{namespacem__cli2_ab9ab288fa5f108beeb7c94d81b223b7c}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+x}} (keyword, xarray, delimiters)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a448e8e24406f4bdbc14f26a940cbbc2c}{m\+\_\+cli2\+::get\+\_\+anyarray\+\_\+c}} (keyword, strings, delimiters)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_abc31389c45dcd95b8db641b59b98b447}{m\+\_\+cli2\+::get\+\_\+fixed\+\_\+length\+\_\+any\+\_\+size\+\_\+cxxxx}} (keyword, strings, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a7b9e1ca34dea0fd048d002c42d2bef62}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+i}} (keyword, iarray)
+subroutine \mbox{\hyperlink{namespacem__cli2_aa469ba94e6bb122c9bf30dd8642b693b}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+i}} (keyword, iarray, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_acfe9449b15cf768997833cbbd190c8f8}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+r}} (keyword, rarray)
+subroutine \mbox{\hyperlink{namespacem__cli2_afbec790abad0dca990c0a61cd2d9e9ae}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+r}} (keyword, rarray, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a964337a90f06b31adc199de131bba84f}{m\+\_\+cli2\+::get\+\_\+fixed\+\_\+size\+\_\+complex}} (keyword, xarray)
+subroutine \mbox{\hyperlink{namespacem__cli2_a32b78784e20e29bf40f17e16d08336fa}{m\+\_\+cli2\+::get\+\_\+fixed\+\_\+size\+\_\+complex}} (keyword, xarray, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a166b456b25e0df5dbf8e15eaff6aab17}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+d}} (keyword, darr)
+subroutine \mbox{\hyperlink{namespacem__cli2_a2c8db0f383888cb2b3ce8643de3fae93}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+d}} (keyword, darr, delimiters)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a109b0f0a28c84f069f1b2e3a41783509}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+l}} (keyword, larray)
+subroutine \mbox{\hyperlink{namespacem__cli2_a65ffe8c7a444db5db3be3f6edecef008}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+l}} (keyword, larray, delimiters)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a8000c5e05f6c84ba17350d4a00850a6a}{m\+\_\+cli2\+::get\+\_\+fixedarray\+\_\+fixed\+\_\+length\+\_\+c}} (keyword, strings, delimiters)
 \item 
@@ -317,8 +319,7 @@ logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{m\+
 
 References m\+\_\+cli2\+::get(), m\+\_\+cli2\+::update(), and m\+\_\+cli2\+::upper().
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -338,8 +339,7 @@ Here is the caller graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{print\+\_\+generic()}{print\_generic()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily subroutine msg\+\_\+scalar\+::print\+\_\+generic (\begin{DoxyParamCaption}\item[{class($\ast$), intent(in)}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

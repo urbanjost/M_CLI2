@@ -5,7 +5,7 @@
 <area shape="rect" id="node4" href="$namespacem__cli2.html#a14896d00e509cbc32f4df993a8d6f75b" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="691,5,847,47"/>
 <area shape="rect" id="node15" href="$namespacem__cli2.html#ab43e4e37723a0acc2183fbbf3d8c36bd" title="m_cli2::dictionary\l_to_namelist" alt="" coords="467,368,606,409"/>
 <area shape="rect" id="node17" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="459,191,615,232"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="NAMEupdate(3f) &#45; [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value (LICENSE:PD) S..." alt="" coords="904,85,1023,111"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="m_cli2::update" alt="" coords="904,85,1023,111"/>
 <area shape="rect" id="node6" href="$namespacem__cli2.html#a9cab7352414f8b5625330a9ff5cf0cb4" title="NAMEunquote(3f) &#45; [M_CLI2:QUOTES] remove quotes from string as if read with list&#45;directed input (LICE..." alt="" coords="1071,198,1197,225"/>
 <area shape="rect" id="node7" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_CLI2:QUOTES] add quotes to string as if written with list&#45;directed input (LICENSE:..." alt="" coords="1245,325,1356,351"/>
 <area shape="rect" id="node8" href="$namespacem__cli2.html#a8e172feb2e4ae4d21d4fceb4e54f593c" title="NAMEmerge_str(3f) &#45; [M_CLI2:LENGTH] pads strings to same length and then calls MERGE(3f) (LICENSE:PD)..." alt="" coords="1407,375,1546,402"/>

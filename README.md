@@ -65,8 +65,13 @@ These demo programs provide templates for the most common usage:
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module
 - [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html)  -- parses the command line options
 - [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html)  -- obtain parameter values for allocatable arrays and scalars
+#### less frequently used 
 - [get_args_fixed_length](https://urbanjost.github.io/M_CLI2/get_args_fixed_length.3m_cli2.html)  -- obtain parameter values for fixed-length character variable
 - [get_args_fixed_size](https://urbanjost.github.io/M_CLI2/get_args_fixed_size.3m_cli2.html)  -- obtain parameter values for fixed-size arrays
+- [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html)  -- query whether an option was used on the commandline
+
+
+### All manpages amalgameted
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
 ### doxygen
@@ -108,7 +113,7 @@ This short program defines a command that can be called like
    call get_args('x',x)
    call get_args('y',y)
    call get_args('z',z)
-   call get_args_fixed_size('point',point)
+   call get_args_fixed_size('point',point) ! this will ensure three values are specified
    call get_args('p',p)
    call get_args('title',title)
    call get_args('l',l)

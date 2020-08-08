@@ -109,6 +109,7 @@ public                              :: set_args
 public                              :: get_args
 public                              :: get_args_fixed_size
 public                              :: get_args_fixed_length
+public                              :: specified
 
 private :: wipe_dictionary
 private :: prototype_to_dictionary
@@ -307,7 +308,6 @@ contains
 !!
 !!      real               :: x, y, z
 !!      logical            :: help, h
-!!      equivalence       (help,h)
 !!      namelist /args/ x,y,z,help,h
 !!      character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
 !!
@@ -440,7 +440,6 @@ end subroutine check_commandline
 !!            real               :: x, y, z, point(3), p(3)
 !!            character(len=80)  :: title
 !!            logical            :: l, l_
-!!            equivalence       (point,p)
 !!            namelist /args/ x,y,z,point,p,title,l,l_
 !!
 !!         ! Define the prototype
@@ -450,8 +449,6 @@ end subroutine check_commandline
 !!         !  o lists must be comma-delimited. No spaces are allowed in lists.
 !!         !  o all long names must be lowercase. An uppercase short name
 !!         !    -A maps to variable A_
-!!         !  o if variables are equivalenced only one should be used on
-!!         !    the command line
 !!            character(len=*),parameter  :: cmd='&
 !!            & -x 1 -y 2 -z 3     &
 !!            & --point -1,-2,-3   &
@@ -800,6 +797,77 @@ end subroutine prototype_to_dictionary
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+!>
+!!##NAME
+!!    specified(3f) - [ARGUMENTS:M_CLI2] return true if keyword was present on command line
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!    function specified(name)
+!!
+!!     character(len=*),intent(in) :: name
+!!     logical :: specified
+!!
+!!##DESCRIPTION
+!!
+!!    specified(3f) returns .true. if the specified keyword was present on
+!!    the command line.
+!!
+!!##OPTIONS
+!!
+!!    NAME   name of commandline argument to query the presence of
+!!
+!!##RETURNS
+!!    SPECIFIED  returns .TRUE. if specified NAME was present on the command
+!!               line when the program was invoked.
+!!
+!!##EXAMPLE
+!!
+!! Sample program:
+!!
+!!     program demo_specified
+!!     use M_CLI2,  only : set_args, get_args, specified
+!!     implicit none
+!!     ! DEFINE ARGS
+!!     character(len=:),allocatable   :: title
+!!     integer                        :: flag,f
+!!     equivalence (flag,f)
+!!        call set_args(' -title "my title" -flag 1 -f 1')
+!!     ! ASSIGN VALUES TO ELEMENTS
+!!        call get_args('title',title)
+!!
+!!        ! if equivalenced, call the long name and then only call the short name
+!!        ! if the short name was present on the command line
+!!        call get_args('flag',flag)
+!!        if(specified('f'))call get_args('f',f)
+!!
+!!     ! USE VALUES
+!!        write(*,*)'title=',title
+!!        write(*,*)'flag=',flag,' f=',f
+!!     end program demo_specified
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
+!===================================================================================================================================
+function specified(key)
+character(len=*),intent(in) :: key
+logical                     :: specified
+integer                     :: place
+   call locate(keywords,key,place)                   ! find where string is or should be
+   if(place.lt.1)then
+      specified=.false.
+   else
+      specified=present_in(place)
+   endif
+end function specified
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
 subroutine update(key,val)
 character(len=*),intent(in)           :: key
 character(len=*),intent(in),optional  :: val
@@ -992,30 +1060,30 @@ character(len=:),allocatable :: nml1
 character(len=:),allocatable :: nml2
 integer                      :: ibig
 
-   passed_in=prototype ! make global copy for printing
+   passed_in=prototype                              ! make global copy for printing
 
    if(allocated(unnamed))deallocate(unnamed)
-   ibig=longest_command_argument() ! bug in gfortran. len=0 should be fine
+   ibig=longest_command_argument()                  ! bug in gfortran. len=0 should be fine
    ibig=max(ibig,1)
    allocate(character(len=ibig) ::unnamed(0))
 
    if(prototype.ne.'')then
-      call prototype_to_dictionary(prototype)  ! build dictionary from prototype
+      call prototype_to_dictionary(prototype)       ! build dictionary from prototype
       namelist_name='&ARGS'
-      present_in=.false.  ! reset all values to false so everything gets written
-      return_all=.true.   ! return everything in dictionary
+      present_in=.false.                            ! reset all values to false so everything gets written
+      return_all=.true.                             ! return everything in dictionary
       call dictionary_to_namelist(nml1)
-      present_in=.false.  ! reset all values to false
+      present_in=.false.                            ! reset all values to false
    else
       nml1=''
    endif
 
-   return_all=.false.   ! return values that were on command line
+   return_all=.false.                               ! return values that were on command line
    call cmd_args_to_dictionary(check=.true.)
 
    call dictionary_to_namelist(nml2)
 
-   nml=namelist_name//' '//nml1//','//nml2//' /' ! add defaults and values on command line
+   nml=namelist_name//' '//nml1//','//nml2//' /'    ! add defaults and values on command line
    ! show array
 
 end subroutine prototype_and_cmd_args_to_nlist
@@ -1376,13 +1444,17 @@ end function strtok
 !!                    o all keywords get a value.
 !!                    o logicals must be set to F or T.
 !!                    o strings MUST be delimited with double-quotes and
-!!                      must be at least one space. Internal
-!!                      double-quotes are represented with two double-quotes
-!!                    o lists of values should be comma-delimited.
+!!                      must be at least one space. Internal double-quotes
+!!                      are represented with two double-quotes
+!!                    o lists of values should be comma-delimited unless a
+!!                      user-specified delimiter is used. The prototype
+!!                      must use the same array delimiters as the call to
+!!                      the family of get_args*(3f) called.
 !!                    o long names (--keyword) should be all lowercase
 !!
-!!                    DESCRIPTION is pre-defined to act as if started with the
-!!                    reserved options '--usage F --help F --version F'.
+!!                    The DESCRIPTION string is pre-defined to act as if
+!!                    started with the reserved options '--usage F --help
+!!                    F --version F'.
 !!
 !!                    The --help and --version options require the optional
 !!                    help_text and version_text values to be provided.
@@ -1411,7 +1483,11 @@ end function strtok
 !!           negative numbers to be used as values.
 !!
 !!         o mapping of short names to long names is via an EQUIVALENCE.
-!!           Note that allocatable arrays cannot be EQUIVANENCEd.
+!!           Then the second of the names should only be called with a
+!!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
+!!           for that name.
+!!
+!!           Note that allocatable arrays cannot be EQUIVANENCEd in Fortran.
 !!
 !!           Specifying both names of an equivalenced keyword on a command
 !!           line will have undefined results (currently, their alphabetical
@@ -1651,12 +1727,12 @@ end function strtok
 !!    be specified.
 !!
 !!##OPTIONS
-!!         NAME   name of commandline argument to obtain the value of
+!!    NAME        name of commandline argument to obtain the value of
 !!
-!!         VALUE  variable to hold returned values. The kind of the value
-!!                is used to determine the type of returned value.
-!!                Must be a fixed-size  array. If type is CHARACTER the
-!!                length must also be fixed.
+!!    VALUE       variable to hold returned values. The kind of the value
+!!                is used to determine the type of returned value. Must be
+!!                a fixed-size array. If type is CHARACTER the length must
+!!                also be fixed.
 !!
 !!    DELIMITERS  By default the delimiter for array values are comma,
 !!                colon, and whitespace. A string containing an alternate
@@ -2661,7 +2737,7 @@ subroutine a2d(chars,valu,ierr,onerr)
 !     1989,2016 John S. Urban.
 !
 !  o  works with any g-format input, including integer, real, and exponential.
-!  o  if an error occurs in the read, iostat is returned in ierr and value is set to zero.  if no error occurs, ierr=0.
+!  o  if an error occurs in the read, iostat is returned in ierr and value is set to zero. If no error occurs, ierr=0.
 !  o  if the string happens to be 'eod' no error message is produced so this string may be used to act as an end-of-data.
 !     IERR will still be non-zero in this case.
 !----------------------------------------------------------------------------------------------------------------------------------

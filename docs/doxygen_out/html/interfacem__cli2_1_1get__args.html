@@ -78,12 +78,12 @@ $(function() {
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ac1595f7435cd331533eade965bb371dc"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#ac1595f7435cd331533eade965bb371dc">get_anyarray_d</a> (keyword, darray, delimiters)</td></tr>
 <tr class="separator:ac1595f7435cd331533eade965bb371dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa187fa2af2a944d760738023c142a80f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#aa187fa2af2a944d760738023c142a80f">get_anyarray_i</a> (keyword, iarray)</td></tr>
-<tr class="separator:aa187fa2af2a944d760738023c142a80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cbc531fe929d06c07eb434b366541b6"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#a0cbc531fe929d06c07eb434b366541b6">get_anyarray_r</a> (keyword, rarray)</td></tr>
-<tr class="separator:a0cbc531fe929d06c07eb434b366541b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66a3ba683da196f5f0d423345332c88c"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#a66a3ba683da196f5f0d423345332c88c">get_anyarray_x</a> (keyword, xarray)</td></tr>
-<tr class="separator:a66a3ba683da196f5f0d423345332c88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a958091825d17ff491815f01f634933fa"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#a958091825d17ff491815f01f634933fa">get_anyarray_i</a> (keyword, iarray, delimiters)</td></tr>
+<tr class="separator:a958091825d17ff491815f01f634933fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cf569a2a24fec1774e7c73c40598661"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#a1cf569a2a24fec1774e7c73c40598661">get_anyarray_r</a> (keyword, rarray, delimiters)</td></tr>
+<tr class="separator:a1cf569a2a24fec1774e7c73c40598661"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8581641c551aa6fe4c0592fb63de11fe"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#a8581641c551aa6fe4c0592fb63de11fe">get_anyarray_x</a> (keyword, xarray, delimiters)</td></tr>
+<tr class="separator:a8581641c551aa6fe4c0592fb63de11fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa60d116ceb254630c102ef174471e375"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#aa60d116ceb254630c102ef174471e375">get_anyarray_c</a> (keyword, strings, delimiters)</td></tr>
 <tr class="separator:aa60d116ceb254630c102ef174471e375"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ff3d0bd398e40fd207c2aa09b5bf8a9"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args.html#a3ff3d0bd398e40fd207c2aa09b5bf8a9">get_anyarray_l</a> (keyword, larray, delimiters)</td></tr>
@@ -186,8 +186,8 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa187fa2af2a944d760738023c142a80f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa187fa2af2a944d760738023c142a80f">&#9670;&nbsp;</a></span>get_anyarray_i()</h2>
+<a id="a958091825d17ff491815f01f634933fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a958091825d17ff491815f01f634933fa">&#9670;&nbsp;</a></span>get_anyarray_i()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -205,7 +205,13 @@ Private Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">integer, dimension(:), allocatable&#160;</td>
-          <td class="paramname"><em>iarray</em>&#160;</td>
+          <td class="paramname"><em>iarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character(len=*), intent(in), optional&#160;</td>
+          <td class="paramname"><em>delimiters</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -264,8 +270,8 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0cbc531fe929d06c07eb434b366541b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0cbc531fe929d06c07eb434b366541b6">&#9670;&nbsp;</a></span>get_anyarray_r()</h2>
+<a id="a1cf569a2a24fec1774e7c73c40598661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cf569a2a24fec1774e7c73c40598661">&#9670;&nbsp;</a></span>get_anyarray_r()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -283,7 +289,13 @@ Private Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">real, dimension(:), allocatable&#160;</td>
-          <td class="paramname"><em>rarray</em>&#160;</td>
+          <td class="paramname"><em>rarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character(len=*), intent(in), optional&#160;</td>
+          <td class="paramname"><em>delimiters</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -300,8 +312,8 @@ Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a66a3ba683da196f5f0d423345332c88c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66a3ba683da196f5f0d423345332c88c">&#9670;&nbsp;</a></span>get_anyarray_x()</h2>
+<a id="a8581641c551aa6fe4c0592fb63de11fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8581641c551aa6fe4c0592fb63de11fe">&#9670;&nbsp;</a></span>get_anyarray_x()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,7 +331,13 @@ Private Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">complex, dimension(:), allocatable&#160;</td>
-          <td class="paramname"><em>xarray</em>&#160;</td>
+          <td class="paramname"><em>xarray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character(len=*), intent(in), optional&#160;</td>
+          <td class="paramname"><em>delimiters</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

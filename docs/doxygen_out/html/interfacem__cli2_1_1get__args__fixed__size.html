@@ -76,14 +76,14 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:af6328f5272a7af47ab3262035de6725d"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args__fixed__size.html#af6328f5272a7af47ab3262035de6725d">get_fixedarray_class</a> (keyword, generic)</td></tr>
-<tr class="memdesc:af6328f5272a7af47ab3262035de6725d"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
-set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)  <a href="#af6328f5272a7af47ab3262035de6725d">More...</a><br /></td></tr>
-<tr class="separator:af6328f5272a7af47ab3262035de6725d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93e683afd3e70009ae1a584df4268c3f"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1get__args__fixed__size.html#a93e683afd3e70009ae1a584df4268c3f">get_fixedarray_class</a> (keyword, generic, delimiters)</td></tr>
+<tr class="memdesc:a93e683afd3e70009ae1a584df4268c3f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)  <a href="#a93e683afd3e70009ae1a584df4268c3f">More...</a><br /></td></tr>
+<tr class="separator:a93e683afd3e70009ae1a584df4268c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function/Subroutine Documentation</h2>
-<a id="af6328f5272a7af47ab3262035de6725d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6328f5272a7af47ab3262035de6725d">&#9670;&nbsp;</a></span>get_fixedarray_class()</h2>
+<a id="a93e683afd3e70009ae1a584df4268c3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93e683afd3e70009ae1a584df4268c3f">&#9670;&nbsp;</a></span>get_fixedarray_class()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -101,7 +101,13 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)  <a
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">class(*), dimension(:)&#160;</td>
-          <td class="paramname"><em>generic</em>&#160;</td>
+          <td class="paramname"><em>generic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">character(len=*), intent(in), optional&#160;</td>
+          <td class="paramname"><em>delimiters</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -135,13 +141,17 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) </p
                 o all keywords get a value.
                 o logicals must be set to F or T.
                 o strings MUST be delimited with double-quotes and
-                  must be at least one space. Internal
-                  double-quotes are represented with two double-quotes
-                o lists of values should be comma-delimited.
+                  must be at least one space. Internal double-quotes
+                  are represented with two double-quotes
+                o lists of values should be comma-delimited unless a
+                  user-specified delimiter is used. The prototype
+                  must use the same array delimiters as the call to
+                  the family of get_args*(3f) called.
                 o long names (--keyword) should be all lowercase
 
-                DESCRIPTION is pre-defined to act as if started with the
-                reserved options '--usage F --help F --version F'.
+                The DESCRIPTION string is pre-defined to act as if
+                started with the reserved options '--usage F --help
+                F --version F'.
 
                 The --help and --version options require the optional
                 help_text and version_text values to be provided.
@@ -158,7 +168,8 @@ set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) </p
 <p>o long names do not take the &ndash;KEY=VALUE form, just &ndash;KEY VALUE; and long names should be all lowercase and always more than one character.</p>
 <p>o duplicate keywords are appended together with a space separator when a command line is executed.</p>
 <p>o numeric keywords are not allowed; but this allows negative numbers to be used as values.</p>
-<p>o mapping of short names to long names is via an EQUIVALENCE. Note that allocatable arrays cannot be EQUIVANENCEd.</p>
+<p>o mapping of short names to long names is via an EQUIVALENCE. Then the second of the names should only be called with a GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE. for that name.</p>
+<p>Note that allocatable arrays cannot be EQUIVANENCEd in Fortran.</p>
 <p>Specifying both names of an equivalenced keyword on a command line will have undefined results (currently, their alphabetical order will define what the Fortran variable values become).</p>
 <p>o short keywords cannot be combined. -a -b -c is required, not -abc even for Boolean keys.</p>
 <p>o shuffling is not supported. Values should follow their keywords.</p>
@@ -212,7 +223,7 @@ end program demo_set_args
 <p>Public Domain </p><h2>NAME</h2>
 <p>get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments (LICENSE:PD)</p>
 <h2>SYNOPSIS</h2>
-<pre class="fragment"> subroutine get_args(name,value)
+<pre class="fragment"> subroutine get_args(name,value,delimiters)
 
   character(len=*),intent(in) :: name
   real|integer|logical|complex) :: value
@@ -222,17 +233,22 @@ end program demo_set_args
   real|integer|logical|complex),allocatable :: value(:)
      or
   character(len=:),allocatable :: value(:)
+
+  character(len=*),intent(in),optional :: delimiters
 </pre><h2>DESCRIPTION</h2>
 <pre class="fragment"> GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
  has been called. For fixed-length CHARACTER variables
- see GET_ARGS_FIXED_LENGTH(3f).  for fixed-size arrays see
+ see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
  GET_ARGS_FIXED_SIZE(3f).
 </pre><h2>OPTIONS</h2>
-<pre class="fragment">  NAME       name of commandline argument to obtain the value of
-  VALUE      variable to hold returned value. The kind of the value
+<pre class="fragment"> NAME        name of commandline argument to obtain the value of
+ VALUE       variable to hold returned value. The kind of the value
              is used to determine the type of returned value. May
              be a scalar or allocatable array. If type is CHARACTER
              the scalar must have an allocatable length.
+ DELIMITERS  By default the delimiter for array values are comma,
+             colon, and whitespace. A string containing an alternate
+             list of delimiter characters may be supplied.
 </pre><h2>EXAMPLE</h2>
 <p>Sample program: </p><pre class="fragment">program demo_get_args
 use M_CLI2,  only : filenames=&gt;unnamed, set_args, get_args
@@ -281,15 +297,22 @@ end program demo_get_args
 <p>get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line arguments (LICENSE:PD)</p>
 <h2>SYNOPSIS</h2>
 <pre class="fragment">subroutine get_args_fixed_length(name,value)
+
  character(len=:),allocatable :: value
+ character(len=*),intent(in),optional :: delimiters
 </pre><h2>DESCRIPTION</h2>
 <pre class="fragment">GET_ARGS_fixed_length(3f) returns the value of a string
 keyword when the string value is a fixed-length CHARACTER
 variable.
 </pre><h2>OPTIONS</h2>
 <pre class="fragment">NAME   name of commandline argument to obtain the value of
+
 VALUE  variable to hold returned value.
        Must be a fixed-length CHARACTER variable.
+
+DELIMITERS  By default the delimiter for array values are comma,
+            colon, and whitespace. A string containing an alternate
+            list of delimiter characters may be supplied.
 </pre><h2>EXAMPLE</h2>
 <p>Sample program: </p><pre class="fragment">program demo_get_args_fixed_length
 use M_CLI2,  only : set_args, get_args_fixed_length
@@ -314,18 +337,18 @@ end program demo_get_args_fixed_length
  real|integer|logical|complex :: value(NNN)
     or
  character(len=MMM) :: value(NNN)
+
+ character(len=*),intent(in),optional :: delimiters
 </pre><h2>DESCRIPTION</h2>
 <pre class="fragment">GET_ARGS_FIXED_SIZE(3f) returns the value of keywords for
 fixed-size arrays after SET_ARGS(3f) has been called.
 On input on the command line all values of the array must
 be specified.
 </pre><h2>OPTIONS</h2>
-<pre class="fragment">NAME   name of commandline argument to obtain the value of
-VALUE  variable to hold returned values. The kind of the value
-       is used to determine the type of returned value.
-       Must be a fixed-size  array. If type is CHARACTER the
-       length must also be fixed.
-</pre><h2>EXAMPLE</h2>
+<p>NAME name of commandline argument to obtain the value of</p>
+<p>VALUE variable to hold returned values. The kind of the value is used to determine the type of returned value. Must be a fixed-size array. If type is CHARACTER the length must also be fixed.</p>
+<p>DELIMITERS By default the delimiter for array values are comma, colon, and whitespace. A string containing an alternate list of delimiter characters may be supplied.</p>
+<h2>EXAMPLE</h2>
 <p>Sample program: </p><pre class="fragment">program demo_get_args_fixed_size
 use M_CLI2,  only : set_args, get_args_fixed_size
 implicit none

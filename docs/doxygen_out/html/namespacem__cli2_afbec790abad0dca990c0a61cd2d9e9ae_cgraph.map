@@ -1,0 +1,11 @@
+<map id="m_cli2::get_fixedarray_r" name="m_cli2::get_fixedarray_r">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a8f1d5223b075f23d513c94548a1ebf09" title="m_cli2::get_anyarray_r" alt="" coords="234,60,405,87"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="1061,124,1180,151"/>
+<area shape="rect" id="node10" href="$namespacem__cli2.html#acbd726aa5c13b005a14c06d58915cb9a" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandli..." alt="" coords="232,111,407,138"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#aaede1f28172778cf45f4b6c04967bbbd" title="m_cli2::get_anyarray_d" alt="" coords="455,74,629,100"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f" title="m_cli2::replace_str" alt="" coords="677,150,823,176"/>
+<area shape="rect" id="node8" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="699,48,801,75"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a710b26995119aee101959555b1bac8e2" title="NAMEreplace_str(3f) &#45; [M_CLI2:EDITING] function globally replaces one substring for another in string..." alt="" coords="871,200,1013,227"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a" title="m_cli2::strtok" alt="" coords="1065,200,1176,227"/>
+<area shape="rect" id="node9" href="$namespacem__cli2.html#a6d2d93ab8471667e632bf7a0e95ebd13" title="NAMElower(3f) &#45; [M_CLI2:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="887,48,997,75"/>
+</map>

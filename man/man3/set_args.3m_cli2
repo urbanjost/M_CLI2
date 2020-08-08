@@ -45,15 +45,19 @@ all keywords get a value.
 logicals must be set to F or T.
 .IP \(bu 3
 strings MUST be delimited with double-quotes and
-must be at least one space. Internal
-double-quotes are represented with two double-quotes
+must be at least one space. Internal double-quotes
+are represented with two double-quotes
 .IP \(bu 3
-lists of values should be comma-delimited.
+lists of values should be comma-delimited unless a
+user-specified delimiter is used. The prototype
+must use the same array delimiters as the call to
+the family of get_args*(3f) called.
 .IP \(bu 3
 long names (\fB--keyword\fP) should be all lowercase
 .PP
-DESCRIPTION is pre-defined to act as if started with the
-reserved options '\fB--usage\fP F \fB--help\fP F \fB--version\fP F'.
+The DESCRIPTION string is pre-defined to act as if
+started with the reserved options '\fB--usage\fP F \fB--help\fP
+F \fB--version\fP F'.
 .PP
 The \fB--help\fP and \fB--version\fP options require the optional
 help_text and version_text values to be provided.
@@ -85,8 +89,12 @@ numeric keywords are not allowed; but this allows
 negative numbers to be used as values.
 .IP \(bu 3
 mapping of short names to long names is via an EQUIVALENCE.
-Note that allocatable arrays cannot be EQUIVANENCEd.
+Then the second of the names should only be called with a
+GET_ARGS*(3f) routine if the \fBSPECIFIED\fP(3f) function is .TRUE.
+for that name.
 .RS
+.PP
+Note that allocatable arrays cannot be EQUIVANENCEd in Fortran.
 .PP
 Specifying both names of an equivalenced keyword on a command
 line will have undefined results (currently, their alphabetical
