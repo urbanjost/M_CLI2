@@ -1,4 +1,4 @@
-program basic
+program demo3
 !! QUICK PROTOTYPE: JUST THE BARE ESSENTIALS
 use M_CLI2,  only : set_args, get_args
 implicit none
@@ -13,4 +13,4 @@ character(len=:),allocatable :: title
    call get_args('size',size)
    call get_args('title',title)
    write(*,'(*("[",g0,"]":,1x))')x,y,size,l,title
-end program basic
+end program demo3

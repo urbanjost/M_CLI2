@@ -1,4 +1,4 @@
-program demo4
+program demo7
 use M_CLI2,  only : set_args, get_args, get_args_fixed_size
 implicit none
 integer,parameter              :: dp=kind(0.0d0)
@@ -33,7 +33,7 @@ character(len=:),allocatable   :: characters(:)  ! allocatable array with alloca
    write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(complexs),'complexs=',complexs
    write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(normal),'normal=',normal
    write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(fixed),'fixed=',fixed
-end program demo4
+end program demo7
 !==================================================================================================================================
 ! EXAMPLE CALL
 ! demo7 -integers 1a2b3c4d5e6 -reals 1/2/3/4 -doubles '40|50|60' -complexs '2!3!4!5' --characters aaa@BBBB@c,d,e
