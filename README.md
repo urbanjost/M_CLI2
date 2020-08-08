@@ -10,7 +10,7 @@
 
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
-   the program. A call to get_args(3f) or one of its varients is then
+   the program. A call to get_args(3f) or one of its variants is then
    made for each parameter name to set the variables appropriately in
    the program.
 
@@ -71,7 +71,7 @@ These demo programs provide templates for the most common usage:
 - [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html)  -- query whether an option was used on the commandline
 
 
-### All manpages amalgameted
+### All manpages amalgamated
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
 ### doxygen
