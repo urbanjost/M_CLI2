@@ -516,7 +516,7 @@ end subroutine check_commandline
 !!           negative numbers to be used as values.
 !!
 !!         o mapping of short names to long names is demonstrated in
-!!           the manpage for SELECT(3f).
+!!           the manpage for SPECIFIED(3f).
 !!           specifying both names of an equivalenced keyword will have
 !!           undefined results (currently, their alphabetical order
 !!           will define what the Fortran variable values become).
