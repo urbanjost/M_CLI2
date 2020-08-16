@@ -18,6 +18,7 @@ var searchData=
   ['get_5ffixedarray_5fi',['get_fixedarray_i',['../namespacem__cli2.html#aa469ba94e6bb122c9bf30dd8642b693b',1,'m_cli2']]],
   ['get_5ffixedarray_5fl',['get_fixedarray_l',['../namespacem__cli2.html#a65ffe8c7a444db5db3be3f6edecef008',1,'m_cli2']]],
   ['get_5ffixedarray_5fr',['get_fixedarray_r',['../namespacem__cli2.html#afbec790abad0dca990c0a61cd2d9e9ae',1,'m_cli2']]],
+  ['get_5fgeneric',['get_generic',['../M__CLI2_8f90.html#a63bc2e1acc64ef4241b6419c18d80877',1,'M_CLI2.f90']]],
   ['get_5fscalar_5fanylength_5fc',['get_scalar_anylength_c',['../interfacem__cli2_1_1get__args.html#a42c3b7050881edf76682b7b0058b868a',1,'m_cli2::get_args::get_scalar_anylength_c()'],['../namespacem__cli2.html#a7429381c83a021ba3ffb32ed58e17a0e',1,'m_cli2::get_scalar_anylength_c()']]],
   ['get_5fscalar_5fcomplex',['get_scalar_complex',['../interfacem__cli2_1_1get__args.html#a6c9a2315891b94aa062c34c82082a9da',1,'m_cli2::get_args::get_scalar_complex()'],['../namespacem__cli2.html#a2af4dd786acb5cb2dbd6e43667109490',1,'m_cli2::get_scalar_complex()']]],
   ['get_5fscalar_5fd',['get_scalar_d',['../interfacem__cli2_1_1get__args.html#a118d13d610c68afb422c2dbefa07c6f8',1,'m_cli2::get_args::get_scalar_d()'],['../namespacem__cli2.html#a338757660adde093db76b7d5559a1906',1,'m_cli2::get_scalar_d()']]],

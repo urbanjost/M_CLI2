@@ -60,6 +60,7 @@ These demo programs provide templates for the most common usage:
 - [demo5](PROGRAMS/demo5/demo5.f90) _CHARACTER_ type values
 - [demo6](PROGRAMS/demo6/demo6.f90) a complicated example showing how to create a command with subcommands
 - [demo7](PROGRAMS/demo7/demo7.f90) controlling array delimiter characters
+- [demo8](PROGRAMS/demo8/demo8.f90) multiple keyword and variable pairs on get_args(3f) for limited cases
 
 ### manpages
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module

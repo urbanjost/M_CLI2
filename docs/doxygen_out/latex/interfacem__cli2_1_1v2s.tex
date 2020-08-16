@@ -4,9 +4,7 @@
 \begin{DoxyCompactItemize}
 \item 
 character(len=\+:) function, allocatable \mbox{\hyperlink{interfacem__cli2_1_1v2s_a15467a4cf2f813fa65c4bbb460e04c69}{i2s}} (ivalue, fmt)
-\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
-
-v2s(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric string from a numeric value (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{DoxyCompactItemize}
 
 
 \subsection{Member Function/\+Subroutine Documentation}
@@ -17,61 +15,6 @@ v2s(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric
 {\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::v2s\+::i2s (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{ivalue,  }\item[{character(len=$\ast$), intent(in), optional}]{fmt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
-
-\subsubsection*{N\+A\+ME}
-
-v2s(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\+:N\+U\+M\+E\+R\+IC\mbox{]} return numeric string from a numeric value (L\+I\+C\+E\+N\+SE\+:PD) 
-
-\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
-
-\begin{DoxyVerb}   function v2s(value) result(outstr)
-
-    integer|real|doubleprecision|logical,intent(in ) :: value
-    character(len=:),allocatable :: outstr
-    character(len=*),optional,intent(in) :: fmt
-\end{DoxyVerb}
-
-
-\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
-
-\begin{DoxyVerb}v2s(3f) returns a representation of a numeric value as a
-string when given a numeric value of type REAL, DOUBLEPRECISION,
-INTEGER or LOGICAL. It creates the strings using internal WRITE()
-statements. Trailing zeros are removed from non-zero values, and the
-string is left-justified.
-\end{DoxyVerb}
-
-
-\subsubsection*{O\+P\+T\+I\+O\+NS}
-
-V\+A\+L\+UE input value to be converted to a string F\+MT format can be explicitly given, but is limited to generating a string of eighty or less characters.
-
-\subsubsection*{R\+E\+T\+U\+R\+NS}
-
-O\+U\+T\+S\+TR returned string representing input value,
-
-\subsubsection*{E\+X\+A\+M\+P\+LE}
-
-Sample Program\+: \begin{DoxyVerb}program demo_v2s
-use M_CLI2, only: v2s
-write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
-write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
-write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
-write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
-write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
-end program demo_v2s
-\end{DoxyVerb}
-
-
-Expected output
-
-The value of 3.\+0/4.0 is \mbox{[}0.\+75\mbox{]} The value of 1234 is \mbox{[}1234\mbox{]} The value of 0d0 is \mbox{[}0\mbox{]} The value of .false. is \mbox{[}F\mbox{]} The value of .true. is \mbox{[}T\mbox{]}
-
-\subsubsection*{A\+U\+T\+H\+OR}
-
-John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
-
-Public Domain 
 
 The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 

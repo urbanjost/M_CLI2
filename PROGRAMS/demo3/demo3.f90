@@ -6,7 +6,7 @@ integer                      :: x, y
 logical                      :: l
 real                         :: size
 character(len=:),allocatable :: title
-   call set_args('-x 1 -y 10 --size 12.34567  -l F --title "my titie"')
+   call set_args('-x 1 -y 10 --size 12.34567  -l F --title "my title"')
    call get_args('x',x)
    call get_args('y',y)
    call get_args('l',l)

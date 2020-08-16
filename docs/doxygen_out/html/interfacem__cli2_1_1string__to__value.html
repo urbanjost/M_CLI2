@@ -79,8 +79,6 @@ Private Member Functions</h2></td></tr>
 <tr class="memitem:ad579c3183bd46ec64ac2f6517b71da0e"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1string__to__value.html#ad579c3183bd46ec64ac2f6517b71da0e">a2d</a> (chars, valu, ierr, onerr)</td></tr>
 <tr class="separator:ad579c3183bd46ec64ac2f6517b71da0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af221de32e1c7dd6915ea45dc3a0147ed"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1string__to__value.html#af221de32e1c7dd6915ea45dc3a0147ed">a2i</a> (chars, valu, ierr)</td></tr>
-<tr class="memdesc:af221de32e1c7dd6915ea45dc3a0147ed"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
-string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from string (LICENSE:PD)  <a href="#af221de32e1c7dd6915ea45dc3a0147ed">More...</a><br /></td></tr>
 <tr class="separator:af221de32e1c7dd6915ea45dc3a0147ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function/Subroutine Documentation</h2>
@@ -171,31 +169,6 @@ string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from str
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p><h2>NAME</h2>
-string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from string (LICENSE:PD) </p>
-<h2>SYNOPSIS</h2>
-<pre class="fragment">subroutine string_to_value(chars,valu,ierr)
-
- character(len=*),intent(in)              :: chars   ! input string
- integer|real|doubleprecision,intent(out) :: valu
- integer,intent(out)                      :: ierr
-</pre> <h2>DESCRIPTION</h2>
-<p>returns a numeric value from a numeric character string.</p>
-<p>works with any g-format input, including integer, real, and exponential. If the input string begins with "B", "Z", or "O" and otherwise represents a positive whole number it is assumed to be a binary, hexadecimal, or octal value. If the string contains commas they are removed. If the string is of the form NN:MMM... or NN::MMM then NN is assumed to be the base of the whole number.</p>
-<p>if an error occurs in the READ, IOSTAT is returned in IERR and value is set to zero. if no error occurs, IERR=0. </p><h2>OPTIONS</h2>
-<p>CHARS input string to read numeric value from </p><h2>RETURNS</h2>
-<p>VALU numeric value returned. May be INTEGER, REAL, or DOUBLEPRECISION. IERR error flag (0 == no error) </p><h2>EXAMPLE</h2>
-<p>Sample Program: </p><pre class="fragment"> program demo_string_to_value
- use M_CLI2, only: string_to_value
- character(len=80) :: string
-    string=' -40.5e-2 '
-    call string_to_value(string,value,ierr)
-    write(*,*) 'value of string ['//trim(string)//'] is ',value
- end program demo_string_to_value
-</pre> <h2>AUTHOR</h2>
-<p>John S. Urban </p><h2>LICENSE</h2>
-<p>Public Domain </p>
 
 </div>
 </div>

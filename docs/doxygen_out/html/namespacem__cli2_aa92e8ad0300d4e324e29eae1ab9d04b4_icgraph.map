@@ -1,8 +1,8 @@
 <map id="m_cli2::get" name="m_cli2::get">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a02d4639b325d1b8c6fd3b03ba515f2b3" title="NAMEcheck_commandline(3f) &#45; [ARGUMENTS:M_CLI2]check status from READ of NAMELIST group and process pr..." alt="" coords="251,5,457,32"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a02d4639b325d1b8c6fd3b03ba515f2b3" title="m_cli2::check_commandline" alt="" coords="251,5,457,32"/>
 <area shape="rect" id="node4" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="276,57,432,98"/>
 <area shape="rect" id="node7" href="$M__CLI2_8f90.html#aa26f90016621d1ee43d3b5b66316532b" title="ifnull" alt="" coords="148,107,203,133"/>
 <area shape="rect" id="node3" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="931,35,1059,61"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a46f31858773ff1b4cf96329a14130bf2" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to n..." alt="" coords="505,57,672,98"/>
-<area shape="rect" id="node6" href="$namespacem__cli2.html#a85c38a938a7dd9a749daf8effe45c109" title="NAMEcommandline(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) ..." alt="" coords="720,60,883,87"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a46f31858773ff1b4cf96329a14130bf2" title="m_cli2::prototype_and\l_cmd_args_to_nlist" alt="" coords="505,57,672,98"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a85c38a938a7dd9a749daf8effe45c109" title="m_cli2::commandline" alt="" coords="720,60,883,87"/>
 </map>

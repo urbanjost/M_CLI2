@@ -10,6 +10,7 @@ PROGFILES = \
  ../PROGRAMS/demo5/demo5.f90 \
  ../PROGRAMS/demo6/demo6.f90 \
  ../PROGRAMS/demo7/demo7.f90 \
+ ../PROGRAMS/demo8/demo7.f90 \
  ../test/main.f90 \
 $(NULL)
 PROG = ${PROGFILES:.f90=}

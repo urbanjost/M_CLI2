@@ -10,7 +10,7 @@
            character(len=:),allocatable :: title
            logical                      :: l, lbig
            ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-           !   o only quote strings
+           !   o only quote strings and use double-quotes
            !   o set all logical values to F or T.
            call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
                    & -l F -L F  &
@@ -18,9 +18,7 @@
                    & ')
            ! ASSIGN VALUES TO ELEMENTS
            ! SCALARS
-           call get_args('x',x)
-           call get_args('y',y)
-           call get_args('z',z)
+           call get_args('x',x,'y',y,'z',z)
            call get_args('l',l)
            call get_args('L',lbig)
            ! ALLOCATABLE STRING
@@ -28,9 +26,7 @@
            ! NON-ALLOCATABLE ARRAYS
            call get_args_fixed_size('p',p)
            ! USE VALUES
-           write(*,*)'x=',x
-           write(*,*)'y=',y
-           write(*,*)'z=',z
+           write(*,'(1x,g0,"=",g0)')'x',x, 'y',y, 'z',z
            write(*,*)'p=',p
            write(*,*)'title=',title
            write(*,*)'l=',l

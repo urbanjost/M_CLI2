@@ -4,9 +4,7 @@
 \begin{DoxyCompactItemize}
 \item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_ab4d59b6a69d2768bf724f53604b3d0a9}{replace\+\_\+c}} (list, value, place)
-\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
-
-replace(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} replace entry in a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
+\item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_a606ded35a3f0d06cb61a28db82ab5ae7}{replace\+\_\+d}} (list, value, place)
 \item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_adf284ee215097b8416e81532b7d4251b}{replace\+\_\+r}} (list, value, place)
@@ -24,98 +22,7 @@ subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_a9c995edced1d2665777e794
 \subsubsection{\texorpdfstring{replace\+\_\+c()}{replace\_c()}}
 {\footnotesize\ttfamily subroutine m\+\_\+cli2\+::replace\+::replace\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-
-
-\subsubsection*{N\+A\+ME}
-
-replace(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} replace entry in a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
-
-\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
-
-subroutine replace(list,value,place)
-
-character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: value character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: list(\+:) integer, intent(out) \+:\+: P\+L\+A\+CE
-
-\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
-
-\begin{DoxyVerb}replace a value in an allocatable array at the specified index. Unless the
-array needs the string length to increase this is merely an assign of a value
-to an array element.
-
-The array may be of type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER>
-It is assumed to be sorted in descending order without duplicate values.
-
-The value and list must be of the same type.
-\end{DoxyVerb}
-
-
-\subsubsection*{O\+P\+T\+I\+O\+NS}
-
-\begin{DoxyVerb}VALUE         the value to place in the array
-LIST          is the array.
-PLACE         is the subscript that the entry should be placed at
-\end{DoxyVerb}
-
-
-\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
-
-Replace key-\/value pairs in a dictionary \begin{DoxyVerb}program demo_replace
-use M_CLI2, only  : insert, locate, replace
-! Find if a key is in a list and insert it
-! into the key list and value list if it is not present
-! or replace the associated value if the key existed
-implicit none
-character(len=20)            :: key
-character(len=100)           :: val
-character(len=:),allocatable :: keywords(:)
-character(len=:),allocatable :: values(:)
-integer                      :: i
-integer                      :: place
-call update('b','value of b')
-call update('a','value of a')
-call update('c','value of c')
-call update('c','value of c again')
-call update('d','value of d')
-call update('a','value of a again')
-! show array
-write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
-
-call locate(keywords,'a',place)
-if(place.gt.0)then
-   write(*,*)'The value of "a" is',trim(values(place))
-else
-   write(*,*)'"a" not found'
-endif
-
-contains
-subroutine update(key,val)
-character(len=*),intent(in)  :: key
-character(len=*),intent(in)  :: val
-integer                      :: place
-
-! find where string is or should be
-call locate(keywords,key,place)
-! if string was not found insert it
-if(place.lt.1)then
-   call insert(keywords,key,abs(place))
-   call insert(values,val,abs(place))
-else ! replace
-   call replace(values,val,place)
-endif
-
-end subroutine update
-\end{DoxyVerb}
- end program demo\+\_\+replace
-
-Expected output
-
-d==$>$value of d c==$>$value of c again b==$>$value of b a==$>$value of a again
-
-\subsubsection*{A\+U\+T\+H\+OR}
-
-1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
-
-Public Domain \mbox{\Hypertarget{interfacem__cli2_1_1replace_a606ded35a3f0d06cb61a28db82ab5ae7}\label{interfacem__cli2_1_1replace_a606ded35a3f0d06cb61a28db82ab5ae7}} 
+\mbox{\Hypertarget{interfacem__cli2_1_1replace_a606ded35a3f0d06cb61a28db82ab5ae7}\label{interfacem__cli2_1_1replace_a606ded35a3f0d06cb61a28db82ab5ae7}} 
 \index{m\+\_\+cli2\+::replace@{m\+\_\+cli2\+::replace}!replace\+\_\+d@{replace\+\_\+d}}
 \index{replace\+\_\+d@{replace\+\_\+d}!m\+\_\+cli2\+::replace@{m\+\_\+cli2\+::replace}}
 \subsubsection{\texorpdfstring{replace\+\_\+d()}{replace\_d()}}
