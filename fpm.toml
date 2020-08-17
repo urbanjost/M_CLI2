@@ -18,6 +18,7 @@ executable = [
    { name="demo6", source-dir="PROGRAMS/demo6", main="demo6.f90" },
    { name="demo7", source-dir="PROGRAMS/demo7", main="demo7.f90" },
    { name="demo8", source-dir="PROGRAMS/demo8", main="demo8.f90" },
+   { name="demo9", source-dir="PROGRAMS/demo9", main="demo9.f90" },
    { name="get_args_fixed_size", source-dir="PROGRAMS/demos/get_args_fixed_size", main="get_args_fixed_size.f90" },
    { name="get_args_fixed_length", source-dir="PROGRAMS/demos/get_args_fixed_length", main="get_args_fixed_length.f90" },
    { name="get_args", source-dir="PROGRAMS/demos/get_args", main="get_args.f90" },

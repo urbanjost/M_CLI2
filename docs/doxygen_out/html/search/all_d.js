@@ -13,5 +13,7 @@ var searchData=
   ['replace_5fl',['replace_l',['../interfacem__cli2_1_1replace.html#a9c995edced1d2665777e794a3aa5b2a0',1,'m_cli2::replace::replace_l()'],['../namespacem__cli2.html#ae4a1802207f6b67e36cbf89003d6fb55',1,'m_cli2::replace_l()']]],
   ['replace_5fr',['replace_r',['../interfacem__cli2_1_1replace.html#adf284ee215097b8416e81532b7d4251b',1,'m_cli2::replace::replace_r()'],['../namespacem__cli2.html#abe681a8b55ae238b029766713a79210a',1,'m_cli2::replace_r()']]],
   ['replace_5fstr',['replace_str',['../namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f',1,'m_cli2']]],
-  ['return_5fall',['return_all',['../namespacem__cli2.html#abbcd01a5c2a1e6030d09f3a5dbe1fa45',1,'m_cli2']]]
+  ['return_5fall',['return_all',['../namespacem__cli2.html#abbcd01a5c2a1e6030d09f3a5dbe1fa45',1,'m_cli2']]],
+  ['rget',['rget',['../namespacem__cli2.html#ade3a531cb1b2a60855ebe38031f7ed7a',1,'m_cli2']]],
+  ['rgets',['rgets',['../namespacem__cli2.html#a22defa37e234d3646eb5030d83da9a82',1,'m_cli2']]]
 ];

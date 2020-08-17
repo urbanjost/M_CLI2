@@ -9,12 +9,21 @@
 ! SYNOPSIS
 !     use M_CLI2, only : set_args, get_args, unnamed
 !     use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
+!     ! convenience functions
+!     use M_CLI2, only : :: dget, iget, lget, rget, sget, cget
+!     use M_CLI2, only : :: dgets, igets, lgets, rgets, sgets, cgets
 ! 
 ! DESCRIPTION
 !     Allow for command line parsing much like standard Unix command line
 !     parsing using a simple prototype.
 ! 
 !     In this method a call is made to obtain the value for each argument.
+! 
+!     There are convenience functions that are replacements for calls to
+!     get_args(3f) for each supported default intrinsic type
+! 
+!         o scalars -- dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f)
+!         o vectors -- dgets(3f), igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
 ! 
 ! EXAMPLE
 ! Sample program using type conversion routines
@@ -107,6 +116,9 @@ public                              :: get_args
 public                              :: get_args_fixed_size
 public                              :: get_args_fixed_length
 public                              :: specified
+
+public                              :: dget, iget, lget, rget, sget, cget
+public                              :: dgets, igets, lgets, rgets, sgets, cgets
 
 private :: wipe_dictionary
 private :: prototype_to_dictionary
@@ -5641,6 +5653,24 @@ class(*),intent(out)         :: generic
 end subroutine get_generic
 !===================================================================================================================================
 end subroutine many_args
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+function iget(n); integer                      :: iget; character(len=*),intent(in) :: n; call get_args(n,iget); end function iget
+function rget(n); real                         :: rget; character(len=*),intent(in) :: n; call get_args(n,rget); end function rget
+function dget(n); real(kind=dp)                :: dget; character(len=*),intent(in) :: n; call get_args(n,dget); end function dget
+function sget(n); character(len=:),allocatable :: sget; character(len=*),intent(in) :: n; call get_args(n,sget); end function sget
+function cget(n); complex                      :: cget; character(len=*),intent(in) :: n; call get_args(n,cget); end function cget
+function lget(n); logical                      :: lget; character(len=*),intent(in) :: n; call get_args(n,lget); end function lget
+
+function igets(n); integer,allocatable  :: igets(:); character(len=*),intent(in) :: n; call get_args(n,igets); end function igets
+function rgets(n); real,allocatable     :: rgets(:); character(len=*),intent(in) :: n; call get_args(n,rgets); end function rgets
+function dgets(n); real(kind=dp),allocatable    :: dgets(:); character(len=*),intent(in) :: n; call get_args(n,dgets)
+end function dgets
+function sgets(n); character(len=:),allocatable :: sgets(:); character(len=*),intent(in) :: n; call get_args(n,sgets)
+end function sgets
+function cgets(n); complex,allocatable  :: cgets(:); character(len=*),intent(in) :: n; call get_args(n,cgets); end function cgets
+function lgets(n); logical,allocatable  :: lgets(:); character(len=*),intent(in) :: n; call get_args(n,lgets); end function lgets
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

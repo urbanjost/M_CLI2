@@ -185,6 +185,30 @@ character(len=\+:) function, allocatable \mbox{\hyperlink{namespacem__cli2_a5b48
 subroutine \mbox{\hyperlink{namespacem__cli2_a601a06b7038b524abababc8d437ee823}{dict\+\_\+add}} (self, key, value)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a2d1a2b245e9a5e5897e5bff0afc2a217}{many\+\_\+args}} (n0, g0, n1, g1, n2, g2, n3, g3, n4, g4, n5, g5, n6, g6, n7, g7, n8, g8, n9, g9, na, ga, nb, gb, nc, gc, nd, gd, ne, ge, nf, gf, ng, gg, nh, gh, ni, gi, nj, gj)
+\item 
+integer function, public \mbox{\hyperlink{namespacem__cli2_a1b41630a5b78ed0fcb6b6df49ac7738d}{iget}} (n)
+\item 
+real function, public \mbox{\hyperlink{namespacem__cli2_ade3a531cb1b2a60855ebe38031f7ed7a}{rget}} (n)
+\item 
+real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}}) function, public \mbox{\hyperlink{namespacem__cli2_abb63058af19a47e19a78567c4a320c16}{dget}} (n)
+\item 
+character(len=\+:) function, allocatable, public \mbox{\hyperlink{namespacem__cli2_afb7e36674c50a0839bd4eae8301efefc}{sget}} (n)
+\item 
+complex function, public \mbox{\hyperlink{namespacem__cli2_a753fbd0c09fbfd712c7f4add246818cf}{cget}} (n)
+\item 
+logical function, public \mbox{\hyperlink{namespacem__cli2_a12c60a847f6ce11bd057e4fcc038a655}{lget}} (n)
+\item 
+integer function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a3ddc9feb4a663b582247b83b6d5120a4}{igets}} (n)
+\item 
+real function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a22defa37e234d3646eb5030d83da9a82}{rgets}} (n)
+\item 
+real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}}) function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a479f7c296c738d5e8fc0dcb21787205a}{dgets}} (n)
+\item 
+character(len=\+:) function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_adb6ee0ac3518406206e2cbbb48a67a87}{sgets}} (n)
+\item 
+complex function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ab6440298c2179541cbf5e71cd0ed9f23}{cgets}} (n)
+\item 
+logical function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a51e5b5b07de52bf6d38d2b128edca67f}{lgets}} (n)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -222,16 +246,14 @@ logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{ret
 
 References decodebase(), journal(), and substitute().
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -248,14 +270,25 @@ Here is the caller graph for this function\+:
 
 References a2d(), and journal().
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a753fbd0c09fbfd712c7f4add246818cf}\label{namespacem__cli2_a753fbd0c09fbfd712c7f4add246818cf}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!cget@{cget}}
+\index{cget@{cget}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{cget()}{cget()}}
+{\footnotesize\ttfamily complex function, public m\+\_\+cli2\+::cget (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__cli2_ab6440298c2179541cbf5e71cd0ed9f23}\label{namespacem__cli2_ab6440298c2179541cbf5e71cd0ed9f23}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!cgets@{cgets}}
+\index{cgets@{cgets}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{cgets()}{cgets()}}
+{\footnotesize\ttfamily complex function, dimension(\+:), allocatable, public m\+\_\+cli2\+::cgets (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}\label{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!check\+\_\+commandline@{check\+\_\+commandline}}
 \index{check\+\_\+commandline@{check\+\_\+commandline}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -274,7 +307,8 @@ Here is the call graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -325,7 +359,8 @@ Here is the call graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -342,7 +377,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References journal(), and strtok().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -383,6 +419,18 @@ Here is the caller graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb_icgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacem__cli2_abb63058af19a47e19a78567c4a320c16}\label{namespacem__cli2_abb63058af19a47e19a78567c4a320c16}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dget@{dget}}
+\index{dget@{dget}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dget()}{dget()}}
+{\footnotesize\ttfamily real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}}) function, public m\+\_\+cli2\+::dget (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__cli2_a479f7c296c738d5e8fc0dcb21787205a}\label{namespacem__cli2_a479f7c296c738d5e8fc0dcb21787205a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!dgets@{dgets}}
+\index{dgets@{dgets}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{dgets()}{dgets()}}
+{\footnotesize\ttfamily real(kind=\mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}}) function, dimension(\+:), allocatable, public m\+\_\+cli2\+::dgets (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacem__cli2_a601a06b7038b524abababc8d437ee823}\label{namespacem__cli2_a601a06b7038b524abababc8d437ee823}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!dict\+\_\+add@{dict\+\_\+add}}
 \index{dict\+\_\+add@{dict\+\_\+add}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -831,7 +879,8 @@ Here is the call graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_a338757660adde093db76b7d5559a1906_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -928,6 +977,18 @@ Here is the call graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_aa106d3533fd6d4845f0b3e94b2a79ffb_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a1b41630a5b78ed0fcb6b6df49ac7738d}\label{namespacem__cli2_a1b41630a5b78ed0fcb6b6df49ac7738d}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!iget@{iget}}
+\index{iget@{iget}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{iget()}{iget()}}
+{\footnotesize\ttfamily integer function, public m\+\_\+cli2\+::iget (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__cli2_a3ddc9feb4a663b582247b83b6d5120a4}\label{namespacem__cli2_a3ddc9feb4a663b582247b83b6d5120a4}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!igets@{igets}}
+\index{igets@{igets}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{igets()}{igets()}}
+{\footnotesize\ttfamily integer function, dimension(\+:), allocatable, public m\+\_\+cli2\+::igets (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacem__cli2_ab3f2aa827b3b7ff419bcdc3ccb2672b3}\label{namespacem__cli2_ab3f2aa827b3b7ff419bcdc3ccb2672b3}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!insert\+\_\+c@{insert\+\_\+c}}
 \index{insert\+\_\+c@{insert\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -1000,6 +1061,18 @@ Here is the caller graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_ad13853611abfee00d40ffa020662ec8a_icgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a12c60a847f6ce11bd057e4fcc038a655}\label{namespacem__cli2_a12c60a847f6ce11bd057e4fcc038a655}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!lget@{lget}}
+\index{lget@{lget}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{lget()}{lget()}}
+{\footnotesize\ttfamily logical function, public m\+\_\+cli2\+::lget (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__cli2_a51e5b5b07de52bf6d38d2b128edca67f}\label{namespacem__cli2_a51e5b5b07de52bf6d38d2b128edca67f}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!lgets@{lgets}}
+\index{lgets@{lgets}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{lgets()}{lgets()}}
+{\footnotesize\ttfamily logical function, dimension(\+:), allocatable, public m\+\_\+cli2\+::lgets (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacem__cli2_a2199778fea512efcde8778f20765643a}\label{namespacem__cli2_a2199778fea512efcde8778f20765643a}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+c@{locate\+\_\+c}}
 \index{locate\+\_\+c@{locate\+\_\+c}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -1314,6 +1387,18 @@ Here is the caller graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_a8f65cf1b227d837d89437368c660666f_icgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacem__cli2_ade3a531cb1b2a60855ebe38031f7ed7a}\label{namespacem__cli2_ade3a531cb1b2a60855ebe38031f7ed7a}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!rget@{rget}}
+\index{rget@{rget}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{rget()}{rget()}}
+{\footnotesize\ttfamily real function, public m\+\_\+cli2\+::rget (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__cli2_a22defa37e234d3646eb5030d83da9a82}\label{namespacem__cli2_a22defa37e234d3646eb5030d83da9a82}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!rgets@{rgets}}
+\index{rgets@{rgets}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{rgets()}{rgets()}}
+{\footnotesize\ttfamily real function, dimension(\+:), allocatable, public m\+\_\+cli2\+::rgets (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}\label{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!set\+\_\+args@{set\+\_\+args}}
 \index{set\+\_\+args@{set\+\_\+args}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -1332,6 +1417,18 @@ Here is the call graph for this function\+:
 \includegraphics[width=350pt]{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacem__cli2_afb7e36674c50a0839bd4eae8301efefc}\label{namespacem__cli2_afb7e36674c50a0839bd4eae8301efefc}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!sget@{sget}}
+\index{sget@{sget}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{sget()}{sget()}}
+{\footnotesize\ttfamily character(len=\+:) function, allocatable, public m\+\_\+cli2\+::sget (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacem__cli2_adb6ee0ac3518406206e2cbbb48a67a87}\label{namespacem__cli2_adb6ee0ac3518406206e2cbbb48a67a87}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!sgets@{sgets}}
+\index{sgets@{sgets}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{sgets()}{sgets()}}
+{\footnotesize\ttfamily character(len=\+:) function, dimension(\+:), allocatable, public m\+\_\+cli2\+::sgets (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})}
+
 \mbox{\Hypertarget{namespacem__cli2_a90118f308a5120041a5862fca4740367}\label{namespacem__cli2_a90118f308a5120041a5862fca4740367}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!specified@{specified}}
 \index{specified@{specified}!m\+\_\+cli2@{m\+\_\+cli2}}

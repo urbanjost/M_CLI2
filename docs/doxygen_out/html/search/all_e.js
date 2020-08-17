@@ -2,6 +2,8 @@ var searchData=
 [
   ['set',['set',['../structm__cli2_1_1dictionary.html#abbab4e9611ce7321d1ac616f927ec6a7',1,'m_cli2::dictionary']]],
   ['set_5fargs',['set_args',['../namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736',1,'m_cli2']]],
+  ['sget',['sget',['../namespacem__cli2.html#afb7e36674c50a0839bd4eae8301efefc',1,'m_cli2']]],
+  ['sgets',['sgets',['../namespacem__cli2.html#adb6ee0ac3518406206e2cbbb48a67a87',1,'m_cli2']]],
   ['shortname',['shortname',['../structm__cli2_1_1option.html#aebe0555d86a8533193827e348ba65e11',1,'m_cli2::option']]],
   ['specified',['specified',['../namespacem__cli2.html#a90118f308a5120041a5862fca4740367',1,'m_cli2']]],
   ['split',['split',['../namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665',1,'m_cli2']]],

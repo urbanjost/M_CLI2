@@ -226,6 +226,30 @@ subroutine \mbox{\hyperlink{namespacem__cli2_a2d1a2b245e9a5e5897e5bff0afc2a217}{
 character(len=\+:) function, allocatable \mbox{\hyperlink{M__CLI2_8f90_a8e39955a72727c584de84fedd23a25c4}{c}} (generic)
 \item 
 subroutine \mbox{\hyperlink{M__CLI2_8f90_a63bc2e1acc64ef4241b6419c18d80877}{get\+\_\+generic}} (name, generic)
+\item 
+integer function, public \mbox{\hyperlink{namespacem__cli2_a1b41630a5b78ed0fcb6b6df49ac7738d}{m\+\_\+cli2\+::iget}} (n)
+\item 
+real function, public \mbox{\hyperlink{namespacem__cli2_ade3a531cb1b2a60855ebe38031f7ed7a}{m\+\_\+cli2\+::rget}} (n)
+\item 
+real(kind=dp) function, public \mbox{\hyperlink{namespacem__cli2_abb63058af19a47e19a78567c4a320c16}{m\+\_\+cli2\+::dget}} (n)
+\item 
+character(len=\+:) function, allocatable, public \mbox{\hyperlink{namespacem__cli2_afb7e36674c50a0839bd4eae8301efefc}{m\+\_\+cli2\+::sget}} (n)
+\item 
+complex function, public \mbox{\hyperlink{namespacem__cli2_a753fbd0c09fbfd712c7f4add246818cf}{m\+\_\+cli2\+::cget}} (n)
+\item 
+logical function, public \mbox{\hyperlink{namespacem__cli2_a12c60a847f6ce11bd057e4fcc038a655}{m\+\_\+cli2\+::lget}} (n)
+\item 
+integer function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a3ddc9feb4a663b582247b83b6d5120a4}{m\+\_\+cli2\+::igets}} (n)
+\item 
+real function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a22defa37e234d3646eb5030d83da9a82}{m\+\_\+cli2\+::rgets}} (n)
+\item 
+real(kind=dp) function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a479f7c296c738d5e8fc0dcb21787205a}{m\+\_\+cli2\+::dgets}} (n)
+\item 
+character(len=\+:) function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_adb6ee0ac3518406206e2cbbb48a67a87}{m\+\_\+cli2\+::sgets}} (n)
+\item 
+complex function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ab6440298c2179541cbf5e71cd0ed9f23}{m\+\_\+cli2\+::cgets}} (n)
+\item 
+logical function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a51e5b5b07de52bf6d38d2b128edca67f}{m\+\_\+cli2\+::lgets}} (n)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -265,8 +289,7 @@ logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{m\+
 \subsubsection{\texorpdfstring{get\+\_\+generic()}{get\_generic()}}
 {\footnotesize\ttfamily subroutine many\+\_\+args\+::get\+\_\+generic (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{name,  }\item[{class($\ast$), intent(out)}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -283,16 +306,14 @@ Here is the caller graph for this function\+:
 
 References m\+\_\+cli2\+::get(), m\+\_\+cli2\+::update(), and m\+\_\+cli2\+::upper().
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{M__CLI2_8f90_aa26f90016621d1ee43d3b5b66316532b_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -305,8 +326,7 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{print\+\_\+generic()}{print\_generic()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily subroutine msg\+\_\+scalar\+::print\+\_\+generic (\begin{DoxyParamCaption}\item[{class($\ast$), intent(in)}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

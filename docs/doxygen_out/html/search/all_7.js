@@ -2,6 +2,8 @@ var searchData=
 [
   ['length',['length',['../structm__cli2_1_1option.html#ac034140ca495c577b2b45a89c25ed16a',1,'m_cli2::option']]],
   ['lenset',['lenset',['../namespacem__cli2.html#ad13853611abfee00d40ffa020662ec8a',1,'m_cli2']]],
+  ['lget',['lget',['../namespacem__cli2.html#a12c60a847f6ce11bd057e4fcc038a655',1,'m_cli2']]],
+  ['lgets',['lgets',['../namespacem__cli2.html#a51e5b5b07de52bf6d38d2b128edca67f',1,'m_cli2']]],
   ['locate',['locate',['../interfacem__cli2_1_1locate.html',1,'m_cli2']]],
   ['locate_5fc',['locate_c',['../interfacem__cli2_1_1locate.html#a59a1546b8eab776a0ba5594b6b90ae72',1,'m_cli2::locate::locate_c()'],['../namespacem__cli2.html#a2199778fea512efcde8778f20765643a',1,'m_cli2::locate_c()']]],
   ['locate_5fd',['locate_d',['../interfacem__cli2_1_1locate.html#ac8d6a83fb2617b1a370d6f4142cfbf6b',1,'m_cli2::locate::locate_d()'],['../namespacem__cli2.html#a0e859cd8635ab617ea9a4e9b4ffca852',1,'m_cli2::locate_d()']]],

@@ -10,5 +10,7 @@ var searchData=
   ['replace_5fi',['replace_i',['../interfacem__cli2_1_1replace.html#a73a0dab38328c3db8a7eef48e27390bd',1,'m_cli2::replace::replace_i()'],['../namespacem__cli2.html#a0a591fd55e8010f26eb6f9f6bafc1ddb',1,'m_cli2::replace_i()']]],
   ['replace_5fl',['replace_l',['../interfacem__cli2_1_1replace.html#a9c995edced1d2665777e794a3aa5b2a0',1,'m_cli2::replace::replace_l()'],['../namespacem__cli2.html#ae4a1802207f6b67e36cbf89003d6fb55',1,'m_cli2::replace_l()']]],
   ['replace_5fr',['replace_r',['../interfacem__cli2_1_1replace.html#adf284ee215097b8416e81532b7d4251b',1,'m_cli2::replace::replace_r()'],['../namespacem__cli2.html#abe681a8b55ae238b029766713a79210a',1,'m_cli2::replace_r()']]],
-  ['replace_5fstr',['replace_str',['../namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f',1,'m_cli2']]]
+  ['replace_5fstr',['replace_str',['../namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f',1,'m_cli2']]],
+  ['rget',['rget',['../namespacem__cli2.html#ade3a531cb1b2a60855ebe38031f7ed7a',1,'m_cli2']]],
+  ['rgets',['rgets',['../namespacem__cli2.html#a22defa37e234d3646eb5030d83da9a82',1,'m_cli2']]]
 ];
