@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['str',['str',['../interfacem__cli2_1_1str.html',1,'m_cli2']]],
-  ['string_5fto_5fvalue',['string_to_value',['../interfacem__cli2_1_1string__to__value.html',1,'m_cli2']]]
+  ['remove',['remove',['../interfacem__cli2_1_1remove.html',1,'m_cli2']]],
+  ['replace',['replace',['../interfacem__cli2_1_1replace.html',1,'m_cli2']]],
+  ['rgets',['rgets',['../interfacem__cli2_1_1rgets.html',1,'m_cli2']]]
 ];

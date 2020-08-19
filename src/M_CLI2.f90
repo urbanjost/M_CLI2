@@ -17,19 +17,19 @@
 !     Allow for command line parsing much like standard Unix command line
 !     parsing using a simple prototype.
 ! 
-!     In this method a call is made to obtain the value for each argument.
+!     Typically one call to SET_ARGS(3f) is made to define the command arguments,
+!     set default values, and parse the command line. Then a call is made to
+!     GET_ARGS(3f) for each command keyword to obtain the argument values.
 ! 
-!     There are convenience functions that are replacements for calls to
-!     get_args(3f) for each supported default intrinsic type
-! 
-!         o scalars -- dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f)
-!         o vectors -- dgets(3f), igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
+!     The documentation for SET_ARGS(3f) and GET_ARGS(3f) provides further
+!     details.
 ! 
 ! EXAMPLE
 ! Sample program using type conversion routines
 ! 
 !     program demo_M_CLI2
-!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+!     use M_CLI2,  only : set_args, get_args
+!     use M_CLI2,  only : filenames=>unnamed
 !     use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
 !     implicit none
 !     integer                      :: i
@@ -178,15 +178,15 @@ interface  get_args;  module  procedure  many_args;               end  interface
 ! return non-allocatable arrays
 ! said in conflict with get_args_*. Using class to get around that.
 ! that did not work either. Adding size parameter as optional parameter works; but using a different name
-interface  get_args_fixed_size;  module  procedure  get_fixedarray_class;  end interface !any length string, fixed size array
-!interface   get_args;  module  procedure  get_fixedarray_d;   end interface
-!interface   get_args;  module  procedure  get_fixedarray_i;   end interface
-!interface   get_args;  module  procedure  get_fixedarray_r;   end interface
-!interface   get_args;  module  procedure  get_fixedarray_l;   end interface
-!interface   get_args;  module  procedure  get_fixedarray_fixed_length_c;   end interface
+interface  get_args_fixed_size;  module procedure get_fixedarray_class;            end interface ! any length, fixed size array
+!interface   get_args;           module procedure get_fixedarray_d;                end interface
+!interface   get_args;           module procedure get_fixedarray_i;                end interface
+!interface   get_args;           module procedure get_fixedarray_r;                end interface
+!interface   get_args;           module procedure get_fixedarray_l;                end interface
+!interface   get_args;           module procedure get_fixedarray_fixed_length_c;   end interface
 
 interface   get_args_fixed_length;  module  procedure  get_fixed_length_any_size_cxxxx; end interface  ! fixed length any size array
-interface   get_args_fixed_length;  module  procedure  get_scalar_fixed_length_c;  end interface  ! fixed length
+interface   get_args_fixed_length;  module  procedure  get_scalar_fixed_length_c;  end interface       ! fixed length
 !===================================================================================================================================
 ! ident_1="@(#)M_CLI2::str(3f): {msg_scalar,msg_one}"
 
@@ -194,20 +194,6 @@ private str
 interface str
    module procedure msg_scalar, msg_one
 end interface str
-!-----------------------------------------------------------------------------------------------------------------------------------
-
-! ident_2="@(#)M_CLI2::string_to_value(3f): Generic subroutine converts numeric string to a number (a2d,a2r,a2i)"
-
-interface string_to_value
-   module procedure a2d, a2i
-end interface
-!-----------------------------------------------------------------------------------------------------------------------------------
-
-! ident_3="@(#)M_CLI2::v2s(3f): Generic function returns string given REAL|INTEGER|DOUBLEPRECISION value(r2s,i2s)"
-
-interface v2s
-   module procedure i2s
-end interface
 !===================================================================================================================================
 
 private locate        ! [M_CLI2] find PLACE in sorted character array where value can be found or should be placed
@@ -234,25 +220,19 @@ private remove        ! [M_CLI2] delete entry by index from a sorted allocatable
    private remove_i
    private remove_l
 
-! ident_4="@(#)M_CLI2::locate(3f): Generic subroutine locates where element is or should be in sorted allocatable array"
-interface locate
-   module procedure locate_c, locate_d, locate_r, locate_i
-end interface
-
-! ident_5="@(#)M_CLI2::insert(3f): Generic subroutine inserts element into allocatable array at specified position"
-interface insert
-   module procedure insert_c, insert_d, insert_r, insert_i, insert_l
-end interface
-
-! ident_6="@(#)M_CLI2::replace(3f): Generic subroutine replaces element from allocatable array at specified position"
-interface replace
-   module procedure replace_c, replace_d, replace_r, replace_i, replace_l
-end interface
-
-! ident_7="@(#)M_CLI2::remove(3f): Generic subroutine deletes element from allocatable array at specified position"
-interface remove
-   module procedure remove_c, remove_d, remove_r, remove_i, remove_l
-end interface
+! Generic subroutine inserts element into allocatable array at specified position
+interface  locate;   module procedure locate_c,  locate_d,  locate_r,  locate_i;              end interface
+interface  insert;   module procedure insert_c,  insert_d,  insert_r,  insert_i,  insert_l;   end interface
+interface  replace;  module procedure replace_c, replace_d, replace_r, replace_i, replace_l;  end interface
+interface  remove;   module procedure remove_c,  remove_d,  remove_r,  remove_i,  remove_l;   end interface
+!-----------------------------------------------------------------------------------------------------------------------------------
+! convenience functions
+interface cgets;module procedure cgs, cg;end interface
+interface dgets;module procedure dgs, dg;end interface
+interface igets;module procedure igs, ig;end interface
+interface lgets;module procedure lgs, lg;end interface
+interface rgets;module procedure rgs, rg;end interface
+interface sgets;module procedure sgs, sg;end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 contains
 !===================================================================================================================================
@@ -553,7 +533,7 @@ end subroutine check_commandline
 !===================================================================================================================================
 function commandline(definition) result (readme)
 
-! ident_8="@(#)M_CLI2::commandline(3f): return all command arguments as a NAMELIST(3f) string to read"
+! ident_2="@(#)M_CLI2::commandline(3f): return all command arguments as a NAMELIST(3f) string to read"
 
 character(len=*),intent(in)          :: definition
 character(len=:),allocatable         :: hold               ! stores command line argument
@@ -642,7 +622,7 @@ end subroutine set_args
 subroutine prototype_to_dictionary(string)
 implicit none
 
-! ident_9="@(#)M_CLI2::prototype_to_dictionary(3f): parse user command and store tokens into dictionary"
+! ident_3="@(#)M_CLI2::prototype_to_dictionary(3f): parse user command and store tokens into dictionary"
 
 character(len=*),intent(in)       :: string ! string is character input string of options and values
 
@@ -1062,7 +1042,7 @@ end function get
 subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
 implicit none
 
-! ident_10="@(#)M_CLI2::prototype_and_cmd_args_to_nlist: create dictionary from prototype (if not null) and update from command line arguments"
+! ident_4="@(#)M_CLI2::prototype_and_cmd_args_to_nlist: create dictionary from prototype (if not null) and update from command line arguments"
 
 character(len=*),intent(in)              :: prototype
 character(len=:),intent(out),allocatable :: nml
@@ -1370,7 +1350,7 @@ end subroutine print_dictionary
 FUNCTION strtok(source_string,itoken,token_start,token_end,delimiters) result(strtok_status)
 ! JSU- 20151030
 
-! ident_11="@(#)M_CLI2::strtok(3f): Tokenize a string"
+! ident_5="@(#)M_CLI2::strtok(3f): Tokenize a string"
 
 character(len=*),intent(in)  :: source_string    ! Source string to tokenize.
 character(len=*),intent(in)  :: delimiters       ! list of separator characters. May change between calls
@@ -1590,18 +1570,22 @@ end function strtok
 !     (LICENSE:PD)
 ! 
 ! SYNOPSIS
-! 
+!     use M_CLI2, only : get_args
+!     ! convenience functions
+!     use M_CLI2, only : dget, iget, lget, rget, sget, cget
+!     use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets
 ! 
 !     subroutine get_args(name,value,delimiters)
 ! 
 !      character(len=*),intent(in) :: name
-!      real|integer|logical|complex) :: value
-!         or
+! 
+!      ! VALUE MAY BE AN ALLOCATABLE CHARACTER SCALAR OR VECTOR
 !      character(len=:),allocatable :: value
-!         or
-!      real|integer|logical|complex),allocatable :: value(:)
-!         or
 !      character(len=:),allocatable :: value(:)
+!      ! OR VALUE MAY BE REAL,DOUBLEPRECISION,INTEGER,LOGICAL,COMPLEX
+!      ! SCALAR OR ALLOCATABLE VECTOR
+!      [real|doubleprecision|integer|logical|complex] :: value
+!      [real|doubleprecision|integer|logical|complex],allocatable :: value(:)
 ! 
 !      character(len=*),intent(in),optional :: delimiters
 ! 
@@ -1612,9 +1596,9 @@ end function strtok
 !     see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
 !     GET_ARGS_FIXED_SIZE(3f).
 ! 
-!     Multple pairs of keywords and variables may be specified if and
-!     only if all the values are scalars and the CHARACTER variables
-!     are fixed-length or pre-allocated.
+!     As a convenience multiple pairs of keywords and variables may be
+!     specified if and only if all the values are scalars and the CHARACTER
+!     variables are fixed-length or pre-allocated.
 ! 
 ! OPTIONS
 ! 
@@ -1627,28 +1611,46 @@ end function strtok
 !                 colon, and whitespace. A string containing an alternate
 !                 list of delimiter characters may be supplied.
 ! 
+! CONVENIENCE FUNCTIONS
+! 
+!    There are convenience functions that are replacements for calls to
+!    get_args(3f) for each supported default intrinsic type
+! 
+!      o scalars -- dget(3f), iget(3f), lget(3f), rget(3f), sget(3f),
+!                   cget(3f)
+!      o vectors -- dgets(3f), igets(3f), lgets(3f), rgets(3f),
+!                   sgets(3f), cgets(3f)
+! 
+!    D is for DOUBLEPRECISION, I for INTEGER, L for LOGICAL, R for REAL,
+!    S for string (CHARACTER), and C for COMPLEX.
+! 
+!    If the functions are called with no argument they will return the
+!    UNNAMED array converted to the specified type.
+! 
 ! EXAMPLE
 ! 
 ! Sample program:
 ! 
 !     program demo_get_args
 !     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
-!     use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
 !     implicit none
 !     integer                      :: i
 !     integer,parameter            :: dp=kind(0.0d0)
 !     ! DEFINE ARGS
 !     real                         :: x, y, z
-!     real                         :: p(3)
+!     real,allocatable             :: p(:)
 !     character(len=:),allocatable :: title
 !     logical                      :: l, lbig
 !     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
 !     !   o only quote strings and use double-quotes
 !     !   o set all logical values to F or T.
-!     call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-!             & -l F -L F  &
-!             & --label " " &
-!             & ')
+!     call set_args(' &
+!        &-x 1 -y 2 -z 3 &
+!        &-p -1,-2,-3 &
+!        &--title "my title" &
+!        & -l F -L F  &
+!        & --label " " &
+!        & ')
 !     ! ASSIGN VALUES TO ELEMENTS
 !     ! SCALARS
 !     call get_args('x',x,'y',y,'z',z)
@@ -1657,7 +1659,7 @@ end function strtok
 !     ! ALLOCATABLE STRING
 !     call get_args('title',title)
 !     ! NON-ALLOCATABLE ARRAYS
-!     call get_args_fixed_size('p',p)
+!     call get_args('p',p)
 !     ! USE VALUES
 !     write(*,'(1x,g0,"=",g0)')'x',x, 'y',y, 'z',z
 !     write(*,*)'p=',p
@@ -1729,7 +1731,7 @@ end function strtok
 ! SYNOPSIS
 !    subroutine get_args_fixed_size(name,value)
 ! 
-!     real|integer|logical|complex :: value(NNN)
+!     [real|doubleprecision|integer|logical|complex] :: value(NNN)
 !        or
 !     character(len=MMM) :: value(NNN)
 ! 
@@ -1822,8 +1824,7 @@ end subroutine get_fixedarray_class
 !===================================================================================================================================
 subroutine get_anyarray_l(keyword,larray,delimiters)
 
-! ident_12="@(#)M_CLI2::get_anyarray_l(3f): given keyword fetch logical array from string in dictionary(F on err)"
-
+! ident_6="@(#)M_CLI2::get_anyarray_l(3f): given keyword fetch logical array from string in dictionary(F on err)"
 character(len=*),intent(in)  :: keyword                    ! the dictionary keyword (in form VERB_KEYWORD) to retrieve
 logical,allocatable          :: larray(:)                  ! convert value to an array
 character(len=*),intent(in),optional   :: delimiters
@@ -1864,7 +1865,7 @@ end subroutine get_anyarray_l
 !===================================================================================================================================
 subroutine get_anyarray_d(keyword,darray,delimiters)
 
-! ident_13="@(#)M_CLI2::get_anyarray_d(3f): given keyword fetch dble value array from Language Dictionary (0 on err)"
+! ident_7="@(#)M_CLI2::get_anyarray_d(3f): given keyword fetch dble value array from Language Dictionary (0 on err)"
 
 character(len=*),intent(in)           :: keyword      ! keyword to retrieve value for from dictionary
 real(kind=dp),allocatable,intent(out) :: darray(:)    ! function type
@@ -1888,7 +1889,7 @@ character(len=:),allocatable          :: val
    endif
    allocate(darray(size(carray)))                     ! create the output array
    do i=1,size(carray)
-      call string_to_value(carray(i), darray(i),ierr) ! convert the string to a numeric value
+      call a2d(carray(i), darray(i),ierr) ! convert the string to a numeric value
       if(ierr.ne.0)then
          call journal('sc','*get_anyarray_d* unreadable value',carray(i),'for keyword',keyword)
          stop
@@ -1932,7 +1933,7 @@ end subroutine get_anyarray_x
 !===================================================================================================================================
 subroutine get_anyarray_c(keyword,strings,delimiters)
 
-! ident_14="@(#)M_CLI2::get_anyarray_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_8="@(#)M_CLI2::get_anyarray_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)          :: keyword       ! name to look up in dictionary
@@ -1952,7 +1953,7 @@ end subroutine get_anyarray_c
 !===================================================================================================================================
 subroutine get_fixed_length_any_size_cxxxx(keyword,strings,delimiters)
 
-! ident_15="@(#)M_CLI2::get_fixed_length_any_size_cxxxx(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_9="@(#)M_CLI2::get_fixed_length_any_size_cxxxx(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)          :: keyword       ! name to look up in dictionary
@@ -2070,7 +2071,7 @@ end subroutine get_fixedarray_l
 !===================================================================================================================================
 subroutine get_fixedarray_fixed_length_c(keyword,strings,delimiters)
 
-! ident_16="@(#)M_CLI2::get_fixedarray_fixed_length_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_10="@(#)M_CLI2::get_fixedarray_fixed_length_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*)                     :: strings(:)
@@ -2131,7 +2132,7 @@ end subroutine get_scalar_i
 !===================================================================================================================================
 subroutine get_scalar_anylength_c(keyword,string)
 
-! ident_17="@(#)M_CLI2::get_scalar_anylength_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
+! ident_11="@(#)M_CLI2::get_scalar_anylength_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
@@ -2148,7 +2149,7 @@ end subroutine get_scalar_anylength_c
 !===================================================================================================================================
 subroutine get_scalar_fixed_length_c(keyword,string)
 
-! ident_18="@(#)M_CLI2::get_scalar_fixed_length_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
+! ident_12="@(#)M_CLI2::get_scalar_fixed_length_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
@@ -2253,7 +2254,7 @@ end function longest_command_argument
 subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, nospace)
 implicit none
 
-! ident_19="@(#)M_CLI2::journal(3f): writes a message to a string composed of any standard scalar types"
+! ident_13="@(#)M_CLI2::journal(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: where
 class(*),intent(in)           :: g0
@@ -2340,7 +2341,7 @@ function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, 
                   & nospace)
 implicit none
 
-! ident_20="@(#)M_CLI2::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
+! ident_14="@(#)M_CLI2::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic0, generic1, generic2, generic3, generic4
 class(*),intent(in),optional  :: generic5, generic6, generic7, generic8, generic9
@@ -2412,7 +2413,7 @@ end function msg_scalar
 function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-! ident_21="@(#)M_CLI2::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
+! ident_15="@(#)M_CLI2::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
 
 class(*),intent(in)           :: generic0(:)
 class(*),intent(in),optional  :: generic1(:), generic2(:), generic3(:), generic4(:), generic5(:)
@@ -2548,7 +2549,7 @@ end function msg_one
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
 
-! ident_22="@(#)M_CLI2::upper(3f): Changes a string to uppercase"
+! ident_16="@(#)M_CLI2::upper(3f): Changes a string to uppercase"
 
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
@@ -2635,7 +2636,7 @@ end function upper
 !    Public Domain
 elemental pure function lower(str,begin,end) result (string)
 
-! ident_23="@(#)M_CLI2::lower(3f): Changes a string to lowercase over specified range"
+! ident_17="@(#)M_CLI2::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
 character(len(str))          :: string
@@ -2666,51 +2667,9 @@ end function lower
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      string_to_value(3f) - [M_CLI2:NUMERIC] subroutine returns numeric value from string
-!      (LICENSE:PD)
-! 
-! SYNOPSIS
-!    subroutine string_to_value(chars,valu,ierr)
-! 
-!     character(len=*),intent(in)              :: chars   ! input string
-!     integer|real|doubleprecision,intent(out) :: valu
-!     integer,intent(out)                      :: ierr
-! DESCRIPTION
-!       returns a numeric value from a numeric character string.
-! 
-!       works with any g-format input, including integer, real, and
-!       exponential. If the input string begins with "B", "Z", or "O"
-!       and otherwise represents a positive whole number it is assumed to
-!       be a binary, hexadecimal, or octal value. If the string contains
-!       commas they are removed. If the string is of the form NN:MMM... or
-!       NN#MMM then NN is assumed to be the base of the whole number.
-! 
-!       if an error occurs in the READ, IOSTAT is returned in IERR and
-!       value is set to zero. if no error occurs, IERR=0.
-! OPTIONS
-!       CHARS  input string to read numeric value from
-! RETURNS
-!       VALU   numeric value returned. May be INTEGER, REAL, or DOUBLEPRECISION.
-!       IERR   error flag (0 == no error)
-! EXAMPLE
-! Sample Program:
-! 
-!      program demo_string_to_value
-!      use M_CLI2, only: string_to_value
-!      character(len=80) :: string
-!         string=' -40.5e-2 '
-!         call string_to_value(string,value,ierr)
-!         write(*,*) 'value of string ['//trim(string)//'] is ',value
-!      end program demo_string_to_value
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
-!----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2i(chars,valu,ierr)
 
-! ident_24="@(#)M_CLI2::a2i(3fp): subroutine returns integer value from string"
+! ident_18="@(#)M_CLI2::a2i(3fp): subroutine returns integer value from string"
 
 character(len=*),intent(in) :: chars                      ! input string
 integer,intent(out)         :: valu                       ! value read from input string
@@ -2731,7 +2690,7 @@ end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr,onerr)
 
-! ident_25="@(#)M_CLI2::a2d(3fp): subroutine returns double value from string"
+! ident_19="@(#)M_CLI2::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -2772,15 +2731,15 @@ character(len=3),save        :: nan_string='NaN'
    else
       select case(local_chars(1:1))
       case('z','Z','h','H')                                     ! assume hexadecimal
-         frmt='(Z'//v2s(len(local_chars))//')'
+         frmt='(Z'//i2s(len(local_chars))//')'
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
       case('b','B')                                             ! assume binary (base 2)
-         frmt='(B'//v2s(len(local_chars))//')'
+         frmt='(B'//i2s(len(local_chars))//')'
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
       case('o','O')                                             ! assume octal
-         frmt='(O'//v2s(len(local_chars))//')'
+         frmt='(O'//i2s(len(local_chars))//')'
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
       case default
@@ -2814,7 +2773,7 @@ end subroutine a2d
 !===================================================================================================================================
 pure elemental function isupper(ch) result(res)
 
-! ident_26="@(#)M_CLI2::isupper(3f): returns true if character is an uppercase letter (A-Z)"
+! ident_20="@(#)M_CLI2::isupper(3f): returns true if character is an uppercase letter (A-Z)"
 
 character,intent(in) :: ch
 logical              :: res
@@ -2967,7 +2926,7 @@ end function isupper
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-! ident_27="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
+! ident_21="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3244,7 +3203,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 function replace_str(targetline,old,new,ierr,cmd,range) result (newline)
 
-! ident_28="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
+! ident_22="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
@@ -3587,61 +3546,9 @@ end function unquote
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! NAME
-!      v2s(3f) - [M_CLI2:NUMERIC] return numeric string from a numeric value
-!      (LICENSE:PD)
-! 
-! SYNOPSIS
-!       function v2s(value) result(outstr)
-! 
-!        integer|real|doubleprecision|logical,intent(in ) :: value
-!        character(len=:),allocatable :: outstr
-!        character(len=*),optional,intent(in) :: fmt
-! 
-! DESCRIPTION
-! 
-!    v2s(3f) returns a representation of a numeric value as a
-!    string when given a numeric value of type REAL, DOUBLEPRECISION,
-!    INTEGER or LOGICAL. It creates the strings using internal WRITE()
-!    statements. Trailing zeros are removed from non-zero values, and the
-!    string is left-justified.
-! 
-! OPTIONS
-!    VALUE   input value to be converted to a string
-!    FMT     format can be explicitly given, but is limited to
-!            generating a string of eighty or less characters.
-! 
-! RETURNS
-!    OUTSTR  returned string representing input value,
-! 
-! EXAMPLE
-! Sample Program:
-! 
-!     program demo_v2s
-!     use M_CLI2, only: v2s
-!     write(*,*) 'The value of 3.0/4.0 is ['//v2s(3.0/4.0)//']'
-!     write(*,*) 'The value of 1234    is ['//v2s(1234)//']'
-!     write(*,*) 'The value of 0d0     is ['//v2s(0d0)//']'
-!     write(*,*) 'The value of .false. is ['//v2s(.false.)//']'
-!     write(*,*) 'The value of .true. is  ['//v2s(.true.)//']'
-!     end program demo_v2s
-! 
-!   Expected output
-! 
-!     The value of 3.0/4.0 is [0.75]
-!     The value of 1234    is [1234]
-!     The value of 0d0     is [0]
-!     The value of .false. is [F]
-!     The value of .true. is  [T]
-! 
-! AUTHOR
-!    John S. Urban
-! LICENSE
-!    Public Domain
-!===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-! ident_29="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
+! ident_23="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -3715,7 +3622,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-! ident_30="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+! ident_24="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in),optional :: str1
 character(len=*),intent(in),optional :: str2
@@ -3814,7 +3721,7 @@ end function merge_str
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
-! ident_31="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+! ident_25="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -3836,7 +3743,7 @@ integer           :: ierr
 
   ipound=index(string_local,'#')                                       ! determine if in form [-]base#whole
   if(basein.eq.0.and.ipound.gt.1)then                                  ! split string into two values
-     call string_to_value(string_local(:ipound-1),basein_local,ierr)   ! get the decimal value of the base
+     call a2i(string_local(:ipound-1),basein_local,ierr)   ! get the decimal value of the base
      string_local=string_local(ipound+1:)                              ! now that base is known make string just the value
      if(basein_local.ge.0)then                                         ! allow for a negative sign prefix
         out_sign=1
@@ -3931,7 +3838,7 @@ end function decodebase
 !    Public Domain
 function lenset(line,length) result(strout)
 
-! ident_32="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
+! ident_26="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -4021,7 +3928,7 @@ end function lenset
 !    Public Domain
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
-! ident_33="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
+! ident_27="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
 
 class(*),intent(in)                      :: gval
 character(len=*),intent(out)             :: chars
@@ -4134,7 +4041,7 @@ end subroutine value_to_string
 !    Public Domain
 subroutine trimzeros_(string)
 
-! ident_34="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
+! ident_28="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -4245,7 +4152,7 @@ end subroutine trimzeros_
 !    Public Domain
 subroutine substitute(targetline,old,new,ierr,start,end)
 
-! ident_35="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
+! ident_29="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*)               :: targetline         ! input line to be changed
@@ -4486,7 +4393,7 @@ end subroutine substitute
 !    Public Domain
 subroutine locate_c(list,value,place,ier,errmsg)
 
-! ident_36="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
+! ident_30="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place
@@ -4558,7 +4465,7 @@ integer                                 :: error
 end subroutine locate_c
 subroutine locate_d(list,value,place,ier,errmsg)
 
-! ident_37="@(#)M_CLI2::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
+! ident_31="@(#)M_CLI2::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4636,7 +4543,7 @@ integer                                :: error
 end subroutine locate_d
 subroutine locate_r(list,value,place,ier,errmsg)
 
-! ident_38="@(#)M_CLI2::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
+! ident_32="@(#)M_CLI2::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4714,7 +4621,7 @@ integer                                :: error
 end subroutine locate_r
 subroutine locate_i(list,value,place,ier,errmsg)
 
-! ident_39="@(#)M_CLI2::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
+! ident_33="@(#)M_CLI2::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4855,7 +4762,7 @@ end subroutine locate_i
 !    Public Domain
 subroutine remove_c(list,place)
 
-! ident_40="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
+! ident_34="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -4874,7 +4781,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_d(list,place)
 
-! ident_41="@(#)M_CLI2::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
+! ident_35="@(#)M_CLI2::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
 
 doubleprecision,allocatable  :: list(:)
 integer,intent(in)           :: place
@@ -4893,7 +4800,7 @@ integer                      :: end
 end subroutine remove_d
 subroutine remove_r(list,place)
 
-! ident_42="@(#)M_CLI2::remove_r(3fp): remove value from allocatable array at specified position"
+! ident_36="@(#)M_CLI2::remove_r(3fp): remove value from allocatable array at specified position"
 
 real,allocatable    :: list(:)
 integer,intent(in)  :: place
@@ -4912,7 +4819,7 @@ integer             :: end
 end subroutine remove_r
 subroutine remove_l(list,place)
 
-! ident_43="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
+! ident_37="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
 
 logical,allocatable    :: list(:)
 integer,intent(in)     :: place
@@ -4932,7 +4839,7 @@ integer                :: end
 end subroutine remove_l
 subroutine remove_i(list,place)
 
-! ident_44="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
+! ident_38="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -5044,7 +4951,7 @@ end subroutine remove_i
 !    Public Domain
 subroutine replace_c(list,value,place)
 
-! ident_45="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
+! ident_39="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -5071,7 +4978,7 @@ integer                      :: end
 end subroutine replace_c
 subroutine replace_d(list,value,place)
 
-! ident_46="@(#)M_CLI2::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
+! ident_40="@(#)M_CLI2::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)   :: value
 doubleprecision,allocatable  :: list(:)
@@ -5091,7 +4998,7 @@ integer                      :: end
 end subroutine replace_d
 subroutine replace_r(list,value,place)
 
-! ident_47="@(#)M_CLI2::replace_r(3fp): place value into allocatable array at specified position"
+! ident_41="@(#)M_CLI2::replace_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -5111,7 +5018,7 @@ integer               :: end
 end subroutine replace_r
 subroutine replace_l(list,value,place)
 
-! ident_48="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
+! ident_42="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5131,7 +5038,7 @@ integer               :: end
 end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-! ident_49="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
+! ident_43="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -5235,7 +5142,7 @@ end subroutine replace_i
 !    Public Domain
 subroutine insert_c(list,value,place)
 
-! ident_50="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
+! ident_44="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -5269,7 +5176,7 @@ integer                      :: end
 end subroutine insert_c
 subroutine insert_r(list,value,place)
 
-! ident_51="@(#)M_CLI2::insert_r(3fp): place real value into allocatable array at specified position"
+! ident_45="@(#)M_CLI2::insert_r(3fp): place real value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -5296,7 +5203,7 @@ integer               :: end
 end subroutine insert_r
 subroutine insert_d(list,value,place)
 
-! ident_52="@(#)M_CLI2::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
+! ident_46="@(#)M_CLI2::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)       :: value
 doubleprecision,allocatable      :: list(:)
@@ -5320,7 +5227,7 @@ integer                          :: end
 end subroutine insert_d
 subroutine insert_l(list,value,place)
 
-! ident_53="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
+! ident_47="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5345,7 +5252,7 @@ integer               :: end
 end subroutine insert_l
 subroutine insert_i(list,value,place)
 
-! ident_54="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
+! ident_48="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -5430,7 +5337,7 @@ end subroutine insert_i
 !    Public Domain
 subroutine dict_delete(self,key)
 
-! ident_55="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
+! ident_49="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5505,7 +5412,7 @@ end subroutine dict_delete
 !    Public Domain
 function dict_get(self,key) result(value)
 
-! ident_56="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
+! ident_50="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
 
 !-!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
@@ -5569,7 +5476,7 @@ end function dict_get
 !    Public Domain
 subroutine dict_add(self,key,value)
 
-! ident_57="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
+! ident_51="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5594,7 +5501,7 @@ subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
 implicit none
 
-! ident_58="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
+! ident_52="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
 character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
@@ -5663,14 +5570,77 @@ function sget(n); character(len=:),allocatable :: sget; character(len=*),intent(
 function cget(n); complex                      :: cget; character(len=*),intent(in) :: n; call get_args(n,cget); end function cget
 function lget(n); logical                      :: lget; character(len=*),intent(in) :: n; call get_args(n,lget); end function lget
 
-function igets(n); integer,allocatable  :: igets(:); character(len=*),intent(in) :: n; call get_args(n,igets); end function igets
-function rgets(n); real,allocatable     :: rgets(:); character(len=*),intent(in) :: n; call get_args(n,rgets); end function rgets
-function dgets(n); real(kind=dp),allocatable    :: dgets(:); character(len=*),intent(in) :: n; call get_args(n,dgets)
-end function dgets
-function sgets(n); character(len=:),allocatable :: sgets(:); character(len=*),intent(in) :: n; call get_args(n,sgets)
-end function sgets
-function cgets(n); complex,allocatable  :: cgets(:); character(len=*),intent(in) :: n; call get_args(n,cgets); end function cgets
-function lgets(n); logical,allocatable  :: lgets(:); character(len=*),intent(in) :: n; call get_args(n,lgets); end function lgets
+function igs(n); integer,allocatable          :: igs(:); character(len=*),intent(in) :: n; call get_args(n,igs); end function igs
+function rgs(n); real,allocatable             :: rgs(:); character(len=*),intent(in) :: n; call get_args(n,rgs); end function rgs
+function dgs(n); real(kind=dp),allocatable    :: dgs(:); character(len=*),intent(in) :: n; call get_args(n,dgs); end function dgs
+function sgs(n); character(len=:),allocatable :: sgs(:); character(len=*),intent(in) :: n; call get_args(n,sgs); end function sgs
+function cgs(n); complex,allocatable          :: cgs(:); character(len=*),intent(in) :: n; call get_args(n,cgs); end function cgs
+function lgs(n); logical,allocatable          :: lgs(:); character(len=*),intent(in) :: n; call get_args(n,lgs); end function lgs
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+function ig()
+integer,allocatable :: ig(:)
+integer             :: i, ierr
+   allocate(ig(size(unnamed)))
+   do i=1,size(ig)
+      call a2i(unnamed(i),ig(i),ierr)
+   enddo
+end function ig
+!===================================================================================================================================
+function rg()
+real,allocatable :: rg(:)
+   rg=real(dg())
+end function rg
+!===================================================================================================================================
+function dg()
+real(kind=dp),allocatable :: dg(:)
+integer                   :: i
+integer                   :: ierr
+   allocate(dg(size(unnamed)))
+   do i=1,size(dg)
+      call a2d(unnamed(i),dg(i),ierr)
+   enddo
+end function dg
+!===================================================================================================================================
+function lg()
+logical,allocatable   :: lg(:)
+integer               :: i
+integer               :: ichar
+character,allocatable :: hold
+   allocate(lg(size(unnamed)))
+   do i=1,size(lg)
+      hold=trim(upper(adjustl(unnamed(i))))
+      if(hold(1:1).eq.'.')then                 ! looking for fortran logical syntax .STRING.
+         ichar=2
+      else
+         ichar=1
+      endif
+      select case(hold(ichar:ichar))           ! check word to see if true or false
+      case('T','Y',' '); lg(i)=.true.          ! anything starting with "T" or "Y" or a blank is TRUE (true,yes,...)
+      case('F','N');     lg(i)=.false.         ! assume this is false or no
+      case default
+         call journal('sc',"*lg* bad logical expression for element",i,'=',hold)
+      end select
+   enddo
+end function lg
+!===================================================================================================================================
+function cg()
+complex,allocatable :: cg(:)
+integer             :: i, ierr
+real(kind=dp)       :: rc, ic
+   allocate(cg(size(unnamed)))
+   do i=1,size(cg),2
+      call a2d(unnamed(i),rc,ierr)
+      call a2d(unnamed(i+1),ic,ierr)
+      cg(i)=cmplx(rc,ic)
+   enddo
+end function cg
+!===================================================================================================================================
+function sg()
+character(len=:),allocatable :: sg(:)
+   sg=unnamed
+end function sg
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================

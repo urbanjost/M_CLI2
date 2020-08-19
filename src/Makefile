@@ -56,6 +56,10 @@ doxygen:
 .PHONY: man
 man:
 	@mandb ../man 1>&2
+	: INDEX OF MANPAGES TOPICS
 	@env MANPATH=../man MANWIDTH=256 man -k .|col -b
+	: MANPAGES
 	@env MANPATH=../man MANWIDTH=80  man --regex '.*'|col -b
+	: SPELLING
+	@env MANPATH=../man MANWIDTH=80  man --regex '.*'|col -b|spell|xargs -n 5|column -t
 

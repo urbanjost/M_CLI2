@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['remove',['remove',['../interfacem__cli2_1_1remove.html',1,'m_cli2']]],
-  ['replace',['replace',['../interfacem__cli2_1_1replace.html',1,'m_cli2']]]
+  ['option',['option',['../structm__cli2_1_1option.html',1,'m_cli2']]]
 ];

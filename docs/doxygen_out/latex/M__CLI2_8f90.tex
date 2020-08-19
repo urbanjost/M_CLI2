@@ -41,10 +41,6 @@ interface \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__length}{m\+\_\+
 \item 
 interface \mbox{\hyperlink{interfacem__cli2_1_1str}{m\+\_\+cli2\+::str}}
 \item 
-interface \mbox{\hyperlink{interfacem__cli2_1_1string__to__value}{m\+\_\+cli2\+::string\+\_\+to\+\_\+value}}
-\item 
-interface \mbox{\hyperlink{interfacem__cli2_1_1v2s}{m\+\_\+cli2\+::v2s}}
-\item 
 interface \mbox{\hyperlink{interfacem__cli2_1_1locate}{m\+\_\+cli2\+::locate}}
 \item 
 interface \mbox{\hyperlink{interfacem__cli2_1_1insert}{m\+\_\+cli2\+::insert}}
@@ -52,6 +48,18 @@ interface \mbox{\hyperlink{interfacem__cli2_1_1insert}{m\+\_\+cli2\+::insert}}
 interface \mbox{\hyperlink{interfacem__cli2_1_1replace}{m\+\_\+cli2\+::replace}}
 \item 
 interface \mbox{\hyperlink{interfacem__cli2_1_1remove}{m\+\_\+cli2\+::remove}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1cgets}{m\+\_\+cli2\+::cgets}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1dgets}{m\+\_\+cli2\+::dgets}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1igets}{m\+\_\+cli2\+::igets}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1lgets}{m\+\_\+cli2\+::lgets}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1rgets}{m\+\_\+cli2\+::rgets}}
+\item 
+interface \mbox{\hyperlink{interfacem__cli2_1_1sgets}{m\+\_\+cli2\+::sgets}}
 \end{DoxyCompactItemize}
 \subsection*{Modules}
 \begin{DoxyCompactItemize}
@@ -239,17 +247,29 @@ complex function, public \mbox{\hyperlink{namespacem__cli2_a753fbd0c09fbfd712c7f
 \item 
 logical function, public \mbox{\hyperlink{namespacem__cli2_a12c60a847f6ce11bd057e4fcc038a655}{m\+\_\+cli2\+::lget}} (n)
 \item 
-integer function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a3ddc9feb4a663b582247b83b6d5120a4}{m\+\_\+cli2\+::igets}} (n)
+integer function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a39e18c9b881ea554d6d0adee0f5a5313}{m\+\_\+cli2\+::igs}} (n)
 \item 
-real function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a22defa37e234d3646eb5030d83da9a82}{m\+\_\+cli2\+::rgets}} (n)
+real function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_ab526bbc0ccf60b19e298e49bf95e0595}{m\+\_\+cli2\+::rgs}} (n)
 \item 
-real(kind=dp) function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a479f7c296c738d5e8fc0dcb21787205a}{m\+\_\+cli2\+::dgets}} (n)
+real(kind=dp) function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a84bc83f5e8ec87f4d691e40df7569c83}{m\+\_\+cli2\+::dgs}} (n)
 \item 
-character(len=\+:) function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_adb6ee0ac3518406206e2cbbb48a67a87}{m\+\_\+cli2\+::sgets}} (n)
+character(len=\+:) function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_aa4eb8a68238351ba1893f9ce555f5c49}{m\+\_\+cli2\+::sgs}} (n)
 \item 
-complex function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ab6440298c2179541cbf5e71cd0ed9f23}{m\+\_\+cli2\+::cgets}} (n)
+complex function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a05456ce2d696e1632be5efe8e7c2afe3}{m\+\_\+cli2\+::cgs}} (n)
 \item 
-logical function, dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a51e5b5b07de52bf6d38d2b128edca67f}{m\+\_\+cli2\+::lgets}} (n)
+logical function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a4cda9acefdf56b45483ea41b73494c8d}{m\+\_\+cli2\+::lgs}} (n)
+\item 
+integer function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a11c3cc864e613c90b2a02c7409c00828}{m\+\_\+cli2\+::ig}} ()
+\item 
+real function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_aff7a379ff1e7269001592f452ab017c8}{m\+\_\+cli2\+::rg}} ()
+\item 
+real(kind=dp) function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a06ddc2533e5122b8f898bae7db0fea87}{m\+\_\+cli2\+::dg}} ()
+\item 
+logical function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_aa1653cf1d6ce9739c1dcfdcb5361fa5f}{m\+\_\+cli2\+::lg}} ()
+\item 
+complex function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_af45e2401f7c3c2309fe92882c1d5e521}{m\+\_\+cli2\+::cg}} ()
+\item 
+character(len=\+:) function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_abc94b8f97a6056ea48ce48ab460bdf78}{m\+\_\+cli2\+::sg}} ()
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}

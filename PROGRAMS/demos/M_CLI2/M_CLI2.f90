@@ -1,5 +1,6 @@
            program demo_M_CLI2
-           use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+           use M_CLI2,  only : set_args, get_args
+           use M_CLI2,  only : filenames=>unnamed
            use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
            implicit none
            integer                      :: i

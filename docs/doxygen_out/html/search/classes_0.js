@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dictionary',['dictionary',['../structm__cli2_1_1dictionary.html',1,'m_cli2']]]
+  ['cgets',['cgets',['../interfacem__cli2_1_1cgets.html',1,'m_cli2']]]
 ];

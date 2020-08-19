@@ -1,21 +1,23 @@
            program demo_get_args
            use M_CLI2,  only : filenames=>unnamed, set_args, get_args
-           use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
            implicit none
            integer                      :: i
            integer,parameter            :: dp=kind(0.0d0)
            ! DEFINE ARGS
            real                         :: x, y, z
-           real                         :: p(3)
+           real,allocatable             :: p(:)
            character(len=:),allocatable :: title
            logical                      :: l, lbig
            ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
            !   o only quote strings and use double-quotes
            !   o set all logical values to F or T.
-           call set_args(' -x 1 -y 2 -z 3 -p -1,-2,-3 --title "my title" &
-                   & -l F -L F  &
-                   & --label " " &
-                   & ')
+           call set_args(' &
+              &-x 1 -y 2 -z 3 &
+              &-p -1,-2,-3 &
+              &--title "my title" &
+              & -l F -L F  &
+              & --label " " &
+              & ')
            ! ASSIGN VALUES TO ELEMENTS
            ! SCALARS
            call get_args('x',x,'y',y,'z',z)
@@ -24,7 +26,7 @@
            ! ALLOCATABLE STRING
            call get_args('title',title)
            ! NON-ALLOCATABLE ARRAYS
-           call get_args_fixed_size('p',p)
+           call get_args('p',p)
            ! USE VALUES
            write(*,'(1x,g0,"=",g0)')'x',x, 'y',y, 'z',z
            write(*,*)'p=',p
