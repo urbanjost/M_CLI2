@@ -75,13 +75,11 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 </A>
 <BLOCKQUOTE>
 <PRE>
+subroutine <B>set_args</B>(definition,help_text,version_text)
 <P>
-<P>
-<B>subroutine</B> <B>set_args</B>(definition,help_text,version_text)
-<P>
-     character(len=*),intent(in),optional  :: definition
-     character(len=:),intent(in),allocatable,intent(in) :: help_text
-     character(len=:),intent(in),allocatable,intent(in) :: version_text
+     character(len=*),intent(in),optional :: definition
+     character(len=:),intent(in),allocatable,optional :: help_text
+     character(len=:),intent(in),allocatable,optional :: version_text
 </PRE>
 </BLOCKQUOTE>
 <A name=2>
@@ -94,6 +92,9 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <B>SET_ARGS</B>(3f) requires a unix-like command prototype for defining
 arguments and default command-line options. Argument values are then
 read using <B>GET_ARGS</B>(3f).
+<P>
+The <B>--help</B> and <B>--version</B> options require the optional
+help_text and version_text values to be provided.
 </BLOCKQUOTE>
 <A name=3>
 
@@ -116,38 +117,30 @@ example:
 </PRE>
 </TD></TR>
 <TR><TD width=6%>&nbsp;</TD><TD>
-The DESCRIPTION string is pre-defined to act as if
-started with the reserved options &#146;<B>--usage</B> F <B>--help</B>
-F <B>--version</B> F&#146;.
+DESCRIPTION is pre-defined to act as if started with the reserved
+options &#146;<B>--usage</B> F <B>--help</B> F <B>--version</B> F&#146;. The <B>--usage</B>
+option is processed when the <B>set_args</B>(3f)
+routine is called. The same is true for <B>--help</B> and <B>--version</B>
+if the optional help_text and version_text options are
+provided.
 <P>
-See "DEFINING THE PROTOTYPE" for details.
+see "DEFINING THE PROTOTYPE" in the next section for further
+details.
 </TD></TR>
-<TR></TR></TABLE></BLOCKQUOTE>
-<P>
-<P>
-<BLOCKQUOTE>
-The <B>--help</B> and <B>--version</B> options require the optional
-help_text and version_text values to be provided.
-</BLOCKQUOTE>
-<TABLE cellpadding=3><!-- tsb: The <B>--help</B> and <B>--version</B> options require the optional
- -->
-<TR></TR><TR></TR>
 <TR valign=top><TD colspan=2>
 <B>HELP_TEXT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 if present, will be displayed if program is called with
 <B>--help</B> switch, and then the program will terminate. If
-not supplied, the command line initialized string will be
+not supplied, the command line initialization string will be
 shown when <B>--help</B> is used on the commandline.
-<TABLE width=100% cellpadding=3><!-- tsb: if present, will be displayed if program is called with
- -->
-<TR></TR><TR></TR>
+</TD></TR>
 <TR valign=top><TD colspan=2>
 <B>VERSION_TEXT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 if present, will be displayed if program is called with
 <B>--version</B> switch, and then the program will terminate.
 </TD></TR>
-<TR></TR></TABLE></TD></TR>
-<TR></TR></TABLE><A name=4>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=4>
 
      <H3>DEFINING THE PROTOTYPE</H3>
 
@@ -196,6 +189,14 @@ o
 to define a zero-length allocatable array make the
 value a delimiter (usually a comma).
 </TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+If the prototype ends with "--" a special mode is turned
+on where anything after "--" on input goes into the
+variable REMAINING instead of becoming elements in the
+UNNAMED array. This is not needed for normal processing.
+</TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <A name=5>
 
@@ -219,23 +220,30 @@ always more than one character.
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-duplicate keywords are appended together with a space
+values for duplicate keywords are appended together with a space
 separator when a command line is executed.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-mapping of short names to long names is via an EQUIVALENCE or
-pointer.
+numeric keywords are not allowed; but this allows
+negative numbers to be used as values.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+mapping of short names to long names is demonstrated in
+the manpage for <B>SPECIFIED</B>(3f).
+<P>
+Specifying both names of an equivalenced keyword will have
+undefined results (currently, their alphabetical order
+will define what the Fortran variable values become).
+<P>
 The second of the names should only be called with a
 GET_ARGS*(3f) routine if the <B>SPECIFIED</B>(3f) function is .TRUE.
 for that name.
 <P>
 Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
-<P>
-Specifying both names of an equivalenced keyword on a command
-line will have undefined results (currently, their alphabetical
-order will define what the Fortran variable values become).
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -299,11 +307,11 @@ Sample program:
        & -x 1 -y 2.3 -z 3.4e2 &
        ! integer array
        & -p -1,-2,-3 &
-       ! only but always quote strings
+       ! always double-quote strings
        & --title "my title" &
        ! set all logical values to F or T.
        & -l F -L F &
-       ! set allocatable to zero length if you like by using a delimiter
+       ! set allocatable size to zero if you like by using a delimiter
        & -ints , &
        ! string should be a single character at a minimum
        & --label " " &
@@ -352,7 +360,7 @@ John S. Urban, 2019
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>August 18, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from a340ef41-7394-42a5-b8a4-7a709cef156c using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>August 30, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from b882870b-4f24-43d2-8266-fb640fe12c80 using man macros.</FONT>
 <br><br><center><img src="images/set_args.gif"></center>
 </div>
 </div>

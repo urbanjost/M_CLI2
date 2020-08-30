@@ -17,7 +17,8 @@
            logical                      :: logi(3)  ! FIXED SIZE
            !
            ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-           !   o only quote strings
+           !   o set a value for all keywords.
+           !   o double-quote strings
            !   o set all logical values to F or T.
            !   o value delimiter is comma, colon, or space
            call set_args('                         &

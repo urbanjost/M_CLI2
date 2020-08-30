@@ -18,11 +18,11 @@
               & -x 1 -y 2.3 -z 3.4e2 &
               ! integer array
               & -p -1,-2,-3 &
-              ! only but always quote strings
+              ! always double-quote strings
               & --title "my title" &
               ! set all logical values to F or T.
               & -l F -L F &
-              ! set allocatable to zero length if you like by using a delimiter
+              ! set allocatable size to zero if you like by using a delimiter
               & -ints , &
               ! string should be a single character at a minimum
               & --label " " &

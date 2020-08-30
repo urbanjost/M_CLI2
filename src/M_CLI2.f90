@@ -7,7 +7,7 @@
 !     M_CLI2(3fm) - [ARGUMENTS::M_CLI2] - command line argument parsing using a prototype command
 !     (LICENSE:PD)
 ! SYNOPSIS
-!     use M_CLI2, only : set_args, get_args, unnamed
+!     use M_CLI2, only : set_args, get_args, unnamed, remaining
 !     use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
 !     ! convenience functions
 !     use M_CLI2, only : :: dget, iget, lget, rget, sget, cget
@@ -46,7 +46,8 @@
 !     logical                      :: logi(3)  ! FIXED SIZE
 !     !
 !     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!     !   o only quote strings
+!     !   o set a value for all keywords.
+!     !   o double-quote strings
 !     !   o set all logical values to F or T.
 !     !   o value delimiter is comma, colon, or space
 !     call set_args('                         &
@@ -100,7 +101,7 @@
 !===================================================================================================================================
 module M_CLI2
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>INPUT_UNIT    ! access computing environment
-!use M_strings,                     only : isupper, upper, lower, quote, replace_str=>replace, unquote, split, string_to_value
+!use M_strings,                     only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value
 !use M_list,                        only : insert, locate, remove, replace
 !use M_args,                        only : longest_command_argument
 !use M_journal,                     only : journal
@@ -108,9 +109,8 @@ implicit none
 integer,parameter,private :: dp=kind(0.0d0)
 private
 !===================================================================================================================================
-private                             :: commandline
-private                             :: check_commandline
 character(len=:),allocatable,public :: unnamed(:)
+character(len=:),allocatable,public :: remaining
 public                              :: set_args
 public                              :: get_args
 public                              :: get_args_fixed_size
@@ -120,6 +120,7 @@ public                              :: specified
 public                              :: dget, iget, lget, rget, sget, cget
 public                              :: dgets, igets, lgets, rgets, sgets, cgets
 
+private :: check_commandline
 private :: wipe_dictionary
 private :: prototype_to_dictionary
 private :: update
@@ -139,11 +140,10 @@ character(len=:),allocatable   :: values(:)
 integer,allocatable            :: counts(:)
 logical,allocatable            :: present_in(:)
 
-logical                        :: keyword_single=.true.
-character(len=:),allocatable   :: passed_in
-character(len=:),allocatable   :: namelist_name
-
-logical                        :: return_all
+logical                        :: G_keyword_single_letter=.true.
+character(len=:),allocatable   :: G_passed_in
+logical                        :: G_remaining_on, G_remaining_option_allowed
+character(len=:),allocatable   :: G_remaining
 !===================================================================================================================================
 private dictionary
 
@@ -239,32 +239,23 @@ contains
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! NAME
-!     check_commandline(3f) - [ARGUMENTS:M_CLI2]check status from READ of NAMELIST group and process pre-defined options
+!     check_commandline(3f) - [ARGUMENTS:M_CLI2]check command and process pre-defined options
 ! 
 ! SYNOPSIS
 ! 
-!      subroutine check_commandline(ios,message,help_text,version_text)
+!      subroutine check_commandline(help_text,version_text)
 ! 
-!       integer,intent(in) :: ios
-!       character(len=*),intent(in) :: message
 !       character(len=:),allocatable,intent(in),allocatable,optional :: help_text(:)
 !       character(len=:),allocatable,intent(in),allocatable,optional :: version_text(:)
 ! 
 ! DESCRIPTION
-!     Checks the status of a READ(7f) of the NAMELIST after calling
-!     commandline(3f) and processes the implicit --help, --version,
+!     Checks the commandline  and processes the implicit --help, --version,
 !     and --usage parameters.
 ! 
 !     If the optional text values are supplied they will be displayed by
 !     --help and --version command-line options, respectively.
 ! 
 ! OPTIONS
-! 
-!     IOS           status from READ(7f) of NAMELIST after calling
-!                   commandline(3f)
-! 
-!     MESSAGE       message from READ(7f) of NAMELIST after calling
-!                   commandline(3f)
 ! 
 !     HELP_TEXT     if present, will be displayed if program is called with
 !                   --help switch, and then the program will terminate. If
@@ -286,52 +277,34 @@ contains
 ! 
 ! Typical usage:
 ! 
-!      program demo_commandline
-!      use M_CLI2,  only : unnamed, commandline, check_commandline
+!      program check_commandline
+!      use M_CLI2,  only : unnamed, set_args, get_args
 !      implicit none
 !      integer                      :: i
-!      character(len=255)           :: message ! use for I/O error messages
-!      character(len=:),allocatable :: readme  ! stores updated namelist
 !      character(len=:),allocatable :: version_text(:), help_text(:)
-!      integer                      :: ios
-! 
 !      real               :: x, y, z
-!      logical            :: help, h
-!      namelist /args/ x,y,z,help,h
-!      character(len=*),parameter :: cmd='-x 1 -y 2 -z 3 --help F -h F'
-! 
-!      ! initialize namelist from string and then update from command line
-!      readme=commandline(cmd)
-!      write (*,*)'README=',readme
-!      read(readme,nml=args,iostat=ios,iomsg=message)
-!      version_text=[character(len=80) :: "version 1.0","author: me"]
-!      help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
-!      call check_commandline(ios,message,help_text,version_text)
-! 
-!      ! all done cracking the command line
-!      ! use the values in your program.
-!      write (*,nml=args)
-!      ! the optional unnamed values on the command line are
-!      ! accumulated in the character array "UNNAMED"
-!      if(size(unnamed).gt.0)then
-!         write (*,'(a)')'files:'
-!         write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
-!      endif
-!      end program demo_commandline
+!      character(len=*),parameter :: cmd='-x 1 -y 2 -z 3'
+!         version_text=[character(len=80) :: "version 1.0","author: me"]
+!         help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
+!         call set_args(cmd,help_text,version_text)
+!         call get_args('x',x,'y',y,'z',z)
+!         ! All done cracking the command line. Use the values in your program.
+!         write (*,*)x,y,z
+!         ! the optional unnamed values on the command line are
+!         ! accumulated in the character array "UNNAMED"
+!         if(size(unnamed).gt.0)then
+!            write (*,'(a)')'files:'
+!            write (*,'(i6.6,3a)') (i,'[',unnamed(i),']',i=1,size(unnamed))
+!         endif
+!      end program check_commandline
 !===================================================================================================================================
-subroutine check_commandline(ios,message,help_text,version_text)
-integer                                          :: ios
-character(len=*)                                 :: message ! use for I/O error messages
+subroutine check_commandline(help_text,version_text)
 character(len=:),allocatable,intent(in),optional :: help_text(:)
 character(len=:),allocatable,intent(in),optional :: version_text(:)
 integer                                          :: i
 integer                                          :: istart
 integer                                          :: iback
-   if(ios.ne.0)then
-         call journal('sc',"ERROR IN COMMAND LINE VALUES:",ios,message)
-      call print_dictionary('OPTIONS:')
-      stop 1
-   elseif(get('usage').eq.'T')then
+   if(get('usage').eq.'T')then
       call print_dictionary('USAGE:',stop=.true.)
    endif
    if(present(help_text))then
@@ -342,18 +315,18 @@ integer                                          :: iback
          stop
       endif
    elseif(get('help').eq.'T')then
-         DEFAULT_HELP: block
-            character(len=:),allocatable :: cmd_name
-            integer :: ilength
-            call get_command_argument(number=0,length=ilength)
-            allocate(character(len=ilength) :: cmd_name)
-            call get_command_argument(number=0,value=cmd_name)
-            passed_in=passed_in//repeat(' ',len(passed_in))
-            call substitute(passed_in,' --',NEW_LINE('A')//' --')
-            call journal('sc',cmd_name,passed_in) ! no help text, echo command and default options
-            deallocate(cmd_name)
-            stop
-         endblock DEFAULT_HELP
+      DEFAULT_HELP: block
+         character(len=:),allocatable :: cmd_name
+         integer :: ilength
+         call get_command_argument(number=0,length=ilength)
+         allocate(character(len=ilength) :: cmd_name)
+         call get_command_argument(number=0,value=cmd_name)
+         G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
+         call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
+         call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
+         deallocate(cmd_name)
+         stop
+      endblock DEFAULT_HELP
    endif
    if(present(version_text))then
       if(get('version').eq.'T')then
@@ -371,176 +344,194 @@ integer                                          :: iback
          stop
       endif
    elseif(get('version').eq.'T')then
-         call journal('sc','*check_commandline* no version text')
-         stop
+      call journal('sc','*check_commandline* no version text')
+      stop
    endif
 end subroutine check_commandline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! NAME
-!     commandline(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
+!     set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
 !     (LICENSE:PD)
 ! 
 ! SYNOPSIS
+!     subroutine set_args(definition,help_text,version_text)
 ! 
-! 
-!     function commandline(definition) result(string)
-! 
-!      character(len=*),intent(in),optional  :: definition
-!      character(len=:),allocatable :: string
+!      character(len=*),intent(in),optional :: definition
+!      character(len=:),intent(in),allocatable,optional :: help_text
+!      character(len=:),intent(in),allocatable,optional :: version_text
 ! DESCRIPTION
 ! 
-!     To use the routine first define a NAMELIST group called ARGS.
+!     SET_ARGS(3f) requires a unix-like command prototype for defining
+!     arguments and default command-line options. Argument values are then
+!     read using GET_ARGS(3f).
 ! 
-!     This routine leverages NAMELIST groups to do the conversion from
-!     strings to numeric values required by other command line parsers.
-! 
-!     The example program shows how simple it is to use. Add a variable to
-!     the NAMELIST and the prototype and it automatically is available as
-!     a value in the program.
-! 
-!     There is no need to convert from strings to numeric values in the
-!     source code. Even arrays and user-defined types can be used, complex
-!     values can be input ... just define the variable in the prototype
-!     and add it to the NAMELIST definition.
-! 
-!     Note that since all the arguments are defined in a NAMELIST group that
-!     config files can easily be used for the same options. Just create
-!     a NAMELIST input file and read it.
-! 
-!     NAMELIST syntax can vary between different programming environments.
-!     Currently, this routine has only been tested using gfortran 7.0.4;
-!     and requires at least Fortran 2003.
-! 
-!     For example:
-! 
-!         program show_commandline_unix_prototype
-!            use M_CLI2,  only : unnamed, commandline, check_commandline
-!            implicit none
-!            integer                      :: i
-!            character(len=255)           :: message ! for I/O error messages
-!            character(len=:),allocatable :: readme  ! stores updated namelist
-!            integer                      :: ios
-! 
-!         ! declare a namelist
-!            real               :: x, y, z, point(3), p(3)
-!            character(len=80)  :: title
-!            logical            :: l, l_
-!            namelist /args/ x,y,z,point,p,title,l,l_
-! 
-!         ! Define the prototype
-!         !  o All parameters must be listed with a default value.
-!         !  o logicals should be specified with a value of F or T.
-!         !  o string values  must be double-quoted.
-!         !  o lists must be comma-delimited. No spaces are allowed in lists.
-!         !  o all long names must be lowercase. An uppercase short name
-!         !    -A maps to variable A_
-!            character(len=*),parameter  :: cmd='&
-!            & -x 1 -y 2 -z 3     &
-!            & --point -1,-2,-3   &
-!            & --title "my title" &
-!            & -l F -L F'
-!            ! reading in a NAMELIST definition defining the entire NAMELIST
-!            ! now get the values from the command prototype and command line as NAMELIST input
-!            readme=commandline(cmd)
-!            read(readme,nml=args,iostat=ios,iomsg=message)
-!            call check_commandline(ios,message)
-!            ! all done cracking the command line
-! 
-!            ! use the values in your program.
-!            write (*,nml=args)
-!            ! the optional unnamed values on the command line are
-!            ! accumulated in the character array "UNNAMED"
-!            if(size(unnamed).gt.0)then
-!               write (*,'(a)')'files:'
-!               write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!            endif
-!         end program show_commandline_unix_prototype
+!     The --help and --version options require the optional
+!     help_text and version_text values to be provided.
 ! 
 ! OPTIONS
 ! 
-!      DEFINITION    composed of all command arguments concatenated
-!                    into a Unix-like command prototype string.
+!      DESCRIPTION   composed of all command arguments concatenated
+!                    into a Unix-like command prototype string. For
+!                    example:
 ! 
-!                    o all keywords get a value.
-!                    o logicals must be set to F or T.
-!                    o strings MUST be delimited with double-quotes and
-!                      must be at least one space. Internal
-!                      double-quotes are represented with two double-quotes
-!                    o lists of values should be comma-delimited.
-!                    o long names (--keyword) should be all lowercase
-!                    o short names (-letter) that are uppercase map to a
-!                      NAMELIST variable called "letter_", but lowercase
-!                      short names map to NAMELIST name "letter".
-!                    o the values follow the rules for NAMELIST values, so
-!                      "-p 2*0" for example would define two values.
+!                      call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
 ! 
 !                    DESCRIPTION is pre-defined to act as if started with the reserved
 !                    options '--usage F --help F --version F'. The --usage
-!                    option is processed when the check_commandline(3f)
+!                    option is processed when the set_args(3f)
 !                    routine is called. The same is true for --help and --version
 !                    if the optional help_text and version_text options are
 !                    provided.
-! RETURNS
 ! 
-!      STRING   The output is a NAMELIST string than can be read to update
-!               the NAMELIST "ARGS" with the keywords that were supplied on
-!               the command line.
+!                    see "DEFINING THE PROTOTYPE" in the next section for further
+!                    details.
 ! 
-!      When using one of the Unix-like command line forms note that
-!      (subject to change) the following variations from other common
-!      command-line parsers:
+!      HELP_TEXT     if present, will be displayed if program is called with
+!                    --help switch, and then the program will terminate. If
+!                    not supplied, the command line initialization string will be
+!                    shown when --help is used on the commandline.
+! 
+!      VERSION_TEXT  if present, will be displayed if program is called with
+!                    --version switch, and then the program will terminate.
+! 
+! DEFINING THE PROTOTYPE
+!         o all keywords on the prototype get a value.
+!         o logicals must be set to F or T.
+!         o strings MUST be delimited with double-quotes and
+!           must be at least one space. Internal double-quotes
+!           are represented with two double-quotes
+!         o numeric keywords are not allowed; but this allows
+!           negative numbers to be used as values.
+!         o lists of values should be comma-delimited unless a
+!           user-specified delimiter is used. The prototype
+!           must use the same array delimiters as the call to
+!           the family of get_args*(3f) called.
+!         o long names (--keyword) should be all lowercase
+!         o to define a zero-length allocatable array make the
+!           value a delimiter (usually a comma).
+!         o If the prototype ends with "--" a special mode is turned
+!           on where anything after "--" on input goes into the
+!           variable REMAINING instead of becoming elements in the
+!           UNNAMED array. This is not needed for normal processing.
+! USAGE
+!      When invoking the program line note that (subject to change) the
+!      following variations from other common command-line parsers:
 ! 
 !         o long names do not take the --KEY=VALUE form, just
 !           --KEY VALUE; and long names should be all lowercase and
 !           always more than one character.
 ! 
-!         o duplicate keyword values are appended together with a space
-!           separator.
+!         o values for duplicate keywords are appended together with a space
+!           separator when a command line is executed.
 ! 
 !         o numeric keywords are not allowed; but this allows
 !           negative numbers to be used as values.
 ! 
 !         o mapping of short names to long names is demonstrated in
 !           the manpage for SPECIFIED(3f).
-!           specifying both names of an equivalenced keyword will have
+! 
+!           Specifying both names of an equivalenced keyword will have
 !           undefined results (currently, their alphabetical order
 !           will define what the Fortran variable values become).
+! 
+!           The second of the names should only be called with a
+!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
+!           for that name.
+! 
+!           Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 ! 
 !         o short keywords cannot be combined. -a -b -c is required,
 !           not -abc even for Boolean keys.
 ! 
-!         o shuffling is not supported. Values must follow their
+!         o shuffling is not supported. Values should follow their
 !           keywords.
 ! 
 !         o if a parameter value of just "-" is supplied it is
 !           converted to the string "stdin".
 ! 
-!         o if the keyword "--" is encountered the rest of the
-!           command arguments go into the character array "UNUSED".
-! 
 !         o values not matching a keyword go into the character
 !           array "UNUSED".
 ! 
-!         o short-name parameters of the form -LETTER VALUE
-!           map to a NAMELIST name of LETTER_ if uppercase
+!         o if the keyword "--" is encountered the rest of the
+!           command arguments go into the character array "UNUSED".
+! 
+! EXAMPLE
+! 
+! Sample program:
+! 
+!     program demo_set_args
+!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+!     use M_CLI2,  only : get_args_fixed_size
+!     implicit none
+!     integer                      :: i
+!     !
+!     ! DEFINE ARGS
+!     real                         :: x, y, z
+!     real                         :: p(3)
+!     character(len=:),allocatable :: title
+!     logical                      :: l, lbig
+!     integer,allocatable          :: ints(:)
+!     !
+!     !  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
+!     !  AND READ COMMAND LINE
+!     call set_args(' &
+!        ! reals
+!        & -x 1 -y 2.3 -z 3.4e2 &
+!        ! integer array
+!        & -p -1,-2,-3 &
+!        ! always double-quote strings
+!        & --title "my title" &
+!        ! set all logical values to F or T.
+!        & -l F -L F &
+!        ! set allocatable size to zero if you like by using a delimiter
+!        & -ints , &
+!        ! string should be a single character at a minimum
+!        & --label " " &
+!        & ')
+!     ! ASSIGN VALUES TO ELEMENTS
+!     !     SCALARS
+!     call get_args('x',x)
+!     call get_args('y',y)
+!     call get_args('z',z)
+!     call get_args('l',l)
+!     call get_args('L',lbig)
+!     call get_args('ints',ints)      ! ALLOCATABLE ARRAY
+!     call get_args('title',title)    ! ALLOCATABLE STRING
+!     call get_args_fixed_size('p',p) ! NON-ALLOCATABLE ARRAY
+!     ! USE VALUES
+!     write(*,*)'x=',x
+!     write(*,*)'y=',y
+!     write(*,*)'z=',z
+!     write(*,*)'p=',p
+!     write(*,*)'title=',title
+!     write(*,*)'ints=',ints
+!     write(*,*)'l=',l
+!     write(*,*)'L=',lbig
+!     ! UNNAMED VALUES
+!     if(size(filenames).gt.0)then
+!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+!     endif
+!     end program demo_set_args
 ! 
 ! AUTHOR
 !      John S. Urban, 2019
 ! LICENSE
 !      Public Domain
 !===================================================================================================================================
-function commandline(definition) result (readme)
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine set_args(prototype,help_text,version_text)
 
-! ident_2="@(#)M_CLI2::commandline(3f): return all command arguments as a NAMELIST(3f) string to read"
+! ident_2="@(#)M_CLI2::set_args(3f): parse prototype string"
 
-character(len=*),intent(in)          :: definition
-character(len=:),allocatable         :: hold               ! stores command line argument
-character(len=:),allocatable         :: readme             ! stores command line argument
-integer                              :: ibig
-
-   passed_in=''
+character(len=*),intent(in)                      :: prototype
+character(len=:),intent(in),allocatable,optional :: help_text(:)
+character(len=:),intent(in),allocatable,optional :: version_text(:)
+character(len=:),allocatable                     :: hold               ! stores command line argument
+integer                                          :: ibig
+   G_passed_in=''
    if(allocated(unnamed))then
        deallocate(unnamed)
    endif
@@ -548,26 +539,13 @@ integer                              :: ibig
    allocate(character(len=ibig) :: unnamed(0))
 
    call wipe_dictionary()
-   hold='--usage F --help F --version F '//adjustl(definition)
-   call prototype_and_cmd_args_to_nlist(hold,readme)
+   hold='--usage F --help F --version F '//adjustl(prototype)
+   call prototype_and_cmd_args_to_nlist(hold)
 
    if(.not.allocated(unnamed))then
        allocate(character(len=0) :: unnamed(0))
    endif
-
-
-end function commandline
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-subroutine set_args(prototype,help_text,version_text)
-character(len=*),intent(in)                      :: prototype
-character(len=:),intent(in),allocatable,optional :: help_text(:)
-character(len=:),intent(in),allocatable,optional :: version_text(:)
-character(len=:),allocatable                     :: readme
-character(len=255)                               :: message
-   readme=commandline(prototype)
-   call check_commandline(0,message,help_text,version_text) ! process --help, --version, --usage
+   call check_commandline(help_text,version_text) ! process --help, --version, --usage
 end subroutine set_args
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -599,7 +577,7 @@ end subroutine set_args
 ! 
 !      o  logical values
 ! 
-!          o logical values must not have a value
+!          o logical values must have a value
 ! 
 !      o  leading and trailing blanks are removed from unquoted values
 ! 
@@ -637,6 +615,7 @@ integer,dimension(2)              :: ipnt
 integer                           :: islen   ! number of characters in input string
 integer                           :: ipoint
 integer                           :: itype
+integer,parameter                 :: VAL=1, KEYW=2
 integer                           :: ifwd
 integer                           :: ibegin
 integer                           :: iend
@@ -650,42 +629,42 @@ integer                           :: iend
    keyword=""          ! initial variable name
    value=""            ! initial value of a string
    ipoint=0            ! ipoint is the current character pointer for (dummy)
-   ipnt(2)=2           ! pointer to position in parameter name
-   ipnt(1)=1           ! pointer to position in parameter value
-   itype=1             ! itype=1 for value, itype=2 for variable
+   ipnt(2)=2           ! pointer to position in keyword
+   ipnt(1)=1           ! pointer to position in value
+   itype=VAL           ! itype=1 for value, itype=2 for variable
 
    delmt="off"
    prev=" "
 
-   keyword_single=.true.
+   G_keyword_single_letter=.true.
    do
       ipoint=ipoint+1               ! move current character pointer forward
       currnt=dummy(ipoint:ipoint)   ! store current character into currnt
-      ifwd=min(ipoint+1,islen)
+      ifwd=min(ipoint+1,islen)      ! ensure not past end of string
       forwrd=dummy(ifwd:ifwd)       ! next character (or duplicate if last)
 
-      if((currnt=="-".and.prev==" ".and.delmt == "off".and.index("0123456789.",forwrd) == 0).or.ipoint > islen)then
-         ! beginning of a parameter name
+      if((currnt=="-" .and. prev==" " .and. delmt == "off" .and. index("0123456789.",forwrd) == 0).or.ipoint > islen)then
+         ! beginning of a keyword
          if(forwrd.eq.'-')then                      ! change --var to -var so "long" syntax is supported
-            dummy(ifwd:ifwd)='_'
-            ipoint=ipoint+1                         ! ignore second - instead
-            keyword_single=.false.
+            !!dummy(ifwd:ifwd)='_'
+            ipoint=ipoint+1                         ! ignore second - instead (was changing it to _)
+            G_keyword_single_letter=.false.         ! flag this is a long keyword
          else
-            keyword_single=.true.
+            G_keyword_single_letter=.true.          ! flag this is a short (single letter) keyword
          endif
-         if(ipnt(1)-1 >= 1)then
+         if(ipnt(1)-1 >= 1)then                     ! position in value
             ibegin=1
             iend=len_trim(value(:ipnt(1)-1))
-            do
-               if(iend  ==  0)then                  ! len_trim returned 0, parameter value is blank
+            TESTIT: do
+               if(iend  ==  0)then                  ! len_trim returned 0, value is blank
                   iend=ibegin
-                  exit
+                  exit TESTIT
                elseif(value(ibegin:ibegin) == " ")then
                   ibegin=ibegin+1
                else
-                  exit
+                  exit TESTIT
                endif
-            enddo
+            enddo TESTIT
             if(keyword.ne.' ')then
                call update(keyword,value)         ! store name and its value
             else
@@ -694,10 +673,11 @@ integer                           :: iend
          else
             if(keyword.ne.' ')then
                call update(keyword,'F')           ! store name and null value
-            else
+            elseif(.not.G_keyword_single_letter.and.ipoint-2.eq.islen) then ! -- at end of line
+               G_remaining_option_allowed=.true.  ! meaning for "--" is that everything on commandline goes into G_remaining
             endif
          endif
-         itype=2                               ! change to filling a variable name
+         itype=KEYW                            ! change to expecting a keyword
          value=""                              ! clear value for this variable
          keyword=""                            ! clear variable name
          ipnt(1)=1                             ! restart variable value
@@ -705,14 +685,14 @@ integer                           :: iend
 
       else       ! currnt is not one of the special characters
          ! the space after a keyword before the value
-         if(currnt == " ".and.itype  ==  2)then
+         if(currnt == " ".and.itype  ==  KEYW)then
             ! switch from building a keyword string to building a value string
-            itype=1
-            ! beginning of a delimited parameter value
-         elseif(currnt  ==  """".and.itype  ==  1)then
+            itype=VAL
+            ! beginning of a delimited value
+         elseif(currnt  ==  """".and.itype  ==  VAL)then
             ! second of a double quote, put quote in
             if(prev  ==  """")then
-               if(itype.eq.1)then
+               if(itype.eq.VAL)then
                   value=value//currnt
                else
                   keyword=keyword//currnt
@@ -725,15 +705,15 @@ integer                           :: iend
                delmt="on"
             endif
             if(prev /= """")then  ! leave quotes where found them
-               if(itype.eq.1)then
+               if(itype.eq.VAL)then
                   value=value//currnt
                else
                   keyword=keyword//currnt
                endif
                ipnt(itype)=ipnt(itype)+1
             endif
-         else     ! add character to current parameter name or parameter value
-            if(itype.eq.1)then
+         else     ! add character to current keyword or value
+            if(itype.eq.VAL)then
                value=value//currnt
             else
                keyword=keyword//currnt
@@ -968,22 +948,18 @@ end function get
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 ! NAME
-!      prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_CLI2] convert Unix-like command arguments to namelist
+!      prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_CLI2] convert Unix-like command arguments to table
 !      (LICENSE:PD)
 ! SYNOPSIS
 ! 
-! 
-!     subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
+!     subroutine prototype_and_cmd_args_to_nlist(prototype)
 ! 
 !      character(len=*)             :: prototype
-!      character(len=:),allocatable :: nml
 ! DESCRIPTION
 !      create dictionary with character keywords, values, and value lengths using the routines for maintaining a list from
 !      command line arguments.
 ! OPTIONS
 !      prototype
-! RETURNS
-!      nml
 ! EXAMPLE
 ! 
 ! Sample program
@@ -997,92 +973,79 @@ end function get
 !      integer                      :: i
 !      doubleprecision              :: something
 ! 
-!      ! define namelist
-!      ! lowercase keywords
+!      ! define arguments
 !      logical            :: l,h,v
 !      real               :: p(2)
 !      complex            :: c
 !      doubleprecision    :: x,y,z
 ! 
-!      ! uppercase keywords get an underscore
+!      ! uppercase keywords get an underscore to make it easier o remember
 !      logical            :: l_,h_,v_
 !      character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
 !      integer            :: c_(3)
-!      namelist /args/ l,h,v,p,c,x,y,z,a_,b_,c_,l_,h_,v_
 ! 
 !         ! give command template with default values
 !         ! all values except logicals get a value.
 !         ! strings must be delimited with double quotes
 !         ! A string has to have at least one character as for -A
 !         ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
-!         ! the values follow the rules for NAMELIST input, so  -p 2*0 would define two values.
 !         call prototype_and_cmd_args_to_nlist('&
 !         & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
 !         & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
-!         read(readme,nml=args,iostat=ios,iomsg=message)
-!         if(ios.ne.0)then
-!            write (*,*)'ERROR:',trim(message)
-!            write (*,'("INPUT WAS ",a)')readme
-!            write (*,args)
-!            stop 3
-!         else
+! 
+!         call get_args('x',x,'y',y,'z',z)
 !            something=sqrt(x**2+y**2+z**2)
 !            write (*,*)something,x,y,z
 !            if(size(unnamed).gt.0)then
 !               write (*,'(a)')'files:'
 !               write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
 !            endif
-!         endif
 !      end program demo_prototype_and_cmd_args_to_nlist
 ! AUTHOR
 !      John S. Urban, 2019
 ! LICENSE
 !      Public Domain
 !===================================================================================================================================
-subroutine prototype_and_cmd_args_to_nlist(prototype,nml)
+subroutine prototype_and_cmd_args_to_nlist(prototype)
 implicit none
 
 ! ident_4="@(#)M_CLI2::prototype_and_cmd_args_to_nlist: create dictionary from prototype (if not null) and update from command line arguments"
 
-character(len=*),intent(in)              :: prototype
-character(len=:),intent(out),allocatable :: nml
-character(len=:),allocatable :: nml1
-character(len=:),allocatable :: nml2
+character(len=*),intent(in)  :: prototype
 integer                      :: ibig
+integer                      :: itrim
 
-   passed_in=prototype                              ! make global copy for printing
+   G_passed_in=prototype                            ! make global copy for printing
 
    if(allocated(unnamed))deallocate(unnamed)
    ibig=longest_command_argument()                  ! bug in gfortran. len=0 should be fine
    ibig=max(ibig,1)
    allocate(character(len=ibig) ::unnamed(0))
 
+   G_remaining_option_allowed=.false.
+   G_remaining_on=.false.
+   G_remaining=''
    if(prototype.ne.'')then
       call prototype_to_dictionary(prototype)       ! build dictionary from prototype
-      namelist_name='&ARGS'
       present_in=.false.                            ! reset all values to false so everything gets written
-      return_all=.true.                             ! return everything in dictionary
-      call dictionary_to_namelist(nml1)
       present_in=.false.                            ! reset all values to false
-   else
-      nml1=''
    endif
 
-   return_all=.false.                               ! return values that were on command line
    call cmd_args_to_dictionary(check=.true.)
 
-   call dictionary_to_namelist(nml2)
-
-   nml=namelist_name//' '//nml1//','//nml2//' /'    ! add defaults and values on command line
-   ! show array
-
+   if(len(G_remaining).gt.1)then                    ! if -- was in prototype then after -- on input return rest in this string
+      itrim=len(G_remaining)
+      if(G_remaining(itrim:itrim).eq.' ')then       ! was adding a space at end as building it, but do not want to remove blanks
+         G_remaining=G_remaining(:itrim-1)
+      endif
+      remaining=G_remaining
+   endif
 end subroutine prototype_and_cmd_args_to_nlist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine cmd_args_to_dictionary(check)
 ! convert command line arguments to dictionary entries
-! reading the namelist output will trap unknown option names so do not really need to trap them here
 logical,intent(in),optional  :: check
 logical                      :: check_local
 integer                      :: pointer
@@ -1102,7 +1065,7 @@ logical                      :: nomore
    nomore=.false.
    pointer=0
    lastkeyword=' '
-   keyword_single=.true.
+   G_keyword_single_letter=.true.
    GET_ARGS: do i=1, command_argument_count()                                                        ! insert and replace entries
       call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
       if(istatus /= 0) then                                                                          ! stop program on error
@@ -1130,12 +1093,13 @@ logical                      :: nomore
       if(current_argument.eq.'--')then ! everything after this goes into the unnamed array
          nomore=.true.
          pointer=0
+         G_remaining_on=.true.
          cycle
       endif
       dummy=current_argument//'   '
       current_argument_padded=current_argument//'   '
       if(.not.nomore.and.current_argument_padded(1:2).eq.'--'.and.index("0123456789.",dummy(3:3)).eq.0)then ! beginning of long word
-         keyword_single=.false.
+         G_keyword_single_letter=.false.
          if(lastkeyword.ne.'')then
             call ifnull()
          endif
@@ -1146,7 +1110,7 @@ logical                      :: nomore
          endif
          lastkeyword=trim(current_argument_padded(3:))
       elseif(.not.nomore.and.current_argument_padded(1:1).eq.'-'.and.index("0123456789.",dummy(2:2)).eq.0)then  ! short word
-         keyword_single=.true.
+         G_keyword_single_letter=.true.
          if(lastkeyword.ne.'')then
             call ifnull()
          endif
@@ -1158,7 +1122,17 @@ logical                      :: nomore
          lastkeyword=trim(current_argument_padded(2:))
       elseif(pointer.eq.0)then                                                                           ! unnamed arguments
          imax=max(len(unnamed),len(current_argument))
-         unnamed=[character(len=imax) :: unnamed,current_argument]
+         if(G_remaining_on)then
+            if(len(current_argument).lt.1)then
+               G_remaining=G_remaining//"'' "
+            elseif(current_argument(1:1).eq.'-')then
+               G_remaining=G_remaining//current_argument//' '
+            else
+               G_remaining=G_remaining//"'"//current_argument//"' "
+            endif
+         else
+            unnamed=[character(len=imax) :: unnamed,current_argument]
+         endif
       else
          oldvalue=get(keywords(pointer))//' '
          if(oldvalue(1:1).eq.'"')then
@@ -1166,8 +1140,18 @@ logical                      :: nomore
          endif
          if(upper(oldvalue).eq.'F'.or.upper(oldvalue).eq.'T')then  ! assume boolean parameter
             if(current_argument.ne.' ')then
-               imax=max(len(unnamed),len(current_argument))
-               unnamed=[character(len=imax) :: unnamed,current_argument]
+               if(G_remaining_on)then
+                  if(len(current_argument).lt.1)then
+                        G_remaining=G_remaining//"'' "
+                  elseif(current_argument(1:1).eq.'-')then
+                        G_remaining=G_remaining//current_argument//' '
+                  else
+                        G_remaining=G_remaining//"'"//current_argument//"' "
+                  endif
+               else
+                  imax=max(len(unnamed),len(current_argument))
+                  unnamed=[character(len=imax) :: unnamed,current_argument]
+               endif
             endif
             current_argument='T'
          endif
@@ -1196,50 +1180,8 @@ end subroutine cmd_args_to_dictionary
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine dictionary_to_namelist(nml)
-character(len=:),allocatable,intent(out) :: nml
-integer :: i
-character(len=:),allocatable :: newkeyword
-   ! build namelist string
-   nml=' '
-   if(return_all)then  ! if returning all first do keywords not present on command line so equivalences work
-      do i=1,size(keywords)
-         if(isupper(keywords(i)(1:1)))then
-            newkeyword=trim(lower(keywords(i)))//'_'
-         else
-            newkeyword=trim(keywords(i))
-         endif
-         if(.not.present_in(i))then
-            select case(newkeyword)
-            case('usage','version','help')
-            case default
-             nml=nml//newkeyword//'='//trim(values(i))//' '
-            endselect
-         endif
-      enddo
-   endif
-
-   do i=1,size(keywords)  ! now only do keywords present on command line
-      if(isupper(keywords(i)(1:1)))then
-         newkeyword=trim(lower(keywords(i)))//'_'
-      else
-         newkeyword=trim(keywords(i))
-      endif
-      if(present_in(i))then
-         select case(newkeyword)
-         case('usage','version','help')
-         case default
-          nml=nml//newkeyword//'='//trim(values(i))//' '
-         endselect
-      endif
-   enddo
-
-end subroutine dictionary_to_namelist
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 ! NAME
-!     print_dictionary(3f) - [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandline(3f)
+!     print_dictionary(3f) - [ARGUMENTS:M_CLI2] print internal dictionary created by calls to set_args(3f)
 !     (LICENSE:PD)
 ! SYNOPSIS
 ! 
@@ -1249,9 +1191,9 @@ end subroutine dictionary_to_namelist
 !      character(len=*),intent(in),optional :: header
 !      logical,intent(in),optional          :: stop
 ! DESCRIPTION
-!     Print the internal dictionary created by calls to commandline(3f).
+!     Print the internal dictionary created by calls to set_args(3f).
 !     This routine is intended to print the state of the argument list
-!     if an error occurs in using the commandline(3f) procedure..
+!     if an error occurs in using the set_args(3f) procedure.
 ! OPTIONS
 !     HEADER  label to print before printing the state of the command
 !             argument list.
@@ -1262,55 +1204,30 @@ end subroutine dictionary_to_namelist
 ! 
 ! Typical usage:
 ! 
-!       program demo_commandline
-!       use M_CLI2,  only : unnamed, commandline, print_dictionary
+!       program demo_print_dictionary
+!       use M_CLI2,  only : set_args, get_args
 !       implicit none
-!       integer                      :: i
-!       character(len=255)           :: message ! use for I/O error messages
-!       character(len=:),allocatable :: readme  ! stores updated namelist
-!       integer                      :: ios
-!       real               :: x, y, z
-!       logical            :: help, h
-!       equivalence       (help,h)
-!       namelist /args/ x,y,z,help,h
-!       character(len=*),parameter :: cmd='&ARGS X=1 Y=2 Z=3 HELP=F H=F /'
-!       ! initialize namelist from string and then update from command line
-!       readme=cmd
-!       read(readme,nml=args,iostat=ios,iomsg=message)
-!       if(ios.eq.0)then
-!          ! update cmd with options from command line
-!          readme=commandline(cmd)
-!          read(readme,nml=args,iostat=ios,iomsg=message)
-!       endif
-!       if(ios.ne.0)then
-!          write (*,'("ERROR:",i0,1x,a)')ios, trim(message)
-!          call print_dictionary('OPTIONS:')
-!          stop 1
-!       endif
-!       ! all done cracking the command line
-!       ! use the values in your program.
-!       write (*,nml=args)
-!       ! the optional unnamed values on the command line are
-!       ! accumulated in the character array "UNNAMED"
-!       if(size(unnamed).gt.0)then
-!          write (*,'(a)')'files:'
-!          write (*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
-!       endif
-!       end program demo_commandline
+!       real :: x, y, z
+!          call set_args('-x 10 -y 20 -z 30')
+!          call get_args('x',x,'y',y,'z',z)
+!          ! all done cracking the command line; use the values in your program.
+!          write(*,*)x,y,z
+!       end program demo_print_dictionary
 ! 
 !      Sample output
 ! 
-!      Calling the sample program with an unknown
-!      parameter produces the following:
+!      Calling the sample program with an unknown parameter or the --usage
+!      switch produces the following:
 ! 
-!         $ ./print_dictionary -A
+!         $ ./demo_print_dictionary -A
 !         UNKNOWN SHORT KEYWORD: -A
 !         KEYWORD             PRESENT  VALUE
 !         z                   F        [3]
 !         y                   F        [2]
 !         x                   F        [1]
 !         help                F        [F]
-!         h                   F        [F]
+!         version             F        [F]
+!         usage               F        [F]
 ! 
 !         STOP 2
 ! 
@@ -1339,6 +1256,10 @@ integer          :: i
          write(stderr,'(a)')'UNNAMED'
          write(stderr,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
       endif
+   endif
+   if(G_remaining.ne.'')then
+      write(stderr,'(a)')'REMAINING'
+      write(stderr,'(a)')G_remaining
    endif
    if(present(stop))then
       if(stop) stop
@@ -1400,168 +1321,6 @@ integer                      :: isource_len
    endif
 !----------------------------------------------------------------------------------------------------------------------------
 end function strtok
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-! NAME
-!     set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
-!     (LICENSE:PD)
-! 
-! SYNOPSIS
-! 
-! 
-!     subroutine set_args(definition,help_text,version_text)
-! 
-!      character(len=*),intent(in),optional  :: definition
-!      character(len=:),intent(in),allocatable,intent(in) :: help_text
-!      character(len=:),intent(in),allocatable,intent(in) :: version_text
-! DESCRIPTION
-! 
-!     SET_ARGS(3f) requires a unix-like command prototype for defining
-!     arguments and default command-line options. Argument values are then
-!     read using GET_ARGS(3f).
-! 
-! OPTIONS
-! 
-!      DESCRIPTION   composed of all command arguments concatenated
-!                    into a Unix-like command prototype string. For
-!                    example:
-! 
-!                      call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
-! 
-!                    The DESCRIPTION string is pre-defined to act as if
-!                    started with the reserved options '--usage F --help
-!                    F --version F'.
-! 
-!                    See "DEFINING THE PROTOTYPE" for details.
-! 
-! 
-!                    The --help and --version options require the optional
-!                    help_text and version_text values to be provided.
-! 
-!      HELP_TEXT     if present, will be displayed if program is called with
-!                    --help switch, and then the program will terminate. If
-!                    not supplied, the command line initialized string will be
-!                    shown when --help is used on the commandline.
-! 
-!      VERSION_TEXT  if present, will be displayed if program is called with
-!                    --version switch, and then the program will terminate.
-! 
-! DEFINING THE PROTOTYPE
-!         o all keywords on the prototype get a value.
-!         o logicals must be set to F or T.
-!         o strings MUST be delimited with double-quotes and
-!           must be at least one space. Internal double-quotes
-!           are represented with two double-quotes
-!         o numeric keywords are not allowed; but this allows
-!           negative numbers to be used as values.
-!         o lists of values should be comma-delimited unless a
-!           user-specified delimiter is used. The prototype
-!           must use the same array delimiters as the call to
-!           the family of get_args*(3f) called.
-!         o long names (--keyword) should be all lowercase
-!         o to define a zero-length allocatable array make the
-!           value a delimiter (usually a comma).
-! USAGE
-!      When invoking the program line note that (subject to change) the
-!      following variations from other common command-line parsers:
-! 
-!         o long names do not take the --KEY=VALUE form, just
-!           --KEY VALUE; and long names should be all lowercase and
-!           always more than one character.
-! 
-!         o duplicate keywords are appended together with a space
-!           separator when a command line is executed.
-! 
-!         o mapping of short names to long names is via an EQUIVALENCE or
-!           pointer.
-!           The second of the names should only be called with a
-!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
-!           for that name.
-! 
-!           Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
-! 
-!           Specifying both names of an equivalenced keyword on a command
-!           line will have undefined results (currently, their alphabetical
-!           order will define what the Fortran variable values become).
-! 
-!         o short keywords cannot be combined. -a -b -c is required,
-!           not -abc even for Boolean keys.
-! 
-!         o shuffling is not supported. Values should follow their
-!           keywords.
-! 
-!         o if a parameter value of just "-" is supplied it is
-!           converted to the string "stdin".
-! 
-!         o values not matching a keyword go into the character
-!           array "UNUSED".
-! 
-!         o if the keyword "--" is encountered the rest of the
-!           command arguments go into the character array "UNUSED".
-! 
-! EXAMPLE
-! 
-! Sample program:
-! 
-!     program demo_set_args
-!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
-!     use M_CLI2,  only : get_args_fixed_size
-!     implicit none
-!     integer                      :: i
-!     !
-!     ! DEFINE ARGS
-!     real                         :: x, y, z
-!     real                         :: p(3)
-!     character(len=:),allocatable :: title
-!     logical                      :: l, lbig
-!     integer,allocatable          :: ints(:)
-!     !
-!     !  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
-!     !  AND READ COMMAND LINE
-!     call set_args(' &
-!        ! reals
-!        & -x 1 -y 2.3 -z 3.4e2 &
-!        ! integer array
-!        & -p -1,-2,-3 &
-!        ! only but always quote strings
-!        & --title "my title" &
-!        ! set all logical values to F or T.
-!        & -l F -L F &
-!        ! set allocatable to zero length if you like by using a delimiter
-!        & -ints , &
-!        ! string should be a single character at a minimum
-!        & --label " " &
-!        & ')
-!     ! ASSIGN VALUES TO ELEMENTS
-!     !     SCALARS
-!     call get_args('x',x)
-!     call get_args('y',y)
-!     call get_args('z',z)
-!     call get_args('l',l)
-!     call get_args('L',lbig)
-!     call get_args('ints',ints)      ! ALLOCATABLE ARRAY
-!     call get_args('title',title)    ! ALLOCATABLE STRING
-!     call get_args_fixed_size('p',p) ! NON-ALLOCATABLE ARRAY
-!     ! USE VALUES
-!     write(*,*)'x=',x
-!     write(*,*)'y=',y
-!     write(*,*)'z=',z
-!     write(*,*)'p=',p
-!     write(*,*)'title=',title
-!     write(*,*)'ints=',ints
-!     write(*,*)'l=',l
-!     write(*,*)'L=',lbig
-!     ! UNNAMED VALUES
-!     if(size(filenames).gt.0)then
-!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
-!     endif
-!     end program demo_set_args
-! 
-! AUTHOR
-!      John S. Urban, 2019
-! LICENSE
-!      Public Domain
 !==================================================================================================================================!
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !==================================================================================================================================!
@@ -1579,12 +1338,12 @@ end function strtok
 ! 
 !      character(len=*),intent(in) :: name
 ! 
-!      ! VALUE MAY BE AN ALLOCATABLE CHARACTER SCALAR OR VECTOR
 !      character(len=:),allocatable :: value
+!      ! or
 !      character(len=:),allocatable :: value(:)
-!      ! OR VALUE MAY BE REAL,DOUBLEPRECISION,INTEGER,LOGICAL,COMPLEX
-!      ! SCALAR OR ALLOCATABLE VECTOR
+!      ! or
 !      [real|doubleprecision|integer|logical|complex] :: value
+!      ! or
 !      [real|doubleprecision|integer|logical|complex],allocatable :: value(:)
 ! 
 !      character(len=*),intent(in),optional :: delimiters
@@ -2199,7 +1958,11 @@ end subroutine get_scalar_logical
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-!use M_strings,                     only : ISUPPER, UPPER, LOWER, QUOTE, REPLACE_STR=>REPLACE, UNQUOTE, SPLIT, STRING_TO_VALUE
+! THE REMAINDER SHOULD BE ROUTINES EXTRACTED FROM OTHER MODULES TO MAKE THIS MODULE STANDALONE BY POPULAR REQUEST
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!use M_strings,                     only : UPPER, LOWER, QUOTE, REPLACE_STR=>REPLACE, UNQUOTE, SPLIT, STRING_TO_VALUE
 !use M_list,                        only : insert, locate, remove, replace
 !use M_journal,                     only : JOURNAL
 
@@ -2771,22 +2534,6 @@ end subroutine a2d
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-pure elemental function isupper(ch) result(res)
-
-! ident_20="@(#)M_CLI2::isupper(3f): returns true if character is an uppercase letter (A-Z)"
-
-character,intent(in) :: ch
-logical              :: res
-   select case(ch)
-   case('A':'Z')
-     res=.true.
-   case default
-     res=.false.
-   end select
-end function isupper
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 ! NAME
 !    split(3f) - [M_CLI2:TOKENS] parse string into an array using specified delimiters
 !    (LICENSE:PD)
@@ -2926,7 +2673,7 @@ end function isupper
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-! ident_21="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
+! ident_20="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3203,7 +2950,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 function replace_str(targetline,old,new,ierr,cmd,range) result (newline)
 
-! ident_22="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
+! ident_21="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
@@ -3548,7 +3295,7 @@ end function unquote
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-! ident_23="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
+! ident_22="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -3622,7 +3369,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-! ident_24="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+! ident_23="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in),optional :: str1
 character(len=*),intent(in),optional :: str2
@@ -3721,7 +3468,7 @@ end function merge_str
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
-! ident_25="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+! ident_24="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -3838,7 +3585,7 @@ end function decodebase
 !    Public Domain
 function lenset(line,length) result(strout)
 
-! ident_26="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
+! ident_25="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -3928,7 +3675,7 @@ end function lenset
 !    Public Domain
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
-! ident_27="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
+! ident_26="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
 
 class(*),intent(in)                      :: gval
 character(len=*),intent(out)             :: chars
@@ -4041,7 +3788,7 @@ end subroutine value_to_string
 !    Public Domain
 subroutine trimzeros_(string)
 
-! ident_28="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
+! ident_27="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -4152,7 +3899,7 @@ end subroutine trimzeros_
 !    Public Domain
 subroutine substitute(targetline,old,new,ierr,start,end)
 
-! ident_29="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
+! ident_28="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*)               :: targetline         ! input line to be changed
@@ -4393,7 +4140,7 @@ end subroutine substitute
 !    Public Domain
 subroutine locate_c(list,value,place,ier,errmsg)
 
-! ident_30="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
+! ident_29="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place
@@ -4465,7 +4212,7 @@ integer                                 :: error
 end subroutine locate_c
 subroutine locate_d(list,value,place,ier,errmsg)
 
-! ident_31="@(#)M_CLI2::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
+! ident_30="@(#)M_CLI2::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4543,7 +4290,7 @@ integer                                :: error
 end subroutine locate_d
 subroutine locate_r(list,value,place,ier,errmsg)
 
-! ident_32="@(#)M_CLI2::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
+! ident_31="@(#)M_CLI2::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4621,7 +4368,7 @@ integer                                :: error
 end subroutine locate_r
 subroutine locate_i(list,value,place,ier,errmsg)
 
-! ident_33="@(#)M_CLI2::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
+! ident_32="@(#)M_CLI2::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
 
 ! Assuming an array sorted in descending order
 !
@@ -4762,7 +4509,7 @@ end subroutine locate_i
 !    Public Domain
 subroutine remove_c(list,place)
 
-! ident_34="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
+! ident_33="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -4781,7 +4528,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_d(list,place)
 
-! ident_35="@(#)M_CLI2::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
+! ident_34="@(#)M_CLI2::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
 
 doubleprecision,allocatable  :: list(:)
 integer,intent(in)           :: place
@@ -4800,7 +4547,7 @@ integer                      :: end
 end subroutine remove_d
 subroutine remove_r(list,place)
 
-! ident_36="@(#)M_CLI2::remove_r(3fp): remove value from allocatable array at specified position"
+! ident_35="@(#)M_CLI2::remove_r(3fp): remove value from allocatable array at specified position"
 
 real,allocatable    :: list(:)
 integer,intent(in)  :: place
@@ -4819,7 +4566,7 @@ integer             :: end
 end subroutine remove_r
 subroutine remove_l(list,place)
 
-! ident_37="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
+! ident_36="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
 
 logical,allocatable    :: list(:)
 integer,intent(in)     :: place
@@ -4839,7 +4586,7 @@ integer                :: end
 end subroutine remove_l
 subroutine remove_i(list,place)
 
-! ident_38="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
+! ident_37="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -4951,7 +4698,7 @@ end subroutine remove_i
 !    Public Domain
 subroutine replace_c(list,value,place)
 
-! ident_39="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
+! ident_38="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -4978,7 +4725,7 @@ integer                      :: end
 end subroutine replace_c
 subroutine replace_d(list,value,place)
 
-! ident_40="@(#)M_CLI2::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
+! ident_39="@(#)M_CLI2::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)   :: value
 doubleprecision,allocatable  :: list(:)
@@ -4998,7 +4745,7 @@ integer                      :: end
 end subroutine replace_d
 subroutine replace_r(list,value,place)
 
-! ident_41="@(#)M_CLI2::replace_r(3fp): place value into allocatable array at specified position"
+! ident_40="@(#)M_CLI2::replace_r(3fp): place value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -5018,7 +4765,7 @@ integer               :: end
 end subroutine replace_r
 subroutine replace_l(list,value,place)
 
-! ident_42="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
+! ident_41="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5038,7 +4785,7 @@ integer               :: end
 end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-! ident_43="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
+! ident_42="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -5142,7 +4889,7 @@ end subroutine replace_i
 !    Public Domain
 subroutine insert_c(list,value,place)
 
-! ident_44="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
+! ident_43="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -5176,7 +4923,7 @@ integer                      :: end
 end subroutine insert_c
 subroutine insert_r(list,value,place)
 
-! ident_45="@(#)M_CLI2::insert_r(3fp): place real value into allocatable array at specified position"
+! ident_44="@(#)M_CLI2::insert_r(3fp): place real value into allocatable array at specified position"
 
 real,intent(in)       :: value
 real,allocatable      :: list(:)
@@ -5203,7 +4950,7 @@ integer               :: end
 end subroutine insert_r
 subroutine insert_d(list,value,place)
 
-! ident_46="@(#)M_CLI2::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
+! ident_45="@(#)M_CLI2::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
 
 doubleprecision,intent(in)       :: value
 doubleprecision,allocatable      :: list(:)
@@ -5227,7 +4974,7 @@ integer                          :: end
 end subroutine insert_d
 subroutine insert_l(list,value,place)
 
-! ident_47="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
+! ident_46="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5252,7 +4999,7 @@ integer               :: end
 end subroutine insert_l
 subroutine insert_i(list,value,place)
 
-! ident_48="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
+! ident_47="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -5337,7 +5084,7 @@ end subroutine insert_i
 !    Public Domain
 subroutine dict_delete(self,key)
 
-! ident_49="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
+! ident_48="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5412,7 +5159,7 @@ end subroutine dict_delete
 !    Public Domain
 function dict_get(self,key) result(value)
 
-! ident_50="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
+! ident_49="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
 
 !-!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
@@ -5476,7 +5223,7 @@ end function dict_get
 !    Public Domain
 subroutine dict_add(self,key,value)
 
-! ident_51="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
+! ident_50="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5501,7 +5248,7 @@ subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
 implicit none
 
-! ident_52="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
+! ident_51="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
 character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
