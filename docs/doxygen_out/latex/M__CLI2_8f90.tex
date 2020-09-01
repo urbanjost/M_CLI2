@@ -69,9 +69,7 @@ module \mbox{\hyperlink{namespacem__cli2}{m\+\_\+cli2}}
 \subsection*{Functions/\+Subroutines}
 \begin{DoxyCompactItemize}
 \item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}{m\+\_\+cli2\+::check\+\_\+commandline}} (ios, message, help\+\_\+text, version\+\_\+text)
-\item 
-character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}{m\+\_\+cli2\+::commandline}} (definition)
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a}{m\+\_\+cli2\+::check\+\_\+commandline}} (help\+\_\+text, version\+\_\+text)
 \item 
 subroutine, public \mbox{\hyperlink{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}{m\+\_\+cli2\+::set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text)
 \item 
@@ -85,15 +83,13 @@ subroutine, private \mbox{\hyperlink{namespacem__cli2_ab1525b0419475486f520ef502
 \item 
 character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}{m\+\_\+cli2\+::get}} (key)
 \item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}{m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype, nml)
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}{m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}{m\+\_\+cli2\+::cmd\+\_\+args\+\_\+to\+\_\+dictionary}} (check)
 \item 
 subroutine \mbox{\hyperlink{M__CLI2_8f90_aa26f90016621d1ee43d3b5b66316532b}{ifnull}} ()
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}{m\+\_\+cli2\+::dictionary\+\_\+to\+\_\+namelist}} (nml)
-\item 
-subroutine \mbox{\hyperlink{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}{m\+\_\+cli2\+::print\+\_\+dictionary}} (header, stop)
+subroutine, public \mbox{\hyperlink{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}{m\+\_\+cli2\+::print\+\_\+dictionary}} (header, stop)
 \item 
 logical function \mbox{\hyperlink{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a}{m\+\_\+cli2\+::strtok}} (source\+\_\+string, itoken, token\+\_\+start, token\+\_\+end, delimiters)
 \item 
@@ -158,8 +154,6 @@ elemental pure character(len(str)) function \mbox{\hyperlink{namespacem__cli2_a6
 subroutine \mbox{\hyperlink{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f}{m\+\_\+cli2\+::a2i}} (chars, valu, ierr)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2}{m\+\_\+cli2\+::a2d}} (chars, valu, ierr, onerr)
-\item 
-pure elemental logical function \mbox{\hyperlink{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}{m\+\_\+cli2\+::isupper}} (ch)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665}{m\+\_\+cli2\+::split}} (input\+\_\+line, array, delimiters, order, nulls)
 \item 
@@ -278,6 +272,8 @@ integer, parameter, private \mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad
 \item 
 character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}{m\+\_\+cli2\+::unnamed}}
 \item 
+character(len=\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ae158de0b5e1d1a55bb297ed576e38273}{m\+\_\+cli2\+::remaining}}
+\item 
 character(len=\+:), dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}{m\+\_\+cli2\+::keywords}}
 \item 
 character(len=\+:), dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_af631ee3a1bca98e9fbf1f80646dae360}{m\+\_\+cli2\+::values}}
@@ -286,13 +282,15 @@ integer, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_abf81746a
 \item 
 logical, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}{m\+\_\+cli2\+::present\+\_\+in}}
 \item 
-logical \mbox{\hyperlink{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}{m\+\_\+cli2\+::keyword\+\_\+single}} =.true.
+logical \mbox{\hyperlink{namespacem__cli2_ad1fe6713ae917008c41792b9cad267b7}{m\+\_\+cli2\+::g\+\_\+keyword\+\_\+single\+\_\+letter}} =.true.
 \item 
-character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a649439045139e5473091df65ecde6a4b}{m\+\_\+cli2\+::passed\+\_\+in}}
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a1945bae73d2d148bb01a15d89acd07cd}{m\+\_\+cli2\+::g\+\_\+passed\+\_\+in}}
 \item 
-character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}{m\+\_\+cli2\+::namelist\+\_\+name}}
+logical \mbox{\hyperlink{namespacem__cli2_a81306eb55af0b7b6ab8aa2851c0bd8be}{m\+\_\+cli2\+::g\+\_\+remaining\+\_\+on}}
 \item 
-logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{m\+\_\+cli2\+::return\+\_\+all}}
+logical \mbox{\hyperlink{namespacem__cli2_af16d24ebf98bf90f8c7c32dda70eeb43}{m\+\_\+cli2\+::g\+\_\+remaining\+\_\+option\+\_\+allowed}}
+\item 
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a9ff84c9aa401e7b45d9d86cd6b17bbcc}{m\+\_\+cli2\+::g\+\_\+remaining}}
 \end{DoxyCompactItemize}
 
 
@@ -333,7 +331,8 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{M__CLI2_8f90_aa26f90016621d1ee43d3b5b66316532b_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -346,7 +345,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{print\+\_\+generic()}{print\_generic()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily subroutine msg\+\_\+scalar\+::print\+\_\+generic (\begin{DoxyParamCaption}\item[{class($\ast$), intent(in)}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

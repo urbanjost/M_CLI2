@@ -38,9 +38,7 @@ interface \mbox{\hyperlink{interfacem__cli2_1_1str}{str}}
 \subsection*{Functions/\+Subroutines}
 \begin{DoxyCompactItemize}
 \item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}{check\+\_\+commandline}} (ios, message, help\+\_\+text, version\+\_\+text)
-\item 
-character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}{commandline}} (definition)
+subroutine, private \mbox{\hyperlink{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a}{check\+\_\+commandline}} (help\+\_\+text, version\+\_\+text)
 \item 
 subroutine, public \mbox{\hyperlink{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}{set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text)
 \item 
@@ -54,13 +52,11 @@ subroutine, private \mbox{\hyperlink{namespacem__cli2_ab1525b0419475486f520ef502
 \item 
 character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}{get}} (key)
 \item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype, nml)
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}{cmd\+\_\+args\+\_\+to\+\_\+dictionary}} (check)
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}{dictionary\+\_\+to\+\_\+namelist}} (nml)
-\item 
-subroutine \mbox{\hyperlink{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}{print\+\_\+dictionary}} (header, stop)
+subroutine, public \mbox{\hyperlink{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}{print\+\_\+dictionary}} (header, stop)
 \item 
 logical function \mbox{\hyperlink{namespacem__cli2_a752fd074abce57e636e4572b3e55db3a}{strtok}} (source\+\_\+string, itoken, token\+\_\+start, token\+\_\+end, delimiters)
 \item 
@@ -121,8 +117,6 @@ elemental pure character(len(\mbox{\hyperlink{interfacem__cli2_1_1str}{str}})) f
 subroutine \mbox{\hyperlink{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f}{a2i}} (chars, valu, ierr)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2}{a2d}} (chars, valu, ierr, onerr)
-\item 
-pure elemental logical function \mbox{\hyperlink{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}{isupper}} (ch)
 \item 
 subroutine \mbox{\hyperlink{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665}{split}} (input\+\_\+line, array, delimiters, order, nulls)
 \item 
@@ -237,6 +231,8 @@ integer, parameter, private \mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad
 \item 
 character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}{unnamed}}
 \item 
+character(len=\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ae158de0b5e1d1a55bb297ed576e38273}{remaining}}
+\item 
 character(len=\+:), dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}{keywords}}
 \item 
 character(len=\+:), dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_af631ee3a1bca98e9fbf1f80646dae360}{values}}
@@ -245,13 +241,15 @@ integer, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_abf81746a
 \item 
 logical, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}{present\+\_\+in}}
 \item 
-logical \mbox{\hyperlink{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}{keyword\+\_\+single}} =.true.
+logical \mbox{\hyperlink{namespacem__cli2_ad1fe6713ae917008c41792b9cad267b7}{g\+\_\+keyword\+\_\+single\+\_\+letter}} =.true.
 \item 
-character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a649439045139e5473091df65ecde6a4b}{passed\+\_\+in}}
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a1945bae73d2d148bb01a15d89acd07cd}{g\+\_\+passed\+\_\+in}}
 \item 
-character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}{namelist\+\_\+name}}
+logical \mbox{\hyperlink{namespacem__cli2_a81306eb55af0b7b6ab8aa2851c0bd8be}{g\+\_\+remaining\+\_\+on}}
 \item 
-logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{return\+\_\+all}}
+logical \mbox{\hyperlink{namespacem__cli2_af16d24ebf98bf90f8c7c32dda70eeb43}{g\+\_\+remaining\+\_\+option\+\_\+allowed}}
+\item 
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a9ff84c9aa401e7b45d9d86cd6b17bbcc}{g\+\_\+remaining}}
 \end{DoxyCompactItemize}
 
 
@@ -266,16 +264,14 @@ logical \mbox{\hyperlink{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}{ret
 
 References decodebase(), i2s(), journal(), and substitute().
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_ad9e1de0ea9d2b4ed758b2a76bf143bd2_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -292,16 +288,14 @@ Here is the caller graph for this function\+:
 
 References a2d(), and journal().
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a0be58233adafc0bf10dfe69300a05b9f_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
+Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -318,8 +312,7 @@ Here is the caller graph for this function\+:
 
 References a2d(), and unnamed.
 
-Here is the call graph for this function\+:
-\nopagebreak
+Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -338,22 +331,22 @@ Here is the call graph for this function\+:
 \subsubsection{\texorpdfstring{cgs()}{cgs()}}
 {\footnotesize\ttfamily complex function, dimension(\+:), allocatable m\+\_\+cli2\+::cgs (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}\label{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3}} 
+\mbox{\Hypertarget{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a}\label{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!check\+\_\+commandline@{check\+\_\+commandline}}
 \index{check\+\_\+commandline@{check\+\_\+commandline}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{check\+\_\+commandline()}{check\_commandline()}}
-{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::check\+\_\+commandline (\begin{DoxyParamCaption}\item[{integer}]{ios,  }\item[{character(len=$\ast$)}]{message,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{help\+\_\+text,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{version\+\_\+text }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::check\+\_\+commandline (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{help\+\_\+text,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{version\+\_\+text }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
-References get(), journal(), passed\+\_\+in, print\+\_\+dictionary(), and substitute().
+References g\+\_\+passed\+\_\+in, get(), journal(), print\+\_\+dictionary(), and substitute().
 
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3_cgraph}
+\includegraphics[width=350pt]{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a_cgraph}
 \end{center}
 \end{figure}
 Here is the caller graph for this function\+:
@@ -361,7 +354,7 @@ Here is the caller graph for this function\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a02d4639b325d1b8c6fd3b03ba515f2b3_icgraph}
+\includegraphics[width=350pt]{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}\label{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}} 
@@ -372,7 +365,7 @@ Here is the caller graph for this function\+:
 
 
 
-References get(), ifnull(), keyword\+\_\+single, keywords, print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
+References g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, get(), ifnull(), keywords, print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -388,32 +381,6 @@ Here is the caller graph for this function\+:
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331_icgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}\label{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!commandline@{commandline}}
-\index{commandline@{commandline}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{commandline()}{commandline()}}
-{\footnotesize\ttfamily character(len=\+:) function, allocatable, private m\+\_\+cli2\+::commandline (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{definition }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-
-
-References longest\+\_\+command\+\_\+argument(), passed\+\_\+in, prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), unnamed, and wipe\+\_\+dictionary().
-
-Here is the call graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109_cgraph}
-\end{center}
-\end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=334pt]{namespacem__cli2_a85c38a938a7dd9a749daf8effe45c109_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a710b26995119aee101959555b1bac8e2}\label{namespacem__cli2_a710b26995119aee101959555b1bac8e2}} 
@@ -516,32 +483,6 @@ Here is the call graph for this function\+:
 \subsubsection{\texorpdfstring{dict\+\_\+get()}{dict\_get()}}
 {\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::dict\+\_\+get (\begin{DoxyParamCaption}\item[{class(\mbox{\hyperlink{structm__cli2_1_1dictionary}{dictionary}})}]{self,  }\item[{character(len=$\ast$), intent(in)}]{key }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}\label{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!dictionary\+\_\+to\+\_\+namelist@{dictionary\+\_\+to\+\_\+namelist}}
-\index{dictionary\+\_\+to\+\_\+namelist@{dictionary\+\_\+to\+\_\+namelist}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{dictionary\+\_\+to\+\_\+namelist()}{dictionary\_to\_namelist()}}
-{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::dictionary\+\_\+to\+\_\+namelist (\begin{DoxyParamCaption}\item[{character(len=\+:), intent(out), allocatable}]{nml }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-
-
-References isupper(), keywords, lower(), present\+\_\+in, return\+\_\+all, and values.
-
-Here is the call graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=311pt]{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd_cgraph}
-\end{center}
-\end{figure}
-Here is the caller graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_ab43e4e37723a0acc2183fbbf3d8c36bd_icgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}\label{namespacem__cli2_aa92e8ad0300d4e324e29eae1ab9d04b4}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!get@{get}}
 \index{get@{get}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -1112,20 +1053,6 @@ Here is the call graph for this function\+:
 \subsubsection{\texorpdfstring{insert\+\_\+r()}{insert\_r()}}
 {\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::insert\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{real, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}\label{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!isupper@{isupper}}
-\index{isupper@{isupper}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{isupper()}{isupper()}}
-{\footnotesize\ttfamily pure elemental logical function m\+\_\+cli2\+::isupper (\begin{DoxyParamCaption}\item[{character, intent(in)}]{ch }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-Here is the caller graph for this function\+:
-\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_ad33ebc8ed3953d8cd91bd8c90a49b59d_icgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a4c12c311327951984c6e1611da23cdfd}\label{namespacem__cli2_a4c12c311327951984c6e1611da23cdfd}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!journal@{journal}}
 \index{journal@{journal}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -1316,40 +1243,40 @@ Here is the call graph for this function\+:
 \includegraphics[width=306pt]{namespacem__cli2_a737dc863a63dc101338840baad1cfd17_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}\label{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a}} 
+\mbox{\Hypertarget{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}\label{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!print\+\_\+dictionary@{print\+\_\+dictionary}}
 \index{print\+\_\+dictionary@{print\+\_\+dictionary}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{print\+\_\+dictionary()}{print\_dictionary()}}
-{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::print\+\_\+dictionary (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in), optional}]{header,  }\item[{logical, intent(in), optional}]{stop }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily subroutine, public m\+\_\+cli2\+::print\+\_\+dictionary (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in), optional}]{header,  }\item[{logical, intent(in), optional}]{stop }\end{DoxyParamCaption})}
 
 
 
-References counts, keywords, present\+\_\+in, unnamed, and values.
+References counts, g\+\_\+remaining, keywords, present\+\_\+in, unnamed, and values.
 
 Here is the caller graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_acbd726aa5c13b005a14c06d58915cb9a_icgraph}
+\includegraphics[width=350pt]{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}\label{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2}} 
+\mbox{\Hypertarget{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}\label{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist@{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}}
 \index{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist@{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist()}{prototype\_and\_cmd\_args\_to\_nlist()}}
-{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype,  }\item[{character(len=\+:), intent(out), allocatable}]{nml }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
-References cmd\+\_\+args\+\_\+to\+\_\+dictionary(), dictionary\+\_\+to\+\_\+namelist(), longest\+\_\+command\+\_\+argument(), namelist\+\_\+name, passed\+\_\+in, present\+\_\+in, prototype\+\_\+to\+\_\+dictionary(), return\+\_\+all, and unnamed.
+References cmd\+\_\+args\+\_\+to\+\_\+dictionary(), g\+\_\+passed\+\_\+in, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, longest\+\_\+command\+\_\+argument(), present\+\_\+in, prototype\+\_\+to\+\_\+dictionary(), remaining, and unnamed.
 
 Here is the call graph for this function\+:
 \nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2_cgraph}
+\includegraphics[width=350pt]{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0_cgraph}
 \end{center}
 \end{figure}
 Here is the caller graph for this function\+:
@@ -1357,7 +1284,7 @@ Here is the caller graph for this function\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a46f31858773ff1b4cf96329a14130bf2_icgraph}
+\includegraphics[width=337pt]{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}\label{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}} 
@@ -1368,7 +1295,7 @@ Here is the caller graph for this function\+:
 
 
 
-References keyword\+\_\+single, and update().
+References g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining\+\_\+option\+\_\+allowed, and update().
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -1524,7 +1451,7 @@ Here is the caller graph for this function\+:
 
 
 
-References check\+\_\+commandline(), and commandline().
+References check\+\_\+commandline(), g\+\_\+passed\+\_\+in, longest\+\_\+command\+\_\+argument(), prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), unnamed, and wipe\+\_\+dictionary().
 
 Here is the call graph for this function\+:
 \nopagebreak
@@ -1753,7 +1680,7 @@ Here is the caller graph for this function\+:
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_ab1525b0419475486f520ef502daa5e94_icgraph}
+\includegraphics[width=344pt]{namespacem__cli2_ab1525b0419475486f520ef502daa5e94_icgraph}
 \end{center}
 \end{figure}
 
@@ -1771,11 +1698,35 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{dp}{dp}}
 {\footnotesize\ttfamily integer, parameter, private m\+\_\+cli2\+::dp =kind(0.\+0d0)\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}\label{namespacem__cli2_a7f0b96691836126dc7f258a3da75b494}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!keyword\+\_\+single@{keyword\+\_\+single}}
-\index{keyword\+\_\+single@{keyword\+\_\+single}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{keyword\+\_\+single}{keyword\_single}}
-{\footnotesize\ttfamily logical m\+\_\+cli2\+::keyword\+\_\+single =.true.\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{namespacem__cli2_ad1fe6713ae917008c41792b9cad267b7}\label{namespacem__cli2_ad1fe6713ae917008c41792b9cad267b7}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+keyword\+\_\+single\+\_\+letter@{g\+\_\+keyword\+\_\+single\+\_\+letter}}
+\index{g\+\_\+keyword\+\_\+single\+\_\+letter@{g\+\_\+keyword\+\_\+single\+\_\+letter}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+keyword\+\_\+single\+\_\+letter}{g\_keyword\_single\_letter}}
+{\footnotesize\ttfamily logical m\+\_\+cli2\+::g\+\_\+keyword\+\_\+single\+\_\+letter =.true.\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a1945bae73d2d148bb01a15d89acd07cd}\label{namespacem__cli2_a1945bae73d2d148bb01a15d89acd07cd}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+passed\+\_\+in@{g\+\_\+passed\+\_\+in}}
+\index{g\+\_\+passed\+\_\+in@{g\+\_\+passed\+\_\+in}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+passed\+\_\+in}{g\_passed\_in}}
+{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::g\+\_\+passed\+\_\+in\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a9ff84c9aa401e7b45d9d86cd6b17bbcc}\label{namespacem__cli2_a9ff84c9aa401e7b45d9d86cd6b17bbcc}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+remaining@{g\+\_\+remaining}}
+\index{g\+\_\+remaining@{g\+\_\+remaining}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+remaining}{g\_remaining}}
+{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::g\+\_\+remaining\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a81306eb55af0b7b6ab8aa2851c0bd8be}\label{namespacem__cli2_a81306eb55af0b7b6ab8aa2851c0bd8be}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+remaining\+\_\+on@{g\+\_\+remaining\+\_\+on}}
+\index{g\+\_\+remaining\+\_\+on@{g\+\_\+remaining\+\_\+on}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+remaining\+\_\+on}{g\_remaining\_on}}
+{\footnotesize\ttfamily logical m\+\_\+cli2\+::g\+\_\+remaining\+\_\+on\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_af16d24ebf98bf90f8c7c32dda70eeb43}\label{namespacem__cli2_af16d24ebf98bf90f8c7c32dda70eeb43}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+remaining\+\_\+option\+\_\+allowed@{g\+\_\+remaining\+\_\+option\+\_\+allowed}}
+\index{g\+\_\+remaining\+\_\+option\+\_\+allowed@{g\+\_\+remaining\+\_\+option\+\_\+allowed}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+remaining\+\_\+option\+\_\+allowed}{g\_remaining\_option\_allowed}}
+{\footnotesize\ttfamily logical m\+\_\+cli2\+::g\+\_\+remaining\+\_\+option\+\_\+allowed\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}\label{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!keywords@{keywords}}
@@ -1783,29 +1734,17 @@ Here is the caller graph for this function\+:
 \subsubsection{\texorpdfstring{keywords}{keywords}}
 {\footnotesize\ttfamily character(len=\+:), dimension(\+:), allocatable m\+\_\+cli2\+::keywords\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}\label{namespacem__cli2_a46b2d1d3b3dbe6fb8b96c7459f3e8046}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!namelist\+\_\+name@{namelist\+\_\+name}}
-\index{namelist\+\_\+name@{namelist\+\_\+name}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{namelist\+\_\+name}{namelist\_name}}
-{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::namelist\+\_\+name\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{namespacem__cli2_a649439045139e5473091df65ecde6a4b}\label{namespacem__cli2_a649439045139e5473091df65ecde6a4b}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!passed\+\_\+in@{passed\+\_\+in}}
-\index{passed\+\_\+in@{passed\+\_\+in}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{passed\+\_\+in}{passed\_in}}
-{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::passed\+\_\+in\hspace{0.3cm}{\ttfamily [private]}}
-
 \mbox{\Hypertarget{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}\label{namespacem__cli2_adf9ffb8a34d1bd666fa91ed953bcb9f4}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!present\+\_\+in@{present\+\_\+in}}
 \index{present\+\_\+in@{present\+\_\+in}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{present\+\_\+in}{present\_in}}
 {\footnotesize\ttfamily logical, dimension(\+:), allocatable m\+\_\+cli2\+::present\+\_\+in\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}\label{namespacem__cli2_abbcd01a5c2a1e6030d09f3a5dbe1fa45}} 
-\index{m\+\_\+cli2@{m\+\_\+cli2}!return\+\_\+all@{return\+\_\+all}}
-\index{return\+\_\+all@{return\+\_\+all}!m\+\_\+cli2@{m\+\_\+cli2}}
-\subsubsection{\texorpdfstring{return\+\_\+all}{return\_all}}
-{\footnotesize\ttfamily logical m\+\_\+cli2\+::return\+\_\+all\hspace{0.3cm}{\ttfamily [private]}}
+\mbox{\Hypertarget{namespacem__cli2_ae158de0b5e1d1a55bb297ed576e38273}\label{namespacem__cli2_ae158de0b5e1d1a55bb297ed576e38273}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!remaining@{remaining}}
+\index{remaining@{remaining}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{remaining}{remaining}}
+{\footnotesize\ttfamily character(len=\+:), allocatable, public m\+\_\+cli2\+::remaining}
 
 \mbox{\Hypertarget{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}\label{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!unnamed@{unnamed}}

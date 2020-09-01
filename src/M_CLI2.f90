@@ -116,6 +116,7 @@ public                              :: get_args
 public                              :: get_args_fixed_size
 public                              :: get_args_fixed_length
 public                              :: specified
+public                              :: print_dictionary
 
 public                              :: dget, iget, lget, rget, sget, cget
 public                              :: dgets, igets, lgets, rgets, sgets, cgets
@@ -1087,13 +1088,17 @@ logical                      :: nomore
           endif
       endif
 
-      if(current_argument.eq.'-')then  ! sort of
+      if( current_argument .eq. '-' .and. nomore .eqv. .true. )then  ! sort of
+      elseif( current_argument .eq. '-')then  ! sort of
          current_argument='"stdin"'
       endif
-      if(current_argument.eq.'--')then ! everything after this goes into the unnamed array
+      if( current_argument .eq. '--' .and. nomore .eqv. .true. )then ! -- was already encountered
+      elseif( current_argument .eq. '--' )then ! everything after this goes into the unnamed array
          nomore=.true.
          pointer=0
-         G_remaining_on=.true.
+         if(G_remaining_option_allowed)then
+            G_remaining_on=.true.
+         endif
          cycle
       endif
       dummy=current_argument//'   '

@@ -1,21 +1,15 @@
 var searchData=
 [
-  ['remove',['remove',['../interfacem__cli2_1_1remove.html',1,'m_cli2']]],
-  ['remove_5fc',['remove_c',['../interfacem__cli2_1_1remove.html#aae13960af6c9ed2af46fdfec8e66a8a2',1,'m_cli2::remove::remove_c()'],['../namespacem__cli2.html#a155af513c048d68552ec2e8fb54e1294',1,'m_cli2::remove_c()']]],
-  ['remove_5fd',['remove_d',['../interfacem__cli2_1_1remove.html#a0d123599053c144f5ab233b735a38f1d',1,'m_cli2::remove::remove_d()'],['../namespacem__cli2.html#a5deb6a427a39e04c5a18a82497d5cf84',1,'m_cli2::remove_d()']]],
-  ['remove_5fi',['remove_i',['../interfacem__cli2_1_1remove.html#a4a30f737b41e6cfca58ef2842d633b27',1,'m_cli2::remove::remove_i()'],['../namespacem__cli2.html#a1c2bd26b3c04a499cc65b00133dfe6b9',1,'m_cli2::remove_i()']]],
-  ['remove_5fl',['remove_l',['../interfacem__cli2_1_1remove.html#a72934a0b165dc3d178ff7cbe6117a5b3',1,'m_cli2::remove::remove_l()'],['../namespacem__cli2.html#ae3fc38d25a8a4892bde95a7198c2495a',1,'m_cli2::remove_l()']]],
-  ['remove_5fr',['remove_r',['../interfacem__cli2_1_1remove.html#a13995f1150dcabb9127cfeb30a629406',1,'m_cli2::remove::remove_r()'],['../namespacem__cli2.html#a281edafaa6f74c30bd8de6d0c1d05be6',1,'m_cli2::remove_r()']]],
-  ['replace',['replace',['../interfacem__cli2_1_1replace.html',1,'m_cli2']]],
-  ['replace_5fc',['replace_c',['../interfacem__cli2_1_1replace.html#ab4d59b6a69d2768bf724f53604b3d0a9',1,'m_cli2::replace::replace_c()'],['../namespacem__cli2.html#affd644ac84d1010b40748f80d142d6b3',1,'m_cli2::replace_c()']]],
-  ['replace_5fd',['replace_d',['../interfacem__cli2_1_1replace.html#a606ded35a3f0d06cb61a28db82ab5ae7',1,'m_cli2::replace::replace_d()'],['../namespacem__cli2.html#ac327823dd714cd4c1667666158f0c135',1,'m_cli2::replace_d()']]],
-  ['replace_5fi',['replace_i',['../interfacem__cli2_1_1replace.html#a73a0dab38328c3db8a7eef48e27390bd',1,'m_cli2::replace::replace_i()'],['../namespacem__cli2.html#a0a591fd55e8010f26eb6f9f6bafc1ddb',1,'m_cli2::replace_i()']]],
-  ['replace_5fl',['replace_l',['../interfacem__cli2_1_1replace.html#a9c995edced1d2665777e794a3aa5b2a0',1,'m_cli2::replace::replace_l()'],['../namespacem__cli2.html#ae4a1802207f6b67e36cbf89003d6fb55',1,'m_cli2::replace_l()']]],
-  ['replace_5fr',['replace_r',['../interfacem__cli2_1_1replace.html#adf284ee215097b8416e81532b7d4251b',1,'m_cli2::replace::replace_r()'],['../namespacem__cli2.html#abe681a8b55ae238b029766713a79210a',1,'m_cli2::replace_r()']]],
-  ['replace_5fstr',['replace_str',['../namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f',1,'m_cli2']]],
-  ['return_5fall',['return_all',['../namespacem__cli2.html#abbcd01a5c2a1e6030d09f3a5dbe1fa45',1,'m_cli2']]],
-  ['rg',['rg',['../interfacem__cli2_1_1rgets.html#a5c63301442aa696f026c0d890e0d8eda',1,'m_cli2::rgets::rg()'],['../namespacem__cli2.html#aff7a379ff1e7269001592f452ab017c8',1,'m_cli2::rg()']]],
-  ['rget',['rget',['../namespacem__cli2.html#ade3a531cb1b2a60855ebe38031f7ed7a',1,'m_cli2']]],
-  ['rgets',['rgets',['../interfacem__cli2_1_1rgets.html',1,'m_cli2']]],
-  ['rgs',['rgs',['../interfacem__cli2_1_1rgets.html#a6b663822725bf5cc080c27f9044abd2e',1,'m_cli2::rgets::rgs()'],['../namespacem__cli2.html#ab526bbc0ccf60b19e298e49bf95e0595',1,'m_cli2::rgs()']]]
+  ['set',['set',['../structm__cli2_1_1dictionary.html#abbab4e9611ce7321d1ac616f927ec6a7',1,'m_cli2::dictionary']]],
+  ['set_5fargs',['set_args',['../namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736',1,'m_cli2']]],
+  ['sg',['sg',['../interfacem__cli2_1_1sgets.html#aaa1b931d8de18bda6937364ad76f89cb',1,'m_cli2::sgets::sg()'],['../namespacem__cli2.html#abc94b8f97a6056ea48ce48ab460bdf78',1,'m_cli2::sg()']]],
+  ['sget',['sget',['../namespacem__cli2.html#afb7e36674c50a0839bd4eae8301efefc',1,'m_cli2']]],
+  ['sgets',['sgets',['../interfacem__cli2_1_1sgets.html',1,'m_cli2']]],
+  ['sgs',['sgs',['../interfacem__cli2_1_1sgets.html#a6992270fd209105e956dc3e79a645a52',1,'m_cli2::sgets::sgs()'],['../namespacem__cli2.html#aa4eb8a68238351ba1893f9ce555f5c49',1,'m_cli2::sgs()']]],
+  ['shortname',['shortname',['../structm__cli2_1_1option.html#aebe0555d86a8533193827e348ba65e11',1,'m_cli2::option']]],
+  ['specified',['specified',['../namespacem__cli2.html#a90118f308a5120041a5862fca4740367',1,'m_cli2']]],
+  ['split',['split',['../namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665',1,'m_cli2']]],
+  ['str',['str',['../interfacem__cli2_1_1str.html',1,'m_cli2']]],
+  ['strtok',['strtok',['../namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a',1,'m_cli2']]],
+  ['substitute',['substitute',['../namespacem__cli2.html#a76af7f7c39e6755e024890d85d488704',1,'m_cli2']]]
 ];

@@ -1,5 +1,4 @@
 <map id="m_cli2::cmd_args_to_dictionary" name="m_cli2::cmd_args_to_dictionary">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a46f31858773ff1b4cf96329a14130bf2" title="m_cli2::prototype_and\l_cmd_args_to_nlist" alt="" coords="209,5,376,47"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#a85c38a938a7dd9a749daf8effe45c109" title="m_cli2::commandline" alt="" coords="424,13,587,39"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="635,13,763,39"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a30083aabd53a9db9794ecbd23c2226d0" title="m_cli2::prototype_and\l_cmd_args_to_nlist" alt="" coords="209,5,376,47"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="424,13,552,39"/>
 </map>

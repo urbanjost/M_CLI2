@@ -20,9 +20,9 @@ OBJS =  M_CLI2.o
 # platform-specific values you will probably change
 LIBS := 
 FC := gfortran
-FFLAGS := -O -Wall -Wextra
+FFLAGS := -g -O -Wall -Wextra
 F90 := gfortran
-F90FLAGS := -O -Wall -Wextra
+F90FLAGS := -g -O -Wall -Wextra
 LDFLAGS := 
 all: $(PROG) 
 	@echo "That's All Folks!"

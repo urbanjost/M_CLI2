@@ -1,5 +1,4 @@
 <map id="m_cli2::longest_command_argument" name="m_cli2::longest_command_argument">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a85c38a938a7dd9a749daf8effe45c109" title="m_cli2::commandline" alt="" coords="461,13,624,39"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a46f31858773ff1b4cf96329a14130bf2" title="m_cli2::prototype_and\l_cmd_args_to_nlist" alt="" coords="247,35,413,76"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="672,13,800,39"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="461,13,589,39"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a30083aabd53a9db9794ecbd23c2226d0" title="m_cli2::prototype_and\l_cmd_args_to_nlist" alt="" coords="247,35,413,76"/>
 </map>

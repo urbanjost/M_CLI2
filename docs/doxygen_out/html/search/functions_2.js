@@ -7,6 +7,5 @@ var searchData=
   ['dgs',['dgs',['../interfacem__cli2_1_1dgets.html#ab9c8964aca8338a18962fd3d41fbb6ab',1,'m_cli2::dgets::dgs()'],['../namespacem__cli2.html#a84bc83f5e8ec87f4d691e40df7569c83',1,'m_cli2::dgs()']]],
   ['dict_5fadd',['dict_add',['../namespacem__cli2.html#a601a06b7038b524abababc8d437ee823',1,'m_cli2']]],
   ['dict_5fdelete',['dict_delete',['../namespacem__cli2.html#afcdd2c59305faf341ebf8ec3b115a05e',1,'m_cli2']]],
-  ['dict_5fget',['dict_get',['../namespacem__cli2.html#a5b489c992f1434fa27e7858a483a38c7',1,'m_cli2']]],
-  ['dictionary_5fto_5fnamelist',['dictionary_to_namelist',['../namespacem__cli2.html#ab43e4e37723a0acc2183fbbf3d8c36bd',1,'m_cli2']]]
+  ['dict_5fget',['dict_get',['../namespacem__cli2.html#a5b489c992f1434fa27e7858a483a38c7',1,'m_cli2']]]
 ];

@@ -10,6 +10,5 @@ var searchData=
   ['dict_5fdelete',['dict_delete',['../namespacem__cli2.html#afcdd2c59305faf341ebf8ec3b115a05e',1,'m_cli2']]],
   ['dict_5fget',['dict_get',['../namespacem__cli2.html#a5b489c992f1434fa27e7858a483a38c7',1,'m_cli2']]],
   ['dictionary',['dictionary',['../structm__cli2_1_1dictionary.html',1,'m_cli2']]],
-  ['dictionary_5fto_5fnamelist',['dictionary_to_namelist',['../namespacem__cli2.html#ab43e4e37723a0acc2183fbbf3d8c36bd',1,'m_cli2']]],
   ['dp',['dp',['../namespacem__cli2.html#acf83f1963cf6a56ad0221cfcf5402440',1,'m_cli2']]]
 ];
