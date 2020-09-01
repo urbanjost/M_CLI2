@@ -77,6 +77,8 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:af1a1ef419e4e9d4653fce92182e0e0c2"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1insert.html#af1a1ef419e4e9d4653fce92182e0e0c2">insert_c</a> (list, value, place)</td></tr>
+<tr class="memdesc:af1a1ef419e4e9d4653fce92182e0e0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+insert(3f) - [M_CLI2] insert entry into a string array at specified position (LICENSE:PD)  <a href="#af1a1ef419e4e9d4653fce92182e0e0c2">More...</a><br /></td></tr>
 <tr class="separator:af1a1ef419e4e9d4653fce92182e0e0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbcad9e7123fdec1b5c996adc6076a26"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1insert.html#afbcad9e7123fdec1b5c996adc6076a26">insert_d</a> (list, value, place)</td></tr>
 <tr class="separator:afbcad9e7123fdec1b5c996adc6076a26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +129,65 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><h2>NAME</h2>
+insert(3f) - [M_CLI2] insert entry into a string array at specified position (LICENSE:PD) </p>
+<h2>SYNOPSIS</h2>
+<p>subroutine insert(list,value,place)</p>
+<p>character(len=*)|doubleprecision|real|integer,intent(in) :: value character(len=:)|doubleprecision|real|integer,intent(in) :: list(:) integer,intent(in) :: place</p>
+<h2>DESCRIPTION</h2>
+<pre class="fragment">Insert a value into an allocatable array at the specified index.
+The list and value must be of the same type (CHARACTER, DOUBLEPRECISION,
+REAL, or INTEGER)
+</pre><h2>OPTIONS</h2>
+<pre class="fragment">list    is the list array. Must be sorted in descending order.
+value   the value to place in the array
+PLACE   is the subscript that the entry should be placed at
+</pre><h2>EXAMPLES</h2>
+<p>Find if a string is in a sorted array, and insert the string into the list if it is not present ... </p><pre class="fragment">program demo_insert
+use M_sort, only : sort_shell
+use M_CLI2, only : locate, insert
+implicit none
+character(len=:),allocatable :: arr(:)
+integer                       :: i
+
+arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
+! add or replace values
+call update(arr,'b')
+call update(arr,'[')
+call update(arr,'c')
+call update(arr,'ZZ')
+call update(arr,'ZZZ')
+call update(arr,'ZZZZ')
+call update(arr,'')
+call update(arr,'z')
+
+contains
+subroutine update(arr,string)
+character(len=:),allocatable :: arr(:)
+character(len=*)             :: string
+integer                      :: place, end
+
+end=size(arr)
+! find where string is or should be
+call locate(arr,string,place)
+! if string was not found insert it
+if(place.lt.1)then
+   call insert(arr,string,abs(place))
+endif
+! show array
+end=size(arr)
+write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+
+end subroutine update
+end program demo_insert
+</pre><p>Results:</p>
+<p>array is now SIZE=5 xxx,b,aaa,ZZZ,, array is now SIZE=6 xxx,b,aaa,[,ZZZ,, array is now SIZE=7 xxx,c,b,aaa,[,ZZZ,, array is now SIZE=8 xxx,c,b,aaa,[,ZZZ,ZZ,, array is now SIZE=9 xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,, array is now SIZE=10 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,ZZ,,</p>
+<h2>AUTHOR</h2>
+<p>1989,2017 John S. Urban </p><h2>LICENSE</h2>
+<p>Public Domain </p>
 
 </div>
 </div>

@@ -6,7 +6,7 @@
 <area shape="rect" id="node20" href="$namespacem__cli2.html#a8000c5e05f6c84ba17350d4a00850a6a" title="m_cli2::get_fixedarray\l_fixed_length_c" alt="" coords="162,413,329,454"/>
 <area shape="rect" id="node3" href="$namespacem__cli2.html#a65ffe8c7a444db5db3be3f6edecef008" title="m_cli2::get_fixedarray_l" alt="" coords="615,5,793,32"/>
 <area shape="rect" id="node5" href="$namespacem__cli2.html#a138d07d14246ee532ce36e67719e8c7d" title="m_cli2::get_scalar\l_logical" alt="" coords="405,35,545,77"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a6d8c1c441ac15f9a2882e50459d39565" title="m_cli2::get_fixedarray\l_class" alt="" coords="841,187,1008,229"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a6d8c1c441ac15f9a2882e50459d39565" title="NAMEget_args(3f) &#45; [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments (LICE..." alt="" coords="841,187,1008,229"/>
 <area shape="rect" id="node7" href="$namespacem__cli2.html#ad314315dd5c93abff5168265f5ff0e4e" title="m_cli2::get_anyarray_i" alt="" coords="390,101,561,128"/>
 <area shape="rect" id="node8" href="$namespacem__cli2.html#a8f1d5223b075f23d513c94548a1ebf09" title="m_cli2::get_anyarray_r" alt="" coords="390,152,561,179"/>
 <area shape="rect" id="node10" href="$namespacem__cli2.html#ab9ab288fa5f108beeb7c94d81b223b7c" title="m_cli2::get_anyarray_x" alt="" coords="388,203,563,229"/>

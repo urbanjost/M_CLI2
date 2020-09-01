@@ -77,6 +77,9 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a6981d9d92e581945d4528568b6457c29"><td class="memItemLeft" align="right" valign="top">character(len=:) function, allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1str.html#a6981d9d92e581945d4528568b6457c29">msg_scalar</a> (generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, nospace)</td></tr>
+<tr class="memdesc:a6981d9d92e581945d4528568b6457c29"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+str(3f) - [M_CLI2] converts any standard scalar type to a string (LICENSE:PD) </p><h2>SYNOPSIS</h2>
+ <a href="#a6981d9d92e581945d4528568b6457c29">More...</a><br /></td></tr>
 <tr class="separator:a6981d9d92e581945d4528568b6457c29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac020bc195a094be93216e056337f1c12"><td class="memItemLeft" align="right" valign="top">character(len=:) function, allocatable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1str.html#ac020bc195a094be93216e056337f1c12">msg_one</a> (generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, nospace)</td></tr>
 <tr class="separator:ac020bc195a094be93216e056337f1c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,6 +322,51 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><h2>NAME</h2>
+str(3f) - [M_CLI2] converts any standard scalar type to a string (LICENSE:PD) </p><h2>SYNOPSIS</h2>
+</p>
+<p>function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,nospace)</p>
+<p>class(*),intent(in),optional :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9 class(*),intent(in),optional :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj logical,intent(in),optional :: nospace character,len=(:),allocatable :: str</p>
+<h2>DESCRIPTION</h2>
+<p>str(3f) builds a space-separated string from up to twenty scalar values.</p>
+<h2>OPTIONS</h2>
+<p>g[0-9a-j] optional value to print the value of after the message. May be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX, or CHARACTER.</p>
+<p>Optionally, all the generic values can be single-dimensioned arrays. Currently, mixing scalar arguments and array arguments is not supported.</p>
+<p>nospace if nospace=.true., then no spaces are added between values </p><h2>RETURNS</h2>
+<p>str description to print </p><h2>EXAMPLES</h2>
+<p>Sample program: </p><pre class="fragment">  program demo_msg
+  use M_CLI2, only : str
+  implicit none
+  character(len=:),allocatable :: pr
+  character(len=:),allocatable :: frmt
+  integer                      :: biggest
+
+  pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
+  write(*,'(a)')pr
+  pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
+  write(*,'(a)')pr
+  pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
+  write(*,'(a)')pr
+  pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
+  write(*,'(a)')pr
+
+  ! create a format on the fly
+  biggest=huge(0)
+  frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+  write(*,*)'format=',frmt
+
+  ! although it will often work, using str(3f) in an I/O statement is not recommended
+  ! because if an error occurs str(3f) will try to write while part of an I/O statement
+  ! which not all compilers can handle and is currently non-standard
+  write(*,*)str('program will now stop')
+
+  end program demo_msg
+</pre><p>Output</p>
+<p>HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308 real : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38 doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308 complex : (3.40282347E+38,1.17549435E-38) format=(*(i9:,1x)) program will now stop</p>
+<h2>AUTHOR</h2>
+<p>John S. Urban </p><h2>LICENSE</h2>
+<p>Public Domain </p>
 
 </div>
 </div>

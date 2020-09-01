@@ -4,7 +4,9 @@
 \begin{DoxyCompactItemize}
 \item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_af1a1ef419e4e9d4653fce92182e0e0c2}{insert\+\_\+c}} (list, value, place)
-\item 
+\begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
+
+insert(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_afbcad9e7123fdec1b5c996adc6076a26}{insert\+\_\+d}} (list, value, place)
 \item 
 subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_a647342bf6669248878fd990a9d92ef2e}{insert\+\_\+r}} (list, value, place)
@@ -22,7 +24,87 @@ subroutine \mbox{\hyperlink{interfacem__cli2_1_1insert_a48dedb7035fb157485c81de9
 \subsubsection{\texorpdfstring{insert\+\_\+c()}{insert\_c()}}
 {\footnotesize\ttfamily subroutine m\+\_\+cli2\+::insert\+::insert\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{interfacem__cli2_1_1insert_afbcad9e7123fdec1b5c996adc6076a26}\label{interfacem__cli2_1_1insert_afbcad9e7123fdec1b5c996adc6076a26}} 
+
+
+\subsubsection*{N\+A\+ME}
+
+insert(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} insert entry into a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD) 
+
+\subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
+
+subroutine insert(list,value,place)
+
+character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: value character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:\+: list(\+:) integer,intent(in) \+:\+: place
+
+\subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
+
+\begin{DoxyVerb}Insert a value into an allocatable array at the specified index.
+The list and value must be of the same type (CHARACTER, DOUBLEPRECISION,
+REAL, or INTEGER)
+\end{DoxyVerb}
+
+
+\subsubsection*{O\+P\+T\+I\+O\+NS}
+
+\begin{DoxyVerb}list    is the list array. Must be sorted in descending order.
+value   the value to place in the array
+PLACE   is the subscript that the entry should be placed at
+\end{DoxyVerb}
+
+
+\subsubsection*{E\+X\+A\+M\+P\+L\+ES}
+
+Find if a string is in a sorted array, and insert the string into the list if it is not present ... \begin{DoxyVerb}program demo_insert
+use M_sort, only : sort_shell
+use M_CLI2, only : locate, insert
+implicit none
+character(len=:),allocatable :: arr(:)
+integer                       :: i
+
+arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
+! add or replace values
+call update(arr,'b')
+call update(arr,'[')
+call update(arr,'c')
+call update(arr,'ZZ')
+call update(arr,'ZZZ')
+call update(arr,'ZZZZ')
+call update(arr,'')
+call update(arr,'z')
+
+contains
+subroutine update(arr,string)
+character(len=:),allocatable :: arr(:)
+character(len=*)             :: string
+integer                      :: place, end
+
+end=size(arr)
+! find where string is or should be
+call locate(arr,string,place)
+! if string was not found insert it
+if(place.lt.1)then
+   call insert(arr,string,abs(place))
+endif
+! show array
+end=size(arr)
+write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+
+end subroutine update
+end program demo_insert
+\end{DoxyVerb}
+
+
+Results\+:
+
+array is now S\+I\+ZE=5 xxx,b,aaa,Z\+ZZ,, array is now S\+I\+ZE=6 xxx,b,aaa,\mbox{[},Z\+ZZ,, array is now S\+I\+ZE=7 xxx,c,b,aaa,\mbox{[},Z\+ZZ,, array is now S\+I\+ZE=8 xxx,c,b,aaa,\mbox{[},Z\+ZZ,ZZ,, array is now S\+I\+ZE=9 xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,ZZ,, array is now S\+I\+ZE=10 z,xxx,c,b,aaa,\mbox{[},Z\+Z\+ZZ,Z\+ZZ,ZZ,,
+
+\subsubsection*{A\+U\+T\+H\+OR}
+
+1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
+
+Public Domain \mbox{\Hypertarget{interfacem__cli2_1_1insert_afbcad9e7123fdec1b5c996adc6076a26}\label{interfacem__cli2_1_1insert_afbcad9e7123fdec1b5c996adc6076a26}} 
 \index{m\+\_\+cli2\+::insert@{m\+\_\+cli2\+::insert}!insert\+\_\+d@{insert\+\_\+d}}
 \index{insert\+\_\+d@{insert\+\_\+d}!m\+\_\+cli2\+::insert@{m\+\_\+cli2\+::insert}}
 \subsubsection{\texorpdfstring{insert\+\_\+d()}{insert\_d()}}

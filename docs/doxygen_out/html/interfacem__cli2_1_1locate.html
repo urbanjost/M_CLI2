@@ -77,6 +77,8 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:a59a1546b8eab776a0ba5594b6b90ae72"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1locate.html#a59a1546b8eab776a0ba5594b6b90ae72">locate_c</a> (list, value, place, ier, errmsg)</td></tr>
+<tr class="memdesc:a59a1546b8eab776a0ba5594b6b90ae72"><td class="mdescLeft">&#160;</td><td class="mdescRight"><h2>NAME</h2>
+locate(3f) - [M_CLI2] finds the index where a string is found or should be in a sorted array (LICENSE:PD)  <a href="#a59a1546b8eab776a0ba5594b6b90ae72">More...</a><br /></td></tr>
 <tr class="separator:a59a1546b8eab776a0ba5594b6b90ae72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8d6a83fb2617b1a370d6f4142cfbf6b"><td class="memItemLeft" align="right" valign="top">subroutine&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacem__cli2_1_1locate.html#ac8d6a83fb2617b1a370d6f4142cfbf6b">locate_d</a> (list, value, place, ier, errmsg)</td></tr>
 <tr class="separator:ac8d6a83fb2617b1a370d6f4142cfbf6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +139,84 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><h2>NAME</h2>
+locate(3f) - [M_CLI2] finds the index where a string is found or should be in a sorted array (LICENSE:PD) </p>
+<h2>SYNOPSIS</h2>
+<p>subroutine locate(list,value,place,ier,errmsg)</p>
+<p>character(len=:)|doubleprecision|real|integer,allocatable :: list(:) character(len=*)|doubleprecision|real|integer,intent(in) :: value integer, intent(out) :: PLACE</p>
+<p>integer, intent(out),optional :: IER character(len=*),intent(out),optional :: ERRMSG</p>
+<h2>DESCRIPTION</h2>
+<pre class="fragment">LOCATE(3f) finds the index where the VALUE is found or should
+be found in an array. The array must be sorted in descending
+order (highest at top). If VALUE is not found it returns the index
+where the name should be placed at with a negative sign.
+
+The array and list must be of the same type (CHARACTER, DOUBLEPRECISION,
+REAL,INTEGER)
+</pre><h2>OPTIONS</h2>
+<pre class="fragment">VALUE         the value to locate in the list.
+LIST          is the list array.
+</pre><h2>RETURNS</h2>
+<p>PLACE is the subscript that the entry was found at if it is greater than zero(0).</p>
+<p>If PLACE is negative, the absolute value of PLACE indicates the subscript value where the new entry should be placed in order to keep the list alphabetized.</p>
+<p>IER is zero(0) if no error occurs. If an error occurs and IER is not present, the program is stopped.</p>
+<p>ERRMSG description of any error</p>
+<h2>EXAMPLES</h2>
+<p>Find if a string is in a sorted array, and insert the string into the list if it is not present ... </p><pre class="fragment">program demo_locate
+use M_sort, only : sort_shell
+use M_CLI2, only : locate
+implicit none
+character(len=:),allocatable  :: arr(:)
+integer                       :: i
+
+arr=[character(len=20) :: '', 'ZZZ', 'aaa', 'b', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
+
+call update(arr,'b')
+call update(arr,'[')
+call update(arr,'c')
+call update(arr,'ZZ')
+call update(arr,'ZZZZ')
+call update(arr,'z')
+
+contains
+subroutine update(arr,string)
+character(len=:),allocatable :: arr(:)
+character(len=*)             :: string
+integer                      :: place, plus, ii, end
+! find where string is or should be
+call locate(arr,string,place)
+write(*,*)'for "'//string//'" index is ',place, size(arr)
+! if string was not found insert it
+if(place.lt.1)then
+   plus=abs(place)
+   ii=len(arr)
+   end=size(arr)
+   ! empty array
+   if(end.eq.0)then
+      arr=[character(len=ii) :: string ]
+   ! put in front of array
+   elseif(plus.eq.1)then
+      arr=[character(len=ii) :: string, arr]
+   ! put at end of array
+   elseif(plus.eq.end)then
+      arr=[character(len=ii) :: arr, string ]
+   ! put in middle of array
+   else
+      arr=[character(len=ii) :: arr(:plus-1), string,arr(plus:) ]
+   endif
+   ! show array
+   write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+endif
+end subroutine update
+end program demo_locate
+</pre><p>Results:</p>
+<p>for "b" index is 2 5 for "[" index is -4 5 SIZE=5 xxx,b,aaa,[,ZZZ, for "c" index is -2 6 SIZE=6 xxx,c,b,aaa,[,ZZZ, for "ZZ" index is -7 7 SIZE=7 xxx,c,b,aaa,[,ZZZ,, for "ZZZZ" index is -6 8 SIZE=8 xxx,c,b,aaa,[,ZZZZ,ZZZ,, for "z" index is -1 9 SIZE=9 z,xxx,c,b,aaa,[,ZZZZ,ZZZ,,</p>
+<h2>AUTHOR</h2>
+<p>1989,2017 John S. Urban </p><h2>LICENSE</h2>
+<p>Public Domain </p>
 
 </div>
 </div>

@@ -1,6 +1,6 @@
 <map id="m_cli2::lower" name="m_cli2::lower">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="m_cli2::split" alt="" coords="334,391,435,418"/>
-<area shape="rect" id="node22" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="m_cli2::quote" alt="" coords="163,515,273,542"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="334,391,435,418"/>
+<area shape="rect" id="node22" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_CLI2:QUOTES] add quotes to string as if written with list&#45;directed input (LICENSE:..." alt="" coords="163,515,273,542"/>
 <area shape="rect" id="node3" href="$namespacem__cli2.html#a47cc758d20b655bc21672c31289e54ce" title="m_cli2::get_anyarray_l" alt="" coords="501,311,672,338"/>
 <area shape="rect" id="node7" href="$namespacem__cli2.html#aaede1f28172778cf45f4b6c04967bbbd" title="m_cli2::get_anyarray_d" alt="" coords="499,165,674,191"/>
 <area shape="rect" id="node19" href="$namespacem__cli2.html#a448e8e24406f4bdbc14f26a940cbbc2c" title="m_cli2::get_anyarray_c" alt="" coords="500,362,673,389"/>
@@ -8,7 +8,7 @@
 <area shape="rect" id="node21" href="$namespacem__cli2.html#a8000c5e05f6c84ba17350d4a00850a6a" title="m_cli2::get_fixedarray\l_fixed_length_c" alt="" coords="503,479,670,520"/>
 <area shape="rect" id="node4" href="$namespacem__cli2.html#a65ffe8c7a444db5db3be3f6edecef008" title="m_cli2::get_fixedarray_l" alt="" coords="956,391,1135,418"/>
 <area shape="rect" id="node6" href="$namespacem__cli2.html#a138d07d14246ee532ce36e67719e8c7d" title="m_cli2::get_scalar\l_logical" alt="" coords="747,319,887,360"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a6d8c1c441ac15f9a2882e50459d39565" title="m_cli2::get_fixedarray\l_class" alt="" coords="1183,140,1349,181"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a6d8c1c441ac15f9a2882e50459d39565" title="NAMEget_args(3f) &#45; [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments (LICE..." alt="" coords="1183,140,1349,181"/>
 <area shape="rect" id="node8" href="$namespacem__cli2.html#ad314315dd5c93abff5168265f5ff0e4e" title="m_cli2::get_anyarray_i" alt="" coords="731,63,902,90"/>
 <area shape="rect" id="node9" href="$namespacem__cli2.html#a8f1d5223b075f23d513c94548a1ebf09" title="m_cli2::get_anyarray_r" alt="" coords="731,165,902,191"/>
 <area shape="rect" id="node11" href="$namespacem__cli2.html#ab9ab288fa5f108beeb7c94d81b223b7c" title="m_cli2::get_anyarray_x" alt="" coords="729,13,904,39"/>
@@ -21,12 +21,12 @@
 <area shape="rect" id="node17" href="$namespacem__cli2.html#ad089d91c66626de91bcda84523e80b54" title="m_cli2::get_scalar_real" alt="" coords="959,290,1131,317"/>
 <area shape="rect" id="node18" href="$namespacem__cli2.html#a9c5208ef6763da7e68dd1e118bea0b7a" title="m_cli2::get_scalar_i" alt="" coords="970,341,1121,367"/>
 <area shape="rect" id="node23" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="967,615,1123,656"/>
-<area shape="rect" id="node26" href="$namespacem__cli2.html#a9cab7352414f8b5625330a9ff5cf0cb4" title="m_cli2::unquote" alt="" coords="321,515,448,542"/>
-<area shape="rect" id="node24" href="$namespacem__cli2.html#a30083aabd53a9db9794ecbd23c2226d0" title="m_cli2::prototype_and\l_cmd_args_to_nlist" alt="" coords="1183,579,1349,620"/>
-<area shape="rect" id="node25" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="m_cli2::set_args" alt="" coords="1397,586,1525,613"/>
+<area shape="rect" id="node26" href="$namespacem__cli2.html#a9cab7352414f8b5625330a9ff5cf0cb4" title="NAMEunquote(3f) &#45; [M_CLI2:QUOTES] remove quotes from string as if read with list&#45;directed input (LICE..." alt="" coords="321,515,448,542"/>
+<area shape="rect" id="node24" href="$namespacem__cli2.html#a30083aabd53a9db9794ecbd23c2226d0" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="1183,579,1349,620"/>
+<area shape="rect" id="node25" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="1397,586,1525,613"/>
 <area shape="rect" id="node27" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="m_cli2::update" alt="" coords="527,545,646,571"/>
 <area shape="rect" id="node30" href="$namespacem__cli2.html#a7429381c83a021ba3ffb32ed58e17a0e" title="m_cli2::get_scalar\l_anylength_c" alt="" coords="517,661,657,703"/>
 <area shape="rect" id="node31" href="$namespacem__cli2.html#a9dcc99d34db1771959a1461274ae073e" title="m_cli2::get_scalar\l_fixed_length_c" alt="" coords="517,596,657,637"/>
-<area shape="rect" id="node28" href="$namespacem__cli2.html#a14896d00e509cbc32f4df993a8d6f75b" title="m_cli2::prototype_to\l_dictionary" alt="" coords="739,531,895,572"/>
+<area shape="rect" id="node28" href="$namespacem__cli2.html#a14896d00e509cbc32f4df993a8d6f75b" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="739,531,895,572"/>
 <area shape="rect" id="node29" href="$M__CLI2_8f90.html#aa26f90016621d1ee43d3b5b66316532b" title="ifnull" alt="" coords="789,647,844,674"/>
 </map>
