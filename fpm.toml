@@ -4,6 +4,7 @@ license = "Public Domain"
 author = "John S. Urban"
 maintainer = "urbanjost@comcast.net"
 copyright = "2020 John S. Urban"
+description = "Unix-style commandline parsing using a prototype command  (STD:f2008)"
 
 # unit test program
 test = [ { name="runTests", source-dir="test", main="main.f90" } ]
