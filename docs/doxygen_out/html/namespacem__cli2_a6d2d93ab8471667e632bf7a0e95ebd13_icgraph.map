@@ -22,8 +22,8 @@
 <area shape="rect" id="node18" href="$namespacem__cli2.html#a9c5208ef6763da7e68dd1e118bea0b7a" title="m_cli2::get_scalar_i" alt="" coords="970,341,1121,367"/>
 <area shape="rect" id="node23" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="967,615,1123,656"/>
 <area shape="rect" id="node26" href="$namespacem__cli2.html#a9cab7352414f8b5625330a9ff5cf0cb4" title="NAMEunquote(3f) &#45; [M_CLI2:QUOTES] remove quotes from string as if read with list&#45;directed input (LICE..." alt="" coords="321,515,448,542"/>
-<area shape="rect" id="node24" href="$namespacem__cli2.html#a30083aabd53a9db9794ecbd23c2226d0" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="1183,579,1349,620"/>
-<area shape="rect" id="node25" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="1397,586,1525,613"/>
+<area shape="rect" id="node24" href="$namespacem__cli2.html#a06f8bb6dd63fd7ac2a91b46ee89baaa9" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="1183,579,1349,620"/>
+<area shape="rect" id="node25" href="$namespacem__cli2.html#a54449bc83be4ddc46746a6a33b590c40" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="1397,586,1525,613"/>
 <area shape="rect" id="node27" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="m_cli2::update" alt="" coords="527,545,646,571"/>
 <area shape="rect" id="node30" href="$namespacem__cli2.html#a7429381c83a021ba3ffb32ed58e17a0e" title="m_cli2::get_scalar\l_anylength_c" alt="" coords="517,661,657,703"/>
 <area shape="rect" id="node31" href="$namespacem__cli2.html#a9dcc99d34db1771959a1461274ae073e" title="m_cli2::get_scalar\l_fixed_length_c" alt="" coords="517,596,657,637"/>

@@ -3,8 +3,8 @@
 <area shape="rect" id="node3" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_CLI2:QUOTES] add quotes to string as if written with list&#45;directed input (LICENSE:..." alt="" coords="353,58,464,85"/>
 <area shape="rect" id="node4" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="1131,5,1287,47"/>
 <area shape="rect" id="node7" href="$namespacem__cli2.html#a9cab7352414f8b5625330a9ff5cf0cb4" title="NAMEunquote(3f) &#45; [M_CLI2:QUOTES] remove quotes from string as if read with list&#45;directed input (LICE..." alt="" coords="512,138,639,165"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a30083aabd53a9db9794ecbd23c2226d0" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="1335,48,1501,89"/>
-<area shape="rect" id="node6" href="$namespacem__cli2.html#a6d20994aa80217dd3d0ffd1d5586f736" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="1549,55,1677,82"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a06f8bb6dd63fd7ac2a91b46ee89baaa9" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="1335,48,1501,89"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a54449bc83be4ddc46746a6a33b590c40" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="1549,55,1677,82"/>
 <area shape="rect" id="node8" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="m_cli2::update" alt="" coords="718,29,837,55"/>
 <area shape="rect" id="node11" href="$namespacem__cli2.html#a448e8e24406f4bdbc14f26a940cbbc2c" title="m_cli2::get_anyarray_c" alt="" coords="691,79,864,106"/>
 <area shape="rect" id="node12" href="$namespacem__cli2.html#abc31389c45dcd95b8db641b59b98b447" title="m_cli2::get_fixed_length\l_any_size_cxxxx" alt="" coords="687,131,868,172"/>

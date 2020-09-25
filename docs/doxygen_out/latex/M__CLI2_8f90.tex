@@ -75,7 +75,7 @@ subroutine, private \mbox{\hyperlink{namespacem__cli2_ada8b5e7a86778085f55821ec3
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 check\+\_\+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]}check command and process pre-\/defined options \end{DoxyCompactList}\item 
-subroutine, public \mbox{\hyperlink{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}{m\+\_\+cli2\+::set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text)
+subroutine, public \mbox{\hyperlink{namespacem__cli2_a54449bc83be4ddc46746a6a33b590c40}{m\+\_\+cli2\+::set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text, string, ierr, errmsg)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
@@ -97,7 +97,7 @@ character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__c
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 get(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} get dictionary value associated with key name in private M\+\_\+\+C\+L\+I2(3fm) dictionary \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}{m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype)
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a06f8bb6dd63fd7ac2a91b46ee89baaa9}{m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype, string)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} convert Unix-\/like command arguments to table (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
@@ -324,6 +324,8 @@ logical function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_
 complex function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_af45e2401f7c3c2309fe92882c1d5e521}{m\+\_\+cli2\+::cg}} ()
 \item 
 character(len=\+:) function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_abc94b8f97a6056ea48ce48ab460bdf78}{m\+\_\+cli2\+::sg}} ()
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a0e44d7c9058545df8bf09674e9c2e799}{m\+\_\+cli2\+::mystop}} (sig, msg)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -331,6 +333,8 @@ character(len=\+:) function, dimension(\+:), allocatable \mbox{\hyperlink{namesp
 integer, parameter, private \mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{m\+\_\+cli2\+::dp}} =kind(0.\+0d0)
 \item 
 character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}{m\+\_\+cli2\+::unnamed}}
+\item 
+character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a601970031be3351d1f14ce671934ffe7}{m\+\_\+cli2\+::args}}
 \item 
 character(len=\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ae158de0b5e1d1a55bb297ed576e38273}{m\+\_\+cli2\+::remaining}}
 \item 
@@ -351,6 +355,12 @@ logical \mbox{\hyperlink{namespacem__cli2_a81306eb55af0b7b6ab8aa2851c0bd8be}{m\+
 logical \mbox{\hyperlink{namespacem__cli2_af16d24ebf98bf90f8c7c32dda70eeb43}{m\+\_\+cli2\+::g\+\_\+remaining\+\_\+option\+\_\+allowed}}
 \item 
 character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a9ff84c9aa401e7b45d9d86cd6b17bbcc}{m\+\_\+cli2\+::g\+\_\+remaining}}
+\item 
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a0afc43936eba64e78b8920742ffb71e1}{m\+\_\+cli2\+::g\+\_\+stop\+\_\+message}}
+\item 
+integer \mbox{\hyperlink{namespacem__cli2_a07a17fd130c21dd97917a0f415cf302b}{m\+\_\+cli2\+::g\+\_\+stop}}
+\item 
+logical \mbox{\hyperlink{namespacem__cli2_ac2ad61c8af780de83b4adecc5d735d8b}{m\+\_\+cli2\+::g\+\_\+stopon}}
 \end{DoxyCompactItemize}
 
 
@@ -391,7 +401,8 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{M__CLI2_8f90_aa26f90016621d1ee43d3b5b66316532b_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -417,3 +428,15 @@ Here is the caller graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{print\+\_\+generic()}{print\_generic()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
 {\footnotesize\ttfamily subroutine msg\+\_\+one\+::print\+\_\+generic (\begin{DoxyParamCaption}\item[{class($\ast$), dimension(\+:), intent(in), optional}]{generic }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+
+
+References m\+\_\+cli2\+::mystop().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{M__CLI2_8f90_a9d5e1620d474ac03a74eeb9b0f7d6ae1_cgraph}
+\end{center}
+\end{figure}

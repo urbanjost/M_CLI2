@@ -49,7 +49,7 @@ subroutine, private \mbox{\hyperlink{namespacem__cli2_ada8b5e7a86778085f55821ec3
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 check\+\_\+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]}check command and process pre-\/defined options \end{DoxyCompactList}\item 
-subroutine, public \mbox{\hyperlink{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}{set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text)
+subroutine, public \mbox{\hyperlink{namespacem__cli2_a54449bc83be4ddc46746a6a33b590c40}{set\+\_\+args}} (prototype, help\+\_\+text, version\+\_\+text, string, ierr, errmsg)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} command line argument parsing (L\+I\+C\+E\+N\+SE\+:PD) \end{DoxyCompactList}\item 
@@ -71,7 +71,7 @@ character(len=\+:) function, allocatable, private \mbox{\hyperlink{namespacem__c
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 get(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} get dictionary value associated with key name in private M\+\_\+\+C\+L\+I2(3fm) dictionary \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
-subroutine, private \mbox{\hyperlink{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype)
+subroutine, private \mbox{\hyperlink{namespacem__cli2_a06f8bb6dd63fd7ac2a91b46ee89baaa9}{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}} (prototype, string)
 \begin{DoxyCompactList}\small\item\em \subsubsection*{N\+A\+ME}
 
 prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} convert Unix-\/like command arguments to table (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}\end{DoxyCompactList}\item 
@@ -288,6 +288,8 @@ logical function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_
 complex function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_af45e2401f7c3c2309fe92882c1d5e521}{cg}} ()
 \item 
 character(len=\+:) function, dimension(\+:), allocatable \mbox{\hyperlink{namespacem__cli2_abc94b8f97a6056ea48ce48ab460bdf78}{sg}} ()
+\item 
+subroutine \mbox{\hyperlink{namespacem__cli2_a0e44d7c9058545df8bf09674e9c2e799}{mystop}} (sig, msg)
 \end{DoxyCompactItemize}
 \subsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -295,6 +297,8 @@ character(len=\+:) function, dimension(\+:), allocatable \mbox{\hyperlink{namesp
 integer, parameter, private \mbox{\hyperlink{namespacem__cli2_acf83f1963cf6a56ad0221cfcf5402440}{dp}} =kind(0.\+0d0)
 \item 
 character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a5b03781cb432174f4ee8d734ecbb9604}{unnamed}}
+\item 
+character(len=\+:), dimension(\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_a601970031be3351d1f14ce671934ffe7}{args}}
 \item 
 character(len=\+:), allocatable, public \mbox{\hyperlink{namespacem__cli2_ae158de0b5e1d1a55bb297ed576e38273}{remaining}}
 \item 
@@ -315,6 +319,12 @@ logical \mbox{\hyperlink{namespacem__cli2_a81306eb55af0b7b6ab8aa2851c0bd8be}{g\+
 logical \mbox{\hyperlink{namespacem__cli2_af16d24ebf98bf90f8c7c32dda70eeb43}{g\+\_\+remaining\+\_\+option\+\_\+allowed}}
 \item 
 character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a9ff84c9aa401e7b45d9d86cd6b17bbcc}{g\+\_\+remaining}}
+\item 
+character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a0afc43936eba64e78b8920742ffb71e1}{g\+\_\+stop\+\_\+message}}
+\item 
+integer \mbox{\hyperlink{namespacem__cli2_a07a17fd130c21dd97917a0f415cf302b}{g\+\_\+stop}}
+\item 
+logical \mbox{\hyperlink{namespacem__cli2_ac2ad61c8af780de83b4adecc5d735d8b}{g\+\_\+stopon}}
 \end{DoxyCompactItemize}
 
 
@@ -323,7 +333,7 @@ character(len=\+:), allocatable \mbox{\hyperlink{namespacem__cli2_a9ff84c9aa401e
 
 M\+\_\+\+C\+L\+I2(3fm) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+T\+S\+::\+M\+\_\+\+C\+L\+I2\mbox{]} -\/ command line argument parsing using a prototype command (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
-use M\+\_\+\+C\+L\+I2, only \+: set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed, remaining use M\+\_\+\+C\+L\+I2, only \+: \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__length}{get\+\_\+args\+\_\+fixed\+\_\+length}}, \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__size}{get\+\_\+args\+\_\+fixed\+\_\+size}} ! convenience functions use M\+\_\+\+C\+L\+I2, only \+: \+:\+: dget, iget, lget, rget, sget, cget use M\+\_\+\+C\+L\+I2, only \+: \+:\+: dgets, igets, lgets, rgets, sgets, cgets
+use M\+\_\+\+C\+L\+I2, only \+: set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed, remaining, args use M\+\_\+\+C\+L\+I2, only \+: \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__length}{get\+\_\+args\+\_\+fixed\+\_\+length}}, \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__size}{get\+\_\+args\+\_\+fixed\+\_\+size}} ! convenience functions use M\+\_\+\+C\+L\+I2, only \+: \+:\+: dget, iget, lget, rget, sget, cget use M\+\_\+\+C\+L\+I2, only \+: \+:\+: dgets, igets, lgets, rgets, sgets, cgets
 
 \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
 
@@ -502,10 +512,10 @@ check\+\_\+commandline(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+
 
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
-\begin{DoxyVerb}  subroutine check_commandline(help_text,version_text)
+\begin{DoxyVerb}  subroutine check_commandline(help_text,version_text,ierr,errmsg)
 
-   character(len=:),allocatable,intent(in),allocatable,optional :: help_text(:)
-   character(len=:),allocatable,intent(in),allocatable,optional :: version_text(:)
+   character(len=:),allocatable,intent(in),optional :: help_text(:)
+   character(len=:),allocatable,intent(in),optional :: version_text(:)
 \end{DoxyVerb}
 
 
@@ -525,11 +535,12 @@ If the optional text values are supplied they will be displayed by --help and --
  VERSION_TEXT  if present, will be displayed if program is called with
                --version switch, and then the program will terminate.
 
-    If the first four characters of each line are "@(#)" this prefix will
-    not be displayed. This if for support of the SCCS what(1) command. If
-    you do not have the what(1) command on GNU/Linux and Unix platforms
-    you can probably see how it can be used to place metadata in a binary
-    by entering:
+    If the first four characters of each line are "@(#)" this prefix
+    will not be displayed and the last non-blank letter will be
+    removed from each line. This if for support of the SCCS what(1)
+    command. If you do not have the what(1) command on GNU/Linux and
+    Unix platforms you can probably see how it can be used to place
+    metadata in a binary by entering:
 
         strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
 \end{DoxyVerb}
@@ -559,16 +570,18 @@ Typical usage\+: \begin{DoxyVerb} program check_commandline
  end program check_commandline \end{DoxyVerb}
  
 
-References g\+\_\+passed\+\_\+in, get(), journal(), print\+\_\+dictionary(), and substitute().
+References g\+\_\+passed\+\_\+in, get(), journal(), mystop(), print\+\_\+dictionary(), and substitute().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -583,16 +596,18 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, get(), ifnull(), keywords, print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
+References args, g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, get(), ifnull(), keywords, mystop(), print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -697,14 +712,16 @@ Public Domain
 
 References journal(), and strtok().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=312pt]{namespacem__cli2_a710b26995119aee101959555b1bac8e2_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -787,14 +804,16 @@ Public Domain
 
 References a2i(), and upper().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a1029304d495b2bf791e03cfab5983bbb_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -811,7 +830,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References a2d(), and unnamed.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1034,7 +1054,8 @@ Get dictionary value associated with key name in private M\+\_\+\+C\+L\+I2(3fm) 
 
 References counts, keywords, and values.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1049,9 +1070,10 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References counts, journal(), keywords, split(), unquote(), and values.
+References counts, keywords, mystop(), split(), unquote(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1066,16 +1088,18 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-References a2d(), counts, journal(), keywords, replace\+\_\+str(), split(), and values.
+References a2d(), counts, keywords, mystop(), replace\+\_\+str(), split(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_aaede1f28172778cf45f4b6c04967bbbd_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1092,7 +1116,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+d().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1107,16 +1132,18 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-References counts, journal(), keywords, split(), upper(), and values.
+References counts, journal(), keywords, mystop(), split(), upper(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a47cc758d20b655bc21672c31289e54ce_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1133,14 +1160,16 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+d().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a8f1d5223b075f23d513c94548a1ebf09_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1155,16 +1184,18 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References get\+\_\+anyarray\+\_\+d(), and journal().
+References get\+\_\+anyarray\+\_\+d(), and mystop().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_ab9ab288fa5f108beeb7c94d81b223b7c_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1179,9 +1210,10 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References counts, journal(), keywords, split(), unquote(), and values.
+References counts, journal(), keywords, mystop(), split(), unquote(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1196,16 +1228,18 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-References get\+\_\+anyarray\+\_\+x(), journal(), and print\+\_\+dictionary().
+References get\+\_\+anyarray\+\_\+x(), journal(), mystop(), and print\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a32b78784e20e29bf40f17e16d08336fa_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1475,9 +1509,10 @@ John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
 Public Domain 
 
-References get\+\_\+fixed\+\_\+size\+\_\+complex(), get\+\_\+fixedarray\+\_\+d(), get\+\_\+fixedarray\+\_\+fixed\+\_\+length\+\_\+c(), get\+\_\+fixedarray\+\_\+i(), get\+\_\+fixedarray\+\_\+l(), and get\+\_\+fixedarray\+\_\+r().
+References get\+\_\+fixed\+\_\+size\+\_\+complex(), get\+\_\+fixedarray\+\_\+d(), get\+\_\+fixedarray\+\_\+fixed\+\_\+length\+\_\+c(), get\+\_\+fixedarray\+\_\+i(), get\+\_\+fixedarray\+\_\+l(), get\+\_\+fixedarray\+\_\+r(), and mystop().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1494,14 +1529,16 @@ Here is the call graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+d(), journal(), and print\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a2c8db0f383888cb2b3ce8643de3fae93_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1516,16 +1553,18 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References counts, journal(), keywords, print\+\_\+dictionary(), split(), unquote(), and values.
+References counts, journal(), keywords, mystop(), print\+\_\+dictionary(), split(), unquote(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a8000c5e05f6c84ba17350d4a00850a6a_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1542,14 +1581,16 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+d(), journal(), and print\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_aa469ba94e6bb122c9bf30dd8642b693b_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1566,14 +1607,16 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+l(), journal(), and print\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a65ffe8c7a444db5db3be3f6edecef008_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1590,14 +1633,16 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+r(), journal(), and print\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_afbec790abad0dca990c0a61cd2d9e9ae_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1612,9 +1657,10 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References counts, journal(), keywords, unquote(), and values.
+References counts, keywords, mystop(), unquote(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1629,9 +1675,10 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-References get\+\_\+fixedarray\+\_\+d(), and journal().
+References get\+\_\+fixedarray\+\_\+d(), journal(), and mystop().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1648,14 +1695,16 @@ Here is the call graph for this function\+:\nopagebreak
 
 References get\+\_\+anyarray\+\_\+d(), journal(), and print\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a338757660adde093db76b7d5559a1906_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1670,9 +1719,10 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-References counts, journal(), keywords, unquote(), and values.
+References counts, journal(), keywords, mystop(), unquote(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1689,7 +1739,8 @@ Here is the call graph for this function\+:\nopagebreak
 
 References get\+\_\+scalar\+\_\+d().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1704,9 +1755,10 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-References get\+\_\+anyarray\+\_\+l(), and journal().
+References get\+\_\+anyarray\+\_\+l(), journal(), and mystop().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1723,7 +1775,8 @@ Here is the call graph for this function\+:\nopagebreak
 
 References get\+\_\+scalar\+\_\+d().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1740,14 +1793,16 @@ Here is the call graph for this function\+:\nopagebreak
 
 References value\+\_\+to\+\_\+string().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_aa106d3533fd6d4845f0b3e94b2a79ffb_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1764,7 +1819,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References a2i(), and unnamed.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1899,7 +1955,8 @@ Public Domain \mbox{\Hypertarget{namespacem__cli2_a737ae8e6f73a3fc8cc260732c047f
 \subsubsection{\texorpdfstring{journal()}{journal()}}
 {\footnotesize\ttfamily subroutine m\+\_\+cli2\+::journal (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{where,  }\item[{class($\ast$), intent(in)}]{g0,  }\item[{class($\ast$), intent(in), optional}]{g1,  }\item[{class($\ast$), intent(in), optional}]{g2,  }\item[{class($\ast$), intent(in), optional}]{g3,  }\item[{class($\ast$), intent(in), optional}]{g4,  }\item[{class($\ast$), intent(in), optional}]{g5,  }\item[{class($\ast$), intent(in), optional}]{g6,  }\item[{class($\ast$), intent(in), optional}]{g7,  }\item[{class($\ast$), intent(in), optional}]{g8,  }\item[{class($\ast$), intent(in), optional}]{g9,  }\item[{class($\ast$), intent(in), optional}]{ga,  }\item[{class($\ast$), intent(in), optional}]{gb,  }\item[{class($\ast$), intent(in), optional}]{gc,  }\item[{class($\ast$), intent(in), optional}]{gd,  }\item[{class($\ast$), intent(in), optional}]{ge,  }\item[{class($\ast$), intent(in), optional}]{gf,  }\item[{class($\ast$), intent(in), optional}]{gg,  }\item[{class($\ast$), intent(in), optional}]{gh,  }\item[{class($\ast$), intent(in), optional}]{gi,  }\item[{class($\ast$), intent(in), optional}]{gj,  }\item[{logical, intent(in), optional}]{nospace }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1955,7 +2012,8 @@ Expected output\+:
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
-Public Domain Here is the caller graph for this function\+:\nopagebreak
+Public Domain Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1972,7 +2030,8 @@ Public Domain Here is the caller graph for this function\+:\nopagebreak
 
 References journal(), unnamed, and upper().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2102,24 +2161,72 @@ for \char`\"{}b\char`\"{} index is 2 5 for \char`\"{}\mbox{[}\char`\"{} index is
 
 1989,2017 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
-Public Domain \mbox{\Hypertarget{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}\label{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}} 
+Public Domain 
+
+References mystop().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a2199778fea512efcde8778f20765643a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}\label{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+d@{locate\+\_\+d}}
 \index{locate\+\_\+d@{locate\+\_\+d}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{locate\+\_\+d()}{locate\_d()}}
 {\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+d (\begin{DoxyParamCaption}\item[{doubleprecision, dimension(\+:), allocatable}]{list,  }\item[{doubleprecision, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+
+
+References mystop().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a0e859cd8635ab617ea9a4e9b4ffca852_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a3cc41a1a629f9ab278376a71b243673d}\label{namespacem__cli2_a3cc41a1a629f9ab278376a71b243673d}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+i@{locate\+\_\+i}}
 \index{locate\+\_\+i@{locate\+\_\+i}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{locate\+\_\+i()}{locate\_i()}}
 {\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+
+
+References mystop().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a3cc41a1a629f9ab278376a71b243673d_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a2e12eb8c0ae6ce90b821141699e627df}\label{namespacem__cli2_a2e12eb8c0ae6ce90b821141699e627df}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!locate\+\_\+r@{locate\+\_\+r}}
 \index{locate\+\_\+r@{locate\+\_\+r}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{locate\+\_\+r()}{locate\_r()}}
 {\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::locate\+\_\+r (\begin{DoxyParamCaption}\item[{real, dimension(\+:), allocatable}]{list,  }\item[{real, intent(in)}]{value,  }\item[{integer, intent(out)}]{place,  }\item[{integer, intent(out), optional}]{ier,  }\item[{character(len=$\ast$), intent(out), optional}]{errmsg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
+
+
+References mystop().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a2e12eb8c0ae6ce90b821141699e627df_cgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a7240f12031027172b87fde623bd77958}\label{namespacem__cli2_a7240f12031027172b87fde623bd77958}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!longest\+\_\+command\+\_\+argument@{longest\+\_\+command\+\_\+argument}}
 \index{longest\+\_\+command\+\_\+argument@{longest\+\_\+command\+\_\+argument}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -2151,7 +2258,8 @@ Sample program \begin{DoxyVerb} program demo_longest_command_argument
 
 John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
-Public Domain Here is the caller graph for this function\+:\nopagebreak
+Public Domain Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2213,7 +2321,8 @@ mixed-\/case input string is .... A\+B\+C\+D\+E\+FG abcdefg lower-\/case output 
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
-Public Domain Here is the caller graph for this function\+:\nopagebreak
+Public Domain Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2230,7 +2339,8 @@ Public Domain Here is the caller graph for this function\+:\nopagebreak
 
 References get\+\_\+generic().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2294,14 +2404,16 @@ Public Domain
 
 References lenset().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=305pt]{namespacem__cli2_a8e172feb2e4ae4d21d4fceb4e54f593c_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2318,7 +2430,8 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References print\+\_\+generic().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2397,11 +2510,38 @@ Public Domain
 
 References print\+\_\+generic().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=306pt]{namespacem__cli2_a737dc863a63dc101338840baad1cfd17_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacem__cli2_a0e44d7c9058545df8bf09674e9c2e799}\label{namespacem__cli2_a0e44d7c9058545df8bf09674e9c2e799}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!mystop@{mystop}}
+\index{mystop@{mystop}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{mystop()}{mystop()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::mystop (\begin{DoxyParamCaption}\item[{integer, intent(in)}]{sig,  }\item[{character(len=$\ast$), intent(in), optional}]{msg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+References g\+\_\+stop, g\+\_\+stop\+\_\+message, g\+\_\+stopon, and journal().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{namespacem__cli2_a0e44d7c9058545df8bf09674e9c2e799_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_a0e44d7c9058545df8bf09674e9c2e799_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}\label{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}} 
@@ -2416,7 +2556,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 print\+\_\+dictionary(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]} print internal dictionary created by calls to set\+\_\+args(3f) (L\+I\+C\+E\+N\+SE\+:PD) \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
-subroutine print\+\_\+dictionary(header)
+subroutine print\+\_\+dictionary(header,stop)
 
 character(len=$\ast$),intent(in),optional \+:\+: header logical,intent(in),optional \+:\+: stop \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
 
@@ -2448,8 +2588,6 @@ Typical usage\+: \begin{DoxyVerb}  program demo_print_dictionary
     help                F        [F]
     version             F        [F]
     usage               F        [F]
-
-    STOP 2
 \end{DoxyVerb}
 
 
@@ -2459,20 +2597,29 @@ John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
 Public Domain 
 
-References counts, g\+\_\+remaining, keywords, present\+\_\+in, unnamed, and values.
+References args, counts, g\+\_\+remaining, keywords, mystop(), present\+\_\+in, unnamed, and values.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}\label{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0}} 
+\mbox{\Hypertarget{namespacem__cli2_a06f8bb6dd63fd7ac2a91b46ee89baaa9}\label{namespacem__cli2_a06f8bb6dd63fd7ac2a91b46ee89baaa9}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist@{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}}
 \index{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist@{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist()}{prototype\_and\_cmd\_args\_to\_nlist()}}
-{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily subroutine, private m\+\_\+cli2\+::prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype,  }\item[{character(len=$\ast$), intent(in), optional}]{string }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
@@ -2532,20 +2679,22 @@ John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
 Public Domain 
 
-References cmd\+\_\+args\+\_\+to\+\_\+dictionary(), g\+\_\+passed\+\_\+in, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, longest\+\_\+command\+\_\+argument(), present\+\_\+in, prototype\+\_\+to\+\_\+dictionary(), remaining, and unnamed.
+References args, cmd\+\_\+args\+\_\+to\+\_\+dictionary(), g\+\_\+passed\+\_\+in, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, longest\+\_\+command\+\_\+argument(), present\+\_\+in, prototype\+\_\+to\+\_\+dictionary(), remaining, and unnamed.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0_cgraph}
+\includegraphics[width=350pt]{namespacem__cli2_a06f8bb6dd63fd7ac2a91b46ee89baaa9_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=337pt]{namespacem__cli2_a30083aabd53a9db9794ecbd23c2226d0_icgraph}
+\includegraphics[width=337pt]{namespacem__cli2_a06f8bb6dd63fd7ac2a91b46ee89baaa9_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}\label{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b}} 
@@ -2608,16 +2757,18 @@ John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
 Public Domain 
 
-References g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining\+\_\+option\+\_\+allowed, and update().
+References g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining\+\_\+option\+\_\+allowed, keywords, and update().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a14896d00e509cbc32f4df993a8d6f75b_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2695,14 +2846,16 @@ Public Domain
 
 References journal(), lower(), merge\+\_\+str(), and replace\+\_\+str().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a63f81a2c027eb5f3e0a77167ac29fc73_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2934,14 +3087,16 @@ Public Domain \mbox{\Hypertarget{namespacem__cli2_ac327823dd714cd4c1667666158f0c
 
 References crack\+\_\+cmd(), and journal().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a8f65cf1b227d837d89437368c660666f_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -2966,11 +3121,11 @@ Here is the caller graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{rgs()}{rgs()}}
 {\footnotesize\ttfamily real function, dimension(\+:), allocatable m\+\_\+cli2\+::rgs (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\mbox{\Hypertarget{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}\label{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736}} 
+\mbox{\Hypertarget{namespacem__cli2_a54449bc83be4ddc46746a6a33b590c40}\label{namespacem__cli2_a54449bc83be4ddc46746a6a33b590c40}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!set\+\_\+args@{set\+\_\+args}}
 \index{set\+\_\+args@{set\+\_\+args}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{set\+\_\+args()}{set\_args()}}
-{\footnotesize\ttfamily subroutine, public m\+\_\+cli2\+::set\+\_\+args (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{help\+\_\+text,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{version\+\_\+text }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily subroutine, public m\+\_\+cli2\+::set\+\_\+args (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{prototype,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{help\+\_\+text,  }\item[{character(len=\+:), dimension(\+:), intent(in), optional, allocatable}]{version\+\_\+text,  }\item[{character(len=$\ast$), intent(in), optional}]{string,  }\item[{integer, intent(out), optional}]{ierr,  }\item[{character(len=\+:), intent(out), optional, allocatable}]{errmsg }\end{DoxyParamCaption})}
 
 
 
@@ -2980,11 +3135,13 @@ set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
 
 \subsubsection*{S\+Y\+N\+O\+P\+S\+IS}
 
-\begin{DoxyVerb} subroutine set_args(definition,help_text,version_text)
+\begin{DoxyVerb} subroutine set_args(definition,help_text,version_text,ierr,errmsg)
 
-  character(len=*),intent(in),optional :: definition
-  character(len=:),intent(in),allocatable,optional :: help_text
-  character(len=:),intent(in),allocatable,optional :: version_text
+  character(len=*),intent(in),optional              :: definition
+  character(len=:),intent(in),allocatable,optional  :: help_text
+  character(len=:),intent(in),allocatable,optional  :: version_text
+  integer,intent(out),optional                      :: ierr
+  character(len=:),intent(out),allocatable,optional :: errmsg
 \end{DoxyVerb}
  \subsubsection*{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}
 
@@ -3022,12 +3179,15 @@ set\+\_\+args(3f) -\/ \mbox{[}A\+R\+G\+U\+M\+E\+N\+TS\+:M\+\_\+\+C\+L\+I2\mbox{]
 
   VERSION_TEXT  if present, will be displayed if program is called with
                 --version switch, and then the program will terminate.
+  IERR          if present a non-zero option is returned when an error occurs
+                instead of program execution being terminated
+  ERRMSG        a description of the error if ierr is present
 \end{DoxyVerb}
 
 
 \subsubsection*{D\+E\+F\+I\+N\+I\+NG T\+HE P\+R\+O\+T\+O\+T\+Y\+PE}
 
-o all keywords on the prototype get a value. o logicals must be set to F or T. o strings M\+U\+ST be delimited with double-\/quotes and must be at least one space. Internal double-\/quotes are represented with two double-\/quotes o numeric keywords are not allowed; but this allows negative numbers to be used as values. o lists of values should be comma-\/delimited unless a user-\/specified delimiter is used. The prototype must use the same array delimiters as the call to the family of get\+\_\+args$\ast$(3f) called. o long names (--keyword) should be all lowercase o to define a zero-\/length allocatable array make the value a delimiter (usually a comma). o If the prototype ends with \char`\"{}-\/-\/\char`\"{} a special mode is turned on where anything after \char`\"{}-\/-\/\char`\"{} on input goes into the variable R\+E\+M\+A\+I\+N\+I\+NG instead of becoming elements in the U\+N\+N\+A\+M\+ED array. This is not needed for normal processing. \subsubsection*{U\+S\+A\+GE}
+o all keywords on the prototype get a value. o logicals must be set to F or T. o strings M\+U\+ST be delimited with double-\/quotes and must be at least one space. Internal double-\/quotes are represented with two double-\/quotes o numeric keywords are not allowed; but this allows negative numbers to be used as values. o lists of values should be comma-\/delimited unless a user-\/specified delimiter is used. The prototype must use the same array delimiters as the call to the family of get\+\_\+args$\ast$(3f) called. o long names (--keyword) should be all lowercase o to define a zero-\/length allocatable array make the value a delimiter (usually a comma). o If the prototype ends with \char`\"{}-\/-\/\char`\"{} a special mode is turned on where anything after \char`\"{}-\/-\/\char`\"{} on input goes into the variable R\+E\+M\+A\+I\+N\+I\+NG and the array A\+R\+GS instead of becoming elements in the U\+N\+N\+A\+M\+ED array. This is not needed for normal processing. \subsubsection*{U\+S\+A\+GE}
 
 When invoking the program line note that (subject to change) the following variations from other common command-\/line parsers\+:
 
@@ -3053,9 +3213,7 @@ o if a parameter value of just \char`\"{}-\/\char`\"{} is supplied it is convert
 
 o values not matching a keyword go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}.
 
-o if the keyword \char`\"{}-\/-\/\char`\"{} is encountered the rest of the command arguments go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}.
-
-\subsubsection*{E\+X\+A\+M\+P\+LE}
+o if the keyword \char`\"{}-\/-\/\char`\"{} is encountered the rest of the command arguments go into the character array \char`\"{}\+U\+N\+U\+S\+E\+D\char`\"{}. \subsubsection*{E\+X\+A\+M\+P\+LE}
 
 Sample program\+: \begin{DoxyVerb}program demo_set_args
 use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
@@ -3119,13 +3277,14 @@ John S. Urban, 2019 \subsubsection*{L\+I\+C\+E\+N\+SE}
 
 Public Domain 
 
-References check\+\_\+commandline(), g\+\_\+passed\+\_\+in, longest\+\_\+command\+\_\+argument(), prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), unnamed, and wipe\+\_\+dictionary().
+References args, check\+\_\+commandline(), g\+\_\+passed\+\_\+in, g\+\_\+stop, g\+\_\+stop\+\_\+message, g\+\_\+stopon, longest\+\_\+command\+\_\+argument(), prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), unnamed, and wipe\+\_\+dictionary().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a6d20994aa80217dd3d0ffd1d5586f736_cgraph}
+\includegraphics[width=350pt]{namespacem__cli2_a54449bc83be4ddc46746a6a33b590c40_cgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_abc94b8f97a6056ea48ce48ab460bdf78}\label{namespacem__cli2_abc94b8f97a6056ea48ce48ab460bdf78}} 
@@ -3335,14 +3494,16 @@ Public Domain
 
 References lower().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=274pt]{namespacem__cli2_a6578e29ee4dc56651528e7e0acd29665_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3355,7 +3516,8 @@ Here is the caller graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{strtok()}{strtok()}}
 {\footnotesize\ttfamily logical function m\+\_\+cli2\+::strtok (\begin{DoxyParamCaption}\item[{character(len=$\ast$), intent(in)}]{source\+\_\+string,  }\item[{integer, intent(inout)}]{itoken,  }\item[{integer, intent(out)}]{token\+\_\+start,  }\item[{integer, intent(inout)}]{token\+\_\+end,  }\item[{character(len=$\ast$), intent(in)}]{delimiters }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3432,14 +3594,16 @@ Public Domain
 
 References journal().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=309pt]{namespacem__cli2_a76af7f7c39e6755e024890d85d488704_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3481,7 +3645,8 @@ Sample program\+: \begin{DoxyVerb}  program demo_trimzeros_
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
-Public Domain Here is the caller graph for this function\+:\nopagebreak
+Public Domain Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3556,14 +3721,16 @@ Public Domain
 
 References quote().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a9cab7352414f8b5625330a9ff5cf0cb4_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3580,14 +3747,16 @@ Here is the caller graph for this function\+:\nopagebreak
 
 References counts, keywords, present\+\_\+in, unquote(), and values.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a160d56bc4a10faef7e8a8a4f04f4dadb_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3651,7 +3820,8 @@ mixed-\/case input string is .... A\+B\+C\+D\+E\+FG abcdefg upper-\/case output 
 
 John S. Urban \subsubsection*{L\+I\+C\+E\+N\+SE}
 
-Public Domain Here is the caller graph for this function\+:\nopagebreak
+Public Domain Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3738,14 +3908,16 @@ Public Domain
 
 References journal(), and trimzeros\+\_\+().
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacem__cli2_a1bbcefd886dabb0286e2cb14ab54034f_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3781,7 +3953,8 @@ Public Domain
 
 References counts, keywords, present\+\_\+in, and values.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -3791,6 +3964,12 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 \subsection{Variable Documentation}
+\mbox{\Hypertarget{namespacem__cli2_a601970031be3351d1f14ce671934ffe7}\label{namespacem__cli2_a601970031be3351d1f14ce671934ffe7}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!args@{args}}
+\index{args@{args}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{args}{args}}
+{\footnotesize\ttfamily character(len=\+:), dimension(\+:), allocatable, public m\+\_\+cli2\+::args}
+
 \mbox{\Hypertarget{namespacem__cli2_abf81746a55c2218c7f2de15602bc0be8}\label{namespacem__cli2_abf81746a55c2218c7f2de15602bc0be8}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!counts@{counts}}
 \index{counts@{counts}!m\+\_\+cli2@{m\+\_\+cli2}}
@@ -3832,6 +4011,24 @@ Here is the caller graph for this function\+:\nopagebreak
 \index{g\+\_\+remaining\+\_\+option\+\_\+allowed@{g\+\_\+remaining\+\_\+option\+\_\+allowed}!m\+\_\+cli2@{m\+\_\+cli2}}
 \subsubsection{\texorpdfstring{g\+\_\+remaining\+\_\+option\+\_\+allowed}{g\_remaining\_option\_allowed}}
 {\footnotesize\ttfamily logical m\+\_\+cli2\+::g\+\_\+remaining\+\_\+option\+\_\+allowed\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a07a17fd130c21dd97917a0f415cf302b}\label{namespacem__cli2_a07a17fd130c21dd97917a0f415cf302b}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+stop@{g\+\_\+stop}}
+\index{g\+\_\+stop@{g\+\_\+stop}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+stop}{g\_stop}}
+{\footnotesize\ttfamily integer m\+\_\+cli2\+::g\+\_\+stop\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_a0afc43936eba64e78b8920742ffb71e1}\label{namespacem__cli2_a0afc43936eba64e78b8920742ffb71e1}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+stop\+\_\+message@{g\+\_\+stop\+\_\+message}}
+\index{g\+\_\+stop\+\_\+message@{g\+\_\+stop\+\_\+message}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+stop\+\_\+message}{g\_stop\_message}}
+{\footnotesize\ttfamily character(len=\+:), allocatable m\+\_\+cli2\+::g\+\_\+stop\+\_\+message\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{namespacem__cli2_ac2ad61c8af780de83b4adecc5d735d8b}\label{namespacem__cli2_ac2ad61c8af780de83b4adecc5d735d8b}} 
+\index{m\+\_\+cli2@{m\+\_\+cli2}!g\+\_\+stopon@{g\+\_\+stopon}}
+\index{g\+\_\+stopon@{g\+\_\+stopon}!m\+\_\+cli2@{m\+\_\+cli2}}
+\subsubsection{\texorpdfstring{g\+\_\+stopon}{g\_stopon}}
+{\footnotesize\ttfamily logical m\+\_\+cli2\+::g\+\_\+stopon\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}\label{namespacem__cli2_a314f3903115db4ab9e2ec03b540aec76}} 
 \index{m\+\_\+cli2@{m\+\_\+cli2}!keywords@{keywords}}

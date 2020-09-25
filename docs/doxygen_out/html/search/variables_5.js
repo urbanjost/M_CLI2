@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['present_5fin',['present_in',['../structm__cli2_1_1option.html#a89ee89aa168edd8c3e2064b0825e79f8',1,'m_cli2::option::present_in()'],['../namespacem__cli2.html#adf9ffb8a34d1bd666fa91ed953bcb9f4',1,'m_cli2::present_in()']]]
+  ['length',['length',['../structm__cli2_1_1option.html#ac034140ca495c577b2b45a89c25ed16a',1,'m_cli2::option']]],
+  ['longname',['longname',['../structm__cli2_1_1option.html#ad06a078849a4fdfa9bb2cfae876631cd',1,'m_cli2::option']]]
 ];

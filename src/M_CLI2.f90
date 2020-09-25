@@ -9,7 +9,7 @@
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!      use M_CLI2, only : set_args, get_args, unnamed, remaining
+!!      use M_CLI2, only : set_args, get_args, unnamed, remaining, args
 !!      use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
 !!      ! convenience functions
 !!      use M_CLI2, only : :: dget, iget, lget, rget, sget, cget
@@ -113,6 +113,7 @@ integer,parameter,private :: dp=kind(0.0d0)
 private
 !===================================================================================================================================
 character(len=:),allocatable,public :: unnamed(:)
+character(len=:),allocatable,public :: args(:)
 character(len=:),allocatable,public :: remaining
 public                              :: set_args
 public                              :: get_args
@@ -148,6 +149,9 @@ logical                        :: G_keyword_single_letter=.true.
 character(len=:),allocatable   :: G_passed_in
 logical                        :: G_remaining_on, G_remaining_option_allowed
 character(len=:),allocatable   :: G_remaining
+character(len=:),allocatable   :: G_STOP_MESSAGE
+integer                        :: G_STOP
+logical                        :: G_STOPON
 !===================================================================================================================================
 private dictionary
 
@@ -249,7 +253,7 @@ contains
 !!##SYNOPSIS
 !!
 !!
-!!      subroutine check_commandline(help_text,version_text)
+!!      subroutine check_commandline(help_text,version_text,ierr,errmsg)
 !!
 !!       character(len=:),allocatable,intent(in),optional :: help_text(:)
 !!       character(len=:),allocatable,intent(in),optional :: version_text(:)
@@ -320,7 +324,7 @@ integer                                          :: iback
          do i=1,size(help_text)
             call journal('sc',help_text(i))
          enddo
-         call mystop(0)
+         call mystop(1,'displayed help text')
       endif
    elseif(get('help').eq.'T')then
       DEFAULT_HELP: block
@@ -333,7 +337,7 @@ integer                                          :: iback
          call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
          call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
          deallocate(cmd_name)
-         call mystop(0)
+         call mystop(2,'displayed default help text')
       endblock DEFAULT_HELP
    endif
    if(present(version_text))then
@@ -349,11 +353,11 @@ integer                                          :: iback
          do i=1,size(version_text)
             call journal('sc',version_text(i)(istart:len_trim(version_text(i))-iback))
          enddo
-         call mystop(0)
+         call mystop(3,'displayed version text')
       endif
    elseif(get('version').eq.'T')then
       call journal('sc','*check_commandline* no version text')
-      call mystop(0)
+      call mystop(4,'displayed help text')
    endif
 end subroutine check_commandline
 !===================================================================================================================================
@@ -366,11 +370,13 @@ end subroutine check_commandline
 !!
 !!##SYNOPSIS
 !!
-!!     subroutine set_args(definition,help_text,version_text)
+!!     subroutine set_args(definition,help_text,version_text,ierr,errmsg)
 !!
-!!      character(len=*),intent(in),optional :: definition
-!!      character(len=:),intent(in),allocatable,optional :: help_text
-!!      character(len=:),intent(in),allocatable,optional :: version_text
+!!      character(len=*),intent(in),optional              :: definition
+!!      character(len=:),intent(in),allocatable,optional  :: help_text
+!!      character(len=:),intent(in),allocatable,optional  :: version_text
+!!      integer,intent(out),optional                      :: ierr
+!!      character(len=:),intent(out),allocatable,optional :: errmsg
 !!##DESCRIPTION
 !!
 !!     SET_ARGS(3f) requires a unix-like command prototype for defining
@@ -405,6 +411,9 @@ end subroutine check_commandline
 !!
 !!      VERSION_TEXT  if present, will be displayed if program is called with
 !!                    --version switch, and then the program will terminate.
+!!      IERR          if present a non-zero option is returned when an error occurs
+!!                    instead of program execution being terminated
+!!      ERRMSG        a description of the error if ierr is present
 !!
 !!##DEFINING THE PROTOTYPE
 !!         o all keywords on the prototype get a value.
@@ -422,9 +431,9 @@ end subroutine check_commandline
 !!         o to define a zero-length allocatable array make the
 !!           value a delimiter (usually a comma).
 !!         o If the prototype ends with "--" a special mode is turned
-!!           on where anything after "--" on input goes into the
-!!           variable REMAINING instead of becoming elements in the
-!!           UNNAMED array. This is not needed for normal processing.
+!!           on where anything after "--" on input goes into the variable
+!!           REMAINING and the array ARGS instead of becoming elements in
+!!           the UNNAMED array. This is not needed for normal processing.
 !!##USAGE
 !!      When invoking the program line note that (subject to change) the
 !!      following variations from other common command-line parsers:
@@ -466,7 +475,6 @@ end subroutine check_commandline
 !!
 !!         o if the keyword "--" is encountered the rest of the
 !!           command arguments go into the character array "UNUSED".
-!!
 !!##EXAMPLE
 !!
 !!
@@ -533,22 +541,35 @@ end subroutine check_commandline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine set_args(prototype,help_text,version_text,string)
+subroutine set_args(prototype,help_text,version_text,string,ierr,errmsg)
 
 ! ident_2="@(#)M_CLI2::set_args(3f): parse prototype string"
 
-character(len=*),intent(in)                      :: prototype
-character(len=:),intent(in),allocatable,optional :: help_text(:)
-character(len=:),intent(in),allocatable,optional :: version_text(:)
-character(len=*),intent(in),optional             :: string
-character(len=:),allocatable                     :: hold               ! stores command line argument
-integer                                          :: ibig
+character(len=*),intent(in)                       :: prototype
+character(len=:),intent(in),allocatable,optional  :: help_text(:)
+character(len=:),intent(in),allocatable,optional  :: version_text(:)
+character(len=*),intent(in),optional              :: string
+integer,intent(out),optional                      :: ierr
+character(len=:),intent(out),allocatable,optional :: errmsg
+character(len=:),allocatable                      :: hold               ! stores command line argument
+integer                                           :: ibig
    G_passed_in=''
+   G_STOP=0
+   G_STOP_MESSAGE=''
+   if(present(ierr))then
+      G_STOPON=.false.
+   else
+      G_STOPON=.true.
+   endif
    if(allocated(unnamed))then
        deallocate(unnamed)
    endif
+   if(allocated(args))then
+       deallocate(args)
+   endif
    ibig=longest_command_argument() ! bug in gfortran. len=0 should be fine
    allocate(character(len=ibig) :: unnamed(0))
+   allocate(character(len=ibig) :: args(0))
 
    call wipe_dictionary()
    hold='--usage F --help F --version F '//adjustl(prototype)
@@ -557,7 +578,16 @@ integer                                          :: ibig
    if(.not.allocated(unnamed))then
        allocate(character(len=0) :: unnamed(0))
    endif
+   if(.not.allocated(args))then
+       allocate(character(len=0) :: args(0))
+   endif
    call check_commandline(help_text,version_text) ! process --help, --version, --usage
+   if(present(ierr))then
+      ierr=G_STOP
+   endif
+   if(present(errmsg))then
+      errmsg=G_STOP_MESSAGE
+   endif
 end subroutine set_args
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1054,9 +1084,11 @@ integer                               :: itrim
    G_passed_in=prototype                            ! make global copy for printing
 
    if(allocated(unnamed))deallocate(unnamed)
+   if(allocated(args))deallocate(args)
    ibig=longest_command_argument()                  ! bug in gfortran. len=0 should be fine
    ibig=max(ibig,1)
-   allocate(character(len=ibig) ::unnamed(0))
+   allocate(character(len=ibig) :: unnamed(0))
+   allocate(character(len=ibig) :: args(0))
 
    G_remaining_option_allowed=.false.
    G_remaining_on=.false.
@@ -1108,7 +1140,7 @@ logical                      :: nomore
    G_keyword_single_letter=.true.
    GET_ARGS: do i=1, command_argument_count()                                                        ! insert and replace entries
       call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
-      if(istatus /= 0) then                                                                          ! stop program on error
+      if(istatus /= 0) then                                                                          ! on error
          write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
             &'status=',istatus,&
             &'length=',ilength
@@ -1118,7 +1150,7 @@ logical                      :: nomore
          ilength=max(ilength,1)
          allocate(character(len=ilength) :: current_argument)
          call get_command_argument(number=i,value=current_argument,length=ilength,status=istatus)    ! get next argument
-         if(istatus /= 0) then                                                                       ! stop program on error
+         if(istatus /= 0) then                                                                       ! on error
             write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
                &'status=',istatus,&
                &'length=',ilength,&
@@ -1165,16 +1197,18 @@ logical                      :: nomore
          endif
          lastkeyword=trim(current_argument_padded(2:))
       elseif(pointer.eq.0)then                                                                           ! unnamed arguments
-         imax=max(len(unnamed),len(current_argument))
          if(G_remaining_on)then
             if(len(current_argument).lt.1)then
-               G_remaining=G_remaining//"'' "
+               G_remaining=G_remaining//'"" '
             elseif(current_argument(1:1).eq.'-')then
                G_remaining=G_remaining//current_argument//' '
             else
-               G_remaining=G_remaining//"'"//current_argument//"' "
+               G_remaining=G_remaining//'"'//current_argument//'" '
             endif
+            imax=max(len(args),len(current_argument))
+            args=[character(len=imax) :: args,current_argument]
          else
+            imax=max(len(unnamed),len(current_argument))
             unnamed=[character(len=imax) :: unnamed,current_argument]
          endif
       else
@@ -1186,12 +1220,14 @@ logical                      :: nomore
             if(current_argument.ne.' ')then
                if(G_remaining_on)then
                   if(len(current_argument).lt.1)then
-                        G_remaining=G_remaining//"'' "
+                        G_remaining=G_remaining//'"" '
                   elseif(current_argument(1:1).eq.'-')then
                         G_remaining=G_remaining//current_argument//' '
                   else
-                        G_remaining=G_remaining//"'"//current_argument//"' "
+                        G_remaining=G_remaining//'"'//current_argument//'" '
                   endif
+                  imax=max(len(args),len(current_argument))
+                  args=[character(len=imax) :: args,current_argument]
                else
                   imax=max(len(unnamed),len(current_argument))
                   unnamed=[character(len=imax) :: unnamed,current_argument]
@@ -1302,12 +1338,18 @@ integer          :: i
          write(stderr,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
       endif
    endif
+   if(allocated(args))then
+      if(size(args).gt.0)then
+         write(stderr,'(a)')'ARGS'
+         write(stderr,'(i6.6,3a)')(i,'[',args(i),']',i=1,size(args))
+      endif
+   endif
    if(G_remaining.ne.'')then
       write(stderr,'(a)')'REMAINING'
       write(stderr,'(a)')G_remaining
    endif
    if(present(stop))then
-      if(stop) call mystop(0)
+      if(stop) call mystop(5,'displayed usage')
    endif
 end subroutine print_dictionary
 !===================================================================================================================================
@@ -1629,8 +1671,7 @@ character(len=*),intent(in),optional :: delimiters
     type is (real(kind=dp));     call get_fixedarray_d(keyword,generic,delimiters)
     type is (logical);           call get_fixedarray_l(keyword,generic,delimiters)
     class default
-      call journal('sc','*get_fixedarray_class* crud -- procedure does not know about this type')
-      call mystop(0)
+      call mystop(7,'*get_fixedarray_class* crud -- procedure does not know about this type')
    end select
 end subroutine get_fixedarray_class
 !===================================================================================================================================
@@ -1653,8 +1694,7 @@ integer                      :: ichar                      ! point to first char
       val=values(place)(:counts(place))
       call split(adjustl(upper(val)),carray,delimiters=delimiters)  ! convert value to uppercase, trimmed; then parse into array
    else
-      call journal('sc','*get_anyarray_l* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(8 ,'*get_anyarray_l* unknown keyword '//keyword)
    endif
    if(size(carray).gt.0)then                                  ! if not a null string
       allocate(larray(size(carray)))                          ! allocate output array
@@ -1699,15 +1739,13 @@ character(len=:),allocatable          :: val
       val=replace_str(val,')','')
       call split(val,carray,delimiters=delimiters)    ! find value associated with keyword and split it into an array
    else
-      call journal('sc','*get_anyarray_d* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(9 ,'*get_anyarray_d* unknown keyword '//keyword)
    endif
    allocate(darray(size(carray)))                     ! create the output array
    do i=1,size(carray)
       call a2d(carray(i), darray(i),ierr) ! convert the string to a numeric value
       if(ierr.ne.0)then
-         call journal('sc','*get_anyarray_d* unreadable value',carray(i),'for keyword',keyword)
-         call mystop(0)
+         call mystop(10 ,'*get_anyarray_d* unreadable value '//carray(i)//' for keyword '//keyword)
       endif
    enddo
 end subroutine get_anyarray_d
@@ -1740,8 +1778,7 @@ integer                              :: half,sz
    sz=size(darray)
    half=sz/2
    if(sz.ne.half+half)then
-      call journal('sc','*get_anyarray_x* uneven number of values defining complex value ',keyword,' values=',sz)
-      call mystop(0)
+      call mystop(11,'*get_anyarray_x* uneven number of values defining complex value '//keyword)
    endif
    xarray=cmplx(real(darray(1::2)),real(darray(2::2)))
 end subroutine get_anyarray_x
@@ -1761,8 +1798,7 @@ character(len=:),allocatable         :: val
       val=unquote(values(place)(:counts(place)))
       call split(val,strings,delimiters=delimiters)   ! find value associated with keyword and split it into an array
    else
-      call journal('sc','*get_anyarray_c* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(12,'*get_anyarray_c* unknown keyword '//keyword)
    endif
 end subroutine get_anyarray_c
 !===================================================================================================================================
@@ -1784,14 +1820,12 @@ character(len=:),allocatable         :: val
       if(len(strings_a).le.len(strings))then
          strings=strings_a
       else
-         call journal('sc','*get_fixed_length_any_size_cxxxx* values to long. Longest is',len(strings_a),'allowed is',len(strings))
-         call journal('sc','*get_fixed_length_any_size_cxxxx* keyword=',keyword,'strings=')
-         write(*,'(3x,a)')strings
-         call mystop(0)
+         call journal('sc','*get_fixed_length_any_size_cxxxx* values too long. Longest is',len(strings_a),'allowed is',len(strings))
+         write(*,'("strings=",3x,*(a,1x))')strings
+         call mystop(13,'*get_fixed_length_any_size_cxxxx* keyword='//keyword)
       endif
    else
-      call journal('sc','*get_fixed_length_any_size_cxxxx* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(14,'*get_fixed_length_any_size_cxxxx* unknown keyword '//keyword)
    endif
 end subroutine get_fixed_length_any_size_cxxxx
 !===================================================================================================================================
@@ -1841,8 +1875,7 @@ integer                              :: dsize
    sz=dsize*2
    half=sz/2
    if(sz.ne.half+half)then
-      call journal('sc','*get_fixed_size_complex* uneven number of values defining complex value ',keyword,' values=',sz)
-      call mystop(0)
+      call mystop(15,'*get_fixed_size_complex* uneven number of values defining complex value '//keyword)
    endif
    if(ubound(xarray,dim=1).eq.dsize)then
       xarray=darray
@@ -1898,19 +1931,18 @@ integer                              :: ssize
 character(len=:),allocatable         :: val
    call locate(keywords,keyword,place)            ! find where string is or should be
    if(place > 0)then                              ! if index is valid return strings
-    val=unquote(values(place)(:counts(place)))
-    call split(val,str,delimiters=delimiters)   ! find value associated with keyword and split it into an array
-    ssize=size(str)
-    if(ssize==size(strings))then
-      strings(:ssize)=str
-    else
-      call journal('sc','*get_fixedarray_fixed_length_c* wrong number of values for keyword',&
-         & keyword,'got',ssize,'expected ',size(strings)) !,ubound(strings,dim=1)
-      call print_dictionary('USAGE:',stop=.true.)
+      val=unquote(values(place)(:counts(place)))
+      call split(val,str,delimiters=delimiters)   ! find value associated with keyword and split it into an array
+      ssize=size(str)
+      if(ssize==size(strings))then
+         strings(:ssize)=str
+      else
+         call journal('sc','*get_fixedarray_fixed_length_c* wrong number of values for keyword',&
+            & keyword,'got',ssize,'expected ',size(strings)) !,ubound(strings,dim=1)
+         call print_dictionary('USAGE:',stop=.true.)
     endif
    else
-      call journal('sc','*get_fixedarray_fixed_length_c* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(16,'*get_fixedarray_fixed_length_c* unknown keyword '//keyword)
    endif
 end subroutine get_fixedarray_fixed_length_c
 !===================================================================================================================================
@@ -1957,8 +1989,7 @@ integer                       :: place
    if(place > 0)then                                  ! if index is valid return string
       string=unquote(values(place)(:counts(place)))
    else
-      call journal('sc','*get_anyarray_c* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(17,'*get_anyarray_c* unknown keyword '//keyword)
    endif
 end subroutine get_scalar_anylength_c
 !===================================================================================================================================
@@ -1975,14 +2006,13 @@ integer                       :: unlen
    if(place > 0)then                                  ! if index is valid return string
       string=unquote(values(place)(:counts(place)))
    else
-      call journal('sc','*get_scalar_fixed_length_c* unknown keyword ',keyword)
-      call mystop(0)
+      call mystop(18,'*get_scalar_fixed_length_c* unknown keyword '//keyword)
    endif
    unlen=len_trim(unquote(values(place)(:counts(place))))
    if(unlen>len(string))then
       call journal('sc','*get_scalar_fixed_length_c* value too long for',keyword,'allowed is',len(string),&
       & 'input string [',values(place),'] is',unlen)
-      call mystop(0)
+      call mystop(19,'*get_scalar_fixed_length_c* value too long')
    endif
 end subroutine get_scalar_fixed_length_c
 !===================================================================================================================================
@@ -1994,8 +2024,8 @@ real(kind=dp)               :: d(2)
    if(size(d).eq.2)then
       x=cmplx(d(1),d(2))
    else
-      call journal('sc','*get_scalar_complex* incorrect number of values for keyword',keyword,'expected two found',size(d))
-      call mystop(0)
+      call journal('sc','*get_scalar_complex* expected two vaues found',size(d))
+      call mystop(20,'*get_scalar_complex* incorrect number of values for keyword '//keyword)
    endif
 end subroutine get_scalar_complex
 !===================================================================================================================================
@@ -2007,8 +2037,8 @@ logical,allocatable           :: larray(:)    ! function type
    if(size(larray).eq.1)then
       l=larray(1)
    else
-      call journal('sc','*get_anyarray_l* incorrect number of values for keyword',keyword,'expected one found',size(larray))
-      call mystop(0)
+      call journal('sc','*get_anyarray_l* expected one value found',size(larray))
+      call mystop(21,'*get_anyarray_l* incorrect number of values for keyword '//keyword)
    endif
 end subroutine get_scalar_logical
 !===================================================================================================================================
@@ -2062,7 +2092,7 @@ integer :: ilongest
    ilongest=0
    GET_LONGEST: do i=1,command_argument_count()                             ! loop throughout command line arguments to find longest
       call get_command_argument(number=i,length=ilength,status=istatus)     ! get next argument
-      if(istatus /= 0) then                                                 ! stop program on error
+      if(istatus /= 0) then                                                 ! on error
          write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining length for argument ',i
          exit GET_LONGEST
       elseif(ilength.gt.0)then
@@ -2291,7 +2321,7 @@ integer :: i
       type is (character(len=*));       write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
       type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
       class default
-         stop 'unknown type in *print_generic*'
+         call mystop(22,'unknown type in *print_generic*')
    end select
    line=trim(line)//"]"
    istart=len_trim(line)+increment
@@ -4305,7 +4335,7 @@ integer                                 :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',trim(value)//' PLACE=',place
-      call mystop(1)
+      call mystop(24,'(*locate_c* '//message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -4383,7 +4413,7 @@ integer                                :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(1)
+      call mystop(25,message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -4461,7 +4491,7 @@ integer                                :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(1)
+      call mystop(26,message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -4539,7 +4569,7 @@ integer                                :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(1)
+      call mystop(27,message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -5510,9 +5540,23 @@ end function sg
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-subroutine mystop(sig)
+subroutine mystop(sig,msg)
+! negative signal means always stop program
+! otherwise if G_STOPON is .false. stop program
+! else keep going an stop message and error code
 integer,intent(in) :: sig
-   stop sig
+character(len=*),intent(in),optional :: msg
+   if(G_STOPON.or.sig.lt.0)then
+      if(present(msg))then
+        call journal('sc',msg)
+      endif
+      stop abs(sig)
+   else
+      if(present(msg))then
+        G_STOP_MESSAGE=msg
+      endif
+      G_STOP=sig
+   endif
 end subroutine mystop
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
