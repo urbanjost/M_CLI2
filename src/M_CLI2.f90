@@ -324,7 +324,7 @@ integer                                          :: iback
          do i=1,size(help_text)
             call journal('sc',help_text(i))
          enddo
-         call mystop(1,'displayed help text')
+         call mystop(1)
       endif
    elseif(get('help').eq.'T')then
       DEFAULT_HELP: block
@@ -337,7 +337,7 @@ integer                                          :: iback
          call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
          call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
          deallocate(cmd_name)
-         call mystop(2,'displayed default help text')
+         call mystop(2)
       endblock DEFAULT_HELP
    endif
    if(present(version_text))then
@@ -353,11 +353,11 @@ integer                                          :: iback
          do i=1,size(version_text)
             call journal('sc',version_text(i)(istart:len_trim(version_text(i))-iback))
          enddo
-         call mystop(3,'displayed version text')
+         call mystop(3)
       endif
    elseif(get('version').eq.'T')then
       call journal('sc','*check_commandline* no version text')
-      call mystop(4,'displayed help text')
+      call mystop(4)
    endif
 end subroutine check_commandline
 !===================================================================================================================================
@@ -1349,7 +1349,7 @@ integer          :: i
       write(stderr,'(a)')G_remaining
    endif
    if(present(stop))then
-      if(stop) call mystop(5,'displayed usage')
+      if(stop) call mystop(5)
    endif
 end subroutine print_dictionary
 !===================================================================================================================================
@@ -1671,7 +1671,7 @@ character(len=*),intent(in),optional :: delimiters
     type is (real(kind=dp));     call get_fixedarray_d(keyword,generic,delimiters)
     type is (logical);           call get_fixedarray_l(keyword,generic,delimiters)
     class default
-      call mystop(7,'*get_fixedarray_class* crud -- procedure does not know about this type')
+      call mystop(-7,'*get_fixedarray_class* crud -- procedure does not know about this type')
    end select
 end subroutine get_fixedarray_class
 !===================================================================================================================================
@@ -2321,7 +2321,7 @@ integer :: i
       type is (character(len=*));       write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
       type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
       class default
-         call mystop(22,'unknown type in *print_generic*')
+         call mystop(-22,'unknown type in *print_generic*')
    end select
    line=trim(line)//"]"
    istart=len_trim(line)+increment
@@ -4335,7 +4335,7 @@ integer                                 :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',trim(value)//' PLACE=',place
-      call mystop(24,'(*locate_c* '//message)
+      call mystop(-24,'(*locate_c* '//message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -4413,7 +4413,7 @@ integer                                :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(25,message)
+      call mystop(-25,message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -4491,7 +4491,7 @@ integer                                :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(26,message)
+      call mystop(-26,message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -4569,7 +4569,7 @@ integer                                :: error
       ier=error
    else if(error.ne.0)then
       write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(27,message)
+      call mystop(-27,message)
    endif
    if(present(errmsg))then
       errmsg=message
@@ -5542,19 +5542,20 @@ end function sg
 !===================================================================================================================================
 subroutine mystop(sig,msg)
 ! negative signal means always stop program
-! otherwise if G_STOPON is .false. stop program
-! else keep going an stop message and error code
+! else do not stop and set G_STOP_MESSAGE if G_STOPON is false
+! or
+! print message and stop if G_STOPON is true
+!
 integer,intent(in) :: sig
 character(len=*),intent(in),optional :: msg
-   if(G_STOPON.or.sig.lt.0)then
-      if(present(msg))then
-        call journal('sc',msg)
-      endif
+   if(sig.lt.0)then
+      if(present(msg)) call journal('sc',msg)
       stop abs(sig)
+   else if(G_STOPON)then
+      if(present(msg)) call journal('sc',msg)
+      stop sig
    else
-      if(present(msg))then
-        G_STOP_MESSAGE=msg
-      endif
+      if(present(msg)) G_STOP_MESSAGE=msg
       G_STOP=sig
    endif
 end subroutine mystop
