@@ -5552,10 +5552,18 @@ character(len=*),intent(in),optional :: msg
       if(present(msg)) call journal('sc',msg)
       stop abs(sig)
    else if(G_STOPON)then
-      if(present(msg)) call journal('sc',msg)
-      stop sig
+      if(present(msg)) then
+         call journal('sc',msg)
+         stop sig
+      else
+         stop
+      endif
    else
-      if(present(msg)) G_STOP_MESSAGE=msg
+      if(present(msg)) then
+         G_STOP_MESSAGE=msg
+      else
+         G_STOP_MESSAGE=''
+      endif
       G_STOP=sig
    endif
 end subroutine mystop
