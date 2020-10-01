@@ -206,33 +206,24 @@ end interface str
 
 private locate        ! [M_CLI2] find PLACE in sorted character array where value can be found or should be placed
    private locate_c
-   private locate_d
-   private locate_r
-   private locate_i
 private insert        ! [M_CLI2] insert entry into a sorted allocatable array at specified position
    private insert_c
-   private insert_d
-   private insert_r
    private insert_i
    private insert_l
 private replace       ! [M_CLI2] replace entry by index from a sorted allocatable array if it is present
    private replace_c
-   private replace_d
-   private replace_r
    private replace_i
    private replace_l
 private remove        ! [M_CLI2] delete entry by index from a sorted allocatable array if it is present
    private remove_c
-   private remove_d
-   private remove_r
    private remove_i
    private remove_l
 
 ! Generic subroutine inserts element into allocatable array at specified position
-interface  locate;   module procedure locate_c,  locate_d,  locate_r,  locate_i;              end interface
-interface  insert;   module procedure insert_c,  insert_d,  insert_r,  insert_i,  insert_l;   end interface
-interface  replace;  module procedure replace_c, replace_d, replace_r, replace_i, replace_l;  end interface
-interface  remove;   module procedure remove_c,  remove_d,  remove_r,  remove_i,  remove_l;   end interface
+interface  locate;   module procedure locate_c                            ; end interface
+interface  insert;   module procedure insert_c,      insert_i,  insert_l  ; end interface
+interface  replace;  module procedure replace_c,     replace_i, replace_l ; end interface
+interface  remove;   module procedure remove_c,      remove_i,  remove_l  ; end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! convenience functions
 interface cgets;module procedure cgs, cg;end interface
@@ -317,14 +308,17 @@ integer                                          :: i
 integer                                          :: istart
 integer                                          :: iback
    if(get('usage').eq.'T')then
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(32)
+      return
    endif
    if(present(help_text))then
       if(get('help').eq.'T')then
          do i=1,size(help_text)
             call journal('sc',help_text(i))
          enddo
-         call mystop(1)
+         call mystop(1,'displayed help text')
+         return
       endif
    elseif(get('help').eq.'T')then
       DEFAULT_HELP: block
@@ -337,7 +331,8 @@ integer                                          :: iback
          call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
          call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
          deallocate(cmd_name)
-         call mystop(2)
+         call mystop(2,'displayed default help text')
+         return
       endblock DEFAULT_HELP
    endif
    if(present(version_text))then
@@ -353,11 +348,13 @@ integer                                          :: iback
          do i=1,size(version_text)
             call journal('sc',version_text(i)(istart:len_trim(version_text(i))-iback))
          enddo
-         call mystop(3)
+         call mystop(3,'displayed version text')
+         return
       endif
    elseif(get('version').eq.'T')then
       call journal('sc','*check_commandline* no version text')
-      call mystop(4)
+      call mystop(4,'displayed default version text')
+      return
    endif
 end subroutine check_commandline
 !===================================================================================================================================
@@ -1183,6 +1180,7 @@ logical                      :: nomore
          if(pointer.le.0.and.check_local)then
             call print_dictionary('UNKNOWN LONG KEYWORD: '//current_argument)
             call mystop(1)
+            return
          endif
          lastkeyword=trim(current_argument_padded(3:))
       elseif(.not.nomore.and.current_argument_padded(1:1).eq.'-'.and.index("0123456789.",dummy(2:2)).eq.0)then  ! short word
@@ -1194,6 +1192,7 @@ logical                      :: nomore
          if(pointer.le.0.and.check_local)then
             call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
             call mystop(2)
+            return
          endif
          lastkeyword=trim(current_argument_padded(2:))
       elseif(pointer.eq.0)then                                                                           ! unnamed arguments
@@ -1660,7 +1659,7 @@ end function strtok
 !!      Public Domain
 !===================================================================================================================================
 subroutine get_fixedarray_class(keyword,generic,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 class(*)                             :: generic(:)
 character(len=*),intent(in),optional :: delimiters
    select type(generic)
@@ -1694,7 +1693,10 @@ integer                      :: ichar                      ! point to first char
       val=values(place)(:counts(place))
       call split(adjustl(upper(val)),carray,delimiters=delimiters)  ! convert value to uppercase, trimmed; then parse into array
    else
+      call journal('sc','*get_anyarray_l* unknown keyword '//keyword)
       call mystop(8 ,'*get_anyarray_l* unknown keyword '//keyword)
+      allocate(larray(0))
+      return
    endif
    if(size(carray).gt.0)then                                  ! if not a null string
       allocate(larray(size(carray)))                          ! allocate output array
@@ -1722,7 +1724,7 @@ subroutine get_anyarray_d(keyword,darray,delimiters)
 
 ! ident_7="@(#)M_CLI2::get_anyarray_d(3f): given keyword fetch dble value array from Language Dictionary (0 on err)"
 
-character(len=*),intent(in)           :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)           :: keyword      ! keyword to retrieve value from dictionary
 real(kind=dp),allocatable,intent(out) :: darray(:)    ! function type
 character(len=*),intent(in),optional  :: delimiters
 
@@ -1739,7 +1741,10 @@ character(len=:),allocatable          :: val
       val=replace_str(val,')','')
       call split(val,carray,delimiters=delimiters)    ! find value associated with keyword and split it into an array
    else
+      call journal('sc','*get_anyarray_d* unknown keyword '//keyword)
       call mystop(9 ,'*get_anyarray_d* unknown keyword '//keyword)
+      allocate(darray(0))
+      return
    endif
    allocate(darray(size(carray)))                     ! create the output array
    do i=1,size(carray)
@@ -1751,7 +1756,7 @@ character(len=:),allocatable          :: val
 end subroutine get_anyarray_d
 !===================================================================================================================================
 subroutine get_anyarray_i(keyword,iarray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 integer,allocatable                  :: iarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
@@ -1760,7 +1765,7 @@ real(kind=dp),allocatable            :: darray(:)    ! function type
 end subroutine get_anyarray_i
 !===================================================================================================================================
 subroutine get_anyarray_r(keyword,rarray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 real,allocatable                     :: rarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
@@ -1769,7 +1774,7 @@ rarray=real(darray)
 end subroutine get_anyarray_r
 !===================================================================================================================================
 subroutine get_anyarray_x(keyword,xarray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 complex,allocatable                  :: xarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
@@ -1778,7 +1783,9 @@ integer                              :: half,sz
    sz=size(darray)
    half=sz/2
    if(sz.ne.half+half)then
+      call journal('sc','*get_anyarray_x* uneven number of values defining complex value '//keyword)
       call mystop(11,'*get_anyarray_x* uneven number of values defining complex value '//keyword)
+      allocate(xarray(0))
    endif
    xarray=cmplx(real(darray(1::2)),real(darray(2::2)))
 end subroutine get_anyarray_x
@@ -1798,7 +1805,9 @@ character(len=:),allocatable         :: val
       val=unquote(values(place)(:counts(place)))
       call split(val,strings,delimiters=delimiters)   ! find value associated with keyword and split it into an array
    else
+      call journal('sc','*get_anyarray_c* unknown keyword '//keyword)
       call mystop(12,'*get_anyarray_c* unknown keyword '//keyword)
+      allocate(character(len=0)::strings(0))
    endif
 end subroutine get_anyarray_c
 !===================================================================================================================================
@@ -1822,17 +1831,21 @@ character(len=:),allocatable         :: val
       else
          call journal('sc','*get_fixed_length_any_size_cxxxx* values too long. Longest is',len(strings_a),'allowed is',len(strings))
          write(*,'("strings=",3x,*(a,1x))')strings
+         call journal('sc','*get_fixed_length_any_size_cxxxx* keyword='//keyword)
          call mystop(13,'*get_fixed_length_any_size_cxxxx* keyword='//keyword)
+         allocate(character(len=0)::strings(0))
       endif
    else
+      call journal('sc','*get_fixed_length_any_size_cxxxx* unknown keyword '//keyword)
       call mystop(14,'*get_fixed_length_any_size_cxxxx* unknown keyword '//keyword)
+      allocate(character(len=0)::strings(0))
    endif
 end subroutine get_fixed_length_any_size_cxxxx
 !===================================================================================================================================
 ! return non-allocatable arrays
 !===================================================================================================================================
 subroutine get_fixedarray_i(keyword,iarray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 integer                              :: iarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
@@ -1843,12 +1856,14 @@ integer                              :: dsize
       iarray=darray
    else
       call journal('sc','*get_fixedarray_i* wrong number of values for keyword',keyword,'got',dsize,'expected',size(iarray))
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(33)
+      iarray=0
    endif
 end subroutine get_fixedarray_i
 !===================================================================================================================================
 subroutine get_fixedarray_r(keyword,rarray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 real                                 :: rarray(:)
 character(len=*),intent(in),optional :: delimiters
 real,allocatable                     :: darray(:)    ! function type
@@ -1859,12 +1874,14 @@ integer                              :: dsize
       rarray=darray
    else
       call journal('sc','*get_fixedarray_r* wrong number of values for keyword',keyword,'got',dsize,'expected',size(rarray))
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(33)
+      rarray=0.0
    endif
 end subroutine get_fixedarray_r
 !===================================================================================================================================
 subroutine get_fixed_size_complex(keyword,xarray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 complex                              :: xarray(:)
 character(len=*),intent(in),optional :: delimiters
 complex,allocatable                  :: darray(:)    ! function type
@@ -1875,18 +1892,23 @@ integer                              :: dsize
    sz=dsize*2
    half=sz/2
    if(sz.ne.half+half)then
+      call journal('sc','*get_fixed_size_complex* uneven number of values defining complex value '//keyword)
       call mystop(15,'*get_fixed_size_complex* uneven number of values defining complex value '//keyword)
+      xarray=0
+      return
    endif
    if(ubound(xarray,dim=1).eq.dsize)then
       xarray=darray
    else
       call journal('sc','*get_fixed_size_complex* wrong number of values for keyword',keyword,'got',dsize,'expected',size(xarray))
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(34)
+      xarray=cmplx(0.0,0.0)
    endif
 end subroutine get_fixed_size_complex
 !===================================================================================================================================
 subroutine get_fixedarray_d(keyword,darr,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 real(kind=dp)                        :: darr(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
@@ -1897,12 +1919,14 @@ integer                              :: dsize
       darr=darray
    else
       call journal('sc','*get_fixedarray_d* wrong number of values for keyword',keyword,'got',dsize,'expected',size(darr))
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(35)
+      darr=0.0d0
    endif
 end subroutine get_fixedarray_d
 !===================================================================================================================================
 subroutine get_fixedarray_l(keyword,larray,delimiters)
-character(len=*),intent(in)          :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
 logical                              :: larray(:)
 character(len=*),intent(in),optional :: delimiters
 logical,allocatable                  :: darray(:)    ! function type
@@ -1913,7 +1937,9 @@ integer                              :: dsize
       larray=darray
    else
       call journal('sc','*get_fixedarray_l* wrong number of values for keyword',keyword,'got',dsize,'expected',size(larray))
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(36)
+      larray=.false.
    endif
 end subroutine get_fixedarray_l
 !===================================================================================================================================
@@ -1939,17 +1965,21 @@ character(len=:),allocatable         :: val
       else
          call journal('sc','*get_fixedarray_fixed_length_c* wrong number of values for keyword',&
             & keyword,'got',ssize,'expected ',size(strings)) !,ubound(strings,dim=1)
-         call print_dictionary('USAGE:',stop=.true.)
-    endif
+         call print_dictionary('USAGE:')
+         call mystop(30,'*get_fixedarray_fixed_length_c* unknown keyword '//keyword)
+         strings=''
+      endif
    else
+      call journal('sc','*get_fixedarray_fixed_length_c* unknown keyword '//keyword)
       call mystop(16,'*get_fixedarray_fixed_length_c* unknown keyword '//keyword)
+      strings=''
    endif
 end subroutine get_fixedarray_fixed_length_c
 !===================================================================================================================================
 ! return scalars
 !===================================================================================================================================
 subroutine get_scalar_d(keyword,d)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value from dictionary
 real(kind=dp)                 :: d
 real(kind=dp),allocatable     :: darray(:)    ! function type
    call get_anyarray_d(keyword,darray)
@@ -1957,12 +1987,13 @@ real(kind=dp),allocatable     :: darray(:)    ! function type
       d=darray(1)
    else
       call journal('sc','*get_anyarray_d* incorrect number of values for keyword',keyword,'expected one found',size(darray))
-      call print_dictionary('USAGE:',stop=.true.)
+      call print_dictionary('USAGE:')
+      call mystop(31,'*get_anyarray_d* incorrect number of values for keyword'//keyword//'expected one')
    endif
 end subroutine get_scalar_d
 !===================================================================================================================================
 subroutine get_scalar_real(keyword,r)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value from dictionary
 real,intent(out)              :: r
 real(kind=dp)                 :: d
    call get_scalar_d(keyword,d)
@@ -1970,7 +2001,7 @@ real(kind=dp)                 :: d
 end subroutine get_scalar_real
 !===================================================================================================================================
 subroutine get_scalar_i(keyword,i)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value from dictionary
 integer,intent(out)           :: i
 real(kind=dp)                 :: d
    call get_scalar_d(keyword,d)
@@ -1990,6 +2021,8 @@ integer                       :: place
       string=unquote(values(place)(:counts(place)))
    else
       call mystop(17,'*get_anyarray_c* unknown keyword '//keyword)
+      call journal('sc','*get_anyarray_c* unknown keyword '//keyword)
+      string=''
    endif
 end subroutine get_scalar_anylength_c
 !===================================================================================================================================
@@ -2007,17 +2040,19 @@ integer                       :: unlen
       string=unquote(values(place)(:counts(place)))
    else
       call mystop(18,'*get_scalar_fixed_length_c* unknown keyword '//keyword)
+      string=''
    endif
    unlen=len_trim(unquote(values(place)(:counts(place))))
    if(unlen>len(string))then
       call journal('sc','*get_scalar_fixed_length_c* value too long for',keyword,'allowed is',len(string),&
       & 'input string [',values(place),'] is',unlen)
       call mystop(19,'*get_scalar_fixed_length_c* value too long')
+      string=''
    endif
 end subroutine get_scalar_fixed_length_c
 !===================================================================================================================================
 subroutine get_scalar_complex(keyword,x)
-character(len=*),intent(in) :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in) :: keyword      ! keyword to retrieve value from dictionary
 complex,intent(out)         :: x
 real(kind=dp)               :: d(2)
    call get_fixedarray_d(keyword,d)
@@ -2026,11 +2061,12 @@ real(kind=dp)               :: d(2)
    else
       call journal('sc','*get_scalar_complex* expected two vaues found',size(d))
       call mystop(20,'*get_scalar_complex* incorrect number of values for keyword '//keyword)
+      x=cmplx(0.0,0.0)
    endif
 end subroutine get_scalar_complex
 !===================================================================================================================================
 subroutine get_scalar_logical(keyword,l)
-character(len=*),intent(in)   :: keyword      ! keyword to retrieve value for from dictionary
+character(len=*),intent(in)   :: keyword      ! keyword to retrieve value from dictionary
 logical                       :: l
 logical,allocatable           :: larray(:)    ! function type
    call get_anyarray_l(keyword,larray)
@@ -2039,6 +2075,7 @@ logical,allocatable           :: larray(:)    ! function type
    else
       call journal('sc','*get_anyarray_l* expected one value found',size(larray))
       call mystop(21,'*get_anyarray_l* incorrect number of values for keyword '//keyword)
+      l=.false.
    endif
 end subroutine get_scalar_logical
 !===================================================================================================================================
@@ -4341,240 +4378,6 @@ integer                                 :: error
       errmsg=message
    endif
 end subroutine locate_c
-subroutine locate_d(list,value,place,ier,errmsg)
-
-! ident_30="@(#)M_CLI2::locate_d(3f): find PLACE in sorted doubleprecision array where VALUE can be found or should be placed"
-
-! Assuming an array sorted in descending order
-!
-!  1. If it is not found report where it should be placed as a NEGATIVE index number.
-
-doubleprecision,allocatable            :: list(:)
-doubleprecision,intent(in)             :: value
-integer,intent(out)                    :: place
-integer,intent(out),optional           :: ier
-character(len=*),intent(out),optional  :: errmsg
-
-integer                                :: i
-character(len=:),allocatable           :: message
-integer                                :: arraysize
-integer                                :: maxtry
-integer                                :: imin, imax
-integer                                :: error
-
-   if(.not.allocated(list))then
-      list=[doubleprecision :: ]
-   endif
-   arraysize=size(list)
-
-   error=0
-   if(arraysize.eq.0)then
-      maxtry=0
-      place=-1
-   else
-      maxtry=int(log(float(arraysize))/log(2.0)+1.0)
-      place=(arraysize+1)/2
-   endif
-   imin=1
-   imax=arraysize
-   message=''
-
-   LOOP: block
-   do i=1,maxtry
-
-      if(value.eq.list(PLACE))then
-         exit LOOP
-      else if(value.gt.list(place))then
-         imax=place-1
-      else
-         imin=place+1
-      endif
-
-      if(imin.gt.imax)then
-         place=-imin
-         if(iabs(place).gt.arraysize)then ! ran off end of list. Where new value should go or an unsorted input array'
-            exit LOOP
-         endif
-         exit LOOP
-      endif
-
-      place=(imax+imin)/2
-
-      if(place.gt.arraysize.or.place.le.0)then
-         message='*locate* error: search is out of bounds of list. Probably an unsorted input array'
-         error=-1
-         exit LOOP
-      endif
-
-   enddo
-   message='*locate* exceeded allowed tries. Probably an unsorted input array'
-   endblock LOOP
-   if(present(ier))then
-      ier=error
-   else if(error.ne.0)then
-      write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(-25,message)
-   endif
-   if(present(errmsg))then
-      errmsg=message
-   endif
-end subroutine locate_d
-subroutine locate_r(list,value,place,ier,errmsg)
-
-! ident_31="@(#)M_CLI2::locate_r(3f): find PLACE in sorted real array where VALUE can be found or should be placed"
-
-! Assuming an array sorted in descending order
-!
-!  1. If it is not found report where it should be placed as a NEGATIVE index number.
-
-real,allocatable                       :: list(:)
-real,intent(in)                        :: value
-integer,intent(out)                    :: place
-integer,intent(out),optional           :: ier
-character(len=*),intent(out),optional  :: errmsg
-
-integer                                :: i
-character(len=:),allocatable           :: message
-integer                                :: arraysize
-integer                                :: maxtry
-integer                                :: imin, imax
-integer                                :: error
-
-   if(.not.allocated(list))then
-      list=[real :: ]
-   endif
-   arraysize=size(list)
-
-   error=0
-   if(arraysize.eq.0)then
-      maxtry=0
-      place=-1
-   else
-      maxtry=int(log(float(arraysize))/log(2.0)+1.0)
-      place=(arraysize+1)/2
-   endif
-   imin=1
-   imax=arraysize
-   message=''
-
-   LOOP: block
-   do i=1,maxtry
-
-      if(value.eq.list(PLACE))then
-         exit LOOP
-      else if(value.gt.list(place))then
-         imax=place-1
-      else
-         imin=place+1
-      endif
-
-      if(imin.gt.imax)then
-         place=-imin
-         if(iabs(place).gt.arraysize)then ! ran off end of list. Where new value should go or an unsorted input array'
-            exit LOOP
-         endif
-         exit LOOP
-      endif
-
-      place=(imax+imin)/2
-
-      if(place.gt.arraysize.or.place.le.0)then
-         message='*locate* error: search is out of bounds of list. Probably an unsorted input array'
-         error=-1
-         exit LOOP
-      endif
-
-   enddo
-   message='*locate* exceeded allowed tries. Probably an unsorted input array'
-   endblock LOOP
-   if(present(ier))then
-      ier=error
-   else if(error.ne.0)then
-      write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(-26,message)
-   endif
-   if(present(errmsg))then
-      errmsg=message
-   endif
-end subroutine locate_r
-subroutine locate_i(list,value,place,ier,errmsg)
-
-! ident_32="@(#)M_CLI2::locate_i(3f): find PLACE in sorted integer array where VALUE can be found or should be placed"
-
-! Assuming an array sorted in descending order
-!
-!  1. If it is not found report where it should be placed as a NEGATIVE index number.
-
-integer,allocatable                    :: list(:)
-integer,intent(in)                     :: value
-integer,intent(out)                    :: place
-integer,intent(out),optional           :: ier
-character(len=*),intent(out),optional  :: errmsg
-
-integer                                :: i
-character(len=:),allocatable           :: message
-integer                                :: arraysize
-integer                                :: maxtry
-integer                                :: imin, imax
-integer                                :: error
-
-   if(.not.allocated(list))then
-      list=[integer :: ]
-   endif
-   arraysize=size(list)
-
-   error=0
-   if(arraysize.eq.0)then
-      maxtry=0
-      place=-1
-   else
-      maxtry=int(log(float(arraysize))/log(2.0)+1.0)
-      place=(arraysize+1)/2
-   endif
-   imin=1
-   imax=arraysize
-   message=''
-
-   LOOP: block
-   do i=1,maxtry
-
-      if(value.eq.list(PLACE))then
-         exit LOOP
-      else if(value.gt.list(place))then
-         imax=place-1
-      else
-         imin=place+1
-      endif
-
-      if(imin.gt.imax)then
-         place=-imin
-         if(iabs(place).gt.arraysize)then ! ran off end of list. Where new value should go or an unsorted input array'
-            exit LOOP
-         endif
-         exit LOOP
-      endif
-
-      place=(imax+imin)/2
-
-      if(place.gt.arraysize.or.place.le.0)then
-         message='*locate* error: search is out of bounds of list. Probably an unsorted input array'
-         error=-1
-         exit LOOP
-      endif
-
-   enddo
-   message='*locate* exceeded allowed tries. Probably an unsorted input array'
-   endblock LOOP
-   if(present(ier))then
-      ier=error
-   else if(error.ne.0)then
-      write(stderr,*)message//' VALUE=',value,' PLACE=',place
-      call mystop(-27,message)
-   endif
-   if(present(errmsg))then
-      errmsg=message
-   endif
-end subroutine locate_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
@@ -4643,7 +4446,7 @@ end subroutine locate_i
 !!    Public Domain
 subroutine remove_c(list,place)
 
-! ident_33="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
+! ident_30="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -4660,47 +4463,9 @@ integer                      :: ii, end
       list=[character(len=ii) :: list(:place-1), list(place+1:) ]
    endif
 end subroutine remove_c
-subroutine remove_d(list,place)
-
-! ident_34="@(#)M_CLI2::remove_d(3fp): remove doubleprecision value from allocatable array at specified position"
-
-doubleprecision,allocatable  :: list(:)
-integer,intent(in)           :: place
-integer                      :: end
-   if(.not.allocated(list))then
-           list=[doubleprecision :: ]
-   endif
-   end=size(list)
-   if(place.le.0.or.place.gt.end)then                       ! index out of bounds of array
-   elseif(place.eq.end)then                                 ! remove from array
-      list=[ list(:place-1)]
-   else
-      list=[ list(:place-1), list(place+1:) ]
-   endif
-
-end subroutine remove_d
-subroutine remove_r(list,place)
-
-! ident_35="@(#)M_CLI2::remove_r(3fp): remove value from allocatable array at specified position"
-
-real,allocatable    :: list(:)
-integer,intent(in)  :: place
-integer             :: end
-   if(.not.allocated(list))then
-      list=[real :: ]
-   endif
-   end=size(list)
-   if(place.le.0.or.place.gt.end)then                       ! index out of bounds of array
-   elseif(place.eq.end)then                                 ! remove from array
-      list=[ list(:place-1)]
-   else
-      list=[ list(:place-1), list(place+1:) ]
-   endif
-
-end subroutine remove_r
 subroutine remove_l(list,place)
 
-! ident_36="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
+! ident_31="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
 
 logical,allocatable    :: list(:)
 integer,intent(in)     :: place
@@ -4720,7 +4485,7 @@ integer                :: end
 end subroutine remove_l
 subroutine remove_i(list,place)
 
-! ident_37="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
+! ident_32="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -4835,7 +4600,7 @@ end subroutine remove_i
 !!    Public Domain
 subroutine replace_c(list,value,place)
 
-! ident_38="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
+! ident_33="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -4860,49 +4625,9 @@ integer                      :: end
       list(place)=value
    endif
 end subroutine replace_c
-subroutine replace_d(list,value,place)
-
-! ident_39="@(#)M_CLI2::replace_d(3fp): place doubleprecision value into allocatable array at specified position"
-
-doubleprecision,intent(in)   :: value
-doubleprecision,allocatable  :: list(:)
-integer,intent(in)           :: place
-integer                      :: end
-   if(.not.allocated(list))then
-           list=[doubleprecision :: ]
-   endif
-   end=size(list)
-   if(end.eq.0)then                                          ! empty array
-      list=[value]
-   elseif(place.gt.0.and.place.le.end)then
-      list(place)=value
-   else                                                      ! put in middle of array
-      write(stderr,*)'*replace_d* error: index out of range. end=',end,' index=',place
-   endif
-end subroutine replace_d
-subroutine replace_r(list,value,place)
-
-! ident_40="@(#)M_CLI2::replace_r(3fp): place value into allocatable array at specified position"
-
-real,intent(in)       :: value
-real,allocatable      :: list(:)
-integer,intent(in)    :: place
-integer               :: end
-   if(.not.allocated(list))then
-      list=[real :: ]
-   endif
-   end=size(list)
-   if(end.eq.0)then                                          ! empty array
-      list=[value]
-   elseif(place.gt.0.and.place.le.end)then
-      list(place)=value
-   else                                                      ! put in middle of array
-      write(stderr,*)'*replace_r* error: index out of range. end=',end,' index=',place
-   endif
-end subroutine replace_r
 subroutine replace_l(list,value,place)
 
-! ident_41="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
+! ident_34="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -4922,7 +4647,7 @@ integer               :: end
 end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-! ident_42="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
+! ident_35="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -5029,7 +4754,7 @@ end subroutine replace_i
 !!    Public Domain
 subroutine insert_c(list,value,place)
 
-! ident_43="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
+! ident_36="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -5061,60 +4786,9 @@ integer                      :: end
    endif
 
 end subroutine insert_c
-subroutine insert_r(list,value,place)
-
-! ident_44="@(#)M_CLI2::insert_r(3fp): place real value into allocatable array at specified position"
-
-real,intent(in)       :: value
-real,allocatable      :: list(:)
-integer,intent(in)    :: place
-integer               :: end
-
-   if(.not.allocated(list))then
-      list=[real :: ]
-   endif
-
-   end=size(list)
-   if(end.eq.0)then                                          ! empty array
-      list=[value]
-   elseif(place.eq.1)then                                    ! put in front of array
-      list=[value, list]
-   elseif(place.gt.end)then                                  ! put at end of array
-      list=[list, value ]
-   elseif(place.ge.2.and.place.le.end)then                   ! put in middle of array
-      list=[list(:place-1), value,list(place:) ]
-   else                                                      ! index out of range
-      write(stderr,*)'*insert_r* error: index out of range. end=',end,' index=',place,' value=',value
-   endif
-
-end subroutine insert_r
-subroutine insert_d(list,value,place)
-
-! ident_45="@(#)M_CLI2::insert_d(3fp): place doubleprecision value into allocatable array at specified position"
-
-doubleprecision,intent(in)       :: value
-doubleprecision,allocatable      :: list(:)
-integer,intent(in)               :: place
-integer                          :: end
-   if(.not.allocated(list))then
-      list=[doubleprecision :: ]
-   endif
-   end=size(list)
-   if(end.eq.0)then                                          ! empty array
-      list=[value]
-   elseif(place.eq.1)then                                    ! put in front of array
-      list=[value, list]
-   elseif(place.gt.end)then                                  ! put at end of array
-      list=[list, value ]
-   elseif(place.ge.2.and.place.le.end)then                 ! put in middle of array
-      list=[list(:place-1), value,list(place:) ]
-   else                                                      ! index out of range
-      write(stderr,*)'*insert_d* error: index out of range. end=',end,' index=',place,' value=',value
-   endif
-end subroutine insert_d
 subroutine insert_l(list,value,place)
 
-! ident_46="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
+! ident_37="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5139,7 +4813,7 @@ integer               :: end
 end subroutine insert_l
 subroutine insert_i(list,value,place)
 
-! ident_47="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
+! ident_38="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -5227,7 +4901,7 @@ end subroutine insert_i
 !!    Public Domain
 subroutine dict_delete(self,key)
 
-! ident_48="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
+! ident_39="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5305,7 +4979,7 @@ end subroutine dict_delete
 !!    Public Domain
 function dict_get(self,key) result(value)
 
-! ident_49="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
+! ident_40="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
 
 !-!class(dictionary),intent(inout) :: self
 class(dictionary)               :: self
@@ -5372,7 +5046,7 @@ end function dict_get
 !!    Public Domain
 subroutine dict_add(self,key,value)
 
-! ident_50="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
+! ident_41="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
 
 class(dictionary),intent(inout) :: self
 character(len=*),intent(in)     :: key
@@ -5397,7 +5071,7 @@ subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
 implicit none
 
-! ident_51="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
+! ident_42="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
 character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
@@ -5545,19 +5219,17 @@ subroutine mystop(sig,msg)
 ! else do not stop and set G_STOP_MESSAGE if G_STOPON is false
 ! or
 ! print message and stop if G_STOPON is true
+! the MSG is NOT for displaying except for internal errors when the program will be stopped.
+! It is for returning a value when the stop is being ignored
 !
 integer,intent(in) :: sig
 character(len=*),intent(in),optional :: msg
+   !!write(*,*)'MYSTOP:',sig,trim(msg)
    if(sig.lt.0)then
-      if(present(msg)) call journal('sc',msg)
+      if(present(msg))call journal('sc',msg)
       stop abs(sig)
    else if(G_STOPON)then
-      if(present(msg)) then
-         call journal('sc',msg)
-         stop sig
-      else
-         stop
-      endif
+      stop
    else
       if(present(msg)) then
          G_STOP_MESSAGE=msg
@@ -5565,6 +5237,7 @@ character(len=*),intent(in),optional :: msg
          G_STOP_MESSAGE=''
       endif
       G_STOP=sig
+      !!write(*,*)'G_STOP:',g_stop,trim(msg)
    endif
 end subroutine mystop
 !===================================================================================================================================

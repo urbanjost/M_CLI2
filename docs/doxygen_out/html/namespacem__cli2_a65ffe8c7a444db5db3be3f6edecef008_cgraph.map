@@ -1,8 +1,8 @@
 <map id="m_cli2::get_fixedarray_l" name="m_cli2::get_fixedarray_l">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a47cc758d20b655bc21672c31289e54ce" title="m_cli2::get_anyarray_l" alt="" coords="234,107,405,133"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a47cc758d20b655bc21672c31289e54ce" title="m_cli2::get_anyarray_l" alt="" coords="234,56,405,83"/>
 <area shape="rect" id="node3" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="625,157,744,184"/>
-<area shape="rect" id="node8" href="$namespacem__cli2.html#af7dc9c4b19e394533df4a8ef42fa111b" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to set_args(..." alt="" coords="232,157,407,184"/>
 <area shape="rect" id="node4" href="$namespacem__cli2.html#a0e44d7c9058545df8bf09674e9c2e799" title="m_cli2::mystop" alt="" coords="455,157,577,184"/>
+<area shape="rect" id="node8" href="$namespacem__cli2.html#af7dc9c4b19e394533df4a8ef42fa111b" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to set_args(..." alt="" coords="232,107,407,133"/>
 <area shape="rect" id="node5" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="465,5,567,32"/>
 <area shape="rect" id="node7" href="$namespacem__cli2.html#afa7a2419002024ff6d950c5d905ddd7a" title="NAMEupper(3f) &#45; [M_CLI2:CASE] changes a string to uppercase (LICENSE:PD) " alt="" coords="461,107,571,133"/>
 <area shape="rect" id="node6" href="$namespacem__cli2.html#a6d2d93ab8471667e632bf7a0e95ebd13" title="NAMElower(3f) &#45; [M_CLI2:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="630,5,739,32"/>
