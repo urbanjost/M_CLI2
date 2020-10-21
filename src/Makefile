@@ -3,15 +3,16 @@
 NULL=
 #$(NULL)
 PROGFILES = \
- ../PROGRAMS/demo1/demo1.f90 \
- ../PROGRAMS/demo2/demo2.f90 \
- ../PROGRAMS/demo3/demo3.f90 \
- ../PROGRAMS/demo4/demo4.f90 \
- ../PROGRAMS/demo5/demo5.f90 \
- ../PROGRAMS/demo6/demo6.f90 \
- ../PROGRAMS/demo7/demo7.f90 \
- ../PROGRAMS/demo8/demo8.f90 \
- ../PROGRAMS/demo9/demo9.f90 \
+ ../demos/demo1/demo1.f90 \
+ ../demos/demo2/demo2.f90 \
+ ../demos/demo3/demo3.f90 \
+ ../demos/demo4/demo4.f90 \
+ ../demos/demo5/demo5.f90 \
+ ../demos/demo6/demo6.f90 \
+ ../demos/demo7/demo7.f90 \
+ ../demos/demo8/demo8.f90 \
+ ../demos/demo9/demo9.f90 \
+ ../demos/demo10/demo10.f90 \
  ../test/main.f90 \
 $(NULL)
 PROG = ${PROGFILES:.f90=}
@@ -20,12 +21,12 @@ OBJS =  M_CLI2.o
 # platform-specific values you will probably change
 LIBS := 
 FC := gfortran
-FFLAGS := -g -O -Wall -Wextra
+#FFLAGS := -g -O -Wall -Wextra
 F90 := gfortran
-F90FLAGS := -g -O -Wall -Wextra
+#F90FLAGS := -g -O -Wall -Wextra
 LDFLAGS := 
 all: $(PROG) 
-	@echo "That's All Folks!"
+	@echo "That's All Folks! Enter \"make help\" for more options"
 $(PROG): $(OBJS)
 	-$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)
 clean:

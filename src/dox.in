@@ -839,7 +839,7 @@ RECURSIVE              = YES
 # Note that relative paths are relative to the directory from which doxygen is
 # run.
 
-EXCLUDE                = ./doxygen_out/./doc/ ./html/ ./man/ ./scripts/ M_fixedform.f90 M_ncurses.f90 ./PROGRAMS/what.f90 
+EXCLUDE                = ./doxygen_out/./doc/ ./html/ ./man/ ./scripts/ M_fixedform.f90 M_ncurses.f90 ./demos/what.f90 
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or
 # directories that are symbolic links (a Unix file system feature) are excluded
@@ -892,7 +892,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = html/images
+IMAGE_PATH             = html/images ../docs/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program

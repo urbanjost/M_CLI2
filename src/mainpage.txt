@@ -1,9 +1,9 @@
 'mainpage.txt
 /**
-     @mainpage M_CLI2 Fortran Library
+         @mainpage M_CLI2 Fortran Library
 
-     @section Introduction
+         @section Introduction
       command line parsing using a command prototype
 
-     @image html html/images/swirl.gif
+         @image html html/images/swirl.gif
 */'

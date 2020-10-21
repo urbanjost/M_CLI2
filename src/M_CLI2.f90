@@ -1,5 +1,6 @@
 !VERSION 1.0 20200115
 !VERSION 2.0 20200802
+!VERSION 2.0 20201021  LONG:SHORT syntax
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -12,8 +13,8 @@
 !!      use M_CLI2, only : set_args, get_args, unnamed, remaining, args
 !!      use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
 !!      ! convenience functions
-!!      use M_CLI2, only : :: dget, iget, lget, rget, sget, cget
-!!      use M_CLI2, only : :: dgets, igets, lgets, rgets, sgets, cgets
+!!      use M_CLI2, only : dget, iget, lget, rget, sget, cget
+!!      use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets
 !!
 !!##DESCRIPTION
 !!    Allow for command line parsing much like standard Unix command line
@@ -104,7 +105,7 @@
 !===================================================================================================================================
 module M_CLI2
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>INPUT_UNIT    ! access computing environment
-!use M_strings,                     only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value
+!use M_strings,                     only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value, atleast
 !use M_list,                        only : insert, locate, remove, replace
 !use M_args,                        only : longest_command_argument
 !use M_journal,                     only : journal
@@ -141,6 +142,7 @@ type option
 end type option
 !===================================================================================================================================
 character(len=:),allocatable   :: keywords(:)
+character(len=:),allocatable   :: shorts(:)
 character(len=:),allocatable   :: values(:)
 integer,allocatable            :: counts(:)
 logical,allocatable            :: present_in(:)
@@ -153,18 +155,6 @@ character(len=:),allocatable   :: G_STOP_MESSAGE
 integer                        :: G_STOP
 logical                        :: G_STOPON
 !===================================================================================================================================
-private dictionary
-
-type dictionary
-   character(len=:),allocatable :: key(:)
-   character(len=:),allocatable :: value(:)
-   integer,allocatable          :: count(:)
-   contains
-      procedure,private :: get => dict_get
-      procedure,private :: set => dict_add    ! insert entry by name into a sorted allocatable character array if it is not present
-      procedure,private :: del => dict_delete ! delete entry by name from a sorted allocatable character array if it is present
-end type dictionary
-!==================================================================================================================================
 ! return allocatable arrays
 interface  get_args;  module  procedure  get_anyarray_d;  end interface  ! any size array
 interface  get_args;  module  procedure  get_anyarray_i;  end interface  ! any size array
@@ -196,6 +186,9 @@ interface  get_args_fixed_size;  module procedure get_fixedarray_class;         
 interface   get_args_fixed_length;  module  procedure  get_fixed_length_any_size_cxxxx; end interface  ! fixed length any size array
 interface   get_args_fixed_length;  module  procedure  get_scalar_fixed_length_c;  end interface       ! fixed length
 !===================================================================================================================================
+!intrinsic findloc
+!===================================================================================================================================
+
 ! ident_1="@(#)M_CLI2::str(3f): {msg_scalar,msg_one}"
 
 private str
@@ -309,6 +302,7 @@ integer                                          :: istart
 integer                                          :: iback
    if(get('usage').eq.'T')then
       call print_dictionary('USAGE:')
+      call default_help()
       call mystop(32)
       return
    endif
@@ -321,19 +315,9 @@ integer                                          :: iback
          return
       endif
    elseif(get('help').eq.'T')then
-      DEFAULT_HELP: block
-         character(len=:),allocatable :: cmd_name
-         integer :: ilength
-         call get_command_argument(number=0,length=ilength)
-         allocate(character(len=ilength) :: cmd_name)
-         call get_command_argument(number=0,value=cmd_name)
-         G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
-         call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
-         call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
-         deallocate(cmd_name)
-         call mystop(2,'displayed default help text')
-         return
-      endblock DEFAULT_HELP
+      call default_help()
+      call mystop(2,'displayed default help text')
+      return
    endif
    if(present(version_text))then
       if(get('version').eq.'T')then
@@ -356,6 +340,18 @@ integer                                          :: iback
       call mystop(4,'displayed default version text')
       return
    endif
+contains
+subroutine default_help()
+character(len=:),allocatable :: cmd_name
+integer :: ilength
+   call get_command_argument(number=0,length=ilength)
+   allocate(character(len=ilength) :: cmd_name)
+   call get_command_argument(number=0,value=cmd_name)
+   G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
+   call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
+   call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
+   deallocate(cmd_name)
+end subroutine default_help
 end subroutine check_commandline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -425,6 +421,7 @@ end subroutine check_commandline
 !!           must use the same array delimiters as the call to
 !!           the family of get_args*(3f) called.
 !!         o long names (--keyword) should be all lowercase
+!!         o to have short names suffix the long name with :LETTER
 !!         o to define a zero-length allocatable array make the
 !!           value a delimiter (usually a comma).
 !!         o If the prototype ends with "--" a special mode is turned
@@ -448,7 +445,7 @@ end subroutine check_commandline
 !!         o mapping of short names to long names is demonstrated in
 !!           the manpage for SPECIFIED(3f).
 !!
-!!           Specifying both names of an equivalenced keyword will have
+!!         o Specifying both names of an equivalenced keyword will have
 !!           undefined results (currently, their alphabetical order
 !!           will define what the Fortran variable values become).
 !!
@@ -689,7 +686,7 @@ integer                           :: place
       if((currnt=="-" .and. prev==" " .and. delmt == "off" .and. index("0123456789.",forwrd) == 0).or.ipoint > islen)then
          ! beginning of a keyword
          if(forwrd.eq.'-')then                      ! change --var to -var so "long" syntax is supported
-            !!dummy(ifwd:ifwd)='_'
+            !*!dummy(ifwd:ifwd)='_'
             ipoint=ipoint+1                         ! ignore second - instead (was changing it to _)
             G_keyword_single_letter=.false.         ! flag this is a long keyword
          else
@@ -716,7 +713,7 @@ integer                           :: place
                write(stderr,*)'*prototype_to_dictionary* warning: ignoring string ',trim(value)
             endif
          else
-            call locate(keywords,keyword,place)
+            call locate_key(keyword,place)
             if(keyword.ne.' '.and.place.lt.0)then
                call update(keyword,'F')           ! store name and null value (first pass)
             elseif(keyword.ne.' ')then
@@ -890,7 +887,7 @@ elemental impure function specified(key)
 character(len=*),intent(in) :: key
 logical                     :: specified
 integer                     :: place
-   call locate(keywords,key,place)                   ! find where string is or should be
+   call locate_key(key,place)                   ! find where string is or should be
    if(place.lt.1)then
       specified=.false.
    else
@@ -903,17 +900,46 @@ end function specified
 subroutine update(key,val)
 character(len=*),intent(in)           :: key
 character(len=*),intent(in),optional  :: val
-integer                               :: place
+integer                               :: place, ii
 integer                               :: ilen
 character(len=:),allocatable          :: val_local
+character(len=:),allocatable          :: short
+character(len=:),allocatable          :: long
+character(len=:),allocatable          :: long_short(:)
+   call split(key,long_short,':') ! split long:short keyname
+   select case(size(long_short))
+   case(0)
+      long=''
+      short=''
+   case(1)
+      long=trim(long_short(1))
+      if(len_trim(long).eq.1)then
+         !*!ii= findloc (shorts, long, dim=1) ! if parsing arguments on line and a short keyword look up long value
+         ii=maxloc([0,merge(1, 0, shorts.eq.long)],dim=1)
+         if(ii.gt.1)then
+            long=keywords(ii-1)
+         endif
+         short=long
+      else
+         short=''
+      endif
+   case(2)
+      long=trim(long_short(1))
+      short=trim(long_short(2))
+   case default
+      write(stderr,*)'WARNING: incorrect syntax for key: ',trim(key)
+      long=trim(long_short(1))
+      short=trim(long_short(2))
+   end select
    if(present(val))then
       val_local=val
       ilen=len_trim(val_local)
-      call locate(keywords,key,place)                   ! find where string is or should be
+      call locate_key(long,place)                  ! find where string is or should be
       if(place.lt.1)then                                ! if string was not found insert it
-         call insert(keywords,key,iabs(place))
+         call insert(keywords,long,iabs(place))
          call insert(values,val_local,iabs(place))
          call insert(counts,ilen,iabs(place))
+         call insert(shorts,short,iabs(place))
          call insert(present_in,.true.,iabs(place))
       else
          if(present_in(place))then                      ! if multiple keywords append values with space between them
@@ -930,11 +956,12 @@ character(len=:),allocatable          :: val_local
          call replace(present_in,.true.,place)
       endif
    else                                                 ! if no value is present remove the keyword and related values
-      call locate(keywords,key,place)
+      call locate_key(long,place)                       ! check name as long and short
       if(place.gt.0)then
          call remove(keywords,place)
          call remove(values,place)
          call remove(counts,place)
+         call remove(shorts,place)
          call remove(present_in,place)
       endif
    endif
@@ -972,6 +999,8 @@ subroutine wipe_dictionary()
    allocate(character(len=0) :: values(0))
    if(allocated(counts))deallocate(counts)
    allocate(counts(0))
+   if(allocated(shorts))deallocate(shorts)
+   allocate(character(len=0) :: shorts(0))
    if(allocated(present_in))deallocate(present_in)
    allocate(present_in(0))
 end subroutine wipe_dictionary
@@ -996,7 +1025,7 @@ character(len=*),intent(in)   :: key
 character(len=:),allocatable  :: valout
 integer                       :: place
    ! find where string is or should be
-   call locate(keywords,key,place)
+   call locate_key(key,place)
    if(place.lt.1)then
       valout=''
    else
@@ -1119,7 +1148,7 @@ logical,intent(in),optional  :: check
 logical                      :: check_local
 integer                      :: pointer
 character(len=:),allocatable :: lastkeyword
-integer                      :: i
+integer                      :: i, ii
 integer                      :: ilength, istatus, imax
 character(len=:),allocatable :: current_argument
 character(len=:),allocatable :: current_argument_padded
@@ -1176,7 +1205,7 @@ logical                      :: nomore
          if(lastkeyword.ne.'')then
             call ifnull()
          endif
-         call locate(keywords,current_argument_padded(3:),pointer)
+         call locate_key(current_argument_padded(3:),pointer)
          if(pointer.le.0.and.check_local)then
             call print_dictionary('UNKNOWN LONG KEYWORD: '//current_argument)
             call mystop(1)
@@ -1188,7 +1217,7 @@ logical                      :: nomore
          if(lastkeyword.ne.'')then
             call ifnull()
          endif
-         call locate(keywords,current_argument_padded(2:),pointer)
+         call locate_key(current_argument_padded(2:),pointer)
          if(pointer.le.0.and.check_local)then
             call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
             call mystop(2)
@@ -1327,8 +1356,9 @@ integer          :: i
    endif
    if(allocated(keywords))then
       if(size(keywords).gt.0)then
-         write(stderr,'(*(a,t21,a,t30,a))')'KEYWORD','PRESENT','VALUE'
-         write(stderr,'(*(a,t21,l1,t30,"[",a,"]",/))')(trim(keywords(i)),present_in(i),values(i)(:counts(i)),i=1,size(keywords))
+         write(stderr,'(a,1x,a,1x,a,1x,a)')atleast('KEYWORD',max(len(keywords),8)),'SHORT','PRESENT','VALUE'
+         write(stderr,'(*(a,1x,a5,1x,l1,8x,"[",a,"]",/))') &
+         & (atleast(keywords(i),max(len(keywords),8)),shorts(i),present_in(i),values(i)(:counts(i)),i=1,size(keywords))
       endif
    endif
    if(allocated(unnamed))then
@@ -1688,7 +1718,7 @@ character(len=:),allocatable :: val
 integer                      :: i
 integer                      :: place
 integer                      :: ichar                      ! point to first character of word unless first character is "."
-   call locate(keywords,keyword,place)                     ! find where string is or should be
+   call locate_key(keyword,place)                          ! find where string is or should be
    if(place.gt.0)then                                      ! if string was found
       val=values(place)(:counts(place))
       call split(adjustl(upper(val)),carray,delimiters=delimiters)  ! convert value to uppercase, trimmed; then parse into array
@@ -1734,7 +1764,7 @@ integer                               :: place
 integer                               :: ierr
 character(len=:),allocatable          :: val
 !-----------------------------------------------------------------------------------------------------------------------------------
-   call locate(keywords,keyword,place)                ! find where string is or should be
+   call locate_key(keyword,place)                     ! find where string is or should be
    if(place.gt.0)then                                 ! if string was found
       val=values(place)(:counts(place))
       val=replace_str(val,'(','')
@@ -1800,7 +1830,7 @@ character(len=:),allocatable         :: strings(:)
 character(len=*),intent(in),optional :: delimiters
 integer                              :: place
 character(len=:),allocatable         :: val
-   call locate(keywords,keyword,place)                ! find where string is or should be
+   call locate_key(keyword,place)                     ! find where string is or should be
    if(place > 0)then                                  ! if index is valid return strings
       val=unquote(values(place)(:counts(place)))
       call split(val,strings,delimiters=delimiters)   ! find value associated with keyword and split it into an array
@@ -1822,7 +1852,7 @@ character(len=*),intent(in),optional :: delimiters
 character(len=:),allocatable         :: strings_a(:)
 integer                              :: place
 character(len=:),allocatable         :: val
-   call locate(keywords,keyword,place)                ! find where string is or should be
+   call locate_key(keyword,place)                     ! find where string is or should be
    if(place > 0)then                                  ! if index is valid return strings
       val=unquote(values(place)(:counts(place)))
       call split(val,strings_a,delimiters=delimiters)   ! find value associated with keyword and split it into an array
@@ -1955,7 +1985,7 @@ character(len=*),intent(in)          :: keyword   ! name to look up in dictionar
 integer                              :: place
 integer                              :: ssize
 character(len=:),allocatable         :: val
-   call locate(keywords,keyword,place)            ! find where string is or should be
+   call locate_key(keyword,place)                 ! find where string is or should be
    if(place > 0)then                              ! if index is valid return strings
       val=unquote(values(place)(:counts(place)))
       call split(val,str,delimiters=delimiters)   ! find value associated with keyword and split it into an array
@@ -2016,7 +2046,7 @@ subroutine get_scalar_anylength_c(keyword,string)
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
 character(len=:),allocatable,intent(out)  :: string
 integer                       :: place
-   call locate(keywords,keyword,place)                ! find where string is or should be
+   call locate_key(keyword,place)                     ! find where string is or should be
    if(place > 0)then                                  ! if index is valid return string
       string=unquote(values(place)(:counts(place)))
    else
@@ -2035,7 +2065,7 @@ character(len=*),intent(in)   :: keyword              ! name to look up in dicti
 character(len=*),intent(out)  :: string
 integer                       :: place
 integer                       :: unlen
-   call locate(keywords,keyword,place)                ! find where string is or should be
+   call locate_key(keyword,place)                     ! find where string is or should be
    if(place > 0)then                                  ! if index is valid return string
       string=unquote(values(place)(:counts(place)))
    else
@@ -4561,7 +4591,7 @@ end subroutine remove_i
 !!     ! show array
 !!     write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
 !!
-!!     call locate(keywords,'a',place)
+!!     call locate_key('a',place)
 !!     if(place.gt.0)then
 !!        write(*,*)'The value of "a" is',trim(values(place))
 !!     else
@@ -4575,7 +4605,7 @@ end subroutine remove_i
 !!     integer                      :: place
 !!
 !!     ! find where string is or should be
-!!     call locate(keywords,key,place)
+!!     call locate_key(key,place)
 !!     ! if string was not found insert it
 !!     if(place.lt.1)then
 !!        call insert(keywords,key,abs(place))
@@ -4839,239 +4869,11 @@ end subroutine insert_i
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
-!>
-!!##NAME
-!!    dict_delete(3f) - [M_CLI2] delete entry by name from an allocatable sorted string array if it is present
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine dict_delete(key,dict)
-!!
-!!    character(len=*),intent(in) :: key
-!!    type(dictionary)            :: dict
-!!
-!!##DESCRIPTION
-!!
-!!    Find if a string is in a sorted array, and delete the string
-!!    from the dictionary if it is present.
-!!
-!!##OPTIONS
-!!
-!!    KEY           the key name to find and delete from the dictionary.
-!!    DICTIONARY    the dictionary.
-!!
-!!##EXAMPLES
-!!
-!!
-!! delete a key from a dictionary by name.
-!!
-!!     program demo_dict_delete
-!!     use M_CLI2, only : dictionary
-!!     implicit none
-!!     type(dictionary) :: caps
-!!     integer                       :: i
-!!     call caps%set(caps,'A','aye')
-!!     call caps%set(caps,'B','bee')
-!!     call caps%set(caps,'C','see')
-!!     call caps%set(caps,'D','dee')
-!!
-!!     write(*,101)(trim(arr(i)),i=1,size(caps%keys)) ! show array
-!!     call  caps%del(caps,'A')
-!!     call  caps%del(caps,'C')
-!!     call  caps%del(caps,'z')
-!!     write(*,101)(trim(arr(i)),i=1,size(arr)) ! show array
-!!     101 format (1x,*("[",a,"]",:,","))
-!!     end program demo_dict_delete
-!!
-!!    Results:
-!!
-!!     [z],[xxx],[c],[b],[b],[aaa],[ZZZ],[ZZ]
-!!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
-!!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
-!!     [z],[xxx],[b],[b],[aaa],[ZZZ],[ZZ]
-!!     [z],[xxx],[aaa],[ZZZ],[ZZ]
-!!     [z],[xxx],[aaa],[ZZZ]
-!!     [z],[xxx],[aaa],[ZZZ]
-!!     [xxx],[aaa],[ZZZ]
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-subroutine dict_delete(self,key)
-
-! ident_39="@(#)M_CLI2::dict_delete(3f): remove string from sorted allocatable string array if present"
-
-class(dictionary),intent(inout) :: self
-character(len=*),intent(in)     :: key
-integer                         :: place
-
-   call locate(self%key,key,place)
-   if(place.ge.1)then
-      call remove(self%key,place)
-      call remove(self%value,place)
-      call remove(self%count,place)
-   endif
-
-end subroutine dict_delete
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-!>
-!!##NAME
-!!    dict_get(3f) - [M_CLI2] get value of key-value pair in a dictionary given key
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine dict_get(dict,key,value)
-!!
-!!    type(dictionary)            :: dict
-!!    character(len=*),intent(in) :: key
-!!    character(len=*),intent(in) :: VALUE
-!!
-!!##DESCRIPTION
-!!
-!!    get a value given a key from a key-value dictionary
-!!
-!!    If key is not found in dictionary , return a blank
-!!
-!!##OPTIONS
-!!
-!!    DICT     is the dictionary.
-!!    KEY      key name
-!!    VALUE    value associated with key
-!!
-!!##EXAMPLES
-!!
-!!
-!! Sample program
-!!
-!!     program demo_locate
-!!     use M_CLI2, only : dictionary
-!!     implicit none
-!!     type(dictionary)             :: table
-!!     integer          :: i
-!!
-!!     call table%set('A','value for A')
-!!     call table%set('B','value for B')
-!!     call table%set('C','value for C')
-!!     call table%set('D','value for D')
-!!     call table%set('E','value for E')
-!!     call table%set('F','value for F')
-!!     call table%set('G','value for G')
-!!     write(*,*)table%get('A')
-!!     write(*,*)table%get('B')
-!!     write(*,*)table%get('C')
-!!     write(*,*)table%get('D')
-!!     write(*,*)table%get('E')
-!!     write(*,*)table%get('F')
-!!     write(*,*)table%get('G')
-!!     write(*,*)table%get('H')
-!!     end program demo_locate
-!!
-!!    Results:
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-function dict_get(self,key) result(value)
-
-! ident_40="@(#)M_CLI2::dict_get(3f): get value of key-value pair in dictionary, given key"
-
-!-!class(dictionary),intent(inout) :: self
-class(dictionary)               :: self
-character(len=*),intent(in)     :: key
-character(len=:),allocatable    :: value
-integer                         :: place
-   call locate(self%key,key,place)
-   if(place.lt.1)then
-      value=''
-   else
-      value=self%value(place)(:self%count(place))
-   endif
-end function dict_get
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
-!>
-!!##NAME
-!!    dict_add(3f) - [M_CLI2] add or replace a key-value pair in a dictionary
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!   subroutine dict_add(dict,key,value)
-!!
-!!    type(dictionary)            :: dict
-!!    character(len=*),intent(in) :: key
-!!    character(len=*),intent(in) :: VALUE
-!!
-!!##DESCRIPTION
-!!    Add or replace a key-value pair in a dictionary.
-!!
-!!##OPTIONS
-!!    DICT     is the dictionary.
-!!    key      key name
-!!    VALUE    value associated with key
-!!
-!!##EXAMPLES
-!!
-!! If string is not found in a sorted array, insert the string
-!!
-!!     program demo_add
-!!     use M_CLI2, only : dictionary
-!!     implicit none
-!!     type(dictionary) :: dict
-!!     integer          :: i
-!!
-!!     call dict%set('A','b')
-!!     call dict%set('B','^')
-!!     call dict%set('C',' ')
-!!     call dict%set('D','c')
-!!     call dict%set('E','ZZ')
-!!     call dict%set('F','ZZZZ')
-!!     call dict%set('G','z')
-!!     call dict%set('A','new value for A')
-!!     write(*,'(*(a,"==>","[",a,"]",/))')(trim(dict%key(i)),dict%value(i)(:dict%count(i)),i=1,size(dict%key))
-!!     end program demo_add
-!!
-!!    Results:
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-subroutine dict_add(self,key,value)
-
-! ident_41="@(#)M_CLI2::dict_add(3f): place key-value pair into dictionary, adding the key if required"
-
-class(dictionary),intent(inout) :: self
-character(len=*),intent(in)     :: key
-character(len=*),intent(in)     :: value
-integer                         :: place
-integer                         :: place2
-   call locate(self%key,key,place)
-   if(place.lt.1)then
-      place2=iabs(place)
-      call insert( self%key,   key,             place2 )
-      call insert( self%value, value,           place2 )
-      call insert( self%count, len_trim(value), place2 )
-   elseif(place.gt.0)then  ! replace instead of insert
-      call insert( self%value, value,           place )
-      call insert( self%count, len_trim(value), place )
-   endif
-end subroutine dict_add
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
-!===================================================================================================================================
 subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,g8, n9,g9, &
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
 implicit none
 
-! ident_42="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
+! ident_39="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
 character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
@@ -5120,7 +4922,7 @@ class(*),intent(out)         :: generic
       type is (real);                           call get_args(name,generic)
       type is (real(kind=real64));              call get_args(name,generic)
       type is (logical);                        call get_args(name,generic)
-      !!type is (character(len=:),allocatable ::);   call get_args(name,generic)
+      !*!type is (character(len=:),allocatable ::);   call get_args(name,generic)
       type is (character(len=*));
       call get_args_fixed_length(name,generic)
       type is (complex);                        call get_args(name,generic)
@@ -5224,7 +5026,7 @@ subroutine mystop(sig,msg)
 !
 integer,intent(in) :: sig
 character(len=*),intent(in),optional :: msg
-   !!write(*,*)'MYSTOP:',sig,trim(msg)
+   !*!write(*,*)'MYSTOP:',sig,trim(msg)
    if(sig.lt.0)then
       if(present(msg))call journal('sc',msg)
       stop abs(sig)
@@ -5237,11 +5039,50 @@ character(len=*),intent(in),optional :: msg
          G_STOP_MESSAGE=''
       endif
       G_STOP=sig
-      !!write(*,*)'G_STOP:',g_stop,trim(msg)
+      !*!write(*,*)'G_STOP:',g_stop,trim(msg)
    endif
 end subroutine mystop
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+function atleast(line,length,pattern) result(strout)
+
+! ident_40="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+
+character(len=*),intent(in)                :: line
+integer,intent(in)                         :: length
+character(len=*),intent(in),optional       :: pattern
+character(len=max(length,len(trim(line)))) :: strout
+if(present(pattern))then
+   strout=line//repeat(pattern,len(strout)/len(pattern)+1)
+else
+   strout=line
+endif
+end function atleast
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine locate_key(value,place)
+
+! ident_41="@(#)M_CLI2::locate_key(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
+
+character(len=*),intent(in)             :: value
+integer,intent(out)                     :: place
+integer                                 :: ii
+   if(len_trim(value).eq.1)then
+      !*!ii=findloc(shorts,value,dim=1)
+      ii=maxloc([0,merge(1, 0, shorts.eq.value)],dim=1)
+      if(ii.gt.1)then
+         place=ii-1
+      else
+         call locate(keywords,value,place)
+      endif
+   else
+      call locate(keywords,value,place)
+   endif
+end subroutine locate_key
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 end module M_CLI2
 !===================================================================================================================================

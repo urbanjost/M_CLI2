@@ -55,14 +55,15 @@
 ## DOCUMENTATION
 These demo programs provide templates for the most common usage:
 
-- [demo1](PROGRAMS/demo1/demo1.f90) full usage
-- [demo2](PROGRAMS/demo2/demo2.f90) putting everything including **help** and **version** information into a contained procedure.
-- [demo3](PROGRAMS/demo3/demo3.f90) example of **basic** use
-- [demo4](PROGRAMS/demo4/demo4.f90) _COMPLEX_ type values
-- [demo5](PROGRAMS/demo5/demo5.f90) _CHARACTER_ type values
-- [demo6](PROGRAMS/demo6/demo6.f90) a complicated example showing how to create a command with subcommands
-- [demo7](PROGRAMS/demo7/demo7.f90) controlling array delimiter characters
-- [demo8](PROGRAMS/demo8/demo8.f90) multiple keyword and variable pairs on get_args(3f) for limited cases
+- [demo1](demos/demo1/demo1.f90) using the convenience functions
+- [demo2](demos/demo2/demo2.f90) putting everything including **help** and **version** information into a contained procedure.
+- [demo3](demos/demo3/demo3.f90) example of **basic** use
+- [demo4](demos/demo4/demo4.f90) _COMPLEX_ type values
+- [demo5](demos/demo5/demo5.f90) _CHARACTER_ type values
+- [demo6](demos/demo6/demo6.f90) a complicated example showing how to create a command with subcommands
+- [demo7](demos/demo7/demo7.f90) controlling array delimiter characters
+- [demo8](demos/demo8/demo8.f90) multiple keyword and variable pairs on get_args(3f) for limited cases
+- [demo10](demos/demo10/demo10.f90) full usage and even equivalencing
 
 ### manpages
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module
