@@ -10,8 +10,11 @@
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
+!!   Available procedures and variables:
+!!
 !!      use M_CLI2, only : set_args, get_args, unnamed, remaining, args
 !!      use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
+!!      use M_CLI2, only : specified
 !!      ! convenience functions
 !!      use M_CLI2, only : dget, iget, lget, rget, sget, cget
 !!      use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets
@@ -1146,6 +1149,7 @@ subroutine cmd_args_to_dictionary(check)
 ! convert command line arguments to dictionary entries
 logical,intent(in),optional  :: check
 logical                      :: check_local
+!*!logical                      :: guess_if_value
 integer                      :: pointer
 character(len=:),allocatable :: lastkeyword
 integer                      :: i, ii
@@ -1164,33 +1168,16 @@ logical                      :: nomore
    pointer=0
    lastkeyword=' '
    G_keyword_single_letter=.true.
-   GET_ARGS: do i=1, command_argument_count()                                                        ! insert and replace entries
-      call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
-      if(istatus /= 0) then                                                                          ! on error
-         write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
-            &'status=',istatus,&
-            &'length=',ilength
-         exit GET_ARGS
-      else
-         if(allocated(current_argument))deallocate(current_argument)
-         ilength=max(ilength,1)
-         allocate(character(len=ilength) :: current_argument)
-         call get_command_argument(number=i,value=current_argument,length=ilength,status=istatus)    ! get next argument
-         if(istatus /= 0) then                                                                       ! on error
-            write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
-               &'status=',istatus,&
-               &'length=',ilength,&
-               &'target length=',len(current_argument)
-            exit GET_ARGS
-          endif
-      endif
+   GET_ARGS: do i=1, command_argument_count()                        ! insert and replace entries
+
+      if(.not.get_next_argument())exit GET_ARGS                      ! get next argument
 
       if( current_argument .eq. '-' .and. nomore .eqv. .true. )then  ! sort of
-      elseif( current_argument .eq. '-')then  ! sort of
+      elseif( current_argument .eq. '-')then                         ! sort of
          current_argument='"stdin"'
       endif
       if( current_argument .eq. '--' .and. nomore .eqv. .true. )then ! -- was already encountered
-      elseif( current_argument .eq. '--' )then ! everything after this goes into the unnamed array
+      elseif( current_argument .eq. '--' )then                       ! everything after this goes into the unnamed array
          nomore=.true.
          pointer=0
          if(G_remaining_option_allowed)then
@@ -1200,7 +1187,10 @@ logical                      :: nomore
       endif
       dummy=current_argument//'   '
       current_argument_padded=current_argument//'   '
-      if(.not.nomore.and.current_argument_padded(1:2).eq.'--'.and.index("0123456789.",dummy(3:3)).eq.0)then ! beginning of long word
+
+      !*!guess_if_value=maybe_value()
+
+      if(.not.nomore.and.current_argument_padded(1:2).eq.'--')then    ! beginning of long word
          G_keyword_single_letter=.false.
          if(lastkeyword.ne.'')then
             call ifnull()
@@ -1273,6 +1263,7 @@ logical                      :: nomore
    endif
 
 contains
+
 subroutine ifnull()
    oldvalue=get(lastkeyword)//' '
    if(upper(oldvalue).eq.'F'.or.upper(oldvalue).eq.'T')then
@@ -1283,6 +1274,67 @@ subroutine ifnull()
       call update(lastkeyword,' ')
    endif
 end subroutine ifnull
+
+function get_next_argument()
+!
+! get next argument from command line into allocated variable current_argument
+!
+logical :: get_next_argument
+   get_next_argument=.true.
+   call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
+   if(istatus /= 0) then                                                                          ! on error
+      write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
+         &'status=',istatus,&
+         &'length=',ilength
+      get_next_argument=.false.
+   else
+      if(allocated(current_argument))deallocate(current_argument)
+      ilength=max(ilength,1)
+      allocate(character(len=ilength) :: current_argument)
+      call get_command_argument(number=i,value=current_argument,length=ilength,status=istatus)    ! get next argument
+      if(istatus /= 0) then                                                                       ! on error
+         write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
+            &'status=',istatus,&
+            &'length=',ilength,&
+            &'target length=',len(current_argument)
+         get_next_argument=.false.
+       endif
+   endif
+end function get_next_argument
+
+function maybe_value()
+! if previous keyword value type is a string and it was
+! given a null string because this value starts with a -
+! try to see if this is a string value starting with a -
+! to try to solve the vexing problem of values starting
+! with a dash.
+logical :: maybe_value
+integer :: pointer
+character(len=:),allocatable :: oldvalue
+
+   oldvalue=get(lastkeyword)//' '
+   if(current_argument_padded(1:1).ne.'-')then
+      maybe_value=.true.
+   elseif(oldvalue(1:1).ne.'"')then
+      maybe_value=.false.
+   elseif(index(current_argument,' ').ne.0)then
+      maybe_value=.true.
+   elseif(scan(current_argument,",:;!@#$%^&*+=()[]{}\|'""./><?").ne.0)then
+      maybe_value=.true.
+   else  ! the last value was a null string so see if this matches an allowed parameter
+      pointer=0
+      if(current_argument_padded(1:2).eq.'--')then
+         call locate_key(current_argument_padded(3:),pointer)
+      elseif(current_argument_padded(1:1).eq.'-')then
+         call locate_key(current_argument_padded(2:),pointer)
+      endif
+      if(pointer.le.0)then
+         maybe_value=.true.
+      else                   ! matched an option name so LIKELY is not a value
+         maybe_value=.false.
+      endif
+   endif
+end function maybe_value
 
 end subroutine cmd_args_to_dictionary
 !===================================================================================================================================
@@ -4373,7 +4425,7 @@ integer                                 :: error
 
       if(value.eq.list(PLACE))then
          exit LOOP
-      else if(value.gt.list(place))then
+      elseif(value.gt.list(place))then
          imax=place-1
       else
          imin=place+1
@@ -4400,7 +4452,7 @@ integer                                 :: error
    endblock LOOP
    if(present(ier))then
       ier=error
-   else if(error.ne.0)then
+   elseif(error.ne.0)then
       write(stderr,*)message//' VALUE=',trim(value)//' PLACE=',place
       call mystop(-24,'(*locate_c* '//message)
    endif
@@ -5030,7 +5082,7 @@ character(len=*),intent(in),optional :: msg
    if(sig.lt.0)then
       if(present(msg))call journal('sc',msg)
       stop abs(sig)
-   else if(G_STOPON)then
+   elseif(G_STOPON)then
       stop
    else
       if(present(msg)) then

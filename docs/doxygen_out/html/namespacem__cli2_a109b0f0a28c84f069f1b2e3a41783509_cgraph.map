@@ -1,8 +1,0 @@
-<map id="m_cli2::get_fixedarray_l" name="m_cli2::get_fixedarray_l">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a47cc758d20b655bc21672c31289e54ce" title="m_cli2::get_anyarray_l" alt="" coords="234,56,405,83"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="455,5,573,32"/>
-<area shape="rect" id="node7" href="$namespacem__cli2.html#acbd726aa5c13b005a14c06d58915cb9a" title="NAMEprint_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] print internal dictionary created by calls to commandli..." alt="" coords="232,107,407,133"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="463,56,565,83"/>
-<area shape="rect" id="node6" href="$namespacem__cli2.html#afa7a2419002024ff6d950c5d905ddd7a" title="NAMEupper(3f) &#45; [M_CLI2:CASE] changes a string to uppercase (LICENSE:PD) " alt="" coords="459,107,569,133"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a6d2d93ab8471667e632bf7a0e95ebd13" title="NAMElower(3f) &#45; [M_CLI2:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="621,56,731,83"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="m_cli2::get_args_dd" name="m_cli2::get_args_dd">
-<area shape="rect" id="node2" href="$namespacem__cli2.html#acf26ceafa7fdceb3824268713f2886b1" title="m_cli2::get_args_d" alt="" coords="205,56,349,83"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#a60a4588aa350fd58640b11f049915111" title="m_cli2::journal" alt="" coords="397,5,516,32"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_strings:TOKENS] parse string into an array using specified delimiters (LICENSE:PD)..." alt="" coords="406,56,507,83"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#a6d2d93ab8471667e632bf7a0e95ebd13" title="NAMElower(3f) &#45; [M_strings:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="564,56,673,83"/>
-</map>
