@@ -78,9 +78,11 @@ These demo programs provide templates for the most common usage:
 ### All manpages amalgamated
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
+<!--
 ### doxygen
 
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
+-->
 
 ## EXAMPLE PROGRAM
 

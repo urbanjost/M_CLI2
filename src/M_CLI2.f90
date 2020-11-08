@@ -2694,7 +2694,7 @@ integer                      :: basevalue, ivalu
 character(len=3),save        :: nan_string='NaN'
 !----------------------------------------------------------------------------------------------------------------------------------
    ierr=0                                                       ! initialize error flag to zero
-   local_chars=chars
+   local_chars=unquote(chars)
    msg=''
    if(len(local_chars).eq.0)local_chars=' '
    call substitute(local_chars,',','')                          ! remove any comma characters

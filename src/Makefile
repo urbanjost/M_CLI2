@@ -41,6 +41,7 @@ help:
 	: all     '-- build M_CLI2 module'
 	: run     '-- run manpage demo programs'
 	: man     '-- show all manpages as text'
+	: ship    '-- rebuild archive files of manpages'
 	: clean   '-- clean directory of object files and executables'
 	: doxygen '-- run doxygen(1) if you have it'
 	: help    '-- display this text'
@@ -64,3 +65,12 @@ man:
 	: SPELLING
 	@env MANPATH=../man MANWIDTH=80  man --regex '.*'|col -b|spell|xargs -n 5|column -t
 
+.PHONY: ship
+ship:
+	: make easily distributed archive files of manpages
+	mkdir -p ../docs
+	cd ../man/man3;\
+	   gzip *.3m_cli2;\
+	   zip -r ../../docs/manpages.zip *gz;\
+	   tar cvfz ../../docs/manpages.tgz *gz;\
+	   gunzip *.3m_cli2.gz
