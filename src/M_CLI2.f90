@@ -24,7 +24,7 @@
 !!    parsing using a simple prototype.
 !!
 !!    Typically one call to SET_ARGS(3f) is made to define the command arguments,
-!!    set default values, and parse the command line. Then a call is made to
+!!    set default values and parse the command line. Then a call is made to
 !!    GET_ARGS(3f) for each command keyword to obtain the argument values.
 !!
 !!    The documentation for SET_ARGS(3f) and GET_ARGS(3f) provides further
@@ -114,6 +114,7 @@ use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>INPUT_UNIT  
 !use M_journal,                     only : journal
 implicit none
 integer,parameter,private :: dp=kind(0.0d0)
+integer,parameter,private :: sngl=kind(0.0)
 private
 !===================================================================================================================================
 character(len=:),allocatable,public :: unnamed(:)
@@ -157,6 +158,7 @@ character(len=:),allocatable   :: G_remaining
 character(len=:),allocatable   :: G_STOP_MESSAGE
 integer                        :: G_STOP
 logical                        :: G_STOPON
+logical                        :: G_STRICT  ! strict short and long rules or allow -longname and --shortname
 !===================================================================================================================================
 ! return allocatable arrays
 interface  get_args;  module  procedure  get_anyarray_d;  end interface  ! any size array
@@ -186,8 +188,8 @@ interface  get_args_fixed_size;  module procedure get_fixedarray_class;         
 !interface   get_args;           module procedure get_fixedarray_l;                end interface
 !interface   get_args;           module procedure get_fixedarray_fixed_length_c;   end interface
 
-interface   get_args_fixed_length;  module  procedure  get_fixed_length_any_size_cxxxx; end interface  ! fixed length any size array
-interface   get_args_fixed_length;  module  procedure  get_scalar_fixed_length_c;  end interface       ! fixed length
+interface   get_args_fixed_length;  module  procedure  get_args_fixed_length_a_array; end interface  ! fixed length any size array
+interface   get_args_fixed_length;  module  procedure  get_args_fixed_length_scalar_c;  end interface       ! fixed length
 !===================================================================================================================================
 !intrinsic findloc
 !===================================================================================================================================
@@ -412,11 +414,11 @@ end subroutine check_commandline
 !!      ERRMSG        a description of the error if ierr is present
 !!
 !!##DEFINING THE PROTOTYPE
-!!         o all keywords on the prototype get a value.
-!!         o logicals must be set to F or T.
+!!         o all keywords on the prototype MUST get a value.
+!!         o logicals MUST be set to F or T.
 !!         o strings MUST be delimited with double-quotes and
 !!           must be at least one space. Internal double-quotes
-!!           are represented with two double-quotes
+!!           are represented with two double-quotes.
 !!         o numeric keywords are not allowed; but this allows
 !!           negative numbers to be used as values.
 !!         o lists of values should be comma-delimited unless a
@@ -424,13 +426,23 @@ end subroutine check_commandline
 !!           must use the same array delimiters as the call to
 !!           the family of get_args*(3f) called.
 !!         o long names (--keyword) should be all lowercase
-!!         o to have short names suffix the long name with :LETTER
+!!         o The simplest way to have short names is to suffix the long
+!!           name with :LETTER If this syntax is used then logical shorts
+!!           may be combined on the command line and -- and - prefixes are
+!!           strictly enforced.
+!!
+!!           mapping of short names to long names not using the
+!!           --LONGNAME:SHORTNAME syntax is demonstrated in the manpage
+!!           for SPECIFIED(3f).
+!!
 !!         o to define a zero-length allocatable array make the
 !!           value a delimiter (usually a comma).
+!!         o all unused values go into the character array UNNAMED
 !!         o If the prototype ends with "--" a special mode is turned
 !!           on where anything after "--" on input goes into the variable
 !!           REMAINING and the array ARGS instead of becoming elements in
 !!           the UNNAMED array. This is not needed for normal processing.
+!!
 !!##USAGE
 !!      When invoking the program line note that (subject to change) the
 !!      following variations from other common command-line parsers:
@@ -445,12 +457,12 @@ end subroutine check_commandline
 !!         o numeric keywords are not allowed; but this allows
 !!           negative numbers to be used as values.
 !!
-!!         o mapping of short names to long names is demonstrated in
-!!           the manpage for SPECIFIED(3f).
-!!
-!!         o Specifying both names of an equivalenced keyword will have
-!!           undefined results (currently, their alphabetical order
-!!           will define what the Fortran variable values become).
+!!         o Although not generally recommended you can equivalence
+!!           keywords (usually for multi-lingual support). Be aware that
+!!           specifying both names of an equivalenced keyword on a command
+!!           line will have undefined results (currently, their ASCII
+!!           alphabetical order will define what the Fortran variable
+!!           values become).
 !!
 !!           The second of the names should only be called with a
 !!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
@@ -458,8 +470,10 @@ end subroutine check_commandline
 !!
 !!           Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 !!
-!!         o short keywords cannot be combined. -a -b -c is required,
-!!           not -abc even for Boolean keys.
+!!         o short keywords cannot be combined unless they were defined
+!!           using the --LONGNAME:SHORTNAME syntax. Even then -a -b -c
+!!           is required not -abc unless all the keywords are logicals
+!!           (Boolean keys).
 !!
 !!         o shuffling is not supported. Values should follow their
 !!           keywords.
@@ -927,6 +941,7 @@ character(len=:),allocatable          :: long_short(:)
          short=''
       endif
    case(2)
+      G_STRICT=.true.  ! strict short and long rules so do not allow -longname and --shortname
       long=trim(long_short(1))
       short=trim(long_short(2))
    case default
@@ -1111,6 +1126,7 @@ integer                               :: ibig
 integer                               :: itrim
 
    G_passed_in=prototype                            ! make global copy for printing
+   G_STRICT=.false.  ! strict short and long rules or allow -longname and --shortname
 
    if(allocated(unnamed))deallocate(unnamed)
    if(allocated(args))deallocate(args)
@@ -1152,8 +1168,9 @@ logical                      :: check_local
 !*!logical                      :: guess_if_value
 integer                      :: pointer
 character(len=:),allocatable :: lastkeyword
-integer                      :: i, ii
+integer                      :: i, jj, kk
 integer                      :: ilength, istatus, imax
+character(len=1)             :: letter
 character(len=:),allocatable :: current_argument
 character(len=:),allocatable :: current_argument_padded
 character(len=:),allocatable :: dummy
@@ -1169,7 +1186,6 @@ logical                      :: nomore
    lastkeyword=' '
    G_keyword_single_letter=.true.
    GET_ARGS: do i=1, command_argument_count()                        ! insert and replace entries
-
       if(.not.get_next_argument())exit GET_ARGS                      ! get next argument
 
       if( current_argument .eq. '-' .and. nomore .eqv. .true. )then  ! sort of
@@ -1209,9 +1225,26 @@ logical                      :: nomore
          endif
          call locate_key(current_argument_padded(2:),pointer)
          if(pointer.le.0.and.check_local)then
-            call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
-            call mystop(2)
-            return
+            jj=len(current_argument)
+            if(G_STRICT.and.jj.gt.2)then  ! in strict mode this might be multiple single-character values
+              do kk=2,jj
+                 letter=current_argument_padded(kk:kk)
+                 call locate_key(letter,pointer)
+                 if(pointer.gt.0)then
+                    call update(keywords(pointer),'T')
+                 else
+                    call print_dictionary('UNKNOWN COMPOUND SHORT KEYWORD:'//letter//' in '//current_argument)
+                    call mystop(2)
+                    return
+                 endif
+                 current_argument='-'//current_argument_padded(jj:jj)
+                 cycle
+              enddo
+            else
+               call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
+               call mystop(2)
+               return
+            endif
          endif
          lastkeyword=trim(current_argument_padded(2:))
       elseif(pointer.eq.0)then                                                                           ! unnamed arguments
@@ -1565,7 +1598,6 @@ end function strtok
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
 !!     implicit none
 !!     integer                      :: i
-!!     integer,parameter            :: dp=kind(0.0d0)
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
 !!     real,allocatable             :: p(:)
@@ -1852,7 +1884,7 @@ real,allocatable                     :: rarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
    call get_anyarray_d(keyword,darray,delimiters)
-rarray=real(darray)
+   rarray=real(darray)
 end subroutine get_anyarray_r
 !===================================================================================================================================
 subroutine get_anyarray_x(keyword,xarray,delimiters)
@@ -1893,13 +1925,37 @@ character(len=:),allocatable         :: val
    endif
 end subroutine get_anyarray_c
 !===================================================================================================================================
-subroutine get_fixed_length_any_size_cxxxx(keyword,strings,delimiters)
+subroutine get_anyarray_cc(keyword,strings,delimiters)
 
-! ident_9="@(#)M_CLI2::get_fixed_length_any_size_cxxxx(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_9="@(#)M_CLI2::get_anyarray_cc(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+
+! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
+character(len=*),intent(in)                :: keyword       ! name to look up in dictionary
+character(len=*),allocatable,intent(out)   :: strings(:)
+character(len=:),allocatable               :: local_strings(:)
+character(len=*),intent(in),optional       :: delimiters
+integer                                    :: place
+character(len=:),allocatable               :: val
+   call locate_key(keyword,place)                     ! find where string is or should be
+   if(place > 0)then                                  ! if index is valid return strings
+      val=unquote(values(place)(:counts(place)))
+      call split(val,local_strings,delimiters=delimiters)   ! find value associated with keyword and split it into an array
+      strings=local_strings
+   else
+      strings=['']
+      call journal('sc','*get_anyarray_cc* unknown keyword '//keyword)
+      call mystop(12,'*get_anyarray_cc* unknown keyword '//keyword)
+      allocate(character(len=len(strings))::strings(0))
+   endif
+end subroutine get_anyarray_cc
+!===================================================================================================================================
+subroutine get_args_fixed_length_a_array(keyword,strings,delimiters)
+
+! ident_8="@(#)M_CLI2::get_args_fixed_length_a_array(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)          :: keyword       ! name to look up in dictionary
-character(len=*),allocatable         :: strings(:)
+character(len=:),allocatable         :: strings(:)
 character(len=*),intent(in),optional :: delimiters
 character(len=:),allocatable         :: strings_a(:)
 integer                              :: place
@@ -1911,18 +1967,18 @@ character(len=:),allocatable         :: val
       if(len(strings_a).le.len(strings))then
          strings=strings_a
       else
-         call journal('sc','*get_fixed_length_any_size_cxxxx* values too long. Longest is',len(strings_a),'allowed is',len(strings))
+         call journal('sc','*get_args_fixed_length_a_array* values too long. Longest is',len(strings_a),'allowed is',len(strings))
          write(*,'("strings=",3x,*(a,1x))')strings
-         call journal('sc','*get_fixed_length_any_size_cxxxx* keyword='//keyword)
-         call mystop(13,'*get_fixed_length_any_size_cxxxx* keyword='//keyword)
+         call journal('sc','*get_args_fixed_length_a_array* keyword='//keyword)
+         call mystop(13,'*get_args_fixed_length_a_array* keyword='//keyword)
          allocate(character(len=0)::strings(0))
       endif
    else
-      call journal('sc','*get_fixed_length_any_size_cxxxx* unknown keyword '//keyword)
-      call mystop(14,'*get_fixed_length_any_size_cxxxx* unknown keyword '//keyword)
+      call journal('sc','*get_args_fixed_length_a_array* unknown keyword '//keyword)
+      call mystop(14,'*get_args_fixed_length_a_array* unknown keyword '//keyword)
       allocate(character(len=0)::strings(0))
    endif
-end subroutine get_fixed_length_any_size_cxxxx
+end subroutine get_args_fixed_length_a_array
 !===================================================================================================================================
 ! return non-allocatable arrays
 !===================================================================================================================================
@@ -1935,7 +1991,7 @@ integer                              :: dsize
    call get_anyarray_d(keyword,darray,delimiters)
    dsize=size(darray)
    if(ubound(iarray,dim=1).eq.dsize)then
-      iarray=darray
+      iarray=nint(darray)
    else
       call journal('sc','*get_fixedarray_i* wrong number of values for keyword',keyword,'got',dsize,'expected',size(iarray))
       call print_dictionary('USAGE:')
@@ -2027,7 +2083,7 @@ end subroutine get_fixedarray_l
 !===================================================================================================================================
 subroutine get_fixedarray_fixed_length_c(keyword,strings,delimiters)
 
-! ident_10="@(#)M_CLI2::get_fixedarray_fixed_length_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
+! ident_9="@(#)M_CLI2::get_fixedarray_fixed_length_c(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*)                     :: strings(:)
@@ -2092,7 +2148,7 @@ end subroutine get_scalar_i
 !===================================================================================================================================
 subroutine get_scalar_anylength_c(keyword,string)
 
-! ident_11="@(#)M_CLI2::get_scalar_anylength_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
+! ident_10="@(#)M_CLI2::get_scalar_anylength_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
@@ -2108,9 +2164,9 @@ integer                       :: place
    endif
 end subroutine get_scalar_anylength_c
 !===================================================================================================================================
-subroutine get_scalar_fixed_length_c(keyword,string)
+elemental impure subroutine get_args_fixed_length_scalar_c(keyword,string)
 
-! ident_12="@(#)M_CLI2::get_scalar_fixed_length_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
+! ident_11="@(#)M_CLI2::get_args_fixed_length_scalar_c(3f): Fetch string value for specified KEYWORD from the lang. dictionary"
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)   :: keyword              ! name to look up in dictionary
@@ -2121,17 +2177,17 @@ integer                       :: unlen
    if(place > 0)then                                  ! if index is valid return string
       string=unquote(values(place)(:counts(place)))
    else
-      call mystop(18,'*get_scalar_fixed_length_c* unknown keyword '//keyword)
+      call mystop(18,'*get_args_fixed_length_scalar_c* unknown keyword '//keyword)
       string=''
    endif
    unlen=len_trim(unquote(values(place)(:counts(place))))
    if(unlen>len(string))then
-      call journal('sc','*get_scalar_fixed_length_c* value too long for',keyword,'allowed is',len(string),&
+      call journal('sc','*get_args_fixed_length_scalar_c* value too long for',keyword,'allowed is',len(string),&
       & 'input string [',values(place),'] is',unlen)
-      call mystop(19,'*get_scalar_fixed_length_c* value too long')
+      call mystop(19,'*get_args_fixed_length_scalar_c* value too long')
       string=''
    endif
-end subroutine get_scalar_fixed_length_c
+end subroutine get_args_fixed_length_scalar_c
 !===================================================================================================================================
 subroutine get_scalar_complex(keyword,x)
 character(len=*),intent(in) :: keyword      ! keyword to retrieve value from dictionary
@@ -2139,9 +2195,9 @@ complex,intent(out)         :: x
 real(kind=dp)               :: d(2)
    call get_fixedarray_d(keyword,d)
    if(size(d).eq.2)then
-      x=cmplx(d(1),d(2))
+      x=cmplx(d(1),d(2),kind=sngl)
    else
-      call journal('sc','*get_scalar_complex* expected two vaues found',size(d))
+      call journal('sc','*get_scalar_complex* expected two values found',size(d))
       call mystop(20,'*get_scalar_complex* incorrect number of values for keyword '//keyword)
       x=cmplx(0.0,0.0)
    endif
@@ -2225,7 +2281,7 @@ end function longest_command_argument
 subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, nospace)
 implicit none
 
-! ident_13="@(#)M_CLI2::journal(3f): writes a message to a string composed of any standard scalar types"
+! ident_12="@(#)M_CLI2::journal(3f): writes a message to a string composed of any standard scalar types"
 
 character(len=*),intent(in)   :: where
 class(*),intent(in)           :: g0
@@ -2315,7 +2371,7 @@ function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, 
                   & nospace)
 implicit none
 
-! ident_14="@(#)M_CLI2::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
+! ident_13="@(#)M_CLI2::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
 
 class(*),intent(in),optional  :: generic0, generic1, generic2, generic3, generic4
 class(*),intent(in),optional  :: generic5, generic6, generic7, generic8, generic9
@@ -2387,7 +2443,7 @@ end function msg_scalar
 function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
 implicit none
 
-! ident_15="@(#)M_CLI2::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
+! ident_14="@(#)M_CLI2::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
 
 class(*),intent(in)           :: generic0(:)
 class(*),intent(in),optional  :: generic1(:), generic2(:), generic3(:), generic4(:), generic5(:)
@@ -2526,7 +2582,7 @@ end function msg_one
 ! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
 elemental pure function upper(str,begin,end) result (string)
 
-! ident_16="@(#)M_CLI2::upper(3f): Changes a string to uppercase"
+! ident_15="@(#)M_CLI2::upper(3f): Changes a string to uppercase"
 
 character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
 integer, intent(in), optional :: begin,end
@@ -2563,7 +2619,7 @@ end function upper
 !!
 !!##SYNOPSIS
 !!
-!!    elemental pure function lower(str,begin,end) result (string)
+!!    elemental impure function lower(str,begin,end) result (string)
 !!
 !!     character(*), intent(in) :: str
 !!     integer,optional         :: begin, end
@@ -2614,9 +2670,9 @@ end function upper
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-elemental pure function lower(str,begin,end) result (string)
+elemental impure function lower(str,begin,end) result (string)
 
-! ident_17="@(#)M_CLI2::lower(3f): Changes a string to lowercase over specified range"
+! ident_16="@(#)M_CLI2::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
 character(len(str))          :: string
@@ -2649,7 +2705,7 @@ end function lower
 !===================================================================================================================================
 subroutine a2i(chars,valu,ierr)
 
-! ident_18="@(#)M_CLI2::a2i(3fp): subroutine returns integer value from string"
+! ident_17="@(#)M_CLI2::a2i(3fp): subroutine returns integer value from string"
 
 character(len=*),intent(in) :: chars                      ! input string
 integer,intent(out)         :: valu                       ! value read from input string
@@ -2670,7 +2726,7 @@ end subroutine a2i
 !----------------------------------------------------------------------------------------------------------------------------------
 subroutine a2d(chars,valu,ierr,onerr)
 
-! ident_19="@(#)M_CLI2::a2d(3fp): subroutine returns double value from string"
+! ident_18="@(#)M_CLI2::a2d(3fp): subroutine returns double value from string"
 
 !     1989,2016 John S. Urban.
 !
@@ -2893,7 +2949,7 @@ end subroutine a2d
 subroutine split(input_line,array,delimiters,order,nulls)
 !-----------------------------------------------------------------------------------------------------------------------------------
 
-! ident_20="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
+! ident_19="@(#)M_CLI2::split(3f): parse string on delimiter characters and store tokens into an allocatable array"
 
 !  John S. Urban
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3173,7 +3229,7 @@ end subroutine crack_cmd
 !===================================================================================================================================
 function replace_str(targetline,old,new,ierr,cmd,range) result (newline)
 
-! ident_21="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
+! ident_20="@(#)M_CLI2::replace_str(3f): Globally replace one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! parameters
@@ -3388,7 +3444,7 @@ end function quote
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!   function unquote(quoted_str,esc) result (unquoted_str)
+!!   pure function unquote(quoted_str,esc) result (unquoted_str)
 !!
 !!    character(len=*),intent(in)          :: quoted_str
 !!    character(len=1),optional,intent(in) :: esc
@@ -3454,7 +3510,7 @@ end function quote
 !!    John S. Urban
 !!##LICENSE
 !!    Public Domain
-function unquote(quoted_str,esc) result (unquoted_str)
+pure function unquote(quoted_str,esc) result (unquoted_str)
 character(len=*),intent(in)          :: quoted_str              ! the string to be unquoted
 character(len=1),optional,intent(in) :: esc                     ! escape character
 character(len=:),allocatable         :: unquoted_str
@@ -3524,7 +3580,7 @@ end function unquote
 !===================================================================================================================================
 function i2s(ivalue,fmt) result(outstr)
 
-! ident_22="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
+! ident_21="@(#)M_CLI2::i2s(3fp): private function returns string given integer value"
 
 integer,intent(in)           :: ivalue                         ! input value to convert to a string
 character(len=*),intent(in),optional :: fmt
@@ -3601,7 +3657,7 @@ function merge_str(str1,str2,expr) result(strout)
 ! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
 ! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
 
-! ident_23="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
+! ident_22="@(#)M_CLI2::merge_str(3f): pads first and second arguments to MERGE(3f) to same length"
 
 character(len=*),intent(in),optional :: str1
 character(len=*),intent(in),optional :: str2
@@ -3703,7 +3759,7 @@ end function merge_str
 logical function decodebase(string,basein,out_baseten)
 implicit none
 
-! ident_24="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
+! ident_23="@(#)M_CLI2::decodebase(3f): convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -3823,7 +3879,7 @@ end function decodebase
 !!    Public Domain
 function lenset(line,length) result(strout)
 
-! ident_25="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
+! ident_24="@(#)M_CLI2::lenset(3f): return string trimmed or padded to specified length"
 
 character(len=*),intent(in)  ::  line
 integer,intent(in)           ::  length
@@ -3916,7 +3972,7 @@ end function lenset
 !!    Public Domain
 subroutine value_to_string(gval,chars,length,err,fmt,trimz)
 
-! ident_26="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
+! ident_25="@(#)M_CLI2::value_to_string(3fp): subroutine returns a string from a value"
 
 class(*),intent(in)                      :: gval
 character(len=*),intent(out)             :: chars
@@ -4032,7 +4088,7 @@ end subroutine value_to_string
 !!    Public Domain
 subroutine trimzeros_(string)
 
-! ident_27="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
+! ident_26="@(#)M_CLI2::trimzeros_(3fp): Delete trailing zeros from numeric decimal string"
 
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
@@ -4146,7 +4202,7 @@ end subroutine trimzeros_
 !!    Public Domain
 subroutine substitute(targetline,old,new,ierr,start,end)
 
-! ident_28="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
+! ident_27="@(#)M_CLI2::substitute(3f): Globally substitute one substring for another in string"
 
 !-----------------------------------------------------------------------------------------------------------------------------------
 character(len=*)               :: targetline         ! input line to be changed
@@ -4390,7 +4446,7 @@ end subroutine substitute
 !!    Public Domain
 subroutine locate_c(list,value,place,ier,errmsg)
 
-! ident_29="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
+! ident_28="@(#)M_CLI2::locate_c(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place
@@ -4528,7 +4584,7 @@ end subroutine locate_c
 !!    Public Domain
 subroutine remove_c(list,place)
 
-! ident_30="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
+! ident_29="@(#)M_CLI2::remove_c(3fp): remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -4547,7 +4603,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_l(list,place)
 
-! ident_31="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
+! ident_30="@(#)M_CLI2::remove_l(3fp): remove value from allocatable array at specified position"
 
 logical,allocatable    :: list(:)
 integer,intent(in)     :: place
@@ -4567,7 +4623,7 @@ integer                :: end
 end subroutine remove_l
 subroutine remove_i(list,place)
 
-! ident_32="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
+! ident_31="@(#)M_CLI2::remove_i(3fp): remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -4682,7 +4738,7 @@ end subroutine remove_i
 !!    Public Domain
 subroutine replace_c(list,value,place)
 
-! ident_33="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
+! ident_32="@(#)M_CLI2::replace_c(3fp): replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -4709,7 +4765,7 @@ integer                      :: end
 end subroutine replace_c
 subroutine replace_l(list,value,place)
 
-! ident_34="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
+! ident_33="@(#)M_CLI2::replace_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -4729,7 +4785,7 @@ integer               :: end
 end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-! ident_35="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
+! ident_34="@(#)M_CLI2::replace_i(3fp): place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -4836,7 +4892,7 @@ end subroutine replace_i
 !!    Public Domain
 subroutine insert_c(list,value,place)
 
-! ident_36="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
+! ident_35="@(#)M_CLI2::insert_c(3fp): place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -4870,7 +4926,7 @@ integer                      :: end
 end subroutine insert_c
 subroutine insert_l(list,value,place)
 
-! ident_37="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
+! ident_36="@(#)M_CLI2::insert_l(3fp): place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -4895,7 +4951,7 @@ integer               :: end
 end subroutine insert_l
 subroutine insert_i(list,value,place)
 
-! ident_38="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
+! ident_37="@(#)M_CLI2::insert_i(3fp): place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -4925,7 +4981,7 @@ subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
 implicit none
 
-! ident_39="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
+! ident_38="@(#)M_CLI2::many_args(3fp): allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
 character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
@@ -5057,7 +5113,7 @@ real(kind=dp)       :: rc, ic
    do i=1,size(cg),2
       call a2d(unnamed(i),rc,ierr)
       call a2d(unnamed(i+1),ic,ierr)
-      cg(i)=cmplx(rc,ic)
+      cg(i)=cmplx(rc,ic,kind=sngl)
    enddo
 end function cg
 !===================================================================================================================================
@@ -5081,7 +5137,8 @@ character(len=*),intent(in),optional :: msg
    !*!write(*,*)'MYSTOP:',sig,trim(msg)
    if(sig.lt.0)then
       if(present(msg))call journal('sc',msg)
-      stop abs(sig)
+      !!stop abs(sig)
+      stop 1
    elseif(G_STOPON)then
       stop
    else
@@ -5099,7 +5156,7 @@ end subroutine mystop
 !===================================================================================================================================
 function atleast(line,length,pattern) result(strout)
 
-! ident_40="@(#)M_strings::atleast(3f): return string padded to at least specified length"
+! ident_39="@(#)M_strings::atleast(3f): return string padded to at least specified length"
 
 character(len=*),intent(in)                :: line
 integer,intent(in)                         :: length
@@ -5116,7 +5173,7 @@ end function atleast
 !===================================================================================================================================
 subroutine locate_key(value,place)
 
-! ident_41="@(#)M_CLI2::locate_key(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
+! ident_40="@(#)M_CLI2::locate_key(3f): find PLACE in sorted character array where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place

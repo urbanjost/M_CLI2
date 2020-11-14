@@ -2,7 +2,6 @@
            use M_CLI2,  only : filenames=>unnamed, set_args, get_args
            implicit none
            integer                      :: i
-           integer,parameter            :: dp=kind(0.0d0)
            ! DEFINE ARGS
            real                         :: x, y, z
            real,allocatable             :: p(:)
