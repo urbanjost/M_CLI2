@@ -1,10 +1,11 @@
 program demo9
 !! QUICK PROTOTYPE: JUST THE BARE ESSENTIALS
-use M_CLI2,  only : set_args, get_args
-use M_CLI2,  only : sget, rget, iget, lget
-use M_CLI2,  only : sgets, rgets, igets, lgets
+use M_CLI2,  only : set_args, get_args, sget, rget, iget, lget
 implicit none
-   call set_args('-x 1 -y 10 --size 12.34567  -l F --title "my title"')
-   !write(*,'(*("[",g0,"]":,1x))')iget('x'),iget('y'),rget('size'),lget('l'),sget('title')
-   write(*,'(*("[",g0,"]":,1x))')igets('x'),igets('y'),rgets('size'),lgets('l'),sgets('title')
+   call set_args('--length:l 1 --height:h 10 --size:s 12.34567  --switch:X F --title:T "my title"')
+   write(*,*)'--length or -l is ',rget('length')
+   write(*,*)'--height or -h is ',rget('height')
+   write(*,*)'--size or -s is   ',rget('size')
+   write(*,*)'--switch or -X is ',lget('switch')
+   write(*,*)'--title or -T is  ',sget('title')
 end program demo9
