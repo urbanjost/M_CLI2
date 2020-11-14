@@ -28,7 +28,7 @@ character(len=*),parameter   :: fmt='(*("[",g0,"]":,1x))'
    write(*,fmt)'allocatable array=        ',alloc_array
    endblock
 
-   ! less commonly, if length or size is fixed, used a special function
+   ! less commonly, if length or size is fixed, use a special function
 
    block
    character(len=19),allocatable                 :: fx_len_alloc_array(:) 
