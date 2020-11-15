@@ -93,39 +93,30 @@ This short program defines a command that can be called like
    ./show -x 10 -y -20 --point 10,20,30 --title 'plot of stuff' *.in
    ./show -z 300
    # the unnamed values (often filenames) are returned as an array of strings
-   ./show *.in
+   ./show *
    # these parameters are defined automatically but you must supply text for --version to be useful.
    ./show --usage
    ./show --help
    ./show --version
 ```
-
 ```fortran
    program show
    use M_CLI2, only : set_args, get_args, files=>unnamed
    use M_CLI2, only : get_args_fixed_size
    implicit none
    integer :: i
-
    !! DEFINE ARGUMENTS
-   real                          :: x, y, z
-   real                          :: point(3)
+   real                          :: x, y, z, point(3)
    integer,allocatable           :: p(:)
    character(len=:),allocatable  :: title
    logical                       :: l, lbig
-
    !! DEFINE COMMAND
-   call set_args('-x 1 -y 2.0 -z 3.5e0 --point -1,-2,-3 -p 11:-22:33 --title "my title" -l F -L F')
+      call set_args('-x 1 -y 2.0 -z 3.5e0 --point -1,-2,-3 -p 11,-22,33 --title "my title" -l F -L F')
    !! GET VALUES
-   call get_args('x',x)
-   call get_args('y',y)
-   call get_args('z',z)
-   call get_args_fixed_size('point',point) ! this will ensure three values are specified
-   call get_args('p',p)
-   call get_args('title',title)
-   call get_args('l',l)
-   call get_args('L',lbig) ! name of Fortran variable does not have to be the same
-
+      call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L', lbig) ! get scalar fixed-size variables
+      call get_args_fixed_size('point',point) ! this will ensure three values are specified
+      call get_args('p',p)
+      call get_args('title',title)
    !! USE THE VALUES IN YOUR PROGRAM.
 
    !! OPTIONAL UNNAMED VALUES FROM COMMAND LINE
@@ -133,10 +124,8 @@ This short program defines a command that can be called like
          write(*,'(a)')'files:'
          write(*,'(i6.6,3a)')(i,'[',files(i),']',i=1,size(files))
       endif
-
    end program show
 ```
-
 -------
 ## FEEDBACK
 
