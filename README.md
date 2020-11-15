@@ -126,8 +126,8 @@ This short program defines a command that can be called like
       endif
    end program show
 ```
-## FEEDBACK
-
+## FEEDBACK ##
+-------
    Please provide feedback on the
    [wiki](https://github.com/urbanjost/M_CLI2/wiki) or in the
    [__issues__](https://github.com/urbanjost/M_CLI2/issues)
