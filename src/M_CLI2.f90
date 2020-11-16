@@ -1,6 +1,7 @@
 !VERSION 1.0 20200115
 !VERSION 2.0 20200802
-!VERSION 2.0 20201021  LONG:SHORT syntax
+!VERSION 3.0 20201021  LONG:SHORT syntax
+!VERSION 3.1 20201115  LONG:SHORT:: syntax
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -143,6 +144,7 @@ type option
    character(:),allocatable :: value
    integer                  :: length
    logical                  :: present_in
+   logical                  :: mandatory
 end type option
 !===================================================================================================================================
 character(len=:),allocatable   :: keywords(:)
@@ -150,6 +152,7 @@ character(len=:),allocatable   :: shorts(:)
 character(len=:),allocatable   :: values(:)
 integer,allocatable            :: counts(:)
 logical,allocatable            :: present_in(:)
+logical,allocatable            :: mandatory(:)
 
 logical                        :: G_keyword_single_letter=.true.
 character(len=:),allocatable   :: G_passed_in
@@ -415,17 +418,23 @@ end subroutine check_commandline
 !!
 !!##DEFINING THE PROTOTYPE
 !!         o all keywords on the prototype MUST get a value.
+!!
 !!         o logicals MUST be set to F or T.
+!!
 !!         o strings MUST be delimited with double-quotes and
 !!           must be at least one space. Internal double-quotes
 !!           are represented with two double-quotes.
+!!
 !!         o numeric keywords are not allowed; but this allows
 !!           negative numbers to be used as values.
+!!
 !!         o lists of values should be comma-delimited unless a
 !!           user-specified delimiter is used. The prototype
 !!           must use the same array delimiters as the call to
 !!           the family of get_args*(3f) called.
+!!
 !!         o long names (--keyword) should be all lowercase
+!!
 !!         o The simplest way to have short names is to suffix the long
 !!           name with :LETTER If this syntax is used then logical shorts
 !!           may be combined on the command line and -- and - prefixes are
@@ -435,9 +444,16 @@ end subroutine check_commandline
 !!           --LONGNAME:SHORTNAME syntax is demonstrated in the manpage
 !!           for SPECIFIED(3f).
 !!
+!!         o A very special behavior occurs if the keyword name ends in ::.
+!!           The next parameter is taken as a value even if it starts with -.
+!!           This is not generally recommended but is noted here for
+!!           completeness.
+!!
 !!         o to define a zero-length allocatable array make the
 !!           value a delimiter (usually a comma).
+!!
 !!         o all unused values go into the character array UNNAMED
+!!
 !!         o If the prototype ends with "--" a special mode is turned
 !!           on where anything after "--" on input goes into the variable
 !!           REMAINING and the array ARGS instead of becoming elements in
@@ -923,7 +939,18 @@ character(len=:),allocatable          :: val_local
 character(len=:),allocatable          :: short
 character(len=:),allocatable          :: long
 character(len=:),allocatable          :: long_short(:)
-   call split(key,long_short,':') ! split long:short keyname
+integer                               :: isize
+logical                               :: set_mandatory
+   set_mandatory=.false.
+   call split(trim(key),long_short,':',nulls='return') ! split long:short keyname or long:short:: or long:: or short::
+   ! check for :: on end
+   isize=size(long_short)
+   if(isize.gt.0)then                     ! very special-purpose syntax where if ends in :: next field is a value even
+      if(long_short(isize).eq.'')then     ! if it starts with a dash, for --flags option on fpm(1).
+         set_mandatory=.true.
+         long_short=long_short(:isize-1)
+      endif
+   endif
    select case(size(long_short))
    case(0)
       long=''
@@ -959,6 +986,7 @@ character(len=:),allocatable          :: long_short(:)
          call insert(counts,ilen,iabs(place))
          call insert(shorts,short,iabs(place))
          call insert(present_in,.true.,iabs(place))
+         call insert(mandatory,set_mandatory,iabs(place))
       else
          if(present_in(place))then                      ! if multiple keywords append values with space between them
             if(values(place)(1:1).eq.'"')then
@@ -981,6 +1009,7 @@ character(len=:),allocatable          :: long_short(:)
          call remove(counts,place)
          call remove(shorts,place)
          call remove(present_in,place)
+         call remove(mandatory,place)
       endif
    endif
 end subroutine update
@@ -1021,6 +1050,8 @@ subroutine wipe_dictionary()
    allocate(character(len=0) :: shorts(0))
    if(allocated(present_in))deallocate(present_in)
    allocate(present_in(0))
+   if(allocated(mandatory))deallocate(mandatory)
+   allocate(mandatory(0))
 end subroutine wipe_dictionary
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1124,6 +1155,7 @@ character(len=*),intent(in)           :: prototype
 character(len=*),intent(in),optional  :: string
 integer                               :: ibig
 integer                               :: itrim
+integer                               :: iused
 
    G_passed_in=prototype                            ! make global copy for printing
    G_STRICT=.false.  ! strict short and long rules or allow -longname and --shortname
@@ -1140,8 +1172,28 @@ integer                               :: itrim
    G_remaining=''
    if(prototype.ne.'')then
       call prototype_to_dictionary(prototype)       ! build dictionary from prototype
+
+      ! if short keywords not used by user allow them for standard options
+
+      call locate_key('h',iused)
+      if(iused.le.0)then
+         call update('help')
+         call update('help:h','F')
+      endif
+
+      call locate_key('v',iused)
+      if(iused.le.0)then
+         call update('version')
+         call update('version:v','F')
+      endif
+
+      call locate_key('u',iused)
+      if(iused.le.0)then
+         call update('usage')
+         call update('usage:u','F')
+      endif
+
       present_in=.false.                            ! reset all values to false so everything gets written
-      present_in=.false.                            ! reset all values to false
    endif
 
    if(present(string))then                          ! instead of command line arguments use another prototype string
@@ -1176,6 +1228,8 @@ character(len=:),allocatable :: current_argument_padded
 character(len=:),allocatable :: dummy
 character(len=:),allocatable :: oldvalue
 logical                      :: nomore
+logical                      :: next_mandatory
+   next_mandatory=.false.
    if(present(check))then
       check_local=check
    else
@@ -1206,7 +1260,7 @@ logical                      :: nomore
 
       !*!guess_if_value=maybe_value()
 
-      if(.not.nomore.and.current_argument_padded(1:2).eq.'--')then    ! beginning of long word
+      if(.not.next_mandatory.and..not.nomore.and.current_argument_padded(1:2).eq.'--')then    ! beginning of long word
          G_keyword_single_letter=.false.
          if(lastkeyword.ne.'')then
             call ifnull()
@@ -1218,7 +1272,12 @@ logical                      :: nomore
             return
          endif
          lastkeyword=trim(current_argument_padded(3:))
-      elseif(.not.nomore.and.current_argument_padded(1:1).eq.'-'.and.index("0123456789.",dummy(2:2)).eq.0)then  ! short word
+         next_mandatory=mandatory(pointer)
+      elseif(.not.next_mandatory &
+      & .and..not.nomore &
+      & .and.current_argument_padded(1:1).eq.'-' &
+      & .and.index("0123456789.",dummy(2:2)).eq.0)then
+      ! short word
          G_keyword_single_letter=.true.
          if(lastkeyword.ne.'')then
             call ifnull()
@@ -1247,6 +1306,7 @@ logical                      :: nomore
             endif
          endif
          lastkeyword=trim(current_argument_padded(2:))
+         next_mandatory=mandatory(pointer)
       elseif(pointer.eq.0)then                                                                           ! unnamed arguments
          if(G_remaining_on)then
             if(len(current_argument).lt.1)then
@@ -1289,6 +1349,7 @@ logical                      :: nomore
          call update(keywords(pointer),current_argument)
          pointer=0
          lastkeyword=''
+         next_mandatory=.false.
       endif
    enddo GET_ARGS
    if(lastkeyword.ne.'')then
