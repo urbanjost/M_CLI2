@@ -310,7 +310,7 @@ integer                                          :: istart
 integer                                          :: iback
    if(get('usage').eq.'T')then
       call print_dictionary('USAGE:')
-      call default_help()
+      !*!call default_help()
       call mystop(32)
       return
    endif
