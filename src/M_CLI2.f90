@@ -2006,7 +2006,8 @@ character(len=:),allocatable               :: val
       strings=['']
       call journal('sc','*get_anyarray_cc* unknown keyword '//keyword)
       call mystop(12,'*get_anyarray_cc* unknown keyword '//keyword)
-      allocate(character(len=len(strings))::strings(0))
+      !*! GFORTRAN BUG: ALLOWED THIS allocate(character(len=len(strings))::strings(0))
+      allocate(character(len=*)::strings(0))
    endif
 end subroutine get_anyarray_cc
 !===================================================================================================================================
@@ -2016,7 +2017,7 @@ subroutine get_args_fixed_length_a_array(keyword,strings,delimiters)
 
 ! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
 character(len=*),intent(in)          :: keyword       ! name to look up in dictionary
-character(len=:),allocatable         :: strings(:)
+character(len=*),allocatable         :: strings(:)
 character(len=*),intent(in),optional :: delimiters
 character(len=:),allocatable         :: strings_a(:)
 integer                              :: place
@@ -2032,12 +2033,12 @@ character(len=:),allocatable         :: val
          write(*,'("strings=",3x,*(a,1x))')strings
          call journal('sc','*get_args_fixed_length_a_array* keyword='//keyword)
          call mystop(13,'*get_args_fixed_length_a_array* keyword='//keyword)
-         allocate(character(len=0)::strings(0))
+         allocate(character(len=*)::strings(0))
       endif
    else
       call journal('sc','*get_args_fixed_length_a_array* unknown keyword '//keyword)
       call mystop(14,'*get_args_fixed_length_a_array* unknown keyword '//keyword)
-      allocate(character(len=0)::strings(0))
+      allocate(character(len=*)::strings(0))
    endif
 end subroutine get_args_fixed_length_a_array
 !===================================================================================================================================
