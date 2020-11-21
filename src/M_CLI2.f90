@@ -108,7 +108,7 @@
 !!     Public Domain
 !===================================================================================================================================
 module M_CLI2
-use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT,stdin=>INPUT_UNIT    ! access computing environment
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT !,stdin=>INPUT_UNIT    ! access computing environment
 !use M_strings,                     only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value, atleast
 !use M_list,                        only : insert, locate, remove, replace
 !use M_args,                        only : longest_command_argument
@@ -804,8 +804,9 @@ integer                           :: place
       prev=currnt
       if(ipoint <= islen)then
          cycle
+      else
+         exit
       endif
-      exit
    enddo
 
 end subroutine prototype_to_dictionary
@@ -1149,7 +1150,7 @@ end function get
 subroutine prototype_and_cmd_args_to_nlist(prototype,string)
 implicit none
 
-! ident_4="@(#)M_CLI2::prototype_and_cmd_args_to_nlist: create dictionary from prototype (if not null) and update from command line arguments"
+! ident_4="@(#)M_CLI2::prototype_and_cmd_args_to_nlist: create dictionary from prototype if not null and update from command line"
 
 character(len=*),intent(in)           :: prototype
 character(len=*),intent(in),optional  :: string
@@ -1297,7 +1298,6 @@ logical                      :: next_mandatory
                     return
                  endif
                  current_argument='-'//current_argument_padded(jj:jj)
-                 cycle
               enddo
             else
                call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
@@ -1700,7 +1700,7 @@ end function strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line arguments
+!!    get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5084,7 +5084,7 @@ character(len=:),allocatable :: c
 end function c
 !===================================================================================================================================
 subroutine get_generic(name,generic)
-use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
+use,intrinsic :: iso_fortran_env, only : real64 ! int8, int16, int32, int64, real32, real64, real128
 character(len=*),intent(in)  :: name
 class(*),intent(out)         :: generic
    select type(generic)
