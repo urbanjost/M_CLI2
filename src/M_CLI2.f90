@@ -1986,31 +1986,6 @@ character(len=:),allocatable         :: val
    endif
 end subroutine get_anyarray_c
 !===================================================================================================================================
-subroutine get_anyarray_cc(keyword,strings,delimiters)
-
-! ident_9="@(#)M_CLI2::get_anyarray_cc(3f): Fetch strings value for specified KEYWORD from the lang. dictionary"
-
-! This routine trusts that the desired keyword exists. A blank is returned if the keyword is not in the dictionary
-character(len=*),intent(in)                :: keyword       ! name to look up in dictionary
-character(len=*),allocatable,intent(out)   :: strings(:)
-character(len=:),allocatable               :: local_strings(:)
-character(len=*),intent(in),optional       :: delimiters
-integer                                    :: place
-character(len=:),allocatable               :: val
-   call locate_key(keyword,place)                     ! find where string is or should be
-   if(place > 0)then                                  ! if index is valid return strings
-      val=unquote(values(place)(:counts(place)))
-      call split(val,local_strings,delimiters=delimiters)   ! find value associated with keyword and split it into an array
-      strings=local_strings
-   else
-      strings=['']
-      call journal('sc','*get_anyarray_cc* unknown keyword '//keyword)
-      call mystop(12,'*get_anyarray_cc* unknown keyword '//keyword)
-      !*! GFORTRAN BUG: ALLOWED THIS     allocate(character(len=len(strings))::strings(0))
-      !*! NVFORTRAN WOULD NOT TAKE THIS: allocate(character(len=*)::strings(0))
-      strings=[character(len=len(strings)) ::]
-   endif
-end subroutine get_anyarray_cc
 !===================================================================================================================================
 subroutine get_args_fixed_length_a_array(keyword,strings,delimiters)
 
