@@ -126,6 +126,14 @@ This short program defines a command that can be called like
       endif
    end program show
 ```
+## COMMIT TESTS ##
+
+commit `a35fe5fd7a292e752188e994c08e7cfea2cae5b8` was tested on
+2020-11-21 with
+ + GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)
+ + ifort (IFORT) 19.1.3.304 20200925
+ + nvfortran 20.7-0 LLVM 64-bit target on x86-64 Linux
+
 ## FEEDBACK ##
 -------
    Please provide feedback on the
