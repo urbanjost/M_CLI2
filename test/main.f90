@@ -28,6 +28,7 @@ character(len=:),allocatable :: command
 character(len=4096)          :: cmd
 integer                      :: e
 integer                      :: i
+character(len=*),parameter   :: gen='(*(g0,1x))'
 
    call get_command_argument(0,cmd) ! get name of this executable
    e=len_trim(cmd)+1
@@ -89,13 +90,22 @@ integer                      :: i
       call printit(all([x,y,z,ints,ithree].eq.[400,500,600,-1,-2,-3,-11,-22,-33]))
       call runit("-c_x '(1,2)' -c_y 10,20 -c_z '(2#111,16#-AB)' -c_three 1,2,3,4,5,6 -c_aarr 111::222,333::444 -casen 4")
    case(4)
-      !write(6,*)'COMPLEX VALS     ',[c_x,c_y,c_z,c_three,c_aarr]
-      !write(6,*)'COMPLEX TEMPLATE ',&
-      !& [cmplx(1.0,2.0),cmplx(10.0,20.0),cmplx(7,-171),cmplx(1,2),cmplx(3,4),cmplx(5,6),cmplx(111,222),cmplx(333,444)]
-      flush(unit=6)
-      call printit(all([c_x,c_y,c_z,c_three,c_aarr,c_three].eq.&
+      ! test results for case 4
+
+      write(6,gen)'CASE4 EXPECTED:',&
+      [cmplx(1.0,2.0),cmplx(10.0,20.0),cmplx(7,-171),cmplx(1,2),cmplx(3,4),cmplx(5,6),cmplx(111,222),cmplx(333,444)]
+         
+      write(6,gen)'CASE4 RESULTS:',[c_x,c_y,c_z,c_three,c_aarr]
+
+      write(6,gen)'CASE4 TESTS:',[c_x,c_y,c_z,c_three,c_aarr].eq.&
+      & [cmplx(1.0,2.0),cmplx(10.0,20.0),cmplx(7,-171),cmplx(1,2),cmplx(3,4),cmplx(5,6),cmplx(111,222),cmplx(333,444)]
+
+      call printit(all([c_x,c_y,c_z,c_three,c_aarr].eq.&
       & [cmplx(1.0,2.0),cmplx(10.0,20.0),cmplx(7,-171),cmplx(1,2),cmplx(3,4),cmplx(5,6),cmplx(111,222),cmplx(333,444)]))
-      !& cmplx(X=[1.0, 10.0, 7.0, 1.0, 3.0, 5.0, 111.0, 333.0],Y=[2.0, 20.0, -171.0, 2.0, 4.0, 6.0, 222.0, 444.0])
+
+      flush(unit=6)
+
+      ! run next case
       call runit('-x 400 -y 500 -z 600 --ints -1,-2,-3 -casen 900')
    case(5)
    case(6)

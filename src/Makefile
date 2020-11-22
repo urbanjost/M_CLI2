@@ -20,6 +20,7 @@ SRCS =  M_CLI2.f90
 OBJS =  M_CLI2.o 
 # platform-specific values you will probably change
 #
+#
 gfortran: F90=gfortran 
 # This is a compiler bug. It is well-known, but not fixed in GCC yet. You
 # can see the report at https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91442
@@ -32,13 +33,18 @@ gfortran: all
 	@echo built with $(F90)
 
 nvfortran: F90=nvfortran
-nvfortran: F90FLAGS := -Minform=inform
+nvfortran: F90FLAGS := -Minform=inform -Mbackslash -traceback
 nvfortran: all
 	@echo built with $(F90)
 
 ifort: F90=ifort
-ifort: F90FLAGS := -warn all
+ifort: F90FLAGS := -warn all -traceback
 ifort: all
+	@echo built with $(F90)
+
+nagfor: F90=nagfor
+nagfor: F90FLAGS := -C all
+nagfor: all
 	@echo built with $(F90)
 
 LIBS := 
@@ -69,7 +75,8 @@ help:
 .PHONY: run
 run: $(PROG)
 	# run everything
-	echo $? |xargs -n 1|xargs -iXX time XX
+	#echo $? |xargs -n 1|xargs -iXX time XX 2>&1
+	set +x;echo $? |xargs -n 1|xargs -iXX env XX 2>&1
 
 .PHONY: doxygen
 doxygen: 

@@ -108,14 +108,16 @@
 !!     Public Domain
 !===================================================================================================================================
 module M_CLI2
-use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT !,stdin=>INPUT_UNIT    ! access computing environment
+!use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT
+!use, intrinsic :: iso_fortran_env, only : stdin=>INPUT_UNIT
+use, intrinsic :: iso_fortran_env, only : warn=>OUTPUT_UNIT ! ERROR_UNIT
 !use M_strings,                     only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value, atleast
 !use M_list,                        only : insert, locate, remove, replace
 !use M_args,                        only : longest_command_argument
 !use M_journal,                     only : journal
 implicit none
 integer,parameter,private :: dp=kind(0.0d0)
-integer,parameter,private :: sngl=kind(0.0)
+integer,parameter,private :: sp=kind(0.0)
 private
 !===================================================================================================================================
 character(len=:),allocatable,public :: unnamed(:)
@@ -743,7 +745,7 @@ integer                           :: place
             elseif( G_remaining_option_allowed)then  ! meaning "--" has been encountered
                call update('_args_',trim(value))
             else
-               write(stderr,*)'*prototype_to_dictionary* warning: ignoring string ',trim(value)
+               write(warn,*)'*prototype_to_dictionary* warning: ignoring string ',trim(value)
             endif
          else
             call locate_key(keyword,place)
@@ -973,7 +975,7 @@ logical                               :: set_mandatory
       long=trim(long_short(1))
       short=trim(long_short(2))
    case default
-      write(stderr,*)'WARNING: incorrect syntax for key: ',trim(key)
+      write(warn,*)'WARNING: incorrect syntax for key: ',trim(key)
       long=trim(long_short(1))
       short=trim(long_short(2))
    end select
@@ -1377,7 +1379,7 @@ logical :: get_next_argument
    get_next_argument=.true.
    call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
    if(istatus /= 0) then                                                                          ! on error
-      write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
+      write(warn,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
          &'status=',istatus,&
          &'length=',ilength
       get_next_argument=.false.
@@ -1387,7 +1389,7 @@ logical :: get_next_argument
       allocate(character(len=ilength) :: current_argument)
       call get_command_argument(number=i,value=current_argument,length=ilength,status=istatus)    ! get next argument
       if(istatus /= 0) then                                                                       ! on error
-         write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
+         write(warn,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
             &'status=',istatus,&
             &'length=',ilength,&
             &'target length=',len(current_argument)
@@ -1497,31 +1499,31 @@ logical,intent(in),optional          :: stop
 integer          :: i
    if(present(header))then
       if(header.ne.'')then
-         write(stderr,'(a)')header
+         write(warn,'(a)')header
       endif
    endif
    if(allocated(keywords))then
       if(size(keywords).gt.0)then
-         write(stderr,'(a,1x,a,1x,a,1x,a)')atleast('KEYWORD',max(len(keywords),8)),'SHORT','PRESENT','VALUE'
-         write(stderr,'(*(a,1x,a5,1x,l1,8x,"[",a,"]",/))') &
+         write(warn,'(a,1x,a,1x,a,1x,a)')atleast('KEYWORD',max(len(keywords),8)),'SHORT','PRESENT','VALUE'
+         write(warn,'(*(a,1x,a5,1x,l1,8x,"[",a,"]",/))') &
          & (atleast(keywords(i),max(len(keywords),8)),shorts(i),present_in(i),values(i)(:counts(i)),i=1,size(keywords))
       endif
    endif
    if(allocated(unnamed))then
       if(size(unnamed).gt.0)then
-         write(stderr,'(a)')'UNNAMED'
-         write(stderr,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+         write(warn,'(a)')'UNNAMED'
+         write(warn,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
       endif
    endif
    if(allocated(args))then
       if(size(args).gt.0)then
-         write(stderr,'(a)')'ARGS'
-         write(stderr,'(i6.6,3a)')(i,'[',args(i),']',i=1,size(args))
+         write(warn,'(a)')'ARGS'
+         write(warn,'(i6.6,3a)')(i,'[',args(i),']',i=1,size(args))
       endif
    endif
    if(G_remaining.ne.'')then
-      write(stderr,'(a)')'REMAINING'
-      write(stderr,'(a)')G_remaining
+      write(warn,'(a)')'REMAINING'
+      write(warn,'(a)')G_remaining
    endif
    if(present(stop))then
       if(stop) call mystop(5)
@@ -1953,7 +1955,7 @@ character(len=*),intent(in)          :: keyword      ! keyword to retrieve value
 complex,allocatable                  :: xarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
-integer                              :: half,sz
+integer                              :: half,sz,i
    call get_anyarray_d(keyword,darray,delimiters)
    sz=size(darray)
    half=sz/2
@@ -1962,7 +1964,15 @@ integer                              :: half,sz
       call mystop(11,'*get_anyarray_x* uneven number of values defining complex value '//keyword)
       allocate(xarray(0))
    endif
-   xarray=cmplx(real(darray(1::2)),real(darray(2::2)))
+
+   !*!================================================================================================
+   !!IFORT,GFORTRAN OK, NVIDIA RETURNS NULL ARRAY: xarray=cmplx(real(darray(1::2)),real(darray(2::2)))
+   allocate(xarray(half))
+   do i=1,sz,2
+      xarray((i+1)/2)=cmplx( darray(i),darray(i+1) )
+   enddo
+   !*!================================================================================================
+
 end subroutine get_anyarray_x
 !===================================================================================================================================
 subroutine get_anyarray_c(keyword,strings,delimiters)
@@ -2233,7 +2243,7 @@ complex,intent(out)         :: x
 real(kind=dp)               :: d(2)
    call get_fixedarray_d(keyword,d)
    if(size(d).eq.2)then
-      x=cmplx(d(1),d(2),kind=sngl)
+      x=cmplx(d(1),d(2),kind=sp)
    else
       call journal('sc','*get_scalar_complex* expected two values found',size(d))
       call mystop(20,'*get_scalar_complex* incorrect number of values for keyword '//keyword)
@@ -2260,7 +2270,6 @@ end subroutine get_scalar_logical
 ! THE REMAINDER SHOULD BE ROUTINES EXTRACTED FROM OTHER MODULES TO MAKE THIS MODULE STANDALONE BY POPULAR REQUEST
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 !use M_strings,                     only : UPPER, LOWER, QUOTE, REPLACE_STR=>REPLACE, UNQUOTE, SPLIT, STRING_TO_VALUE
 !use M_list,                        only : insert, locate, remove, replace
 !use M_journal,                     only : JOURNAL
@@ -2306,7 +2315,7 @@ integer :: ilongest
    GET_LONGEST: do i=1,command_argument_count()                             ! loop throughout command line arguments to find longest
       call get_command_argument(number=i,length=ilength,status=istatus)     ! get next argument
       if(istatus /= 0) then                                                 ! on error
-         write(stderr,*)'*prototype_and_cmd_args_to_nlist* error obtaining length for argument ',i
+         write(warn,*)'*prototype_and_cmd_args_to_nlist* error obtaining length for argument ',i
          exit GET_LONGEST
       elseif(ilength.gt.0)then
          ilongest=max(ilongest,ilength)
@@ -2542,199 +2551,38 @@ end function msg_one
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-!>
-!!##NAME
-!! upper(3f) - [M_CLI2:CASE] changes a string to uppercase
-!! (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!    elemental pure function upper(str,begin,end) result (string)
-!!
-!!     character(*), intent(in)    :: str
-!!     integer,optional,intent(in) :: begin,end
-!!     character(len(str))         :: string  ! output string
-!!##DESCRIPTION
-!!    upper(string) returns a copy of the input string with all characters
-!!    converted in the optionally specified range to uppercase, assuming
-!!    ASCII character sets are being used. If no range is specified the
-!!    entire string is converted to uppercase.
-!!
-!!##OPTIONS
-!!    str    string to convert to uppercase
-!!    begin  optional starting position in "str" to begin converting to uppercase
-!!    end    optional ending position in "str" to stop converting to uppercase
-!!
-!!##RESULTS
-!!    upper  copy of the input string with all characters converted to uppercase
-!!           over optionally specified range.
-!!
-!!##TRIVIA
-!!    The terms "uppercase" and "lowercase" date back to the early days of
-!!    the mechanical printing press. Individual metal alloy casts of each
-!!    needed letter, or punctuation symbol, were meticulously added to a
-!!    press block, by hand, before rolling out copies of a page. These
-!!    metal casts were stored and organized in wooden cases. The more
-!!    often needed miniscule letters were placed closer to hand, in the
-!!    lower cases of the work bench. The less often needed, capitalized,
-!!    majuscule letters, ended up in the harder to reach upper cases.
-!!
-!!##EXAMPLE
-!!
-!! Sample program:
-!!
-!!     program demo_upper
-!!     use M_CLI2, only: upper
-!!     implicit none
-!!     character(len=:),allocatable  :: s
-!!        s=' ABCDEFG abcdefg '
-!!        write(*,*) 'mixed-case input string is ....',s
-!!        write(*,*) 'upper-case output string is ...',upper(s)
-!!        write(*,*) 'make first character uppercase  ... ',upper('this is a sentence.',1,1)
-!!        write(*,'(1x,a,*(a:,"+"))') 'UPPER(3f) is elemental ==>',upper(["abc","def","ghi"])
-!!     end program demo_upper
-!!
-!!    Expected output
-!!
-!!     mixed-case input string is .... ABCDEFG abcdefg
-!!     upper-case output string is ... ABCDEFG ABCDEFG
-!!     make first character uppercase  ... This is a sentence.
-!!     UPPER(3f) is elemental ==>ABC+DEF+GHI
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-!===================================================================================================================================
-! Timing
-!
-!    Several different methods have been proposed for changing case.
-!    A simple program that copies a large file and converts it to
-!    uppercase was timed and compared to a simple copy. This was used
-!    to select the default function.
-!
-! NULL:    83.41user  9.25system 1:37.94elapsed 94%CPU
-! upper:  101.44user 10.89system 1:58.36elapsed 94%CPU
-! upper2: 105.04user 10.69system 2:04.17elapsed 93%CPU
-! upper3: 267.21user 11.69system 4:49.21elapsed 96%CPU
-elemental pure function upper(str,begin,end) result (string)
+function upper(str) result (string)
 
 ! ident_15="@(#)M_CLI2::upper(3f): Changes a string to uppercase"
 
-character(*), intent(In)      :: str                 ! inpout string to convert to all uppercase
-integer, intent(in), optional :: begin,end
-character(len(str))           :: string              ! output string that contains no miniscule letters
-integer                       :: i                   ! loop counter
-integer                       :: ibegin,iend
-   string = str                                      ! initialize output string to input string
-
-   ibegin = 1
-   if (present(begin))then
-      ibegin = max(ibegin,begin)
-   endif
-
-   iend = len_trim(str)
-   if (present(end))then
-      iend= min(iend,end)
-   endif
-
-   do i = ibegin, iend                               ! step thru each letter in the string in specified range
+character(*), intent(in)      :: str
+character(:),allocatable      :: string
+integer                       :: i
+   string = str
+   do i = 1, len_trim(str)
        select case (str(i:i))
-       case ('a':'z')                                ! located miniscule letter
-          string(i:i) = char(iachar(str(i:i))-32)    ! change miniscule letter to uppercase
+       case ('a':'z')
+          string(i:i) = char(iachar(str(i:i))-32)
        end select
    end do
-
 end function upper
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-!>
-!!##NAME
-!!    lower(3f) - [M_CLI2:CASE] changes a string to lowercase over specified range
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!    elemental impure function lower(str,begin,end) result (string)
-!!
-!!     character(*), intent(in) :: str
-!!     integer,optional         :: begin, end
-!!     character(len(str))      :: string  ! output string
-!!##DESCRIPTION
-!!    lower(string) returns a copy of the input string with all characters
-!!    converted to miniscule over the specified range, assuming ASCII
-!!    character sets are being used. If no range is specified the entire
-!!    string is converted to miniscule.
-!!
-!!##OPTIONS
-!!    str    string to convert to miniscule
-!!    begin  optional starting position in "str" to begin converting to miniscule
-!!    end    optional ending position in "str" to stop converting to miniscule
-!!
-!!##RESULTS
-!!    lower  copy of the input string with all characters converted to miniscule
-!!           over optionally specified range.
-!!
-!!##TRIVIA
-!!    The terms "uppercase" and "lowercase" date back to the early days of
-!!    the mechanical printing press. Individual metal alloy casts of each
-!!    needed letter, or punctuation symbol, were meticulously added to a
-!!    press block, by hand, before rolling out copies of a page. These
-!!    metal casts were stored and organized in wooden cases. The more
-!!    often needed miniscule letters were placed closer to hand, in the
-!!    lower cases of the work bench. The less often needed, capitalized,
-!!    majuscule letters, ended up in the harder to reach upper cases.
-!!
-!!##EXAMPLE
-!!
-!! Sample program:
-!!
-!!       program demo_lower
-!!       use M_CLI2, only: lower
-!!       implicit none
-!!       character(len=:),allocatable  :: s
-!!          s=' ABCDEFG abcdefg '
-!!          write(*,*) 'mixed-case input string is ....',s
-!!          write(*,*) 'lower-case output string is ...',lower(s)
-!!       end program demo_lower
-!!
-!!    Expected output
-!!
-!!       mixed-case input string is .... ABCDEFG abcdefg
-!!       lower-case output string is ... abcdefg abcdefg
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-elemental impure function lower(str,begin,end) result (string)
+function lower(str) result (string)
 
 ! ident_16="@(#)M_CLI2::lower(3f): Changes a string to lowercase over specified range"
 
 character(*), intent(In)     :: str
-character(len(str))          :: string
-integer,intent(in),optional  :: begin, end
+character(:),allocatable     :: string
 integer                      :: i
-integer                      :: ibegin, iend
    string = str
-
-   ibegin = 1
-   if (present(begin))then
-      ibegin = max(ibegin,begin)
-   endif
-
-   iend = len_trim(str)
-   if (present(end))then
-      iend= min(iend,end)
-   endif
-
-   do i = ibegin, iend                               ! step thru each letter in the string in specified range
+   do i = 1, len_trim(str)
       select case (str(i:i))
       case ('A':'Z')
-         string(i:i) = char(iachar(str(i:i))+32)     ! change letter to miniscule
-      case default
+         string(i:i) = char(iachar(str(i:i))+32)
       end select
    end do
-
 end function lower
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -4545,7 +4393,7 @@ integer                                 :: error
    if(present(ier))then
       ier=error
    elseif(error.ne.0)then
-      write(stderr,*)message//' VALUE=',trim(value)//' PLACE=',place
+      write(warn,*)message//' VALUE=',trim(value)//' PLACE=',place
       call mystop(-24,'(*locate_c* '//message)
    endif
    if(present(errmsg))then
@@ -4789,7 +4637,7 @@ integer                      :: end
    tlen=len_trim(value)
    end=size(list)
    if(place.lt.0.or.place.gt.end)then
-           write(stderr,*)'*replace_c* error: index out of range. end=',end,' index=',place
+           write(warn,*)'*replace_c* error: index out of range. end=',end,' index=',place
    elseif(len_trim(value).le.len(list))then
       list(place)=value
    else  ! increase length of variable
@@ -4816,7 +4664,7 @@ integer               :: end
    elseif(place.gt.0.and.place.le.end)then
       list(place)=value
    else                                                      ! put in middle of array
-      write(stderr,*)'*replace_l* error: index out of range. end=',end,' index=',place
+      write(warn,*)'*replace_l* error: index out of range. end=',end,' index=',place
    endif
 end subroutine replace_l
 subroutine replace_i(list,value,place)
@@ -4836,7 +4684,7 @@ integer               :: end
    elseif(place.gt.0.and.place.le.end)then
       list(place)=value
    else                                                      ! put in middle of array
-      write(stderr,*)'*replace_i* error: index out of range. end=',end,' index=',place
+      write(warn,*)'*replace_i* error: index out of range. end=',end,' index=',place
    endif
 end subroutine replace_i
 !===================================================================================================================================
@@ -4956,7 +4804,7 @@ integer                      :: end
       kludge=[character(len=ii) :: list(:place-1), value,list(place:) ]
       list=kludge
    else                                                      ! index out of range
-      write(stderr,*)'*insert_c* error: index out of range. end=',end,' index=',place,' value=',value
+      write(warn,*)'*insert_c* error: index out of range. end=',end,' index=',place,' value=',value
    endif
 
 end subroutine insert_c
@@ -4981,7 +4829,7 @@ integer               :: end
    elseif(place.ge.2.and.place.le.end)then                 ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
-      write(stderr,*)'*insert_l* error: index out of range. end=',end,' index=',place,' value=',value
+      write(warn,*)'*insert_l* error: index out of range. end=',end,' index=',place,' value=',value
    endif
 
 end subroutine insert_l
@@ -5006,7 +4854,7 @@ integer               :: end
    elseif(place.ge.2.and.place.le.end)then                 ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
-      write(stderr,*)'*insert_i* error: index out of range. end=',end,' index=',place,' value=',value
+      write(warn,*)'*insert_i* error: index out of range. end=',end,' index=',place,' value=',value
    endif
 
 end subroutine insert_i
@@ -5149,7 +4997,7 @@ real(kind=dp)       :: rc, ic
    do i=1,size(cg),2
       call a2d(unnamed(i),rc,ierr)
       call a2d(unnamed(i+1),ic,ierr)
-      cg(i)=cmplx(rc,ic,kind=sngl)
+      cg(i)=cmplx(rc,ic,kind=sp)
    enddo
 end function cg
 !===================================================================================================================================
