@@ -19,18 +19,30 @@ PROG = ${PROGFILES:.f90=}
 SRCS =  M_CLI2.f90 
 OBJS =  M_CLI2.o 
 # platform-specific values you will probably change
+#
+gfortran: F90=gfortran 
+gfortran: F90FLAGS := -g -O -Wall -Wextra
+gfortran: all
+	@echo built with $(F90)
+
+nvfortran: F90=nvfortran
+nvfortran: F90FLAGS := -Minform=inform
+nvfortran: all
+	@echo built with $(F90)
+
+ifort: F90=ifort
+ifort: F90FLAGS := -warn all
+ifort: all
+	@echo built with $(F90)
+
 LIBS := 
-FC := gfortran
-#FFLAGS := -g -O -Wall -Wextra
-F90 := gfortran
-#F90FLAGS := -g -O -Wall -Wextra
 LDFLAGS := 
 all: $(PROG) 
 	@echo "That's All Folks! Enter \"make help\" for more options"
 $(PROG): $(OBJS)
 	-$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)
 clean:
-	rm -f $(PROG) $(CPROG) $(OBJS) *.mod
+	rm -f $(PROG) $(CPROG) $(OBJS) *.mod *.o
 .SUFFIXES: $(SUFFIXES) .f90 .F90 
 .f90.o:
 	$(F90) $(F90FLAGS) -c $<
@@ -38,13 +50,15 @@ clean:
 	$(F90) $(F90FLAGS) -c $<
 .PHONY: help
 help:
-	: all     '-- build M_CLI2 module'
-	: run     '-- run manpage demo programs'
-	: man     '-- show all manpages as text'
-	: ship    '-- rebuild archive files of manpages'
-	: clean   '-- clean directory of object files and executables'
-	: doxygen '-- run doxygen(1) if you have it'
-	: help    '-- display this text'
+	: ###############################################################################
+	: # gfortran|nvfortran|ifort -- build M_CLI2 module. Default is gfortran        #
+	: # run                      -- run manpage demo programs                       #
+	: # man                      -- show all manpages as text                       #
+	: # ship                     -- rebuild archive files of manpages               #
+	: # clean                    -- clean directory of object files and executables #
+	: # doxygen                  -- run doxygen(1) if you have it                   #
+	: # help                     -- display this text                               #
+	: ###############################################################################
 
 .PHONY: run
 run: $(PROG)

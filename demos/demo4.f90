@@ -6,8 +6,8 @@ complex,allocatable          :: aarr(:)   ! allocatable array
 complex                      :: three(3)  ! fixed-size array
 
 ! formats to pretty-print a complex value and small complex vector
-character(len=*),parameter   :: form='("(",g0,",",g0"i)":,1x)'
-character(len=*),parameter   :: forms='(*("(",g0,",",g0"i)":,",",1x))'
+character(len=*),parameter   :: form='("(",g0,",",g0,"i)":,1x)'
+character(len=*),parameter   :: forms='(*("(",g0,",",g0,"i)":,",",1x))'
 
    ! COMPLEX VALUES
    !

@@ -935,7 +935,7 @@ subroutine update(key,val)
 character(len=*),intent(in)           :: key
 character(len=*),intent(in),optional  :: val
 integer                               :: place, ii
-integer                               :: iilen
+integer                               :: ilen
 character(len=:),allocatable          :: val_local
 character(len=:),allocatable          :: short
 character(len=:),allocatable          :: long
@@ -979,12 +979,12 @@ logical                               :: set_mandatory
    end select
    if(present(val))then
       val_local=val
-      iilen=len_trim(val_local)
+      ilen=len_trim(val_local)
       call locate_key(long,place)                  ! find where string is or should be
       if(place.lt.1)then                                ! if string was not found insert it
          call insert(keywords,long,iabs(place))
          call insert(values,val_local,iabs(place))
-         call insert(counts,iilen,iabs(place))
+         call insert(counts,ilen,iabs(place))
          call insert(shorts,short,iabs(place))
          call insert(present_in,.true.,iabs(place))
          call insert(mandatory,set_mandatory,iabs(place))
@@ -996,10 +996,10 @@ logical                               :: set_mandatory
             else
                val_local=values(place)//' '//val_local
             endif
-            iilen=len_trim(val_local)
+            ilen=len_trim(val_local)
          endif
          call replace(values,val_local,place)
-         call replace(counts,iilen,place)
+         call replace(counts,ilen,place)
          call replace(present_in,.true.,place)
       endif
    else                                                 ! if no value is present remove the keyword and related values
@@ -1862,7 +1862,7 @@ character(len=:),allocatable :: carray(:)                  ! convert value to an
 character(len=:),allocatable :: val
 integer                      :: i
 integer                      :: place
-integer                      :: iichar                     ! point to first character of word unless first character is "."
+integer                      :: ichar                      ! point to first character of word unless first character is "."
    call locate_key(keyword,place)                          ! find where string is or should be
    if(place.gt.0)then                                      ! if string was found
       val=values(place)(:counts(place))
@@ -1877,12 +1877,12 @@ integer                      :: iichar                     ! point to first char
       allocate(larray(size(carray)))                          ! allocate output array
       do i=1,size(carray)
          larray(i)=.false.                                    ! initialize return value to .false.
-         if(carray(i)(1:1).eq.'.')then                        ! looking for fortran logical syntax .STRING.
-            iichar=2
+         if(carray(i)(1:1).eq.'.')then                     ! looking for fortran logical syntax .STRING.
+            ichar=2
          else
-            iichar=1
+            ichar=1
          endif
-         select case(carray(i)(iichar:iichar))             ! check word to see if true or false
+         select case(carray(i)(ichar:ichar))               ! check word to see if true or false
          case('T','Y',' '); larray(i)=.true.               ! anything starting with "T" or "Y" or a blank is TRUE (true,yes,...)
          case('F','N');     larray(i)=.false.              ! assume this is false or no
          case default
@@ -2006,9 +2006,9 @@ character(len=:),allocatable               :: val
       strings=['']
       call journal('sc','*get_anyarray_cc* unknown keyword '//keyword)
       call mystop(12,'*get_anyarray_cc* unknown keyword '//keyword)
-      !*! GFORTRAN BUG: ALLOWED THIS     allocate(character(len=len(strings))::strings(0))
-      !*! NVFORTRAN WOULD NOT TAKE THIS: allocate(character(len=*)::strings(0))
+      !*! GFORTRAN BUG: ALLOWED THIS allocate(character(len=len(strings))::strings(0))
       strings=[character(len=len(strings)) ::]
+      !nvfortran allocate(character(len=*)::strings(0))
    endif
 end subroutine get_anyarray_cc
 !===================================================================================================================================
@@ -2034,12 +2034,14 @@ character(len=:),allocatable         :: val
          write(*,'("strings=",3x,*(a,1x))')strings
          call journal('sc','*get_args_fixed_length_a_array* keyword='//keyword)
          call mystop(13,'*get_args_fixed_length_a_array* keyword='//keyword)
-         strings=[character(len=len(strings)) ::]
+         strings=[character(len=len(strings)):: ]
+!nvfortran allocate(character(len=*)::strings(0))
       endif
    else
       call journal('sc','*get_args_fixed_length_a_array* unknown keyword '//keyword)
       call mystop(14,'*get_args_fixed_length_a_array* unknown keyword '//keyword)
-      strings=[character(len=len(strings)) ::]
+       strings=[character(len=len(strings)):: ]
+!nvfortran allocate(character(len=*)::strings(0))
    endif
 end subroutine get_args_fixed_length_a_array
 !===================================================================================================================================
@@ -2490,7 +2492,7 @@ class(*),intent(in) :: generic
       type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
-      !*! DOES NOT WORK WITH NVFORTRAN: type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
+      !!nvfortran type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
       type is (logical);                write(line(istart:),'(l1)') generic
       type is (character(len=*));       write(line(istart:),'(a)') trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
@@ -2541,6 +2543,7 @@ integer                       :: increment
 contains
 !===================================================================================================================================
 subroutine print_generic(generic)
+!use, intrinsic :: iso_fortran_env, only : int8, int16, int32, biggest=>int64, real32, real64, dp=>real128
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in),optional :: generic(:)
 integer :: i
@@ -2551,8 +2554,8 @@ integer :: i
       type is (integer(kind=int64));    write(line(istart:),'("[",*(i0,1x))') generic
       type is (real(kind=real32));      write(line(istart:),'("[",*(1pg0,1x))') generic
       type is (real(kind=real64));      write(line(istart:),'("[",*(1pg0,1x))') generic
-      !*! DOES NOT WORK WITH nvfortran: type is (real(kind=real128));     write(line(istart:),'("[",*(1pg0,1x))') generic
-      !*! DOES NOT WORK WITH ifort:     type is (real(kind=real256));     write(error_unit,'(1pg0)',advance='no') generic
+      !*!nvfortran type is (real(kind=real128));     write(line(istart:),'("[",*(1pg0,1x))') generic
+      !*!intel  type is (real(kind=real256));     write(error_unit,'(1pg0)',advance='no') generic
       type is (logical);                write(line(istart:),'("[",*(l1,1x))') generic
       type is (character(len=*));       write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
       type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
@@ -3033,7 +3036,7 @@ character(len=:),allocatable  :: ordr                   ! string containing orde
 character(len=:),allocatable  :: nlls                   ! string containing nulls keyword
 integer                       :: ii,iiii                ! loop parameters used to control print order
 integer                       :: icount                 ! number of tokens found
-integer                       :: iilen                  ! length of input string with trailing spaces trimmed
+integer                       :: ilen                   ! length of input string with trailing spaces trimmed
 integer                       :: i10,i20,i30            ! loop counters
 integer                       :: icol                   ! pointer into input string as it is being parsed
 integer                       :: idlim                  ! number of delimiter characters
@@ -3063,23 +3066,23 @@ integer                       :: imax                   ! length of longest toke
    ibegin(:)=1
    iterm(:)=1
 !-----------------------------------------------------------------------------------------------------------------------------------
-   iilen=len(input_line)                                          ! IILEN is the column position of the last non-blank character
+   ilen=len(input_line)                                           ! ILEN is the column position of the last non-blank character
    icount=0                                                       ! how many tokens found
    inotnull=0                                                     ! how many tokens found not composed of delimiters
    imax=0                                                         ! length of longest token found
 !-----------------------------------------------------------------------------------------------------------------------------------
-   select case (iilen)
+   select case (ilen)
 !-----------------------------------------------------------------------------------------------------------------------------------
    case (:0)                                                      ! command was totally blank
 !-----------------------------------------------------------------------------------------------------------------------------------
    case default                                                   ! there is at least one non-delimiter in INPUT_LINE if get here
       icol=1                                                      ! initialize pointer into input line
-      INFINITE: do i30=1,iilen,1                                  ! store into each array element
+      INFINITE: do i30=1,ilen,1                                   ! store into each array element
          ibegin(i30)=icol                                         ! assume start new token on the character
          if(index(dlim(1:idlim),input_line(icol:icol)).eq.0)then  ! if current character is not a delimiter
-            iterm(i30)=iilen                                      ! initially assume no more tokens
+            iterm(i30)=ilen                                       ! initially assume no more tokens
             do i10=1,idlim                                        ! search for next delimiter
-               ifound=index(input_line(ibegin(i30):iilen),dlim(i10:i10))
+               ifound=index(input_line(ibegin(i30):ilen),dlim(i10:i10))
                IF(ifound.gt.0)then
                   iterm(i30)=min(iterm(i30),ifound+ibegin(i30)-2)
                endif
@@ -3092,7 +3095,7 @@ integer                       :: imax                   ! length of longest toke
          endif
          imax=max(imax,iterm(i30)-ibegin(i30)+1)
          icount=i30                                               ! increment count of number of tokens found
-         if(icol.gt.iilen)then                                     ! no text left
+         if(icol.gt.ilen)then                                     ! no text left
             exit INFINITE
          endif
       enddo INFINITE
@@ -3313,7 +3316,7 @@ integer                       :: ladd
 integer                       :: left_margin, right_margin
 integer                       :: ind
 integer                       :: ic
-integer                       :: iichar
+integer                       :: ichar
 integer                       :: range_local(2)
 !-----------------------------------------------------------------------------------------------------------------------------------
 !  get old_local and new_local from cmd or old and new
@@ -3349,7 +3352,7 @@ integer                       :: range_local(2)
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(len_old.eq.0)then                                ! c//new/ means insert new at beginning of line (or left margin)
-      iichar=len_new + original_input_length
+      ichar=len_new + original_input_length
       if(len_new.gt.0)then
          newline=new_local(:len_new)//targetline(left_margin:original_input_length)
       else
@@ -3360,7 +3363,7 @@ integer                       :: range_local(2)
       return
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   iichar=left_margin                                  ! place to put characters into output string
+   ichar=left_margin                                   ! place to put characters into output string
    ic=left_margin                                      ! place looking at in input string
    loop: do
       ind=index(targetline(ic:),old_local(:len_old))+ic-1 ! try finding start of OLD in remaining part of input in change window
@@ -3370,19 +3373,19 @@ integer                       :: range_local(2)
       icount=icount+1                                  ! found an old string to change, so increment count of change candidates
       if(ind.gt.ic)then                                ! if found old string past at current position in input string copy unchanged
          ladd=ind-ic                                   ! find length of character range to copy as-is from input to output
-         newline=newline(:iichar-1)//targetline(ic:ind-1)
-         iichar=iichar+ladd
+         newline=newline(:ichar-1)//targetline(ic:ind-1)
+         ichar=ichar+ladd
       endif
       if(icount.ge.range_local(1).and.icount.le.range_local(2))then    ! check if this is an instance to change or keep
          ichange=ichange+1
          if(len_new.ne.0)then                                          ! put in new string
-            newline=newline(:iichar-1)//new_local(:len_new)
-            iichar=iichar+len_new
+            newline=newline(:ichar-1)//new_local(:len_new)
+            ichar=ichar+len_new
          endif
       else
          if(len_old.ne.0)then                                          ! put in copy of old string
-            newline=newline(:iichar-1)//old_local(:len_old)
-            iichar=iichar+len_old
+            newline=newline(:ichar-1)//old_local(:len_old)
+            ichar=ichar+len_old
          endif
       endif
       ic=ind+len_old
@@ -3393,7 +3396,7 @@ integer                       :: range_local(2)
       newline=targetline                               ! if no changes made output should be input
    case default
       if(ic.le.len(targetline))then                    ! if there is more after last change on original line add it
-         newline=newline(:iichar-1)//targetline(ic:max(ic,original_input_length))
+         newline=newline(:ichar-1)//targetline(ic:max(ic,original_input_length))
       endif
    end select
    if(present(ierr))ierr=ichange
@@ -3957,7 +3960,7 @@ end function lenset
 !!
 !!##SYNOPSIS
 !!
-!!    subroutine value_to_string(value,chars[,iilen,ierr,fmt,trimz])
+!!    subroutine value_to_string(value,chars[,ilen,ierr,fmt,trimz])
 !!
 !!     character(len=*) :: chars  ! minimum of 23 characters required
 !!     !--------
@@ -3968,7 +3971,7 @@ end function lenset
 !!     logical,intent(in)                       :: value
 !!     !--------
 !!     character(len=*),intent(out)             :: chars
-!!     integer,intent(out),optional             :: iilen
+!!     integer,intent(out),optional             :: ilen
 !!     integer,optional                         :: ierr
 !!     character(len=*),intent(in),optional     :: fmt
 !!     logical,intent(in)                       :: trimz
@@ -3991,7 +3994,7 @@ end function lenset
 !!##RETURNS
 !!       CHARS   returned string representing input value, must be at least
 !!               23 characters long; or what is required by optional FMT if longer.
-!!       IILEN   position of last non-blank character in returned string; optional.
+!!       ILEN    position of last non-blank character in returned string; optional.
 !!       IERR    If not zero, error occurred; optional.
 !!##EXAMPLE
 !!
@@ -4001,21 +4004,21 @@ end function lenset
 !!      use M_CLI2, only: value_to_string
 !!      implicit none
 !!      character(len=80) :: string
-!!      integer           :: iilen
-!!         call value_to_string(3.0/4.0,string,iilen)
-!!         write(*,*) 'The value is [',string(:iilen),']'
+!!      integer           :: ilen
+!!         call value_to_string(3.0/4.0,string,ilen)
+!!         write(*,*) 'The value is [',string(:ilen),']'
 !!
-!!         call value_to_string(3.0/4.0,string,iilen,fmt='')
-!!         write(*,*) 'The value is [',string(:iilen),']'
+!!         call value_to_string(3.0/4.0,string,ilen,fmt='')
+!!         write(*,*) 'The value is [',string(:ilen),']'
 !!
-!!         call value_to_string(3.0/4.0,string,iilen,fmt='("THE VALUE IS ",g0)')
-!!         write(*,*) 'The value is [',string(:iilen),']'
+!!         call value_to_string(3.0/4.0,string,ilen,fmt='("THE VALUE IS ",g0)')
+!!         write(*,*) 'The value is [',string(:ilen),']'
 !!
-!!         call value_to_string(1234,string,iilen)
-!!         write(*,*) 'The value is [',string(:iilen),']'
+!!         call value_to_string(1234,string,ilen)
+!!         write(*,*) 'The value is [',string(:ilen),']'
 !!
-!!         call value_to_string(1.0d0/3.0d0,string,iilen)
-!!         write(*,*) 'The value is [',string(:iilen),']'
+!!         call value_to_string(1.0d0/3.0d0,string,ilen)
+!!         write(*,*) 'The value is [',string(:ilen),']'
 !!
 !!      end program demo_value_to_string
 !!
@@ -4154,13 +4157,13 @@ subroutine trimzeros_(string)
 ! if zero needs added at end assumes input string has room
 character(len=*)             :: string
 character(len=len(string)+2) :: str
-character(len=len(string))   :: expo         ! the exponent string if present
+character(len=len(string))   :: exp          ! the exponent string if present
 integer                      :: ipos         ! where exponent letter appears if present
 integer                      :: i, ii
    str=string                                ! working copy of string
    ipos=scan(str,'eEdD')                     ! find end of real number if string uses exponent notation
    if(ipos>0) then                           ! letter was found
-      expo=str(ipos:)                        ! keep exponent string so it can be added back as a suffix
+      exp=str(ipos:)                         ! keep exponent string so it can be added back as a suffix
       str=str(1:ipos-1)                      ! just the real part, exponent removed will not have trailing zeros removed
    endif
    if(index(str,'.').eq.0)then               ! if no decimal character in original string add one to end of string
@@ -4184,7 +4187,7 @@ integer                      :: i, ii
       end select
    end do
    if(ipos>0)then                            ! if originally had an exponent place it back on
-      string=trim(str)//trim(expo)
+      string=trim(str)//trim(exp)
    else
       string=str
    endif
@@ -4284,7 +4287,7 @@ integer                        :: ind
 integer                        :: il
 integer                        :: id
 integer                        :: ic
-integer                        :: iichar
+integer                        :: ichar
 !-----------------------------------------------------------------------------------------------------------------------------------
    if (present(start)) then                            ! optional starting column
       ml=start
@@ -4316,8 +4319,8 @@ integer                        :: iichar
    endif                                               ! end of window settings
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(len_old.eq.0)then                                ! c//new/ means insert new at beginning of line (or left margin)
-      iichar=len_new + original_input_length
-      if(iichar.gt.maxlengthout)then
+      ichar=len_new + original_input_length
+      if(ichar.gt.maxlengthout)then
          call journal('sc','*substitute* new line will be too long')
          ier1=-1
          if (present(ierr))ierr=ier1
@@ -4334,7 +4337,7 @@ integer                        :: iichar
       return
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
-   iichar=il                                           ! place to put characters into output string
+   ichar=il                                            ! place to put characters into output string
    ic=il                                               ! place looking at in input string
    loop: do
       ind=index(targetline(ic:),old(:len_old))+ic-1    ! try to find start of old string in remaining part of input in change window
@@ -4344,20 +4347,20 @@ integer                        :: iichar
       ier1=ier1+1                                      ! found an old string to change, so increment count of changes
       if(ind.gt.ic)then                                ! if found old string past at current position in input string copy unchanged
          ladd=ind-ic                                   ! find length of character range to copy as-is from input to output
-         if(iichar-1+ladd.gt.maxlengthout)then
+         if(ichar-1+ladd.gt.maxlengthout)then
             ier1=-1
             exit loop
          endif
-         dum1(iichar:)=targetline(ic:ind-1)
-         iichar=iichar+ladd
+         dum1(ichar:)=targetline(ic:ind-1)
+         ichar=ichar+ladd
       endif
-      if(iichar-1+len_new.gt.maxlengthout)then
+      if(ichar-1+len_new.gt.maxlengthout)then
          ier1=-2
          exit loop
       endif
       if(len_new.ne.0)then
-         dum1(iichar:)=new(:len_new)
-         iichar=iichar+len_new
+         dum1(ichar:)=new(:len_new)
+         ichar=ichar+len_new
       endif
       ic=ind+len_old
    enddo loop
@@ -4368,14 +4371,14 @@ integer                        :: iichar
    case (0)                                                ! there were no changes made to the window
    case default
       ladd=original_input_length-ic
-      if(iichar+ladd.gt.maxlengthout)then
+      if(ichar+ladd.gt.maxlengthout)then
          call journal('sc','*substitute* new line will be too long')
          ier1=-1
          if(present(ierr))ierr=ier1
          return
       endif
       if(ic.lt.len(targetline))then
-         dum1(iichar:)=targetline(ic:max(ic,original_input_length))
+         dum1(ichar:)=targetline(ic:max(ic,original_input_length))
       endif
       targetline=dum1(:maxlengthout)
    end select
@@ -5083,7 +5086,7 @@ character(len=:),allocatable :: c
 end function c
 !===================================================================================================================================
 subroutine get_generic(name,generic)
-use,intrinsic :: iso_fortran_env, only : real64
+use,intrinsic :: iso_fortran_env, only : real64 ! int8, int16, int32, int64, real32, real64, real128
 character(len=*),intent(in)  :: name
 class(*),intent(out)         :: generic
    select type(generic)
@@ -5091,7 +5094,7 @@ class(*),intent(out)         :: generic
       type is (real);                           call get_args(name,generic)
       type is (real(kind=real64));              call get_args(name,generic)
       type is (logical);                        call get_args(name,generic)
-      !*!type is (character(len=:),allocatable ::);   call get_args(name,generic)
+      !*!nvfortran type is (character(len=:),allocatable ::);   call get_args(name,generic)
       type is (character(len=*));
       call get_args_fixed_length(name,generic)
       type is (complex);                        call get_args(name,generic)
@@ -5147,17 +5150,17 @@ end function dg
 function lg()
 logical,allocatable   :: lg(:)
 integer               :: i
-integer               :: iichar
+integer               :: ichar
 character,allocatable :: hold
    allocate(lg(size(unnamed)))
    do i=1,size(lg)
       hold=trim(upper(adjustl(unnamed(i))))
       if(hold(1:1).eq.'.')then                 ! looking for fortran logical syntax .STRING.
-         iichar=2
+         ichar=2
       else
-         iichar=1
+         ichar=1
       endif
-      select case(hold(iichar:iichar))         ! check word to see if true or false
+      select case(hold(ichar:ichar))           ! check word to see if true or false
       case('T','Y',' '); lg(i)=.true.          ! anything starting with "T" or "Y" or a blank is TRUE (true,yes,...)
       case('F','N');     lg(i)=.false.         ! assume this is false or no
       case default
@@ -5258,12 +5261,14 @@ end module M_CLI2
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-! REVISION:  nvfortran does not support real128 from iso_fortran_env x86_64 GNU/Linux
-!            nvfortran 20.7-0 LLVM 64-bit target on x86-64 Linux -tp nehalem
-! < !NVFORTRAN-S-0000-Internal compiler error. size_of: attempt to get size of assumed size character       0  (M_CLI2.f90: 2012)
-! < !  0 inform,   0 warnings,   1 severes, 0 fatal for get_anyarray_cc
-! Changed
-!       allocate(character(len=*)::strings(0))
-! to
-!       strings=[character(len=len(strings)) ::]
-!===================================================================================================================================
+!NVFORTRAN-S-0000-Internal compiler error. size_of: attempt to get size of assumed size character       0  (M_CLI2.f90: 2012)
+!  0 inform,   0 warnings,   1 severes, 0 fatal for get_anyarray_cc
+!NVFORTRAN-S-0000-Internal compiler error. size_of: attempt to get size of assumed size character       0  (M_CLI2.f90: 2043)
+!NVFORTRAN-S-0000-Internal compiler error. size_of: attempt to get size of assumed size character       0  (M_CLI2.f90: 2043)
+!  0 inform,   0 warnings,   2 severes, 0 fatal for get_args_fixed_length_a_array
+!NVFORTRAN-S-0081-Illegal selector - KIND value must be non-negative  (M_CLI2.f90: 2493)
+!NVFORTRAN-S-0155-Duplicate TYPE IS real (M_CLI2.f90: 2493)
+!  0 inform,   0 warnings,   2 severes, 0 fatal for print_generic
+!NVFORTRAN-S-0081-Illegal selector - KIND value must be non-negative  (M_CLI2.f90: 2555)
+!NVFORTRAN-S-0155-Duplicate TYPE IS real (M_CLI2.f90: 2555)
+!  0 inform,   0 warnings,   2 severes, 0 fatal for print_generic
