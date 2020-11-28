@@ -3297,13 +3297,19 @@ function quote(str,mode,clip) result (quoted_str)
 character(len=*),intent(in)          :: str                ! the string to be quoted
 character(len=*),optional,intent(in) :: mode
 logical,optional,intent(in)          :: clip
+logical                              :: clip_local
 character(len=:),allocatable         :: quoted_str
 
 character(len=1),parameter           :: double_quote = '"'
 character(len=20)                    :: local_mode
 !-----------------------------------------------------------------------------------------------------------------------------------
    local_mode=merge_str(mode,'DOUBLE',present(mode))
-   if(merge(clip,.false.,present(clip)))then
+   if(present(clip))then
+      clip_local=clip
+   else
+      clip_local=.false.
+   endif
+   if(clip_local)then
       quoted_str=adjustl(str)
    else
       quoted_str=str
