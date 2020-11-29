@@ -88,7 +88,7 @@ character(len=*),parameter   :: gen='(*(g0,1x))'
       call runit('-x 400 -y 500 -z 600 --ints -1,-2,-3 --ithree -11,-22,-33 -casen 3')
    case(3)
       call printit(all([x,y,z,ints,ithree].eq.[400,500,600,-1,-2,-3,-11,-22,-33]))
-      call runit("-c_x '(1,2)' -c_y 10,20 -c_z '(2#111,16#-AB)' -c_three 1,2,3,4,5,6 -c_aarr 111::222,333::444 -casen 4")
+      call runit('-c_x "(1,2)" -c_y 10,20 -c_z "(2#111,16#-AB)" -c_three 1,2,3,4,5,6 -c_aarr 111::222,333::444 -casen 4')
    case(4)
       ! test results for case 4
 
