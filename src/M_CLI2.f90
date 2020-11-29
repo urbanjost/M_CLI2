@@ -2891,11 +2891,7 @@ integer                       :: imax                   ! length of longest toke
    inotnull=0                                                     ! how many tokens found not composed of delimiters
    imax=0                                                         ! length of longest token found
 !-----------------------------------------------------------------------------------------------------------------------------------
-   select case (iilen)
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case (:0)                                                      ! command was totally blank
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case default                                                   ! there is at least one non-delimiter in INPUT_LINE if get here
+   if (iilen > 0) then                                            ! there is at least one non-delimiter in INPUT_LINE if get here
       icol=1                                                      ! initialize pointer into input line
       INFINITE: do i30=1,iilen,1                                  ! store into each array element
          ibegin(i30)=icol                                         ! assume start new token on the character
@@ -2920,7 +2916,7 @@ integer                       :: imax                   ! length of longest toke
          endif
       enddo INFINITE
 !-----------------------------------------------------------------------------------------------------------------------------------
-   end select
+   end if
 !-----------------------------------------------------------------------------------------------------------------------------------
    select case (trim(adjustl(nlls)))
    case ('ignore','','ignoreend')
