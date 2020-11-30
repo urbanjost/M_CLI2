@@ -2881,6 +2881,8 @@ integer                       :: imax                   ! length of longest toke
    if(present(nulls))then; nlls=lower(adjustl(nulls)); else; nlls='ignore'    ; endif ! optional parameter
 !-----------------------------------------------------------------------------------------------------------------------------------
    n=len(input_line)+1                        ! max number of strings INPUT_LINE could split into if all delimiter
+   if(allocated(ibegin))deallocate(ibegin)    !*! intel compiler says allocated already ???
+   if(allocated(iterm))deallocate(iterm)      !*! intel compiler says allocated already ???
    allocate(ibegin(n))                        ! allocate enough space to hold starting location of tokens if string all tokens
    allocate(iterm(n))                         ! allocate enough space to hold ending location of tokens if string all tokens
    ibegin(:)=1
@@ -2890,12 +2892,7 @@ integer                       :: imax                   ! length of longest toke
    icount=0                                                       ! how many tokens found
    inotnull=0                                                     ! how many tokens found not composed of delimiters
    imax=0                                                         ! length of longest token found
-!-----------------------------------------------------------------------------------------------------------------------------------
-   select case (iilen)
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case (:0)                                                      ! command was totally blank
-!-----------------------------------------------------------------------------------------------------------------------------------
-   case default                                                   ! there is at least one non-delimiter in INPUT_LINE if get here
+   if(iilen.gt.0)then                                             ! there is at least one non-delimiter in INPUT_LINE if get here
       icol=1                                                      ! initialize pointer into input line
       INFINITE: do i30=1,iilen,1                                  ! store into each array element
          ibegin(i30)=icol                                         ! assume start new token on the character
@@ -2919,8 +2916,7 @@ integer                       :: imax                   ! length of longest toke
             exit INFINITE
          endif
       enddo INFINITE
-!-----------------------------------------------------------------------------------------------------------------------------------
-   end select
+   endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    select case (trim(adjustl(nlls)))
    case ('ignore','','ignoreend')

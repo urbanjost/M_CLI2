@@ -9,8 +9,6 @@ program demo1
    character(len=:), allocatable  :: title
    logical                        :: l,  lupper
 
-   integer                        :: i
-
 !! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES
    call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" -l F -L F')
 
