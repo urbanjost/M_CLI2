@@ -2881,6 +2881,8 @@ integer                       :: imax                   ! length of longest toke
    if(present(nulls))then; nlls=lower(adjustl(nulls)); else; nlls='ignore'    ; endif ! optional parameter
 !-----------------------------------------------------------------------------------------------------------------------------------
    n=len(input_line)+1                        ! max number of strings INPUT_LINE could split into if all delimiter
+   if(allocated(ibegin))deallocate(ibegin)    !*! intel compiler says allocated already ???
+   if(allocated(iterm))deallocate(iterm)      !*! intel compiler says allocated already ???
    allocate(ibegin(n))                        ! allocate enough space to hold starting location of tokens if string all tokens
    allocate(iterm(n))                         ! allocate enough space to hold ending location of tokens if string all tokens
    ibegin(:)=1
@@ -2893,7 +2895,7 @@ integer                       :: imax                   ! length of longest toke
 !-----------------------------------------------------------------------------------------------------------------------------------
    select case (iilen)
 !-----------------------------------------------------------------------------------------------------------------------------------
-   case (:0)                                                      ! command was totally blank
+   case (0)                                                       ! command was totally blank
 !-----------------------------------------------------------------------------------------------------------------------------------
    case default                                                   ! there is at least one non-delimiter in INPUT_LINE if get here
       icol=1                                                      ! initialize pointer into input line

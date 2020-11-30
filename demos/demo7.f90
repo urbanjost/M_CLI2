@@ -1,5 +1,5 @@
 program demo7
-use M_CLI2,  only : set_args, get_args, get_args_fixed_size
+use M_CLI2,  only : set_args, get_args, get_args_fixed_size, get_args_fixed_length
 implicit none
 integer,parameter              :: dp=kind(0.0d0)
 
@@ -18,7 +18,6 @@ character(len=:),allocatable   :: characters(:)  ! allocatable array with alloca
    ! NOTE SET_ARGS(3f) DELIMITERS MUST MATCH WHAT IS USED IN GET_ARGS*(3f)
    !
    call set_args('-flen A,B,C -fixed X,Y --integers z --reals 111/222/333 -normal , --doubles | --complexs 0!0 --characters @')
-   call get_args_fixed_size('fixed',fixed) ! fixed length and fixed size array
    call get_args('integers',integers,delimiters='abcdefghijklmnopqrstuvwxyz')
    call get_args('reals',reals,delimiters='/')
    call get_args('doubles',doubles,delimiters='|')
@@ -26,6 +25,10 @@ character(len=:),allocatable   :: characters(:)  ! allocatable array with alloca
    call get_args('normal',normal)
    call get_args('characters',characters,delimiters='@')
 
+   call get_args_fixed_length('flen',flen)
+   call get_args_fixed_size('fixed',fixed) ! fixed length and fixed size array
+
+   write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(flen),'flen=',flen
    write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(characters),'characters=',characters
    write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(integers),'integers=',integers
    write(*,'(g0,1x,a,*("[",g0,"]":,1x))')size(reals),'reals=',reals
@@ -46,4 +49,3 @@ end program demo7
 ! 2 complexs=[2.00000000] [3.00000000] [4.00000000] [5.00000000]
 ! 2 fixed=[X   ] [Y   ]
 !==================================================================================================================================
-! DOES NOT WORK AT THE MOMENT!call get_args_fixed_size('flen',flen)   ! fixed length array
