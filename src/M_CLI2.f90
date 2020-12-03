@@ -355,6 +355,7 @@ subroutine default_help()
 character(len=:),allocatable :: cmd_name
 integer :: ilength
    call get_command_argument(number=0,length=ilength)
+   if(allocated(cmd_name))deallocate(cmd_name)
    allocate(character(len=ilength) :: cmd_name)
    call get_command_argument(number=0,value=cmd_name)
    G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
@@ -1872,10 +1873,12 @@ integer                      :: iichar                     ! point to first char
    else
       call journal('sc','*get_anyarray_l* unknown keyword '//keyword)
       call mystop(8 ,'*get_anyarray_l* unknown keyword '//keyword)
+      if(allocated(larray))deallocate(larray)
       allocate(larray(0))
       return
    endif
    if(size(carray).gt.0)then                                  ! if not a null string
+      if(allocated(larray))deallocate(larray)
       allocate(larray(size(carray)))                          ! allocate output array
       do i=1,size(carray)
          larray(i)=.false.                                    ! initialize return value to .false.
@@ -1892,6 +1895,7 @@ integer                      :: iichar                     ! point to first char
          end select
       enddo
    else                                                       ! for a blank string return one T
+      if(allocated(larray))deallocate(larray)
       allocate(larray(1))                                     ! allocate output array
       larray(1)=.true.
    endif
@@ -1920,9 +1924,11 @@ character(len=:),allocatable          :: val
    else
       call journal('sc','*get_anyarray_d* unknown keyword '//keyword)
       call mystop(9 ,'*get_anyarray_d* unknown keyword '//keyword)
+      if(allocated(darray))deallocate(darray)
       allocate(darray(0))
       return
    endif
+   if(allocated(darray))deallocate(darray)
    allocate(darray(size(carray)))                     ! create the output array
    do i=1,size(carray)
       call a2d(carray(i), darray(i),ierr) ! convert the string to a numeric value
@@ -1962,11 +1968,13 @@ integer                              :: half,sz,i
    if(sz.ne.half+half)then
       call journal('sc','*get_anyarray_x* uneven number of values defining complex value '//keyword)
       call mystop(11,'*get_anyarray_x* uneven number of values defining complex value '//keyword)
+      if(allocated(xarray))deallocate(xarray)
       allocate(xarray(0))
    endif
 
    !*!================================================================================================
    !!IFORT,GFORTRAN OK, NVIDIA RETURNS NULL ARRAY: xarray=cmplx(real(darray(1::2)),real(darray(2::2)))
+   if(allocated(xarray))deallocate(xarray)
    allocate(xarray(half))
    do i=1,sz,2
       xarray((i+1)/2)=cmplx( darray(i),darray(i+1) )
@@ -1992,6 +2000,7 @@ character(len=:),allocatable         :: val
    else
       call journal('sc','*get_anyarray_c* unknown keyword '//keyword)
       call mystop(12,'*get_anyarray_c* unknown keyword '//keyword)
+      if(allocated(strings))deallocate(strings)
       allocate(character(len=0)::strings(0))
    endif
 end subroutine get_anyarray_c
@@ -2924,6 +2933,7 @@ integer                       :: imax                   ! length of longest toke
    case default
       ireturn=icount
    end select
+   if(allocated(array))deallocate(array)
    allocate(character(len=imax) :: array(ireturn))                ! allocate the array to return
    !allocate(array(ireturn))                                       ! allocate the array to turn
 !-----------------------------------------------------------------------------------------------------------------------------------
@@ -3418,6 +3428,7 @@ logical                              :: inside
    endif
 !-----------------------------------------------------------------------------------------------------------------------------------
    inlen=len(quoted_str)                          ! find length of input string
+   if(allocated(unquoted_str))deallocate(unquoted_str)
    allocate(character(len=inlen) :: unquoted_str) ! initially make output string length of input string
 !-----------------------------------------------------------------------------------------------------------------------------------
    if(inlen.ge.1)then                             ! double_quote is the default quote unless the first character is single_quote
@@ -4948,6 +4959,7 @@ function lgs(n); logical,allocatable          :: lgs(:); character(len=*),intent
 function ig()
 integer,allocatable :: ig(:)
 integer             :: i, ierr
+   if(allocated(ig))deallocate(ig)
    allocate(ig(size(unnamed)))
    do i=1,size(ig)
       call a2i(unnamed(i),ig(i),ierr)
@@ -4963,6 +4975,7 @@ function dg()
 real(kind=dp),allocatable :: dg(:)
 integer                   :: i
 integer                   :: ierr
+   if(allocated(dg))deallocate(dg)
    allocate(dg(size(unnamed)))
    do i=1,size(dg)
       call a2d(unnamed(i),dg(i),ierr)
@@ -4974,6 +4987,7 @@ logical,allocatable   :: lg(:)
 integer               :: i
 integer               :: iichar
 character,allocatable :: hold
+   if(allocated(lg))deallocate(lg)
    allocate(lg(size(unnamed)))
    do i=1,size(lg)
       hold=trim(upper(adjustl(unnamed(i))))
@@ -4995,6 +5009,7 @@ function cg()
 complex,allocatable :: cg(:)
 integer             :: i, ierr
 real(kind=dp)       :: rc, ic
+   if(allocated(cg))deallocate(cg)
    allocate(cg(size(unnamed)))
    do i=1,size(cg),2
       call a2d(unnamed(i),rc,ierr)

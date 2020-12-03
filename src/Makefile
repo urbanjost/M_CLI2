@@ -21,13 +21,13 @@ OBJS =  M_CLI2.o
 # platform-specific values you will probably change
 #
 #
-gfortran: F90=gfortran 
 # This is a compiler bug. It is well-known, but not fixed in GCC yet. You
 # can see the report at https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91442
 # 
 # You can either ignore it, or disable the "may be used uninitialized"
 # warnings with -Wno-maybe-uninitialized or compile with optimizations
 # (-O1 and more).
+gfortran: F90=gfortran
 gfortran: F90FLAGS := -g -O -Wall -std=f2018 -Wextra -Wno-maybe-uninitialized -Wno-uninitialized
 gfortran: all
 	@echo built with $(F90)
