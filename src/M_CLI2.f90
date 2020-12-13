@@ -1315,10 +1315,12 @@ integer                      :: ios
 end subroutine find_and_read_response_file
 !===================================================================================================================================
 subroutine position_response()
+integer :: ios
    line=''
    INFINITE: do
       read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
       if(is_iostat_end(ios))then
+         backspace(lun,iostat=ios)
          exit INFINITE
       elseif(ios.ne.0)then
          write(*,gen)'<ERROR>*position_response*:'//trim(message)
@@ -1335,6 +1337,7 @@ subroutine process_response()
       INFINITE: do
       read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
       if(is_iostat_end(ios))then
+         backspace(lun,iostat=ios)
          exit INFINITE
       elseif(ios.ne.0)then
          write(*,gen)'<ERROR>*process_response*:'//trim(message)
