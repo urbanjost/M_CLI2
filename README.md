@@ -62,6 +62,11 @@
 * you read the results with the get_args(3f) procedure or one of its variants (if you want to use fixed length.
   CHARACTER variables or fixed-size arrays).
 
+## RESPONSE FILES
+[Response files](response.md) are supported if the SET_ARGS(3f) routine
+is called with the argument "response=.true".  They are a system-independent way to create
+short aliases for long complex commands. This option is generally not needed by programs with just a few options,
+but can be particularly useful for programs with dozens of options where various values are frequently reused.
 
 ## DOCUMENTATION
 These demo programs provide templates for the most common usage:

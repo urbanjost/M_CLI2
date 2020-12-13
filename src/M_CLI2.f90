@@ -120,6 +120,7 @@ integer,parameter,private :: dp=kind(0.0d0)
 integer,parameter,private :: sp=kind(0.0)
 private
 !===================================================================================================================================
+character(len=*),parameter          :: gen='(*(g0))'
 character(len=:),allocatable,public :: unnamed(:)
 character(len=:),allocatable,public :: args(:)
 character(len=:),allocatable,public :: remaining
@@ -163,7 +164,9 @@ character(len=:),allocatable   :: G_remaining
 character(len=:),allocatable   :: G_STOP_MESSAGE
 integer                        :: G_STOP
 logical                        :: G_STOPON
-logical                        :: G_STRICT  ! strict short and long rules or allow -longname and --shortname
+logical                        :: G_STRICT    ! strict short and long rules or allow -longname and --shortname
+logical                        :: G_RESPONSE  ! allow @name abbreviations
+logical                        :: G_APPEND    ! whether to append or replace when duplicate keywords found
 !===================================================================================================================================
 ! return allocatable arrays
 interface  get_args;  module  procedure  get_anyarray_d;  end interface  ! any size array
@@ -381,6 +384,7 @@ end subroutine check_commandline
 !!      character(len=:),intent(in),allocatable,optional  :: version_text
 !!      integer,intent(out),optional                      :: ierr
 !!      character(len=:),intent(out),allocatable,optional :: errmsg
+!!      logical,intent(in),optional                       :: response
 !!##DESCRIPTION
 !!
 !!     SET_ARGS(3f) requires a unix-like command prototype for defining
@@ -571,7 +575,7 @@ end subroutine check_commandline
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine set_args(prototype,help_text,version_text,string,ierr,errmsg)
+subroutine set_args(prototype,help_text,version_text,string,ierr,errmsg,response)
 
 ! ident_2="@(#)M_CLI2::set_args(3f): parse prototype string"
 
@@ -581,8 +585,15 @@ character(len=:),intent(in),allocatable,optional  :: version_text(:)
 character(len=*),intent(in),optional              :: string
 integer,intent(out),optional                      :: ierr
 character(len=:),intent(out),allocatable,optional :: errmsg
+logical,intent(in),optional                       :: response
 character(len=:),allocatable                      :: hold               ! stores command line argument
 integer                                           :: ibig
+   if(present(response))then
+      G_response=response
+   else
+      G_response=.false.
+   endif
+   G_append=.false.
    G_passed_in=''
    G_STOP=0
    G_STOP_MESSAGE=''
@@ -591,14 +602,10 @@ integer                                           :: ibig
    else
       G_STOPON=.true.
    endif
-   if(allocated(unnamed))then
-       deallocate(unnamed)
-   endif
-   if(allocated(args))then
-       deallocate(args)
-   endif
    ibig=longest_command_argument() ! bug in gfortran. len=0 should be fine
+   if(allocated(unnamed)) deallocate(unnamed)
    allocate(character(len=ibig) :: unnamed(0))
+   if(allocated(args)) deallocate(args)
    allocate(character(len=ibig) :: args(0))
 
    call wipe_dictionary()
@@ -630,7 +637,7 @@ end subroutine set_args
 !!##SYNOPSIS
 !!
 !!
-!!     subroutine prototype_to_dictionary(string)
+!!     recursive subroutine prototype_to_dictionary(string)
 !!
 !!      character(len=*),intent(in)     ::  string
 !!
@@ -672,7 +679,7 @@ end subroutine set_args
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
-subroutine prototype_to_dictionary(string)
+recursive subroutine prototype_to_dictionary(string)
 implicit none
 
 ! ident_3="@(#)M_CLI2::prototype_to_dictionary(3f): parse user command and store tokens into dictionary"
@@ -700,7 +707,7 @@ integer                           :: place
    if(islen  ==  0)then                                 ! if input string is blank, even default variable will not be changed
       return
    endif
-   dummy=string//'  '
+   dummy=adjustl(string)//'  '
 
    keyword=""          ! initial variable name
    value=""            ! initial value of a string
@@ -746,7 +753,7 @@ integer                           :: place
             elseif( G_remaining_option_allowed)then  ! meaning "--" has been encountered
                call update('_args_',trim(value))
             else
-               write(warn,*)'*prototype_to_dictionary* warning: ignoring string ',trim(value)
+               write(warn,'(*(g0))')'*prototype_to_dictionary* warning: ignoring string [',trim(value),'] for ',trim(keyword)
             endif
          else
             call locate_key(keyword,place)
@@ -993,11 +1000,13 @@ logical                               :: set_mandatory
          call insert(mandatory,set_mandatory,iabs(place))
       else
          if(present_in(place))then                      ! if multiple keywords append values with space between them
-            if(values(place)(1:1).eq.'"')then
-            ! UNDESIRABLE: will ignore previous blank entries
-               val_local='"'//trim(unquote(values(place)))//' '//trim(unquote(val_local))//'"'
-            else
-               val_local=values(place)//' '//val_local
+            if(G_append)then
+               if(values(place)(1:1).eq.'"')then
+               ! UNDESIRABLE: will ignore previous blank entries
+                  val_local='"'//trim(unquote(values(place)))//' '//trim(unquote(val_local))//'"'
+               else
+                  val_local=values(place)//' '//val_local
+               endif
             endif
             iilen=len_trim(val_local)
          endif
@@ -1217,6 +1226,345 @@ end subroutine prototype_and_cmd_args_to_nlist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+subroutine expand_response(name)
+character(len=*),intent(in) :: name
+character(len=:),allocatable :: prototype
+   call get_prototype(name,prototype)
+   if(prototype.ne.'')then
+      G_append=.false.
+      call prototype_to_dictionary(prototype)       ! build dictionary from prototype
+      G_append=.true.
+   endif
+end subroutine expand_response
+!===================================================================================================================================
+subroutine get_prototype(name,prototype) ! process @name aliases
+character(len=*),intent(in) :: name
+character(len=:),allocatable,intent(out) :: prototype
+character(len=:),allocatable             :: filename
+character(len=:),allocatable             :: os
+character(len=:),allocatable             :: plain_name
+character(len=:),allocatable             :: search_for
+integer                                  :: lun
+integer                                  :: ios
+integer                                  :: itrim
+character(len=4096)                      :: line !! assuming input never this long
+character(len=256)                       :: message
+character(len=:),allocatable             :: array(:) ! output array of tokens
+integer                                  :: lines_processed
+   lines_processed=0
+   plain_name=name//'  '
+   plain_name=trim(name(2:))
+   os= '@' // get_env('OSTYPE',get_env('OS'))
+
+   search_for=''
+   ! look for NAME.rsp and see if there is an @OS  section in it and position to it and read
+   if(os.ne.'@')then
+      search_for=os
+      call find_and_read_response_file(plain_name)
+      if(lines_processed.ne.0)return
+   endif
+
+   ! look for NAME.rsp and see if there is anything before an OS-specific section
+   search_for=''
+   call find_and_read_response_file(plain_name)
+   if(lines_processed.ne.0)return
+
+   ! look for ARG0.rsp  with @OS@NAME  section in it and position to it
+   if(os.ne.'@')then
+      search_for=os//name
+      call find_and_read_response_file(basename(get_name(),suffix=.true.))
+      if(lines_processed.ne.0)return
+   endif
+
+   ! look for ARG0.rsp  with a section called @NAME in it and position to it
+   search_for=name
+   call find_and_read_response_file(basename(get_name(),suffix=.true.))
+   if(lines_processed.ne.0)return
+
+   write(*,gen)'<ERROR> response name ['//name//'] not found'
+   stop 1
+contains
+!===================================================================================================================================
+subroutine find_and_read_response_file(rname)
+! seach for a simple file named the same as the @NAME field with one entry assumed in it
+character(len=*),intent(in)  :: rname
+character(len=:),allocatable :: paths(:)
+character(len=:),allocatable :: testpath
+character(len=256)           :: message
+integer                      :: i
+integer                      :: ios
+   prototype=''
+   ! look for NAME.rsp
+   filename=rname//'.rsp'
+
+   ! look for name.rsp in directories from environment variable assumed to be a colon-separated list of directories
+   call split(get_env('CLI_RESPONSE_PATH'),paths)
+   paths=[character(len=len(paths)) :: ' ',paths]
+
+   do i=1,size(paths)
+      testpath=join_path(paths(i),filename)
+      lun=fileopen(testpath,message)
+      if(lun.ne.-1)then
+         if(search_for.ne.'') call position_response()
+         call process_response()
+         if(lines_processed.ne.0)exit
+         close(unit=lun,iostat=ios)
+      endif
+   enddo
+
+end subroutine find_and_read_response_file
+!===================================================================================================================================
+subroutine position_response()
+   line=''
+   INFINITE: do
+      read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
+      if(is_iostat_end(ios))then
+         exit INFINITE
+      elseif(ios.ne.0)then
+         write(*,gen)'<ERROR>*position_response*:'//trim(message)
+         exit INFINITE
+      endif
+      line=adjustl(line)
+      if(line.eq.search_for)return
+   enddo INFINITE
+end subroutine position_response
+!===================================================================================================================================
+subroutine process_response()
+   line=''
+   lines_processed=0
+      INFINITE: do
+      read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
+      if(is_iostat_end(ios))then
+         exit INFINITE
+      elseif(ios.ne.0)then
+         write(*,gen)'<ERROR>*process_response*:'//trim(message)
+         exit INFINITE
+      endif
+      line=adjustl(line)
+      if(index(line//' ','#').eq.1)cycle
+      if(line.ne.'')then
+
+         if(index(line,'@').eq.1.and.lines_processed.ne.0)exit INFINITE
+
+         call split(line,array) ! get first word
+         itrim=len_trim(array(1))+2
+         line=line(itrim:)
+
+         select case(lower(array(1)))
+         case('comment','#','')
+         case('system','!','$')
+            lines_processed= lines_processed+1
+            call execute_command_line(line)
+         case('options','option','-')
+            lines_processed= lines_processed+1
+            prototype=prototype//' '//trim(line)
+         case('print','>','echo')
+            lines_processed= lines_processed+1
+            write(*,'(a)')trim(line)
+         case('stop')
+            write(*,'(a)')trim(line)
+            stop
+         case default
+            if(array(1)(1:1).eq.'@')cycle INFINITE !skip adjacent @ lines from first
+            lines_processed= lines_processed+1
+            write(*,'(*(g0))')'unknown response keyword [',array(1),'] with options of [',trim(line),']'
+         end select
+
+      endif
+      enddo INFINITE
+end subroutine process_response
+
+end subroutine get_prototype
+!===================================================================================================================================
+function fileopen(filename,message) result(lun)
+character(len=*),intent(in)              :: filename
+character(len=*),intent(out),optional    :: message
+integer                                  :: lun
+integer                                  :: ios
+character(len=256)                       :: message_local
+
+   ios=0
+   message_local=''
+   open(file=filename,newunit=lun,&
+    & form='formatted',access='sequential',action='read',&
+    & position='rewind',status='old',iostat=ios,iomsg=message_local)
+
+   if(ios.ne.0)then
+      lun=-1
+      if(present(message))then
+         message=trim(message_local)
+      else
+         write(*,gen)trim(message_local)
+      endif
+   endif
+
+end function fileopen
+!===================================================================================================================================
+function get_env(NAME,DEFAULT) result(VALUE)
+implicit none
+character(len=*),intent(in)          :: NAME
+character(len=*),intent(in),optional :: DEFAULT
+character(len=:),allocatable         :: VALUE
+integer                              :: howbig
+integer                              :: stat
+integer                              :: length
+   ! get length required to hold value
+   length=0
+   if(NAME.ne.'')then
+      call get_environment_variable(NAME, length=howbig,status=stat,trim_name=.true.)
+      select case (stat)
+      case (1)
+          !*!print *, NAME, " is not defined in the environment. Strange..."
+          VALUE=''
+      case (2)
+          !*!print *, "This processor doesn't support environment variables. Boooh!"
+          VALUE=''
+      case default
+          ! make string to hold value of sufficient size
+          if(allocated(value))deallocate(value)
+          allocate(character(len=max(howbig,1)) :: VALUE)
+          ! get value
+         call get_environment_variable(NAME,VALUE,status=stat,trim_name=.true.)
+          if(stat.ne.0)VALUE=''
+      end select
+   else
+      VALUE=''
+   endif
+   if(VALUE.eq.''.and.present(DEFAULT))VALUE=DEFAULT
+end function get_env
+!===================================================================================================================================
+function join_path(a1,a2,a3,a4,a5) result(path)
+   ! Construct path by joining strings with os file separator
+   !
+   character(len=*), intent(in)           :: a1, a2
+   character(len=*), intent(in), optional :: a3, a4, a5
+   character(len=:), allocatable          :: path
+   character(len=1)                       :: filesep
+
+   filesep = separator()
+   if(a1.ne.'')then
+      path = trim(a1) // filesep // trim(a2)
+   else
+      path = trim(a2)
+   endif
+   if (present(a3)) path = path // filesep // trim(a3)
+   if (present(a4)) path = path // filesep // trim(a4)
+   if (present(a5)) path = path // filesep // trim(a5)
+   path=adjustl(path//'  ')
+   call substitute(path,filesep//filesep,'',start=2) ! some systems allow names starting with '//' or '\\'
+   path=trim(path)
+end function join_path
+!===================================================================================================================================
+function get_name() result(name)
+! get the pathname of arg0
+implicit none
+character(len=:),allocatable :: arg0
+integer                      :: arg0_length
+integer                      :: istat
+character(len=4096)          :: long_name
+character(len=:),allocatable :: name
+   arg0_length=0
+   name=''
+   long_name=''
+   call get_command_argument(0,length=arg0_length,status=istat)
+   if(istat.eq.0)then
+      if(allocated(arg0))deallocate(arg0)
+      allocate(character(len=arg0_length) :: arg0)
+      call get_command_argument(0,arg0,status=istat)
+      if(istat.eq.0)then
+         inquire(file=arg0,iostat=istat,name=long_name)
+         name=trim(long_name)
+      else
+         name=arg0
+      endif
+   endif
+end function get_name
+!===================================================================================================================================
+function basename(path,suffix) result (base)
+    ! Extract filename from path with/without suffix
+    !
+character(*), intent(In) :: path
+logical, intent(in), optional :: suffix
+character(:), allocatable :: base
+
+character(:), allocatable :: file_parts(:)
+logical :: with_suffix
+
+   if (.not.present(suffix)) then
+      with_suffix = .true.
+   else
+      with_suffix = suffix
+   endif
+
+   if (with_suffix) then
+      call split(path,file_parts,delimiters='\/')
+      if(size(file_parts).gt.0)then
+         base = trim(file_parts(size(file_parts)))
+      else
+         base = ''
+      endif
+   else
+      call split(path,file_parts,delimiters='\/.')
+      if(size(file_parts).ge.2)then
+         base = trim(file_parts(size(file_parts)-1))
+      else
+         base = ''
+      endif
+   endif
+end function basename
+!===================================================================================================================================
+function separator() result(sep)
+! use the pathname returned as arg0 to determine pathname separator
+implicit none
+character(len=:),allocatable :: arg0
+integer                      :: arg0_length
+integer                      :: istat
+logical                      :: existing
+character(len=1)             :: sep
+character(len=4096)          :: name
+character(len=:),allocatable :: fname
+   arg0_length=0
+   name=' '
+   call get_command_argument(0,length=arg0_length,status=istat)
+   if(allocated(arg0))deallocate(arg0)
+   allocate(character(len=arg0_length) :: arg0)
+   call get_command_argument(0,arg0,status=istat)
+   ! check argument name
+   if(index(arg0,'\').ne.0)then
+      sep='\'
+   elseif(index(arg0,'/').ne.0)then
+      sep='/'
+   else
+      ! try name returned by INQUIRE(3f)
+      existing=.false.
+      name=' '
+      inquire(file=arg0,iostat=istat,exist=existing,name=name)
+      if(index(name,'\').ne.0)then
+         sep='\'
+      elseif(index(name,'/').ne.0)then
+         sep='/'
+      else
+         ! well, try some common syntax and assume in current directory
+         fname='.\'//arg0
+         inquire(file=fname,iostat=istat,exist=existing)
+         if(existing)then
+            sep='/'
+         else
+            fname='./'//arg0
+            inquire(file=fname,iostat=istat,exist=existing)
+            if(existing)then
+               sep='/'
+            else
+               !*!write(*,gen)'<WARNING>unknown system directory path separator'
+               sep='/'
+            endif
+         endif
+      endif
+   endif
+end function separator
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 subroutine cmd_args_to_dictionary(check)
 ! convert command line arguments to dictionary entries
 logical,intent(in),optional  :: check
@@ -1323,7 +1671,11 @@ logical                      :: next_mandatory
             args=[character(len=imax) :: args,current_argument]
          else
             imax=max(len(unnamed),len(current_argument))
-            unnamed=[character(len=imax) :: unnamed,current_argument]
+            if(index(current_argument//' ','@').eq.1.and.G_response)then
+               call expand_response(current_argument)
+            else
+               unnamed=[character(len=imax) :: unnamed,current_argument]
+            endif
          endif
       else
          oldvalue=get(keywords(pointer))//' '
@@ -1344,7 +1696,11 @@ logical                      :: next_mandatory
                   args=[character(len=imax) :: args,current_argument]
                else
                   imax=max(len(unnamed),len(current_argument))
-                  unnamed=[character(len=imax) :: unnamed,current_argument]
+                  if(index(current_argument//' ','@').eq.1.and.G_response)then
+                     call expand_response(current_argument)
+                  else
+                     unnamed=[character(len=imax) :: unnamed,current_argument]
+                  endif
                endif
             endif
             current_argument='T'
@@ -1385,8 +1741,8 @@ logical :: get_next_argument
          &'length=',ilength
       get_next_argument=.false.
    else
-      if(allocated(current_argument))deallocate(current_argument)
       ilength=max(ilength,1)
+      if(allocated(current_argument))deallocate(current_argument)
       allocate(character(len=ilength) :: current_argument)
       call get_command_argument(number=i,value=current_argument,length=ilength,status=istatus)    ! get next argument
       if(istatus /= 0) then                                                                       ! on error
@@ -2891,8 +3247,8 @@ integer                       :: imax                   ! length of longest toke
 !-----------------------------------------------------------------------------------------------------------------------------------
    n=len(input_line)+1                        ! max number of strings INPUT_LINE could split into if all delimiter
    if(allocated(ibegin))deallocate(ibegin)    !*! intel compiler says allocated already ???
-   if(allocated(iterm))deallocate(iterm)      !*! intel compiler says allocated already ???
    allocate(ibegin(n))                        ! allocate enough space to hold starting location of tokens if string all tokens
+   if(allocated(iterm))deallocate(iterm)      !*! intel compiler says allocated already ???
    allocate(iterm(n))                         ! allocate enough space to hold ending location of tokens if string all tokens
    ibegin(:)=1
    iterm(:)=1
