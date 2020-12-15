@@ -28,7 +28,7 @@ logical            :: l, l_
 contains
    subroutine parse()
    !! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
-   use M_CLI2,  only : set_args, get_args, unnamed
+   use M_CLI2,  only : set_args, get_args
    use M_CLI2,  only : get_args_fixed_size,get_args_fixed_length
    character(len=:),allocatable  :: help_text(:), version_text(:)
 

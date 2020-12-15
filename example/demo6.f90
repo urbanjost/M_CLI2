@@ -31,10 +31,12 @@ contains
 
 subroutine parse(name)
 !! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
-use M_CLI2, only : set_args, get_args, get_args_fixed_length, unnamed
+use M_CLI2, only : set_args, get_args, get_args_fixed_length
+use M_CLI2, only : get_subcommand
+use M_CLI2, only : CLI_RESPONSE_FILE
 character(len=*)              :: name    ! the subcommand name
 character(len=:),allocatable  :: help_text(:), version_text(:)
-integer                       :: i
+   CLI_RESPONSE_FILE=.true.
 
 ! define version text
    version_text=[character(len=80) :: &
@@ -54,11 +56,7 @@ integer                       :: i
 
    ! find the subcommand name by looking for first word on command
    ! not starting with dash
-   name = ''
-   do i = 1, command_argument_count()
-      call get_command_argument(i, name)
-      if(adjustl(name(1:1)) .ne. '-')exit
-   enddo
+   name = get_subcommand()
 
    select case(name)
 
@@ -75,7 +73,7 @@ integer                       :: i
     call get_args_fixed_length('title',title)
     call get_args('l',l)
     call get_args('L',l_)
-   
+
    case('test')
     help_text=[character(len=80) :: &
      '                                  ', &
@@ -87,7 +85,7 @@ integer                       :: i
     call get_args('l',l)
     call get_args('L',l_)
     call get_args_fixed_length('testname',testname)
-   
+
    case default
       call set_args(' ',help_text,version_text) ! process help and version
 
@@ -98,9 +96,9 @@ integer                       :: i
      '   * test -l -L -title            ', &
      '' ]
      stop
-  
+
    end select
- 
+
 end subroutine parse
 
 end program demo6

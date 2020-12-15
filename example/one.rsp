@@ -1,0 +1,3 @@
+options run  -l -L -title "my title from one" -x 20 -y 30 -z 40
+#options test -l -L -title
+

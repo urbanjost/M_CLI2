@@ -65,10 +65,12 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 <A HREF=#4>Defining The Prototype</A><BR>
 <A HREF=#5>Usage</A><BR>
 <A HREF=#6>Example</A><BR>
-<A HREF=#7>Author</A><BR>
-<A HREF=#8>License</A><BR>
+<A HREF=#7>Response Files</A><BR>
+<A HREF=#8>Specification For Response Files</A><BR>
+<A HREF=#9>Author</A><BR>
+<A HREF=#10>License</A><BR>
 </BLOCKQUOTE>
-<A name=9>
+<A name=11>
 
      <H3>SYNOPSIS</H3>
 
@@ -82,7 +84,6 @@ subroutine <B>set_args</B>(definition,help_text,version_text,ierr,errmsg)
      character(len=:),intent(in),allocatable,optional  :: version_text
      integer,intent(out),optional                      :: ierr
      character(len=:),intent(out),allocatable,optional :: errmsg
-     logical,intent(in),optional                       :: response
 </PRE>
 </BLOCKQUOTE>
 <A name=2>
@@ -384,13 +385,320 @@ Sample program:
 </BLOCKQUOTE>
 <A name=7>
 
+     <H3>RESPONSE FILES</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+If you have no interest in using external files as abbreviations
+you can ignore this section. Otherwise, before calling <B>set_args</B>(3f)
+add:
+<P>
+<PRE>
+    use M_CLI2, only : CLI_response_file
+    CLI_response_file=.true.
+<P>
+</PRE>
+M_CLI2 Response files are small files containing CLI (Command Line
+Interface) arguments that are used when command lines are so long that
+they would exceed line length limits or so complex that it is useful to
+have a platform-independent method of creating an abbreviation.
+<P>
+Examples of commands that support similar response files are the Clang
+and Intel compilers, although there is no standard format for the files.
+<P>
+The file names must end with ".rsp".
+<P>
+Shell aliases and scripts are often used for similar purposes (and
+allow for much more complex conditional execution, of course), but
+they generally cannot be used to overcome line length limits and are
+typically platform-specific.
+<P>
+That being said, your program automatically supports response files
+unless "response=.false." is added to your <B>set_args</B>(3f) call. They are
+read if you add options of the syntax "@NAME" as the FIRST parameters
+on your program command line calls.
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; LOCATING RESPONSE FILES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+The first resource file found that results in lines being processed
+will be used and processing stops after that first match is found. If
+no match is found an error occurs and the program is stopped.
+<P>
+A search for the response file always starts with the current directory.
+The search then proceeds to look in any additional directories specified
+with the colon-delimited environment variable CLI_RESPONSE_PATH.
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; RESPONSE FILE SECTIONS</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+A simple response file just has options for calling the program in it.
+But they can also contain section headers to denote sections that are
+only executed when a specific OS is being used. In addition a special
+response file named PROGRAM.rsp can contain multiple abbreviations.
+<P>
+<PRE>
+  SEARCH FOR @OSTYPE IN REGULAR FILES (NAME.rsp)
+<P>
+</PRE>
+Assuming the name @NAME was specified on the command line a file named
+NAME.rsp will be searched for in all those search locations for a string
+that starts with the string @OSTYPE if the environment variables $OS and
+$OSTYPE are not blank.
+<P>
+If $OSTYPE is unset, the value of the variable OS will be used.
+<P>
+<PRE>
+  SEARCH FOR UNLABELED DIRECTIVES IN REGULAR FILES (NAME.rsp)
+<P>
+</PRE>
+Then, the same files will be searched for lines before any line
+starting with "@". That is, if there is no special section for the current
+OS it just looks at the top of the file for unlabeled options.
+<P>
+<PRE>
+  SEARCH FOR @OSTYPE@NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
+<P>
+</PRE>
+Then, if nothing was found a file name EXECUTABLE.rsp will be searched
+for in the same locations where EXECUTABLE is the basename of the program
+being executed. This file is always a "complex" response file that uses
+the format described below to allow for multiple entries.
+<P>
+Any complex EXECUTABLE.rsp file found in the current or searched directories
+will be searched for the string @OSTYPE@NAME first.
+<P>
+<PRE>
+  SEARCH FOR @NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
+<P>
+</PRE>
+The last search is to search all the EXCUTABLE.rsp files for the string
+@NAME.
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; THE SEARCH IS OVER</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+Sounds complicated but actually works quite intuitively. Make a file in
+the current directory and put options in it and it will be used. If that
+file ends up needing different cases for different platforms add a line
+like "@Linux" to the file and some more lines and that will only be
+executed if the environment variable OSTYPE or OS is "Linux". If no match
+is found for named sections the lines at the top before any "@" lines
+will be used as a default if not match is found.
+<P>
+If you end up using a lot of files like this you can combine them all
+together and put them info a file called "program_name.rsp" and just
+put lines like @NAME or @OSTYPE@NAME at that top of each section.
+<P>
+Note that more than one response name may appear on a command line.
+<P>
+They are case-sensitive names.
+<P>
+As mentioned, they must be the first options on the command line.
+</BLOCKQUOTE>
+<P>
+<P>
+<A name=8>
+
+     <H3>SPECIFICATION FOR RESPONSE FILES</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; SIMPLE RESPONSE FILES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+The first word of a line is special and has the following meanings:
+<P>
+<PRE>
+   options|-  Command options following the rules of the SET_ARGS(3f) prototype.
+              So
+              o It is preferred to specify a value for all options.
+              o double-quote strings.
+              o give a blank string value as " ".
+              o use F|T for lists of logicals,
+              o lists of numbers should be comma-delimited.
+   comment|#  Line is a comment line
+   system|!   System command.
+              System commands are executed as a simple call to
+              system (so a cd(1) or setting a shell variable
+              would not effect subsequent lines, for example)
+   print|&gt;    Message to screen
+   stop       display message and stop program.
+<P>
+</PRE>
+So if a program that echoed its parameters has a call of the form
+<P>
+<PRE>
+    set_args(&#146;-x 10.0 -y 20.0 --title "my title",response=.true.)
+<P>
+</PRE>
+And a file in the current directory called "a.rsp" contained
+<P>
+<PRE>
+    # defaults for project A
+    options -x 1000 -y 9999
+    options --title "my new default title"
+<P>
+</PRE>
+The program could be called with
+<P>
+<PRE>
+   # normal
+   $myprog
+    X=10.0 Y=20.0 TITLE="my title"
+<P>
+   # change defaults as specified in "a.rsp"
+   $myprog @a
+    X=1000.0 Y=9999.0 TITLE="my new default title"
+<P>
+   # change defaults but use any option as normal to override defaults
+   $myprog @a -y 1234
+    X=1000.0 Y=1234.0 TITLE="my new default title"
+<P>
+</PRE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; COMPOUND RESPONSE FILES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+A compound response file has the same basename as the executable with a
+".rsp" suffix added. So if your program is named "myprg" the filename
+must be "myprg.rsp".
+<P>
+<PRE>
+   Note that here &#145;basename&#145; means the basename of the
+   name of the program as returned by the Fortran intrinsic
+   GET_COMMAND_ARGUMENT(0,&#46;&#46;&#46;) trimmed of anything after a period ("."),
+   so it is a good idea not to use hidden files.
+<P>
+</PRE>
+Unlike simple response files compound response files can contain multiple
+setting names.
+<P>
+If the environment variable $OSTYPE (first) or $OS is set the search
+will first be for a line of the form (no leading spaces should be used):
+<P>
+<PRE>
+   @OSTYPE@alias_name
+<P>
+</PRE>
+If no match or if the environment variables $OSTYPE and $OS were not
+set or a match is not found then a line of the form
+<P>
+<PRE>
+   @alias_name
+<P>
+</PRE>
+is searched for. Subsequent lines will be ignored that start with "@"
+<TABLE cellpadding=3><!-- tsb: is searched for. Subsequent lines will be ignored that start with "@"
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>until a line not starting with @ is encountered.</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Lines will then be
+processed until another line starting with "@" is found or end-of-file
+is encountered.
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; COMPOUND RESPONSE FILE EXAMPLE</H4>
+</A>
+<BLOCKQUOTE>
+An example compound file
+<P>
+<PRE>
+   #################
+   @if
+   &gt; RUNNING TESTS USING RELEASE VERSION AND ifort
+   - test --release --compiler ifort
+   #################
+   @gf
+   &gt; RUNNING TESTS USING RELEASE VERSION AND gfortran
+   - test --release --compiler gfortran
+   #################
+   @nv
+   &gt; RUNNING TESTS USING RELEASE VERSION AND nvfortran
+   - test --release --compiler nvfortran
+   #################
+   @nag
+   &gt; RUNNING TESTS USING RELEASE VERSION AND nagfor
+   - test --release --compiler nagfor
+   #
+   #################
+   # OS-specific example:
+   @Linux@install
+   #
+   # install executables in directory (assuming install(1) exists)
+   #
+   !mkdir -p ~/.local/bin
+   - run --release T --compiler gfortran --runner "install -vbp -m 0711 -t ~/.local/bin"
+   @install
+   @STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
+   #
+   #################
+   @fpm@testall
+   #
+   !fpm test --compiler nvfortran
+   !fpm test --compiler ifort
+   !fpm test --compiler gfortran
+   !fpm test --compiler nagfor
+   STOP tests complete. Any additional parameters were ignored
+   #################
+<P>
+</PRE>
+Would be used like
+<P>
+<PRE>
+   fpm @install
+   fpm @nag --
+   fpm @testall
+<P>
+</PRE>
+</BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; NOTES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+The intel Fortran compiler now calls the response files "indirect
+files" and does not add the implied suffix ".rsp" to the files
+anymore. It also allows the &#145;@NAME&#145; syntax anywhere on the command
+<TABLE cellpadding=3><!-- tsb: The intel Fortran compiler now calls the response files "indirect
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>line, not just at the beginning. --</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+20201212
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=9>
+
      <H3>AUTHOR</H3>
 
 </A>
 <BLOCKQUOTE>
 John S. Urban, 2019
 </BLOCKQUOTE>
-<A name=8>
+<A name=10>
 
      <H3>LICENSE</H3>
 
@@ -399,7 +707,7 @@ John S. Urban, 2019
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>December 13, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 7d286e65-333d-4f4f-bfd5-5b68261b2eed using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>December 15, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from bfd7c027-727b-4fbb-bcd9-c1e57eb356fb using man macros.</FONT>
 <br><br><center><img src="images/set_args.gif"></center>
 </div>
 </div>

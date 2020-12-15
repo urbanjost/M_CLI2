@@ -3,16 +3,16 @@
 NULL=
 #$(NULL)
 PROGFILES = \
- ../demos/demo1.f90 \
- ../demos/demo2.f90 \
- ../demos/demo3.f90 \
- ../demos/demo4.f90 \
- ../demos/demo5.f90 \
- ../demos/demo6.f90 \
- ../demos/demo7.f90 \
- ../demos/demo8.f90 \
- ../demos/demo9.f90 \
- ../demos/demo10.f90 \
+ ../example/demo1.f90 \
+ ../example/demo2.f90 \
+ ../example/demo3.f90 \
+ ../example/demo4.f90 \
+ ../example/demo5.f90 \
+ ../example/demo6.f90 \
+ ../example/demo7.f90 \
+ ../example/demo8.f90 \
+ ../example/demo9.f90 \
+ ../example/demo10.f90 \
  ../test/main.f90 \
 $(NULL)
 PROG = ${PROGFILES:.f90=}

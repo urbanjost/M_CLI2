@@ -12,21 +12,21 @@ test = [ { name="runTests", source-dir="test", main="main.f90" } ]
 
 # demo programs
 executable = [
-   { name="demo1", source-dir="demos", main="demo1.f90" },
-   { name="demo2", source-dir="demos", main="demo2.f90" },
-   { name="demo3", source-dir="demos", main="demo3.f90" },
-   { name="demo4", source-dir="demos", main="demo4.f90" },
-   { name="demo5", source-dir="demos", main="demo5.f90" },
-   { name="demo6", source-dir="demos", main="demo6.f90" },
-   { name="demo7", source-dir="demos", main="demo7.f90" },
-   { name="demo8", source-dir="demos", main="demo8.f90" },
-   { name="demo9", source-dir="demos", main="demo9.f90" },
+   { name="demo1", source-dir="example", main="demo1.f90" },
+   { name="demo2", source-dir="example", main="demo2.f90" },
+   { name="demo3", source-dir="example", main="demo3.f90" },
+   { name="demo4", source-dir="example", main="demo4.f90" },
+   { name="demo5", source-dir="example", main="demo5.f90" },
+   { name="demo6", source-dir="example", main="demo6.f90" },
+   { name="demo7", source-dir="example", main="demo7.f90" },
+   { name="demo8", source-dir="example", main="demo8.f90" },
+   { name="demo9", source-dir="example", main="demo9.f90" },
 # sample programs extracted from manpages:
-   { name="get_args_fixed_size",   source-dir="demos/demos", main="get_args_fixed_size.f90" },
-   { name="get_args_fixed_length", source-dir="demos/demos", main="get_args_fixed_length.f90" },
-   { name="get_args",              source-dir="demos/demos", main="get_args.f90" },
-   { name="set_args",              source-dir="demos/demos", main="set_args.f90" },
-   { name="M_CLI2",                source-dir="demos/demos", main="M_CLI2.f90" }
+   { name="get_args_fixed_size",   source-dir="example/demos", main="get_args_fixed_size.f90" },
+   { name="get_args_fixed_length", source-dir="example/demos", main="get_args_fixed_length.f90" },
+   { name="get_args",              source-dir="example/demos", main="get_args.f90" },
+   { name="set_args",              source-dir="example/demos", main="set_args.f90" },
+   { name="M_CLI2",                source-dir="example/demos", main="M_CLI2.f90" }
 ]
 
 [library]

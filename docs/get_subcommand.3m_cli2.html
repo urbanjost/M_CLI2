@@ -1,0 +1,359 @@
+<html> 
+<head> 
+<title> </title>
+<style> 
+px {font-family: "Lucida Console", Monaco }
+p { font-size:100%; line-height:1.1em; }
+body {xfont-style: sans-serif}
+body {
+color:#333; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:1em; line-height:1.3em; }
+a:visited { color:#666; }
+h1,h2,h3,h4,h5,h6 { color:#333; font-family:georgia, verdana, sans-serif; }
+h1 { font-size:150%; page-break-before:auto;background-color: #aaaaff}
+h2 { font-size:143%;color:teal; }
+h3 { font-size:134%;color:blue; }
+h4 { font-size:120%;color:gray; }
+img { max-width: 55em}
+p{ padding: 0;margin:0; }
+p{ padding-right:1.4em; }
+p{ padding-bottom:1em; }
+p{ padding-top:1em; }
+p{ whitespace: pre-wrap; }
+h5,h6 { font-size:100% }
+a.nav,a:link.nav, a:visited.nav { background-color:#FFF; color:#000; }
+XXtable { border:double #000; border-collapse:collapse; }
+XXtable { border-collapse:collapse; }
+XXtd { border:thin solid #888; }
+XXtd { border:none; }
+li { margin-bottom:0.5em; }
+blockquote { display:block; font-size:100%; line-height:1.1em; margin:0 0 1.5em; padding:0 2.5em; }
+pre { background-color:#DDD; font-size:100%; overflow:auto; padding:1em; }
+a,li span { color:#000; }
+a:hover, a.nav:hover, a:hover math { background-color:#000; color:#FFF; }
+#Container { margin:0 10px; text-align:center; background-color: #BBB}
+#Content { border-top:none; margin:auto; padding:0.3em; text-align:left; width:100%; max-width:55em; background:#FFF}
+span.webName { font-size:.5em; }
+textarea#content { font-size: 1em; line-height: 1.125; }
+h1#pageName { line-height:1em; margin:0.2em 0 0.2em 0; padding:0; }
+.property { color:#666; font-size:100%; }
+a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
+.byline { color:#666; font-size:1.0em; font-style:italic; margin-bottom:1em; padding-top:1px; } 
+</style> 
+</head>
+<BODY bgcolor=#F0F0F0 text=#000000 link=#0000ff vlink=#C000C0 alink=#ff0000><A NAME=top></A>
+<h5><a href="https://github.com/urbanjost/M_CLI2">[UP]</a></h5>
+<div id="Container">
+<div id="Content">
+<CENTER>
+<H1><HR><I>Manual Reference Pages &nbsp;-&nbsp;</I><NOBR>get_subcommand (3m_cli2)</NOBR><HR></H1>
+</CENTER>
+<A name=0>
+
+     <H3>NAME</H3>
+
+</A>
+<BLOCKQUOTE>
+<B>get_subcommand</B>(3f) - [ARGUMENTS:M_CLI2] special-case routine for handling subcommands on a command line
+(LICENSE:PD)
+<P>
+</BLOCKQUOTE>
+<A name=contents></A><H3>CONTENTS</H3></A>
+<BLOCKQUOTE>
+<A HREF=#1>Synopsis</A><BR>
+<A HREF=#2>Description</A><BR>
+<A HREF=#3>Returns</A><BR>
+<A HREF=#4>Example</A><BR>
+<A HREF=#5>Author</A><BR>
+<A HREF=#6>License</A><BR>
+</BLOCKQUOTE>
+<A name=7>
+
+     <H3>SYNOPSIS</H3>
+
+</A>
+<BLOCKQUOTE>
+function <B>get_subcommand</B>()
+<P>
+<PRE>
+    character(len=:),allocatable :: get_subcommand
+<P>
+</PRE>
+</BLOCKQUOTE>
+<A name=2>
+
+     <H3>DESCRIPTION</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+In the special case when creating a program with subcommands it is assumed
+the first word on the command line is the subcommand. A routine is required
+to handle response file processing, therefore this routine (optionally
+processing response files) returns that first word as the subcommand name.
+<P>
+It should not be used by programs not building a more elaborate command
+with subcommands.
+</BLOCKQUOTE>
+<A name=3>
+
+     <H3>RETURNS</H3>
+
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>NAME</B> </TD><TD valign=bottom>
+name of subcommand
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=4>
+
+     <H3>EXAMPLE</H3>
+
+</A>
+<BLOCKQUOTE>
+Sample program:
+<P>
+<PRE>
+   program demo_get_subcommand
+   !! SUBCOMMANDS
+   !! For a command with subcommands like git(1)
+   !! you can make seperate namelists for each subcommand.
+   !! You can call this program which has two subcommands (run, test),
+   !! like this:
+   !!    demo_get_subcommand --help
+   !!    demo_get_subcommand run -x -y -z -title -l -L
+   !!    demo_get_subcommand test -title -l -L -testname
+   !!    demo_get_subcommand run --help
+<P>
+      implicit none
+</PRE>
+!! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES
+<BLOCKQUOTE>
+<TABLE cellpadding=3><!-- tsb:       implicit none
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>real</B> </TD><TD valign=bottom>
+:: x=<B>-999.0</B>,y=<B>-999.0</B>,z=<B>-999.0</B>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=80) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: title="not set"
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>logical</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: l=.false.
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>logical</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: l_=.false.
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=80) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: testname="not set"
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=20) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: name
+</TD></TR>
+<TR></TR></TABLE>call <B>parse</B>(name) !! DEFINE AND PARSE COMMAND LINE
+<P>
+!! ALL DONE CRACKING THE COMMAND LINE. USE THE VALUES IN YOUR PROGRAM.
+<B>write</B>(*,*)&#146;command was &#146;,name
+<B>write</B>(*,*)&#146;x,y,z &#46;&#46;&#46;. &#146;,x,y,z
+<B>write</B>(*,*)&#146;title &#46;&#46;&#46;. &#146;,title
+<B>write</B>(*,*)&#146;l,l_ &#46;&#46;&#46;.. &#146;,l,l_
+<B>write</B>(*,*)&#146;testname . &#146;,testname
+</BLOCKQUOTE>
+<P>
+contains
+<BLOCKQUOTE>
+<P>
+subroutine <B>parse</B>(name)
+!! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
+use M_CLI2, only : set_args, get_args, get_args_fixed_length
+use M_CLI2, only : get_subcommand
+use M_CLI2, only : CLI_RESPONSE_FILE
+<TABLE cellpadding=3><!-- tsb: subroutine <B>parse</B>(name)
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=*) </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: name    ! the subcommand name
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>character</B>(len=:),allocatable </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+:: <B>help_text</B>(:), <B>version_text</B>(:)
+CLI_RESPONSE_FILE=.true.
+</TD></TR>
+<TR><TD colspan=2>
+! define version text
+<B>version_text=[character</B>(len=80) :: &
+</TD></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>&#146;@(#)PROGRAM:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+demo_get_subcommand            &gt;&#146;, &
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>&#146;@(#)DESCRIPTION: My demo program</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+&gt;&#146;, &
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>&#146;@(#)VERSION:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+1.0 20200715     &gt;&#146;, &
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>&#146;@(#)AUTHOR:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+me, myself, and I&gt;&#146;, &
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>&#146;@(#)LICENSE:</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+Public Domain    &gt;&#146;, &
+</TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+</TD></TR>
+<TR><TD colspan=2>
+! general help for "demo_get_subcommand <B>--help</B>"
+<B>help_text=[character</B>(len=80) :: &
+</TD></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>&#146; allowed subcommands are</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+* run  <B>-l</B> <B>-L</B> <B>-title</B> <B>-x</B> <B>-y</B> <B>-z</B>   &#146;, &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+* test <B>-l</B> <B>-L</B> <B>-title</B>            &#146;, &
+</TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+</TD></TR>
+<TR><TD colspan=2>
+! find the subcommand name by looking for first word on command
+! not starting with dash
+name = <B>get_subcommand</B>()
+</TD></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+<P>
+select <B>case</B>(name)
+<P>
+<B>case</B>(&#146;run&#146;)
+<B>help_text=[character</B>(len=80) :: &
+<TABLE width=100% cellpadding=3><!-- tsb: <B>case</B>(&#146;run&#146;)
+ -->
+<TR></TR><TR></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>&#146; Help for subcommand run</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+call <B>set_args</B>(&#146;<B>-x</B> 1 <B>-y</B> 2 <B>-z</B> 3 <B>--title</B> "my title" <B>-l</B> F <B>-L</B> F&#146;,help_text,version_text)
+call <B>get_args</B>(&#146;x&#146;,x)
+call <B>get_args</B>(&#146;y&#146;,y)
+call <B>get_args</B>(&#146;z&#146;,z)
+call <B>get_args_fixed_length</B>(&#146;title&#146;,title)
+call <B>get_args</B>(&#146;l&#146;,l)
+call <B>get_args</B>(&#146;L&#146;,l_)
+</TD></TR>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+<P>
+<B>case</B>(&#146;test&#146;)
+<B>help_text=[character</B>(len=80) :: &
+<TABLE width=100% cellpadding=3><!-- tsb: <B>case</B>(&#146;test&#146;)
+ -->
+<TR></TR><TR></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+</TD></TR>
+<TR valign=top><TD colspan=2>
+<B>&#146; Help for subcommand test</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+call <B>set_args</B>(&#146;<B>--title</B> "my title" <B>-l</B> F <B>-L</B> F <B>--testname</B> "Test"&#146;,help_text,version_text)
+call <B>get_args_fixed_length</B>(&#146;title&#146;,title)
+call <B>get_args</B>(&#146;l&#146;,l)
+call <B>get_args</B>(&#146;L&#146;,l_)
+call <B>get_args_fixed_length</B>(&#146;testname&#146;,testname)
+</TD></TR>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+<P>
+case default
+call <B>set_args</B>(&#146; &#146;,help_text,version_text) ! process help and version
+<TABLE width=100% cellpadding=3><!-- tsb: case default
+ -->
+<TR></TR><TR></TR>
+<TR><TD width=6%>&nbsp;</TD><TD>
+<P>
+<B>write</B>(*,&#146;(*(a))&#146;)&#146;unknown or missing subcommand <B>[&#146;,trim</B>(name),&#146;]&#146;
+<TABLE width=100% cellpadding=3><!-- tsb: <B>write</B>(*,&#146;(*(a))&#146;)&#146;unknown or missing subcommand <B>[&#146;,trim</B>(name),&#146;]&#146;
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B></B><B>write</B>(*,&#146;(a)&#146;)[character(len=80) :: </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+</TD></TR>
+<TR></TR></TABLE></TD></TR>
+<TR></TR></TABLE><!-- .TP -->
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD colspan=2>
+<B>&#146; allowed subcommands are</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+<TABLE width=100% cellpadding=3>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+* run  <B>-l</B> <B>-L</B> <B>-title</B> <B>-x</B> <B>-y</B> <B>-z</B>   &#146;, &
+</TD></TR>
+<TR valign=top><TD width=6% nowrap>
+<B>&#146;</B> </TD><TD valign=bottom>
+* test <B>-l</B> <B>-L</B> <B>-title</B>            &#146;, &
+stop
+</TD></TR>
+<TR></TR></TABLE><!-- .PP -->
+</TD></TR>
+<TR></TR></TABLE>end select
+</TD></TR>
+<TR></TR></TABLE>end subroutine parse
+<P>
+end program demo_get_subcommand
+</BLOCKQUOTE>
+</BLOCKQUOTE>
+<P>
+<P>
+<A name=5>
+
+     <H3>AUTHOR</H3>
+
+</A>
+<BLOCKQUOTE>
+John S. Urban, 2019
+</BLOCKQUOTE>
+<A name=6>
+
+     <H3>LICENSE</H3>
+
+</A>
+<BLOCKQUOTE>
+Public Domain
+</BLOCKQUOTE>
+<P><HR>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>get_subcommand (3m_cli2)</TD> <TD align=right width=33%><I>December 15, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from a906707c-0795-4775-a435-adbb24afceb9 using man macros.</FONT>
+<br><br><center><img src="images/get_subcommand.gif"></center>
+</div>
+</div>
+</body>
+</HTML>
