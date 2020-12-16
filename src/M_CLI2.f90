@@ -266,7 +266,7 @@ contains
 !!
 !!##DESCRIPTION
 !!     Checks the commandline  and processes the implicit --help, --version,
-!!     and --usage parameters.
+!!     --verbose, and --usage parameters.
 !!
 !!     If the optional text values are supplied they will be displayed by
 !!     --help and --version command-line options, respectively.
@@ -411,7 +411,7 @@ end subroutine check_commandline
 !!                      call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
 !!
 !!                    DESCRIPTION is pre-defined to act as if started with the reserved
-!!                    options '--usage F --help F --version F'. The --usage
+!!                    options '--verbose F --usage F --help F --version F'. The --usage
 !!                    option is processed when the set_args(3f)
 !!                    routine is called. The same is true for --help and --version
 !!                    if the optional help_text and version_text options are
@@ -838,7 +838,7 @@ integer                                           :: ibig
    allocate(character(len=ibig) :: args(0))
 
    call wipe_dictionary()
-   hold='--usage F --help F --version F '//adjustl(prototype)
+   hold='--version F --usage F --help F --version F '//adjustl(prototype)
    call prototype_and_cmd_args_to_nlist(hold,string)
    if(allocated(G_RESPONSE_IGNORED))then
       if(size(unnamed).ne.0)write(*,*)'LOGIC ERROR'
@@ -1001,6 +1001,7 @@ end subroutine set_args
 !!      John S. Urban, 2019
 !!##LICENSE
 !!      Public Domain
+!===================================================================================================================================
 function get_subcommand() result(sub)
 
 ! ident_3="@(#)M_CLI2::get_subcommand(3f): parse prototype string to get subcommand, allowing for response files"
@@ -1054,6 +1055,17 @@ integer                       :: j
    endif
    G_options_only=.false.
 end function get_subcommand
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+!===================================================================================================================================
+subroutine set_usage(keyword,description,value)
+character(len=*),intent(in) :: keyword
+character(len=*),intent(in) :: description
+character(len=*),intent(in) :: value
+! store the descriptions in an array and then apply them when set_args(3f) is called.
+! alternatively, could allow for a value as well in lieue of the prototype
+end subroutine set_usage
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1627,6 +1639,12 @@ integer                               :: iused
       if(iused.le.0)then
          call update('version')
          call update('version:v','F')
+      endif
+
+      call locate_key('V',iused)
+      if(iused.le.0)then
+         call update('verbose')
+         call update('verbose:V','F')
       endif
 
       call locate_key('u',iused)
