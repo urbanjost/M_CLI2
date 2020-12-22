@@ -119,6 +119,8 @@ implicit none
 integer,parameter,private :: dp=kind(0.0d0)
 integer,parameter,private :: sp=kind(0.0)
 private
+!logical,save :: debug_m_cli2=.true.
+logical,save :: debug_m_cli2=.false.
 !===================================================================================================================================
 character(len=*),parameter          :: gen='(*(g0))'
 character(len=:),allocatable,public :: unnamed(:)
@@ -1597,14 +1599,15 @@ integer                               :: ibig
 integer                               :: itrim
 integer                               :: iused
 
+   if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:START'
    G_passed_in=prototype                            ! make global copy for printing
    G_STRICT=.false.  ! strict short and long rules or allow -longname and --shortname
 
-   if(allocated(unnamed))deallocate(unnamed)
-   if(allocated(args))deallocate(args)
    ibig=longest_command_argument()                  ! bug in gfortran. len=0 should be fine
    ibig=max(ibig,1)
+   if(allocated(unnamed))deallocate(unnamed)
    allocate(character(len=ibig) :: unnamed(0))
+   if(allocated(args))deallocate(args)
    allocate(character(len=ibig) :: args(0))
 
    G_remaining_option_allowed=.false.
@@ -1643,8 +1646,10 @@ integer                               :: iused
    endif
 
    if(present(string))then                          ! instead of command line arguments use another prototype string
+      if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:CALL PROTOTYPE_TO_DICTIONARY:STRING=',STRING
       call prototype_to_dictionary(string)          ! build dictionary from prototype
    else
+      if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:CALL CMD_ARGS_TO_DICTIONARY:CHECK=',.true.
       call cmd_args_to_dictionary(check=.true.)
    endif
 
@@ -1655,6 +1660,7 @@ integer                               :: iused
       endif
       remaining=G_remaining
    endif
+   if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:NORMAL END'
 end subroutine prototype_and_cmd_args_to_nlist
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1662,12 +1668,15 @@ end subroutine prototype_and_cmd_args_to_nlist
 subroutine expand_response(name)
 character(len=*),intent(in) :: name
 character(len=:),allocatable :: prototype
+   if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:START:NAME=',name
    call get_prototype(name,prototype)
    if(prototype.ne.'')then
       G_append=.false.
+      if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:CALL PROTOTYPE_TO_DICTIONARY:PROTOTYPE=',prototype
       call prototype_to_dictionary(prototype)       ! build dictionary from prototype
       G_append=.true.
    endif
+   if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:END'
 end subroutine expand_response
 !===================================================================================================================================
 subroutine get_prototype(name,prototype) ! process @name abbreviations
@@ -1688,6 +1697,7 @@ integer                                  :: lines_processed
    plain_name=name//'  '
    plain_name=trim(name(2:))
    os= '@' // get_env('OSTYPE',get_env('OS'))
+   if(debug_m_cli2)write(*,gen)'<DEBUG>GET_PROTOTYPE:OS=',OS
 
    search_for=''
    ! look for NAME.rsp and see if there is an @OS  section in it and position to it and read
@@ -1714,7 +1724,7 @@ integer                                  :: lines_processed
    call find_and_read_response_file(basename(get_name(),suffix=.true.))
    if(lines_processed.ne.0)return
 
-   write(*,gen)'<ERROR> response name ['//name//'] not found'
+   write(*,gen)'<ERROR> response name ['//trim(name)//'] not found'
    stop 1
 contains
 !===================================================================================================================================
@@ -1729,19 +1739,24 @@ integer                      :: ios
    prototype=''
    ! look for NAME.rsp
    filename=rname//'.rsp'
+   if(debug_m_cli2)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:FILENAME=',filename
 
    ! look for name.rsp in directories from environment variable assumed to be a colon-separated list of directories
    call split(get_env('CLI_RESPONSE_PATH'),paths)
    paths=[character(len=len(paths)) :: ' ',paths]
+   if(debug_m_cli2)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:PATHS=',paths
 
    do i=1,size(paths)
       testpath=join_path(paths(i),filename)
       lun=fileopen(testpath,message)
       if(lun.ne.-1)then
-         if(search_for.ne.'') call position_response()
+         if(debug_m_cli2)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:SEARCH_FOR=',search_for
+         if(search_for.ne.'') call position_response() ! set to end of file or where string was found
          call process_response()
-         if(lines_processed.ne.0)exit
+         if(debug_m_cli2)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:LINES_PROCESSED=',LINES_PROCESSED
          close(unit=lun,iostat=ios)
+         if(debug_m_cli2)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:CLOSE:LUN=',LUN,' IOSTAT=',IOS
+         if(lines_processed.ne.0)exit
       endif
    enddo
 
@@ -1753,6 +1768,7 @@ integer :: ios
    INFINITE: do
       read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
       if(is_iostat_end(ios))then
+         if(debug_m_cli2)write(*,gen)'<DEBUG>POSITION_RESPONSE:EOF'
          backspace(lun,iostat=ios)
          exit INFINITE
       elseif(ios.ne.0)then
@@ -1836,6 +1852,7 @@ character(len=256)                       :: message_local
          write(*,gen)trim(message_local)
       endif
    endif
+   if(debug_m_cli2)write(*,gen)'<DEBUG>FILEOPEN:FILENAME=',filename,' LUN=',lun,' IOS=',IOS,' MESSAGE=',trim(message_local)
 
 end function fileopen
 !===================================================================================================================================
@@ -2020,6 +2037,7 @@ character(len=:),allocatable :: dummy
 character(len=:),allocatable :: oldvalue
 logical                      :: nomore
 logical                      :: next_mandatory
+   if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:START'
    next_mandatory=.false.
    if(present(check))then
       check_local=check
@@ -2097,7 +2115,7 @@ logical                      :: next_mandatory
          endif
          lastkeyword=trim(current_argument_padded(2:))
          next_mandatory=mandatory(pointer)
-      elseif(pointer.eq.0)then                                                                           ! unnamed arguments
+      elseif(pointer.eq.0)then                                       ! unnamed arguments
          if(G_remaining_on)then
             if(len(current_argument).lt.1)then
                G_remaining=G_remaining//'"" '
@@ -2111,6 +2129,7 @@ logical                      :: next_mandatory
          else
             imax=max(len(unnamed),len(current_argument))
             if(index(current_argument//' ','@').eq.1.and.G_response)then
+               if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:1:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
                call expand_response(current_argument)
             else
                unnamed=[character(len=imax) :: unnamed,current_argument]
@@ -2136,6 +2155,7 @@ logical                      :: next_mandatory
                else
                   imax=max(len(unnamed),len(current_argument))
                   if(index(current_argument//' ','@').eq.1.and.G_response)then
+               if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:2:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
                      call expand_response(current_argument)
                   else
                      unnamed=[character(len=imax) :: unnamed,current_argument]
@@ -2153,6 +2173,7 @@ logical                      :: next_mandatory
    if(lastkeyword.ne.'')then
       call ifnull()
    endif
+   if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:NORMAL END'
 
 contains
 
