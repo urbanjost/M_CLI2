@@ -7,8 +7,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2] - command line argument parsing
-!!     using a prototype command
+!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2] - command line argument parsing using a prototype command
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -25,10 +24,9 @@
 !!    Allow for command line parsing much like standard Unix command line
 !!    parsing using a simple prototype.
 !!
-!!    Typically one call to SET_ARGS(3f) is made to define the command
-!!    arguments, set default values and parse the command line. Then a
-!!    call is made to GET_ARGS(3f) for each command keyword to obtain the
-!!    argument values.
+!!    Typically one call to SET_ARGS(3f) is made to define the command arguments,
+!!    set default values and parse the command line. Then a call is made to
+!!    GET_ARGS(3f) for each command keyword to obtain the argument values.
 !!
 !!    The documentation for SET_ARGS(3f) and GET_ARGS(3f) provides further
 !!    details.
@@ -81,12 +79,8 @@
 !!     call get_args('logicals',logicals)
 !!     !
 !!     ! for NON-ALLOCATABLE VARIABLES
-!!
-!!     ! for non-allocatable string
-!!     call get_args_fixed_length('label',label)
-!!
-!!     ! for non-allocatable arrays
-!!     call get_args_fixed_size('p',p)
+!!     call get_args_fixed_length('label',label) ! for non-allocatable string
+!!     call get_args_fixed_size('p',p)           ! for non-allocatable arrays
 !!     call get_args_fixed_size('logi',logi)
 !!     !
 !!     ! USE VALUES
@@ -160,29 +154,29 @@ type option
    logical                  :: mandatory
 end type option
 !===================================================================================================================================
-character(len=:),allocatable,save :: keywords(:)
-character(len=:),allocatable,save :: shorts(:)
-character(len=:),allocatable,save :: values(:)
-integer,allocatable,save          :: counts(:)
-logical,allocatable,save          :: present_in(:)
-logical,allocatable,save          :: mandatory(:)
+character(len=:),allocatable   :: keywords(:)
+character(len=:),allocatable   :: shorts(:)
+character(len=:),allocatable   :: values(:)
+integer,allocatable            :: counts(:)
+logical,allocatable            :: present_in(:)
+logical,allocatable            :: mandatory(:)
 
-logical,save                      :: G_keyword_single_letter=.true.
-character(len=:),allocatable,save :: G_passed_in
-logical,save                      :: G_remaining_on, G_remaining_option_allowed
-character(len=:),allocatable,save :: G_remaining
-character(len=:),allocatable,save :: G_subcommand  ! possible candidate for a subcommand
-character(len=:),allocatable,save :: G_STOP_MESSAGE
-integer,save                      :: G_STOP
-logical,save                      :: G_STOPON
-logical,save                      :: G_STRICT    ! strict short and long rules or allow -longname and --shortname
+logical                        :: G_keyword_single_letter=.true.
+character(len=:),allocatable   :: G_passed_in
+logical                        :: G_remaining_on, G_remaining_option_allowed
+character(len=:),allocatable   :: G_remaining
+character(len=:),allocatable   :: G_subcommand  ! possible candidate for a subcommand
+character(len=:),allocatable   :: G_STOP_MESSAGE
+integer                        :: G_STOP
+logical                        :: G_STOPON
+logical                        :: G_STRICT    ! strict short and long rules or allow -longname and --shortname
 !----------------------------------------------
 ! try out response files
-logical,save                      :: CLI_RESPONSE_FILE=.false.  ! allow @name abbreviations
-logical,save                      :: G_APPEND                   ! whether to append or replace when duplicate keywords found
-logical,save                      :: G_OPTIONS_ONLY             ! process release file only looking for options for get_subcommand()
-logical,save                      :: G_RESPONSE                 ! allow @name abbreviations
-character(len=:),allocatable,save :: G_RESPONSE_IGNORED
+logical                        :: CLI_RESPONSE_FILE=.false.  ! allow @name abbreviations
+logical                        :: G_APPEND                   ! whether to append or replace when duplicate keywords found
+logical                        :: G_OPTIONS_ONLY             ! process release file only looking for options for get_subcommand()
+logical                        :: G_RESPONSE                 ! allow @name abbreviations
+character(len=:),allocatable   :: G_RESPONSE_IGNORED
 !----------------------------------------------
 !===================================================================================================================================
 ! return allocatable arrays
@@ -262,10 +256,10 @@ contains
 !===================================================================================================================================
 !>
 !!##NAME
-!!     check_commandline(3f) - [ARGUMENTS:M_CLI2]check command and process
-!!     pre-defined options
+!!     check_commandline(3f) - [ARGUMENTS:M_CLI2]check command and process pre-defined options
 !!
 !!##SYNOPSIS
+!!
 !!
 !!      subroutine check_commandline(help_text,version_text,ierr,errmsg)
 !!
@@ -296,7 +290,7 @@ contains
 !!        Unix platforms you can probably see how it can be used to place
 !!        metadata in a binary by entering:
 !!
-!!         strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
+!!            strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
 !!
 !!##EXAMPLE
 !!
@@ -418,26 +412,25 @@ end subroutine check_commandline
 !!
 !!                      call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
 !!
-!!                    DESCRIPTION is pre-defined to act as if started with
-!!                    the reserved options '--verbose F --usage F --help
-!!                    F --version F'. The --usage option is processed when
-!!                    the set_args(3f) routine is called. The same is true
-!!                    for --help and --version if the optional help_text
-!!                    and version_text options are provided.
+!!                    DESCRIPTION is pre-defined to act as if started with the reserved
+!!                    options '--verbose F --usage F --help F --version F'. The --usage
+!!                    option is processed when the set_args(3f)
+!!                    routine is called. The same is true for --help and --version
+!!                    if the optional help_text and version_text options are
+!!                    provided.
 !!
-!!                    see "DEFINING THE PROTOTYPE" in the next section for
-!!                    further details.
+!!                    see "DEFINING THE PROTOTYPE" in the next section for further
+!!                    details.
 !!
 !!      HELP_TEXT     if present, will be displayed if program is called with
 !!                    --help switch, and then the program will terminate. If
-!!                    not supplied, the command line initialization string
-!!                    will be shown when --help is used on the commandline.
+!!                    not supplied, the command line initialization string will be
+!!                    shown when --help is used on the commandline.
 !!
 !!      VERSION_TEXT  if present, will be displayed if program is called with
 !!                    --version switch, and then the program will terminate.
-!!      IERR          if present a non-zero option is returned when an
-!!                    error occurs instead of program execution being
-!!                    terminated
+!!      IERR          if present a non-zero option is returned when an error occurs
+!!                    instead of program execution being terminated
 !!      ERRMSG        a description of the error if ierr is present
 !!
 !!##DEFINING THE PROTOTYPE
@@ -487,8 +480,9 @@ end subroutine check_commandline
 !!      When invoking the program line note that (subject to change) the
 !!      following variations from other common command-line parsers:
 !!
-!!         o Long names should be all lowercase and always more than one
-!!           character.
+!!         o long names do not take the --KEY=VALUE form, just
+!!           --KEY VALUE; and long names should be all lowercase and
+!!           always more than one character.
 !!
 !!         o values for duplicate keywords are appended together with a space
 !!           separator when a command line is executed.
@@ -601,14 +595,17 @@ end subroutine check_commandline
 !! Examples of commands that support similar response files are the Clang
 !! and Intel compilers, although there is no standard format for the files.
 !!
-!! The file names must end with ".rsp".  They are read if you add options
-!! of the syntax "@NAME" as the FIRST parameters on your program command
-!! line calls.
+!! The file names must end with ".rsp".
 !!
 !! Shell aliases and scripts are often used for similar purposes (and
 !! allow for much more complex conditional execution, of course), but
 !! they generally cannot be used to overcome line length limits and are
 !! typically platform-specific.
+!!
+!! That being said, your program automatically supports response files
+!! unless "response=.false." is added to your set_args(3f) call. They are
+!! read if you add options of the syntax "@NAME" as the FIRST parameters
+!! on your program command line calls.
 !!
 !!   LOCATING RESPONSE FILES
 !!
@@ -684,13 +681,13 @@ end subroutine check_commandline
 !!
 !! The first word of a line is special and has the following meanings:
 !!
-!!    options|-  Command options following the rules of the SET_ARGS(3f)
-!!               prototype. So
-!!                o It is preferred to specify a value for all options.
-!!                o double-quote strings.
-!!                o give a blank string value as " ".
-!!                o use F|T for lists of logicals,
-!!                o lists of numbers should be comma-delimited.
+!!    options|-  Command options following the rules of the SET_ARGS(3f) prototype.
+!!               So
+!!               o It is preferred to specify a value for all options.
+!!               o double-quote strings.
+!!               o give a blank string value as " ".
+!!               o use F|T for lists of logicals,
+!!               o lists of numbers should be comma-delimited.
 !!    comment|#  Line is a comment line
 !!    system|!   System command.
 !!               System commands are executed as a simple call to
@@ -803,12 +800,11 @@ end subroutine check_commandline
 !!
 !!    The intel Fortran compiler now calls the response files "indirect
 !!    files" and does not add the implied suffix ".rsp" to the files
-!!    anymore. It also allows the @NAME syntax anywhere on the command
+!!    anymore. It also allows the `@NAME` syntax anywhere on the command
 !!    line, not just at the beginning. --  20201212
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
-!!
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
@@ -828,7 +824,7 @@ character(len=:),allocatable                      :: hold               ! stores
 integer                                           :: ibig
    G_response=CLI_RESPONSE_FILE
    G_options_only=.false.
-   G_append=.true.
+   G_append=.false.
    G_passed_in=''
    G_STOP=0
    G_STOP_MESSAGE=''
@@ -870,8 +866,7 @@ end subroutine set_args
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_subcommand(3f) - [ARGUMENTS:M_CLI2] special-case routine for
-!!    handling subcommands on a command line
+!!    get_subcommand(3f) - [ARGUMENTS:M_CLI2] special-case routine for handling subcommands on a command line
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -881,16 +876,17 @@ end subroutine set_args
 !!     character(len=:),allocatable :: get_subcommand
 !!
 !!##DESCRIPTION
-!!    In the special case when creating a program with subcommands it
-!!    is assumed the first word on the command line is the subcommand. A
-!!    routine is required to handle response file processing, therefore
-!!    this routine (optionally processing response files) returns that
-!!    first word as the subcommand name.
 !!
-!!    It should not be used by programs not building a more elaborate
-!!    command with subcommands.
+!!    In the special case when creating a program with subcommands it is assumed
+!!    the first word on the command line is the subcommand. A routine is required
+!!    to handle response file processing, therefore this routine (optionally
+!!    processing response files) returns that first word as the subcommand name.
+!!
+!!    It should not be used by programs not building a more elaborate command
+!!    with subcommands.
 !!
 !!##RETURNS
+!!
 !!    NAME   name of subcommand
 !!
 !!##EXAMPLE
@@ -916,8 +912,7 @@ end subroutine set_args
 !!       character(len=80)  :: testname="not set"
 !!       character(len=20)  :: name
 !!       call parse(name) !! DEFINE AND PARSE COMMAND LINE
-!!       !! ALL DONE CRACKING THE COMMAND LINE.
-!!       !! USE THE VALUES IN YOUR PROGRAM.
+!!       !! ALL DONE CRACKING THE COMMAND LINE. USE THE VALUES IN YOUR PROGRAM.
 !!       write(*,*)'command was ',name
 !!       write(*,*)'x,y,z .... ',x,y,z
 !!       write(*,*)'title .... ',title
@@ -956,9 +951,7 @@ end subroutine set_args
 !!         ' Help for subcommand "run"        ', &
 !!         '                                  ', &
 !!         '' ]
-!!        call set_args( &
-!!        & '-x 1 -y 2 -z 3 --title "my title" -l F -L F',&
-!!        & help_text,version_text)
+!!        call set_args('-x 1 -y 2 -z 3 --title "my title" -l F -L F',help_text,version_text)
 !!        call get_args('x',x)
 !!        call get_args('y',y)
 !!        call get_args('z',z)
@@ -971,30 +964,26 @@ end subroutine set_args
 !!         ' Help for subcommand "test"       ', &
 !!         '                                  ', &
 !!         '' ]
-!!        call set_args(&
-!!        & '--title "my title" -l F -L F --testname "Test"',&
-!!        & help_text,version_text)
+!!        call set_args('--title "my title" -l F -L F --testname "Test"',help_text,version_text)
 !!        call get_args_fixed_length('title',title)
 !!        call get_args('l',l)
 !!        call get_args('L',l_)
 !!        call get_args_fixed_length('testname',testname)
 !!       case default
-!!        ! process help and version
-!!        call set_args(' ',help_text,version_text)
-!!        write(*,'(*(a))')'unknown or missing subcommand [',trim(name),']'
-!!        write(*,'(a)')[character(len=80) ::  &
-!!        ' allowed subcommands are          ', &
-!!        '   * run  -l -L -title -x -y -z   ', &
-!!        '   * test -l -L -title            ', &
-!!        '' ]
-!!        stop
+!!          call set_args(' ',help_text,version_text) ! process help and version
+!!          write(*,'(*(a))')'unknown or missing subcommand [',trim(name),']'
+!!          write(*,'(a)')[character(len=80) ::  &
+!!         ' allowed subcommands are          ', &
+!!         '   * run  -l -L -title -x -y -z   ', &
+!!         '   * test -l -L -title            ', &
+!!         '' ]
+!!         stop
 !!       end select
 !!    end subroutine parse
 !!    end program demo_get_subcommand
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
-!!
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
@@ -1025,8 +1014,7 @@ integer                       :: j
       if(adjustl(cmdarg(1:1)) .eq. '@')then
          call get_prototype(cmdarg,prototype)
          call split(prototype,array)
-         ! assume that if using subcommands first word not starting with dash is the subcommand
-         do j=1,size(array)
+         do j=1,size(array)  ! assume that if using subcommands first word not starting with dash is the subcommand
             if(adjustl(array(j)(1:1)) .ne. '-')then
             G_subcommand=trim(array(j))
             sub=G_subcommand
@@ -1071,8 +1059,7 @@ end subroutine set_usage
 !===================================================================================================================================
 !>
 !!##NAME
-!!      prototype_to_dictionary(3f) - [ARGUMENTS:M_CLI2] parse user command
-!!      and store tokens into dictionary
+!!      prototype_to_dictionary(3f) - [ARGUMENTS:M_CLI2] parse user command and store tokens into dictionary
 !!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -1267,8 +1254,7 @@ end subroutine prototype_to_dictionary
 !===================================================================================================================================
 !>
 !!##NAME
-!!      update(3f) - [ARGUMENTS:M_CLI2] update internal dictionary given
-!!      keyword and value
+!!      update(3f) - [ARGUMENTS:M_CLI2] update internal dictionary given keyword and value
 !!      (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -1298,8 +1284,7 @@ end subroutine prototype_to_dictionary
 !===================================================================================================================================
 !>
 !!##NAME
-!!    specified(3f) - [ARGUMENTS:M_CLI2] return true if keyword was present
-!!    on command line
+!!    specified(3f) - [ARGUMENTS:M_CLI2] return true if keyword was present on command line
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -1334,20 +1319,16 @@ end subroutine prototype_to_dictionary
 !!    integer,allocatable     :: ints(:)
 !!    real,allocatable        :: twonames(:)
 !!
-!!    ! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED
-!!    ! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM
+!!    ! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED NAMES
+!!    ! BUT CURRENTLY YOU STILL SPECIFY THEM
 !!       call set_args(' -flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3')
 !!
 !!    ! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME
-!!       call get_args('flag',flag)
-!!       if(specified('f'))call get_args('f',flag)
-!!       call get_args('ints',ints)
-!!       if(specified('i'))call get_args('i',ints)
-!!       call get_args('twonames',twonames)
-!!       if(specified('T'))call get_args('T',twonames)
+!!       call get_args('flag',flag);         if(specified('f'))call get_args('f',flag)
+!!       call get_args('ints',ints);         if(specified('i'))call get_args('i',ints)
+!!       call get_args('twonames',twonames); if(specified('T'))call get_args('T',twonames)
 !!
-!!       ! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE
-!!       ! ANY(3f) and ALL(3f)
+!!       ! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE ANY(3f) and ALL(3f)
 !!       write(*,*)specified(['twonames','T       '])
 !!       write(*,*)'ANY:',any(specified(['twonames','T       ']))
 !!       write(*,*)'ALL:',all(specified(['twonames','T       ']))
@@ -1687,15 +1668,13 @@ end subroutine prototype_and_cmd_args_to_nlist
 subroutine expand_response(name)
 character(len=*),intent(in) :: name
 character(len=:),allocatable :: prototype
-logical :: hold
    if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:START:NAME=',name
    call get_prototype(name,prototype)
    if(prototype.ne.'')then
-      hold=G_append
       G_append=.false.
       if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:CALL PROTOTYPE_TO_DICTIONARY:PROTOTYPE=',prototype
       call prototype_to_dictionary(prototype)       ! build dictionary from prototype
-      G_append=hold
+      G_append=.true.
    endif
    if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:END'
 end subroutine expand_response
@@ -2069,15 +2048,15 @@ logical                      :: next_mandatory
    pointer=0
    lastkeyword=' '
    G_keyword_single_letter=.true.
-   i=1
-   GET_ARGS: do while (get_next_argument()) ! insert and replace entries
+   GET_ARGS: do i=1, command_argument_count()                        ! insert and replace entries
+      if(.not.get_next_argument())exit GET_ARGS                      ! get next argument
 
-      if( current_argument .eq. '-' .and. nomore .eqv. .true. )then   ! sort of
-      elseif( current_argument .eq. '-')then                          ! sort of
+      if( current_argument .eq. '-' .and. nomore .eqv. .true. )then  ! sort of
+      elseif( current_argument .eq. '-')then                         ! sort of
          current_argument='"stdin"'
       endif
-      if( current_argument .eq. '--' .and. nomore .eqv. .true. )then  ! -- was already encountered
-      elseif( current_argument .eq. '--' )then                        ! everything after this goes into the unnamed array
+      if( current_argument .eq. '--' .and. nomore .eqv. .true. )then ! -- was already encountered
+      elseif( current_argument .eq. '--' )then                       ! everything after this goes into the unnamed array
          nomore=.true.
          pointer=0
          if(G_remaining_option_allowed)then
@@ -2213,28 +2192,8 @@ function get_next_argument()
 !
 ! get next argument from command line into allocated variable current_argument
 !
-logical,save :: hadequal=.false.
-character(len=:),allocatable,save :: right_hand_side
 logical :: get_next_argument
-integer :: iright
-integer :: iequal
-
-   if(hadequal)then  ! use left-over value from previous -NAME=VALUE syntax
-      current_argument=right_hand_side
-      right_hand_side=''
-      hadequal=.false.
-      get_next_argument=.true.
-      ilength=len(current_argument)
-      return
-   endif
-
-   if(i>command_argument_count())then
-      get_next_argument=.false.
-      return
-   else
-      get_next_argument=.true.
-   endif
-
+   get_next_argument=.true.
    call get_command_argument(number=i,length=ilength,status=istatus)                              ! get next argument
    if(istatus /= 0) then                                                                          ! on error
       write(warn,*)'*prototype_and_cmd_args_to_nlist* error obtaining argument ',i,&
@@ -2253,26 +2212,7 @@ integer :: iequal
             &'target length=',len(current_argument)
          get_next_argument=.false.
        endif
-
-       ! if an argument keyword and an equal before a space split on equal and save right hand side for next call
-       if(nomore)then
-       elseif(len(current_argument).eq.0)then
-       else
-          iright=index(current_argument,' ')
-          if(iright.eq.0)iright=len(current_argument)
-          iequal=index(current_argument(:iright),'=')
-          if(iequal.ne.0.and.current_argument(1:1).eq.'-')then
-             if(iequal.ne.len(current_argument))then
-                right_hand_side=current_argument(iequal+1:)
-             else
-                right_hand_side=''
-             endif
-             hadequal=.true.
-             current_argument=current_argument(:iequal-1)
-          endif
-       endif
    endif
-   i=i+1
 end function get_next_argument
 
 function maybe_value()

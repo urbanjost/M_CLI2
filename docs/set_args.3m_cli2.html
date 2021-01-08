@@ -121,22 +121,22 @@ example:
 </PRE>
 </TD></TR>
 <TR><TD width=6%>&nbsp;</TD><TD>
-DESCRIPTION is pre-defined to act as if started with the reserved
-options &#146;<B>--verbose</B> F <B>--usage</B> F <B>--help</B> F <B>--version</B> F&#146;. The <B>--usage</B>
-option is processed when the <B>set_args</B>(3f)
-routine is called. The same is true for <B>--help</B> and <B>--version</B>
-if the optional help_text and version_text options are
-provided.
+DESCRIPTION is pre-defined to act as if started with
+the reserved options &#146;<B>--verbose</B> F <B>--usage</B> F <B>--help</B>
+F <B>--version</B> F&#146;. The <B>--usage</B> option is processed when
+the <B>set_args</B>(3f) routine is called. The same is true
+for <B>--help</B> and <B>--version</B> if the optional help_text
+and version_text options are provided.
 <P>
-see "DEFINING THE PROTOTYPE" in the next section for further
-details.
+see "DEFINING THE PROTOTYPE" in the next section for
+further details.
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>HELP_TEXT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
 if present, will be displayed if program is called with
 <B>--help</B> switch, and then the program will terminate. If
-not supplied, the command line initialization string will be
-shown when <B>--help</B> is used on the commandline.
+not supplied, the command line initialization string
+will be shown when <B>--help</B> is used on the commandline.
 </TD></TR>
 <TR valign=top><TD colspan=2>
 <B>VERSION_TEXT</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
@@ -145,8 +145,9 @@ if present, will be displayed if program is called with
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>IERR</B> </TD><TD valign=bottom>
-if present a non-zero option is returned when an error occurs
-instead of program execution being terminated
+if present a non-zero option is returned when an
+error occurs instead of program execution being
+terminated
 </TD></TR>
 <TR valign=top><TD width=6% nowrap>
 <B>ERRMSG</B> </TD><TD valign=bottom>
@@ -251,9 +252,8 @@ following variations from other common command-line parsers:
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-long names do not take the <B>--KEY</B>=VALUE form, just
-<B>--KEY</B> VALUE; and long names should be all lowercase and
-always more than one character.
+Long names should be all lowercase and always more than one
+character.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -406,18 +406,19 @@ have a platform-independent method of creating an abbreviation.
 <P>
 Examples of commands that support similar response files are the Clang
 and Intel compilers, although there is no standard format for the files.
-<P>
-The file names must end with ".rsp".
-<P>
-Shell aliases and scripts are often used for similar purposes (and
+<TABLE cellpadding=3><!-- tsb: Examples of commands that support similar response files are the Clang
+ -->
+<TR></TR><TR></TR>
+<TR valign=top><TD colspan=2>
+<B>The file names must end with .rsp .</B> </TD></TR><TR valign=top><TD width=6%>&nbsp;</TD><TD>
+They are read if you add options
+of the syntax "@NAME" as the FIRST parameters on your program command
+line calls.
+</TD></TR>
+<TR></TR></TABLE>Shell aliases and scripts are often used for similar purposes (and
 allow for much more complex conditional execution, of course), but
 they generally cannot be used to overcome line length limits and are
 typically platform-specific.
-<P>
-That being said, your program automatically supports response files
-unless "response=.false." is added to your <B>set_args</B>(3f) call. They are
-read if you add options of the syntax "@NAME" as the FIRST parameters
-on your program command line calls.
 </BLOCKQUOTE>
 <A name=>
 
@@ -525,13 +526,13 @@ As mentioned, they must be the first options on the command line.
 The first word of a line is special and has the following meanings:
 <P>
 <PRE>
-   options|-  Command options following the rules of the SET_ARGS(3f) prototype.
-              So
-              o It is preferred to specify a value for all options.
-              o double-quote strings.
-              o give a blank string value as " ".
-              o use F|T for lists of logicals,
-              o lists of numbers should be comma-delimited.
+   options|-  Command options following the rules of the SET_ARGS(3f)
+              prototype. So
+               o It is preferred to specify a value for all options.
+               o double-quote strings.
+               o give a blank string value as " ".
+               o use F|T for lists of logicals,
+               o lists of numbers should be comma-delimited.
    comment|#  Line is a comment line
    system|!   System command.
               System commands are executed as a simple call to
@@ -681,7 +682,7 @@ Would be used like
 <P>
 The intel Fortran compiler now calls the response files "indirect
 files" and does not add the implied suffix ".rsp" to the files
-anymore. It also allows the &#145;@NAME&#145; syntax anywhere on the command
+anymore. It also allows the @NAME syntax anywhere on the command
 <TABLE cellpadding=3><!-- tsb: The intel Fortran compiler now calls the response files "indirect
  -->
 <TR></TR><TR></TR>
@@ -707,7 +708,7 @@ John S. Urban, 2019
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>December 22, 2020</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 86135ee2-2962-46c0-9a6a-fa1e9845660c using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I></I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>January 08, 2021</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 831f6fb6-16e8-4fbb-8151-ad96cdcdcc10 using man macros.</FONT>
 <br><br><center><img src="images/set_args.gif"></center>
 </div>
 </div>
