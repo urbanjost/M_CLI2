@@ -126,7 +126,7 @@ integer,parameter,private :: dp=kind(0.0d0)
 integer,parameter,private :: sp=kind(0.0)
 private
 !logical,save :: debug_m_cli2=.true.
-logical,save :: debug_m_cli2=.false.
+logical,public,save :: debug_m_cli2=.false.
 !===================================================================================================================================
 character(len=*),parameter          :: gen='(*(g0))'
 character(len=:),allocatable,public :: unnamed(:)
@@ -327,6 +327,7 @@ contains
 subroutine check_commandline(help_text,version_text)
 character(len=:),allocatable,intent(in),optional :: help_text(:)
 character(len=:),allocatable,intent(in),optional :: version_text(:)
+character(len=:),allocatable                     :: line
 integer                                          :: i
 integer                                          :: istart
 integer                                          :: iback
@@ -359,8 +360,16 @@ integer                                          :: iback
                iback=1
             endif
          endif
+         if(debug_m_cli2)write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:ALLOCATED',allocated(version_text)
+         if(allocated(version_text).and.debug_m_cli2)then
+            write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:LEN',len(version_text)
+            write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:SIZE',size(version_text)
+            write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:LEN',version_text
+         endif
          do i=1,size(version_text)
-            call journal('sc',version_text(i)(istart:len_trim(version_text(i))-iback))
+            !*INTEL BUG*!call journal('sc',version_text(i)(istart:len_trim(version_text(i))-iback))
+            line=version_text(i)(istart:len_trim(version_text(i))-iback)
+            call journal('sc',line)
          enddo
          call mystop(3,'displayed version text')
          return
@@ -654,7 +663,7 @@ end subroutine check_commandline
 !!
 !!   SEARCH FOR @NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
 !!
-!!  The last search is to search all the EXCUTABLE.rsp files for the string
+!!  The last search is to search all the EXECUTABLE.rsp files for the string
 !!  @NAME.
 !!
 !!   THE SEARCH IS OVER
@@ -900,7 +909,7 @@ end subroutine set_args
 !!    program demo_get_subcommand
 !!    !! SUBCOMMANDS
 !!    !! For a command with subcommands like git(1)
-!!    !! you can make seperate namelists for each subcommand.
+!!    !! you can make separate namelists for each subcommand.
 !!    !! You can call this program which has two subcommands (run, test),
 !!    !! like this:
 !!    !!    demo_get_subcommand --help
@@ -3220,6 +3229,9 @@ class(*),intent(in)           :: g0
 class(*),intent(in),optional  :: g1, g2, g3, g4, g5, g6, g7, g8 ,g9
 class(*),intent(in),optional  :: ga, gb, gc, gd, ge, gf, gg, gh ,gi, gj
 logical,intent(in),optional   :: nospace
+if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g1)
+if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g2)
+if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(nospace)
 write(*,'(a)')str(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj ,nospace)
 end subroutine journal
 !===================================================================================================================================
@@ -3314,6 +3326,7 @@ character(len=:), allocatable :: msg_scalar
 character(len=4096)           :: line
 integer                       :: istart
 integer                       :: increment
+   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR'
    if(present(nospace))then
       if(nospace)then
          increment=1
@@ -3323,10 +3336,13 @@ integer                       :: increment
    else
       increment=2
    endif
+   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR'
 
    istart=1
    line=''
+   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR:CALL GENERIC:GENERIC0'
    if(present(generic0))call print_generic(generic0)
+   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR:CALL GENERIC:GENERIC1'
    if(present(generic1))call print_generic(generic1)
    if(present(generic2))call print_generic(generic2)
    if(present(generic3))call print_generic(generic3)
@@ -3352,18 +3368,28 @@ contains
 subroutine print_generic(generic)
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in) :: generic
+   if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:START'
+   if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:LINE',trim(line)
    select type(generic)
       type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
       type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
       type is (integer(kind=int32));    write(line(istart:),'(i0)') generic
       type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
-      type is (real(kind=real64));      write(line(istart:),'(1pg0)') generic
+      type is (real(kind=real64))
+         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:REAL64'
+         write(line(istart:),'(1pg0)') generic
       !*! DOES NOT WORK WITH NVFORTRAN: type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
-      type is (logical);                write(line(istart:),'(l1)') generic
-      type is (character(len=*));       write(line(istart:),'(a)') trim(generic)
+      type is (logical)
+         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:REAL64'
+         write(line(istart:),'(l1)') generic
+      type is (character(len=*))
+         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:CHARACTER'
+         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:ISTART:',istart
+         write(line(istart:),'(a)') trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
+   if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:START'
    istart=len_trim(line)+increment
 end subroutine print_generic
 !===================================================================================================================================
@@ -3423,7 +3449,10 @@ integer :: i
       !*! DOES NOT WORK WITH nvfortran: type is (real(kind=real128));     write(line(istart:),'("[",*(1pg0,1x))') generic
       !*! DOES NOT WORK WITH ifort:     type is (real(kind=real256));     write(error_unit,'(1pg0)',advance='no') generic
       type is (logical);                write(line(istart:),'("[",*(l1,1x))') generic
-      type is (character(len=*));       write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
+      type is (character(len=*))
+         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:CHARACTER'
+         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:ISTART:',istart
+         write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
       type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
       class default
          call mystop(-22,'unknown type in *print_generic*')

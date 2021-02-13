@@ -1,7 +1,7 @@
           program demo_get_subcommand
           !! SUBCOMMANDS
           !! For a command with subcommands like git(1)
-          !! you can make seperate namelists for each subcommand.
+          !! you can make separate namelists for each subcommand.
           !! You can call this program which has two subcommands (run, test),
           !! like this:
           !!    demo_get_subcommand --help
