@@ -24,12 +24,15 @@ executable = [
    { name="demo7", source-dir="example", main="demo7.f90" },
    { name="demo8", source-dir="example", main="demo8.f90" },
    { name="demo9", source-dir="example", main="demo9.f90" },
+   { name="demo10", source-dir="example", main="demo10.f90" },
 # sample programs extracted from manpages:
-   { name="get_args_fixed_size",   source-dir="example/demos", main="get_args_fixed_size.f90" },
-   { name="get_args_fixed_length", source-dir="example/demos", main="get_args_fixed_length.f90" },
-   { name="get_args",              source-dir="example/demos", main="get_args.f90" },
-   { name="set_args",              source-dir="example/demos", main="set_args.f90" },
-   { name="M_CLI2",                source-dir="example/demos", main="M_CLI2.f90" }
+   { name="demo_get_args_fixed_size",   source-dir="example/demos", main="demo_get_args_fixed_size.f90" },
+   { name="demo_get_args_fixed_length", source-dir="example/demos", main="demo_get_args_fixed_length.f90" },
+   { name="demo_get_args",              source-dir="example/demos", main="demo_get_args.f90" },
+   { name="demo_set_args",              source-dir="example/demos", main="demo_set_args.f90" },
+   { name="demo_get_subcommand", source-dir="example/demos", main="demo_get_subcommand.f90" },
+   { name="demo_specified", source-dir="example/demos", main="demo_specified.f90" },
+   { name="demo_M_CLI2",                source-dir="example/demos", main="demo_M_CLI2.f90" }
 ]
 
 [library]

@@ -710,7 +710,7 @@ end subroutine check_commandline
 !!
 !! So if a program that echoed its parameters has a call of the form
 !!
-!!     set_args('-x 10.0 -y 20.0 --title "my title",response=.true.)
+!!     set_args('-x 10.0 -y 20.0 --title "my title")
 !!
 !! And a file in the current directory called "a.rsp" contained
 !!
