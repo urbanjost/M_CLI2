@@ -13,8 +13,11 @@ PROGFILES = \
  ../example/demo8.f90 \
  ../example/demo9.f90 \
  ../example/demo10.f90 \
- ../test/main.f90 \
 $(NULL)
+TESTFILES = \
+ ../test/test_suite_M_CLI2.f90 \
+$(NULL)
+TPROG = ${TESTFILES:.f90=}
 PROG = ${PROGFILES:.f90=}
 SRCS =  M_CLI2.f90 
 OBJS =  M_CLI2.o 
@@ -49,7 +52,7 @@ nagfor: all
 
 LIBS := 
 LDFLAGS := 
-all: $(PROG) 
+all: $(PROG) $(TPROG)
 	@echo "That's All Folks! Enter \"make help\" for more options"
 $(PROG): $(OBJS)
 	-$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)
@@ -65,6 +68,7 @@ help:
 	: ###############################################################################
 	: # gfortran|nvfortran|ifort -- build M_CLI2 module. Default is gfortran        #
 	: # run                      -- run manpage demo programs                       #
+	: # test                     -- run test programs                               #
 	: # man                      -- show all manpages as text                       #
 	: # ship                     -- rebuild archive files of manpages               #
 	: # clean                    -- clean directory of object files and executables #
@@ -78,9 +82,19 @@ run: $(PROG)
 	#echo $? |xargs -n 1|xargs -iXX time XX 2>&1
 	set +x;echo $? |xargs -n 1|xargs -iXX env XX 2>&1
 
+$(TPROG): $(OBJS)
+
+	-$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS) # && ./$@ </dev/null
+
 .PHONY: doxygen
 doxygen: 
 	doxygen dox.in
+
+.PHONY: test
+test: $(TPROG)
+	# run tests
+	echo $? | xargs -n 1  
+	echo $? | xargs -n 1  |(set +x;xargs -iXX env XX 2>&1)
 
 .PHONY: man
 man:

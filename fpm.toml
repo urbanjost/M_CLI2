@@ -5,13 +5,13 @@ license = "Public Domain"
 author = "John S. Urban"
 maintainer = "urbanjost@comcast.net"
 copyright = "2020 John S. Urban"
-description = "Unix-style commandline parsing using a prototype command  (STD:f2008)"
+description = "Unix-style commandline parsing using a prototype command"
 categories = ["Command Line"]
 keywords = ["fortran", "parse", "commandline", "arguments"]
 homepage = "https://github.com/urbanjost/M_CLI2.git"
 
 # unit test program
-test = [ { name="runTests", source-dir="test", main="main.f90" } ]
+test = [ { name="runTests", source-dir="test", main="test_suite_M_CLI2.f90" } ]
 
 # demo programs
 executable = [
