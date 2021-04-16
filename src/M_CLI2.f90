@@ -3314,7 +3314,7 @@ character(len=*),intent(in)   :: where
 class(*),intent(in)           :: g0
 class(*),intent(in),optional  :: g1, g2, g3, g4, g5, g6, g7, g8 ,g9
 class(*),intent(in),optional  :: ga, gb, gc, gd, ge, gf, gg, gh ,gi, gj
-character(len=:),intent(in),optional,allocatable :: sep
+character(len=*),intent(in),optional :: sep
 if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g1)
 if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g2)
 if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(sep)
@@ -3333,7 +3333,7 @@ end subroutine journal
 !!
 !!     class(*),intent(in),optional  :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9
 !!     class(*),intent(in),optional  :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj
-!!     character(len=:),intent(in),optional,allocatable :: sep
+!!     character(len=*),intent(in),optional :: sep
 !!     character,len=(:),allocatable :: str
 !!
 !!##DESCRIPTION
@@ -3407,7 +3407,7 @@ class(*),intent(in),optional  :: generic0, generic1, generic2, generic3, generic
 class(*),intent(in),optional  :: generic5, generic6, generic7, generic8, generic9
 class(*),intent(in),optional  :: generica, genericb, genericc, genericd, generice
 class(*),intent(in),optional  :: genericf, genericg, generich, generici, genericj
-character(len=:),intent(in),optional,allocatable :: sep
+character(len=*),intent(in),optional :: sep
 character(len=:),allocatable  :: sep_local
 character(len=:), allocatable :: msg_scalar
 character(len=4096)           :: line
@@ -3491,7 +3491,7 @@ implicit none
 class(*),intent(in)           :: generic0(:)
 class(*),intent(in),optional  :: generic1(:), generic2(:), generic3(:), generic4(:), generic5(:)
 class(*),intent(in),optional  :: generic6(:), generic7(:), generic8(:), generic9(:)
-character(len=:),intent(in),optional,allocatable   :: sep
+character(len=*),intent(in),optional :: sep
 character(len=:),allocatable  :: sep_local
 character(len=:), allocatable :: msg_one
 character(len=4096)           :: line
