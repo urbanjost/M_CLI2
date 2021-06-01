@@ -34,8 +34,7 @@
    ```
    This will compile the M_CLI2 module and build all the example programs.
 
-## SUPPORTS FPM ![parse](docs/images/parse.png)
-
+## SUPPORTS FPM ![parse](docs/images/fpm_logo.gif) 
    Alternatively, download the github repository and build it with
    fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
 
