@@ -41,8 +41,8 @@
    ```bash
         git clone https://github.com/urbanjost/M_CLI2.git
         cd M_CLI2
-        fpm build
-        fpm test
+        fpm test   # build and test the module
+	fpm install # install the module (in the default location)
    ```
 
    or just list it as a dependency in your fpm.toml project file.
@@ -56,10 +56,19 @@
 
 **This is how the interface works --**
 
-* Pass in a string that looks like the command you would use to execute the program with all values specified.
-  Now all the values in the prototype should be updated using values from the command line and ready to query.
-* you read the results with the get_args(3f) procedure or one of its variants (if you want to use fixed length.
-  CHARACTER variables or fixed-size arrays).
+* Pass in a string to set_args(3f) that looks almost like the command
+  you would use to execute the program except with all keywords and
+  default values specified.
+
+* you add calls to the get_args(3f) procedure or one of its variants (
+  The alternatives allow you to use a simple function-based interface
+  model or allow for special cases when you want to use fixed length.
+  CHARACTER variables or fixed-size arrays instead of the allocatable
+  variables best used with get_args(3f)).
+
+  Now when you call the program all the values in the prototype should
+  be updated using values from the command line and queried and ready
+  to use in your program.
 
 ## RESPONSE FILES
 [Response files](response.md) are supported as described in the documentation for

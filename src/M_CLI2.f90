@@ -536,7 +536,6 @@ end subroutine check_commandline
 !!           command arguments go into the character array "UNUSED".
 !!##EXAMPLE
 !!
-!!
 !! Sample program:
 !!
 !!     program demo_set_args
@@ -544,7 +543,6 @@ end subroutine check_commandline
 !!     use M_CLI2,  only : get_args_fixed_size
 !!     implicit none
 !!     integer                      :: i
-!!     !
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
 !!     real                         :: p(3)
@@ -608,19 +606,22 @@ end subroutine check_commandline
 !!  that it is useful to have a platform-independent method of creating
 !!  an abbreviation.
 !!
-!!  They are read if you add options of the syntax "@NAME" as the FIRST
-!!  parameters on your program command line calls. They are not recursive --
-!!  that is, an option in a response file cannot be give the value "@NAME2"
-!!  to call another response file.
-!!
-!!  Examples of commands that support similar response files are the Clang
-!!  and Intel compilers, although there is no standard format for the files.
-!!
-!!
 !!  Shell aliases and scripts are often used for similar purposes (and
 !!  allow for much more complex conditional execution, of course), but
 !!  they generally cannot be used to overcome line length limits and are
 !!  typically platform-specific.
+!!
+!!  Examples of commands that support similar response files are the Clang
+!!  and Intel compilers, although there is no standard format for the files.
+!!
+!!  They are read if you add options of the syntax "@NAME" as the FIRST
+!!  parameters on your program command line calls. They are not recursive --
+!!  that is, an option in a response file cannot be given the value "@NAME2"
+!!  to call another response file.
+!!
+!!  Note that more than one response name may appear on a command line.
+!!
+!!  They are case-sensitive names.
 !!
 !!   LOCATING RESPONSE FILES
 !!
@@ -634,41 +635,44 @@ end subroutine check_commandline
 !!
 !!   RESPONSE FILE SECTIONS
 !!
-!!  A simple response file just has options for calling the program in it.
+!!  A simple response file just has options for calling the program in it
+!!  prefixed with the word "options".
 !!  But they can also contain section headers to denote selections that are
-!!  only executed when a specific OS is being used.
+!!  only executed when a specific OS is being used, print messages, and
+!!  execute system commands.
 !!
-!!  In addition a special response file named PROGRAM.rsp where PROGRAM is
-!!  the name of your executable can contain multiple abbreviation names.
-!!
-!!   SEARCH FOR @OSTYPE IN REGULAR FILES (NAME.rsp)
+!!   SEARCHING FOR OSTYPE IN REGULAR FILES
 !!
 !!  So assuming the name @NAME was specified on the command line a file
-!!  named NAME.rsp will be searched for in all those search locations for a
-!!  string that starts with the string @OSTYPE if the environment variables
-!!  $OS and $OSTYPE are not blank. $OSTYPE takes precedence over $OS.
+!!  named NAME.rsp will be searched for in all the search directories
+!!  and then in that file a string that starts with the string @OSTYPE
+!!  (if the environment variables $OS and $OSTYPE are not blank. $OSTYPE
+!!  takes precedence over $OS).
 !!
+!!   SEARCHING FOR UNLABELED DIRECTIVES IN REGULAR FILES
 !!
-!!   SEARCH FOR UNLABELED DIRECTIVES IN REGULAR FILES (NAME.rsp)
+!!  Then, the same files will be searched for lines above any line starting
+!!  with "@". That is, if there is no special section for the current OS
+!!  it just looks at the top of the file for unlabeled options.
 !!
-!!  Then, the same files will be searched for lines above any line
-!!  starting with "@". That is, if there is no special section for the current
-!!  OS it just looks at the top of the file for unlabeled options.
+!!   SEARCHING FOR OSTYPE AND NAME IN THE COMPOUND FILE
 !!
-!!   SEARCH FOR @OSTYPE@NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
+!!  In addition or instead of files with the same name as the @NAME option
+!!  on the command line, you can have one file named after the executable
+!!  name that contains multiple abbreviation names.
 !!
-!!  Then, if nothing was found a file name EXECUTABLE.rsp will be searched
-!!  for in the same locations (where EXECUTABLE is the basename of the program
-!!  being executed). This file is always a "complex" response file that uses
-!!  the format described below to allow for multiple entries.
+!!  So if your program executable is named EXEC you create a single file
+!!  called EXEC.rsp and can append all the simple files described above
+!!  separating them with lines of the form @OSTYPE@NAME or just @NAME.
 !!
-!!  Any complex EXECUTABLE.rsp file found in the current or searched directories
+!!  So if no specific file for the abbreviation is found a file called
+!!  "EXEC.rsp" is searched for where "EXEC" is the name of the executable.
+!!  This file is always a "compound" response file that uses the following format:
+!!
+!!  Any compound EXEC.rsp file found in the current or searched directories
 !!  will be searched for the string @OSTYPE@NAME first.
 !!
-!!   SEARCH FOR @NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
-!!
-!!  The last search is to search all the EXECUTABLE.rsp files for the string
-!!  @NAME.
+!!  Then if nothing is found, the less specific line @NAME is searched for.
 !!
 !!   THE SEARCH IS OVER
 !!
@@ -681,14 +685,10 @@ end subroutine check_commandline
 !!  will be used as a default if no match is found.
 !!
 !!  If you end up using a lot of files like this you can combine them all
-!!  together and put them into a file called "program_name.rsp" and just
+!!  together and put them into a file called "program_name".rsp and just
 !!  put lines like @NAME or @OSTYPE@NAME at that top of each selection.
 !!
-!!  Note that more than one response name may appear on a command line.
-!!
-!!  They are case-sensitive names.
-!!
-!!  As mentioned, they must be the first options on the command line.
+!!  Now, back to the details on just what you can put in the files.
 !!
 !!##SPECIFICATION FOR RESPONSE FILES
 !!
@@ -762,8 +762,9 @@ end subroutine check_commandline
 !!  Unlike simple response files compound response files can contain multiple
 !!  setting names.
 !!
-!!  If the environment variable $OSTYPE (first) or $OS is set the search
-!!  will first be for a line of the form (no leading spaces should be used):
+!!  Specifically in a compound file
+!!  if the environment variable $OSTYPE (first) or $OS is set the first search
+!!  will be for a line of the form (no leading spaces should be used):
 !!
 !!    @OSTYPE@alias_name
 !!
@@ -772,10 +773,10 @@ end subroutine check_commandline
 !!
 !!    @alias_name
 !!
-!!  is searched for. Subsequent lines will be ignored that start with "@"
-!!  until a line not starting with "@" is encountered.  Lines will then be
-!!  processed until another line starting with "@" is found or end-of-file
-!!  is encountered.
+!!  is searched for in simple or compound files. If found subsequent lines
+!!  will be ignored that start with "@" until a line not starting with
+!!  "@" is encountered.  Lines will then be processed until another line
+!!  starting with "@" is found or end-of-file is encountered.
 !!
 !!   COMPOUND RESPONSE FILE EXAMPLE
 !!  An example compound file
@@ -783,19 +784,19 @@ end subroutine check_commandline
 !!    #################
 !!    @if
 !!    > RUNNING TESTS USING RELEASE VERSION AND ifort
-!!    - test --release --compiler ifort
+!!    options test --release --compiler ifort
 !!    #################
 !!    @gf
 !!    > RUNNING TESTS USING RELEASE VERSION AND gfortran
-!!    - test --release --compiler gfortran
+!!    options test --release --compiler gfortran
 !!    #################
 !!    @nv
 !!    > RUNNING TESTS USING RELEASE VERSION AND nvfortran
-!!    - test --release --compiler nvfortran
+!!    options test --release --compiler nvfortran
 !!    #################
 !!    @nag
 !!    > RUNNING TESTS USING RELEASE VERSION AND nagfor
-!!    - test --release --compiler nagfor
+!!    options test --release --compiler nagfor
 !!    #
 !!    #################
 !!    # OS-specific example:
@@ -803,10 +804,10 @@ end subroutine check_commandline
 !!    #
 !!    # install executables in directory (assuming install(1) exists)
 !!    #
-!!    !mkdir -p ~/.local/bin
-!!    - run --release T --compiler gfortran --runner "install -vbp -m 0711 -t ~/.local/bin"
+!!    system mkdir -p ~/.local/bin
+!!    options run --release T --compiler gfortran --runner "install -vbp -m 0711 -t ~/.local/bin"
 !!    @install
-!!    @STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
+!!    STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
 !!    #
 !!    #################
 !!    @fpm@testall
