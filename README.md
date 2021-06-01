@@ -63,10 +63,12 @@
   CHARACTER variables or fixed-size arrays).
 
 ## RESPONSE FILES
-[Response files](response.md) are supported if the SET_ARGS(3f) routine
-is called without the argument __"response=.false"__.  They are a system-independent way to create
-short abbreviations for long complex commands. This option is generally not needed by programs with just a few options,
-but can be particularly useful for programs with dozens of options where various values are frequently reused.
+[Response files](response.md) are supported as described in the documentation for
+[set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html).
+They are a system-independent way to create short abbreviations for long
+complex commands. This option is generally not needed by programs with
+just a few options, but can be particularly useful for programs with
+dozens of options where various values are frequently reused.
 
 ## DOCUMENTATION
 These demo programs provide templates for the most common usage:

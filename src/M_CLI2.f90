@@ -595,67 +595,71 @@ end subroutine check_commandline
 !!
 !!##RESPONSE FILES
 !!
-!! If you have no interest in using external files as abbreviations
-!! you can ignore this section. Otherwise, before calling set_args(3f)
-!! add:
+!!  If you have no interest in using external files as abbreviations
+!!  you can ignore this section. Otherwise, before calling set_args(3f)
+!!  add:
 !!
 !!     use M_CLI2, only : CLI_response_file
 !!     CLI_response_file=.true.
 !!
-!! M_CLI2 Response files are small files containing CLI (Command Line
-!! Interface) arguments that are used when command lines are so long that
-!! they would exceed line length limits or so complex that it is useful to
-!! have a platform-independent method of creating an abbreviation.
+!!  M_CLI2 Response files are small files containing CLI (Command Line
+!!  Interface) arguments that end with ".rsp" that can be used when command
+!!  lines are so long that they would exceed line length limits or so complex
+!!  that it is useful to have a platform-independent method of creating
+!!  an abbreviation.
 !!
-!! Examples of commands that support similar response files are the Clang
-!! and Intel compilers, although there is no standard format for the files.
+!!  They are read if you add options of the syntax "@NAME" as the FIRST
+!!  parameters on your program command line calls. They are not recursive --
+!!  that is, an option in a response file cannot be give the value "@NAME2"
+!!  to call another response file.
 !!
-!! The file names must end with ".rsp".  They are read if you add options
-!! of the syntax "@NAME" as the FIRST parameters on your program command
-!! line calls.
+!!  Examples of commands that support similar response files are the Clang
+!!  and Intel compilers, although there is no standard format for the files.
 !!
-!! Shell aliases and scripts are often used for similar purposes (and
-!! allow for much more complex conditional execution, of course), but
-!! they generally cannot be used to overcome line length limits and are
-!! typically platform-specific.
+!!
+!!  Shell aliases and scripts are often used for similar purposes (and
+!!  allow for much more complex conditional execution, of course), but
+!!  they generally cannot be used to overcome line length limits and are
+!!  typically platform-specific.
 !!
 !!   LOCATING RESPONSE FILES
 !!
-!! The first resource file found that results in lines being processed
-!! will be used and processing stops after that first match is found. If
-!! no match is found an error occurs and the program is stopped.
+!!  A search for the response file always starts with the current directory.
+!!  The search then proceeds to look in any additional directories specified
+!!  with the colon-delimited environment variable CLI_RESPONSE_PATH.
 !!
-!! A search for the response file always starts with the current directory.
-!! The search then proceeds to look in any additional directories specified
-!! with the colon-delimited environment variable CLI_RESPONSE_PATH.
+!!  The first resource file found that results in lines being processed
+!!  will be used and processing stops after that first match is found. If
+!!  no match is found an error occurs and the program is stopped.
 !!
 !!   RESPONSE FILE SECTIONS
 !!
 !!  A simple response file just has options for calling the program in it.
-!!  But they can also contain section headers to denote sections that are
-!!  only executed when a specific OS is being used. In addition a special
-!!  response file named PROGRAM.rsp can contain multiple abbreviations.
+!!  But they can also contain section headers to denote selections that are
+!!  only executed when a specific OS is being used.
+!!
+!!  In addition a special response file named PROGRAM.rsp where PROGRAM is
+!!  the name of your executable can contain multiple abbreviation names.
 !!
 !!   SEARCH FOR @OSTYPE IN REGULAR FILES (NAME.rsp)
 !!
-!!  Assuming the name @NAME was specified on the command line a file named
-!!  NAME.rsp will be searched for in all those search locations for a string
-!!  that starts with the string @OSTYPE if the environment variables $OS and
-!!  $OSTYPE are not blank.
+!!  So assuming the name @NAME was specified on the command line a file
+!!  named NAME.rsp will be searched for in all those search locations for a
+!!  string that starts with the string @OSTYPE if the environment variables
+!!  $OS and $OSTYPE are not blank. $OSTYPE takes precedence over $OS.
 !!
-!!  If $OSTYPE is unset, the value of the variable OS will be used.
 !!
 !!   SEARCH FOR UNLABELED DIRECTIVES IN REGULAR FILES (NAME.rsp)
 !!
-!!  Then, the same files will be searched for lines before any line
+!!  Then, the same files will be searched for lines above any line
 !!  starting with "@". That is, if there is no special section for the current
 !!  OS it just looks at the top of the file for unlabeled options.
 !!
 !!   SEARCH FOR @OSTYPE@NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
 !!
 !!  Then, if nothing was found a file name EXECUTABLE.rsp will be searched
-!!  for in the same locations where EXECUTABLE is the basename of the program
-!!  being executed. This file is always a "complex" response file that uses
+!!  for in the same locations (where EXECUTABLE is the basename of the program
+!!  being executed). This file is always a "complex" response file that uses
 !!  the format described below to allow for multiple entries.
 !!
 !!  Any complex EXECUTABLE.rsp file found in the current or searched directories
@@ -668,30 +672,29 @@ end subroutine check_commandline
 !!
 !!   THE SEARCH IS OVER
 !!
-!! Sounds complicated but actually works quite intuitively. Make a file in
-!! the current directory and put options in it and it will be used. If that
-!! file ends up needing different cases for different platforms add a line
-!! like "@Linux" to the file and some more lines and that will only be
-!! executed if the environment variable OSTYPE or OS is "Linux". If no match
-!! is found for named sections the lines at the top before any "@" lines
-!! will be used as a default if not match is found.
+!!  Sounds complicated but actually works quite intuitively. Make a file in
+!!  the current directory and put options in it and it will be used. If that
+!!  file ends up needing different cases for different platforms add a line
+!!  like "@Linux" to the file and some more lines and that will only be
+!!  executed if the environment variable OSTYPE or OS is "Linux". If no match
+!!  is found for named sections the lines at the top before any "@" lines
+!!  will be used as a default if no match is found.
 !!
-!! If you end up using a lot of files like this you can combine them all
-!! together and put them info a file called "program_name.rsp" and just
-!! put lines like @NAME or @OSTYPE@NAME at that top of each section.
+!!  If you end up using a lot of files like this you can combine them all
+!!  together and put them into a file called "program_name.rsp" and just
+!!  put lines like @NAME or @OSTYPE@NAME at that top of each selection.
 !!
-!! Note that more than one response name may appear on a command line.
+!!  Note that more than one response name may appear on a command line.
 !!
-!! They are case-sensitive names.
+!!  They are case-sensitive names.
 !!
-!! As mentioned, they must be the first options on the command line.
-!!
+!!  As mentioned, they must be the first options on the command line.
 !!
 !!##SPECIFICATION FOR RESPONSE FILES
 !!
 !!   SIMPLE RESPONSE FILES
 !!
-!! The first word of a line is special and has the following meanings:
+!!  The first word of a line is special and has the following meanings:
 !!
 !!    options|-  Command options following the rules of the SET_ARGS(3f)
 !!               prototype. So
@@ -708,58 +711,71 @@ end subroutine check_commandline
 !!    print|>    Message to screen
 !!    stop       display message and stop program.
 !!
-!! So if a program that echoed its parameters has a call of the form
+!!  So if a program that does nothing but echos its parameters
 !!
-!!     set_args('-x 10.0 -y 20.0 --title "my title")
+!!    program testit
+!!    use M_CLI2, only : set_args, rget, sget, lget
+!!    use M_CLI2, only : CLI_response_file
+!!    implicit none
+!!       real :: x,y                           ; namelist/args/ x,y
+!!       character(len=:),allocatable :: title ; namelist/args/ title
+!!       logical :: big                        ; namelist/args/ big
+!!       CLI_response_file=.true.
+!!       call set_args('-x 10.0 -y 20.0 --title "my title" --big F')
+!!       x=rget('x')
+!!       y=rget('y')
+!!       title=sget('title')
+!!       big=lget('big')
+!!       write(*,nml=args)
+!!    end program testit
 !!
-!! And a file in the current directory called "a.rsp" contained
+!!  And a file in the current directory called "a.rsp" contains
 !!
 !!     # defaults for project A
 !!     options -x 1000 -y 9999
-!!     options --title "my new default title"
+!!     options --title " "
+!!     options --big T
 !!
-!! The program could be called with
+!!  The program could be called with
 !!
-!!    # normal
-!!    $myprog
-!!     X=10.0 Y=20.0 TITLE="my title"
+!!     $myprog     # normal call
+!!      X=10.0 Y=20.0 TITLE="my title"
 !!
-!!    # change defaults as specified in "a.rsp"
-!!    $myprog @a
-!!     X=1000.0 Y=9999.0 TITLE="my new default title"
+!!     $myprog @a  # change defaults as specified in "a.rsp"
+!!     X=1000.0 Y=9999.0 TITLE=" "
 !!
-!!    # change defaults but use any option as normal to override defaults
-!!    $myprog @a -y 1234
-!!     X=1000.0 Y=1234.0 TITLE="my new default title"
+!!     # change defaults but use any option as normal to override defaults
+!!     $myprog @a -y 1234
+!!      X=1000.0 Y=1234.0 TITLE=" "
 !!
 !!   COMPOUND RESPONSE FILES
 !!
-!! A compound response file has the same basename as the executable with a
-!! ".rsp" suffix added. So if your program is named "myprg" the filename
-!! must be "myprg.rsp".
+!!  A compound response file has the same basename as the executable with a
+!!  ".rsp" suffix added. So if your program is named "myprg" the filename
+!!  must be "myprg.rsp".
 !!
-!!    Note that here `basename` means the basename of the
+!!    Note that here `basename` means the last leaf  of the
 !!    name of the program as returned by the Fortran intrinsic
 !!    GET_COMMAND_ARGUMENT(0,...) trimmed of anything after a period ("."),
 !!    so it is a good idea not to use hidden files.
 !!
-!! Unlike simple response files compound response files can contain multiple
-!! setting names.
+!!  Unlike simple response files compound response files can contain multiple
+!!  setting names.
 !!
-!! If the environment variable $OSTYPE (first) or $OS is set the search
-!! will first be for a line of the form (no leading spaces should be used):
+!!  If the environment variable $OSTYPE (first) or $OS is set the search
+!!  will first be for a line of the form (no leading spaces should be used):
 !!
 !!    @OSTYPE@alias_name
 !!
-!! If no match or if the environment variables $OSTYPE and $OS were not
-!! set or a match is not found then a line of the form
+!!  If no match or if the environment variables $OSTYPE and $OS were not
+!!  set or a match is not found then a line of the form
 !!
 !!    @alias_name
 !!
-!! is searched for. Subsequent lines will be ignored that start with "@"
-!! until a line not starting with "@" is encountered.  Lines will then be
-!! processed until another line starting with "@" is found or end-of-file
-!! is encountered.
+!!  is searched for. Subsequent lines will be ignored that start with "@"
+!!  until a line not starting with "@" is encountered.  Lines will then be
+!!  processed until another line starting with "@" is found or end-of-file
+!!  is encountered.
 !!
 !!   COMPOUND RESPONSE FILE EXAMPLE
 !!  An example compound file
@@ -820,6 +836,7 @@ end subroutine check_commandline
 !!
 !!##LICENSE
 !!      Public Domain
+
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
