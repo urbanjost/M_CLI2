@@ -2255,7 +2255,8 @@ logical                      :: next_mandatory
             if(len(current_argument).lt.1)then
                G_remaining=G_remaining//'"" '
             elseif(current_argument(1:1).eq.'-')then
-               G_remaining=G_remaining//current_argument//' '
+               !get fancier to handle spaces and =!G_remaining=G_remaining//current_argument//' '
+               G_remaining=G_remaining//'"'//current_argument//'" '
             else
                G_remaining=G_remaining//'"'//current_argument//'" '
             endif
@@ -2281,7 +2282,8 @@ logical                      :: next_mandatory
                   if(len(current_argument).lt.1)then
                         G_remaining=G_remaining//'"" '
                   elseif(current_argument(1:1).eq.'-')then
-                        G_remaining=G_remaining//current_argument//' '
+                       !get fancier to handle spaces and =!G_remaining=G_remaining//current_argument//' '
+                        G_remaining=G_remaining//'"'//current_argument//'" '
                   else
                         G_remaining=G_remaining//'"'//current_argument//'" '
                   endif
