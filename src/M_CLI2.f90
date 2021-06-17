@@ -171,11 +171,11 @@ logical,save                      :: G_keyword_single_letter=.true.
 character(len=:),allocatable,save :: G_passed_in
 logical,save                      :: G_remaining_on, G_remaining_option_allowed
 character(len=:),allocatable,save :: G_remaining
-character(len=:),allocatable,save :: G_subcommand  ! possible candidate for a subcommand
+character(len=:),allocatable,save :: G_subcommand              ! possible candidate for a subcommand
 character(len=:),allocatable,save :: G_STOP_MESSAGE
 integer,save                      :: G_STOP
 logical,save                      :: G_STOPON
-logical,save                      :: G_STRICT    ! strict short and long rules or allow -longname and --shortname
+logical,save                      :: G_STRICT                  ! strict short and long rules or allow -longname and --shortname
 !----------------------------------------------
 ! try out response files
 logical,save                      :: CLI_RESPONSE_FILE=.false. ! allow @name abbreviations
@@ -2198,6 +2198,7 @@ logical                      :: next_mandatory
          endif
          cycle
       endif
+
       dummy=current_argument//'   '
       current_argument_padded=current_argument//'   '
 
@@ -2374,7 +2375,8 @@ integer :: iequal
           iright=index(current_argument,' ')
           if(iright.eq.0)iright=len(current_argument)
           iequal=index(current_argument(:iright),'=')
-          if(iequal.ne.0.and.current_argument(1:1).eq.'-')then
+          if(next_mandatory)then
+          elseif(iequal.ne.0.and.current_argument(1:1).eq.'-')then
              if(iequal.ne.len(current_argument))then
                 right_hand_side=current_argument(iequal+1:)
              else
