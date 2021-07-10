@@ -96,6 +96,7 @@ These demo programs provide templates for the most common usage:
 - [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module
 - [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html)  -- parses the command line options
 - [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html)  -- obtain parameter values for allocatable arrays and scalars
+  This also documents the functions iget,igets,rget,rgets,sget,sgets,lget,lgets, ... .
 #### less frequently used 
 - [get_args_fixed_length](https://urbanjost.github.io/M_CLI2/get_args_fixed_length.3m_cli2.html)  -- obtain parameter values for fixed-length character variable
 - [get_args_fixed_size](https://urbanjost.github.io/M_CLI2/get_args_fixed_size.3m_cli2.html)  -- obtain parameter values for fixed-size arrays
@@ -127,7 +128,7 @@ This short program defines a command that can be called like
 ```
 ```fortran
    program show
-   use M_CLI2, only : set_args, get_args, files=>unnamed
+   use M_CLI2, only : set_args, lget, rget,sget, igets, files=>unnamed
    use M_CLI2, only : get_args_fixed_size
    implicit none
    integer :: i
@@ -138,13 +139,24 @@ This short program defines a command that can be called like
    logical                       :: l, lbig
    !! DEFINE COMMAND
       call set_args('-x 1 -y 2.0 -z 3.5e0 --point -1,-2,-3 -p 11,-22,33 --title "my title" -l F -L F')
-   !! GET VALUES
-      call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L', lbig) ! get scalar fixed-size variables
+   !! GET VALUES USING CONVENIENCE FUNCTIONS
+      x=rget('x') 
+      y=rget('y') 
+      z=rget('z')
+      l=lget('l')
+      lbig=lget('L')
+      p=igets('p')
+      title=sget('title')
       call get_args_fixed_size('point',point) ! this will ensure three values are specified
-      call get_args('p',p)
-      call get_args('title',title)
    !! USE THE VALUES IN YOUR PROGRAM.
-
+      write(*,*)'x=',x
+      write(*,*)'y=',y
+      write(*,*)'z=',z
+      write(*,*)'point=',point
+      write(*,*)'p=',p
+      write(*,*)'l=',l
+      write(*,*)'lbig=',lbig
+      write(*,*)'title=',title
    !! OPTIONAL UNNAMED VALUES FROM COMMAND LINE
       if(size(files).gt.0)then
          write(*,'(a)')'files:'
