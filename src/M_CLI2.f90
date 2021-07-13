@@ -1039,6 +1039,7 @@ integer                       :: i
 integer                       :: j
    G_subcommand=''
    G_options_only=.true.
+   sub=''
 
    if(.not.allocated(unnamed))then
       allocate(character(len=0) :: unnamed(0))
