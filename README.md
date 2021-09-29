@@ -114,7 +114,7 @@ dozens of options where various values are frequently reused.
      obtain parameter values for fixed-size arrays
    + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
      query whether an option was used on the commandline
---!>
+-->
 - [CHANGELOG](docs/CHANGELOG.md)
 
 ### developer documentation  
