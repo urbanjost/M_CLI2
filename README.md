@@ -97,7 +97,8 @@ dozens of options where various values are frequently reused.
 ### manpages
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 - [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) --
-  man-pages index
+  man-pages index of individual procedures
+<!--
    + [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html) --
      An overview of the M_CLI2 module
    + [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html) --
@@ -113,8 +114,7 @@ dozens of options where various values are frequently reused.
      obtain parameter values for fixed-size arrays
    + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
      query whether an option was used on the commandline
-
-
+--!>
 - [CHANGELOG](docs/CHANGELOG.md)
 
 ### developer documentation  
