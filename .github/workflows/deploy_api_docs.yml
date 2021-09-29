@@ -3,7 +3,7 @@ name: Build FORD(1) docs
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
