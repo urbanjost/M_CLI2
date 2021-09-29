@@ -104,7 +104,8 @@ dozens of options where various values are frequently reused.
    + [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html)
      obtain parameter values for allocatable arrays and scalars.
      This also documents the functions iget,igets,rget,rgets,sget,sgets,lget,lgets, ... .
-### less frequently used 
+
+     **less frequently used**
    + [get_args_fixed_length](https://urbanjost.github.io/M_CLI2/get_args_fixed_length.3m_cli2.html)
      obtain parameter values for fixed-length character variable
    + [get_args_fixed_size](https://urbanjost.github.io/M_CLI2/get_args_fixed_size.3m_cli2.html)
@@ -114,7 +115,7 @@ dozens of options where various values are frequently reused.
 
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
-- [ford(1) output](https://urbanjost.github.io/M_M_CLI2/fpm-ford/index.html).
+- [ford(1) output](https://urbanjost.github.io/M_CLI2/fpm-ford/index.html).
 - [CHANGELOG](docs/CHANGELOG.md)
 - [BUILD STATUS](docs/STATUS.md)
 
