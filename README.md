@@ -94,8 +94,8 @@ just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.
 
 ## DOCUMENTATION
-### manpages
-- [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
+### man-pages as HTML
+- [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
 - [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) --
   man-pages index of individual procedures
 <!--
@@ -115,6 +115,10 @@ dozens of options where various values are frequently reused.
    + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
      query whether an option was used on the commandline
 -->
+## real man-pages ![gmake](docs/images/manpages.gif)
+   + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
+   + [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
+
 - [CHANGELOG](docs/CHANGELOG.md)
 
 ### developer documentation  
