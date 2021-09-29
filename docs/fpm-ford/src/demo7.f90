@@ -1,4 +1,5 @@
 program demo7
+!!  controlling array delimiter characters
 use M_CLI2,  only : set_args, get_args, get_args_fixed_size, get_args_fixed_length
 implicit none
 integer,parameter              :: dp=kind(0.0d0)

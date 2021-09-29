@@ -1,4 +1,5 @@
 program demo1
+!!  using the convenience functions
    use M_CLI2, only : set_args, get_args_fixed_size 
    use M_CLI2, only :  dget,  iget,  lget,  rget,  sget,  cget ! for scalars
    use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets ! for allocatable arrays

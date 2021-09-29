@@ -1,5 +1,6 @@
 program demo2
-!! FULL EXAMPLE ADDING HELP AND VERSION DISPLAY
+!!  putting everything including **help** and **version** information
+!!  into a contained procedure.
 use M_CLI2,  only : unnamed
 implicit none
 integer            :: i

@@ -266,57 +266,58 @@
     <section>
       <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="hl"><pre><span></span><a name="ln-1"></a><span class="k">program </span><span class="n">demo4</span>
-<a name="ln-2"></a><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_args_fixed_size</span>
-<a name="ln-3"></a><span class="k">implicit none</span>
-<a name="ln-4"></a><span class="kt">complex</span>                      <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>   <span class="c">! scalars</span>
-<a name="ln-5"></a><span class="kt">complex</span><span class="p">,</span><span class="k">allocatable</span>          <span class="kd">::</span> <span class="n">aarr</span><span class="p">(:)</span>   <span class="c">! allocatable array</span>
-<a name="ln-6"></a><span class="kt">complex</span>                      <span class="kd">::</span> <span class="n">three</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c">! fixed-size array</span>
-<a name="ln-7"></a>
-<a name="ln-8"></a><span class="c">! formats to pretty-print a complex value and small complex vector</span>
-<a name="ln-9"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span>   <span class="kd">::</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;(&quot;(&quot;,g0,&quot;,&quot;,g0,&quot;i)&quot;:,1x)&#39;</span>
-<a name="ln-10"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span>   <span class="kd">::</span> <span class="n">forms</span><span class="o">=</span><span class="s1">&#39;(*(&quot;(&quot;,g0,&quot;,&quot;,g0,&quot;i)&quot;:,&quot;,&quot;,1x))&#39;</span>
-<a name="ln-11"></a>
-<a name="ln-12"></a>   <span class="c">! COMPLEX VALUES</span>
-<a name="ln-13"></a>   <span class="c">!</span>
-<a name="ln-14"></a>   <span class="c">!  o parenthesis are optional and are ignored in complex values.</span>
-<a name="ln-15"></a>   <span class="c">!</span>
-<a name="ln-16"></a>   <span class="c">!  o base#value is acceptable for base 2 to 32 for whole numbers,</span>
-<a name="ln-17"></a>   <span class="c">!    which is why &quot;i&quot; is not allowed as a suffix on imaginary values</span>
-<a name="ln-18"></a>   <span class="c">!    (because some bases include &quot;i&quot; as a digit).</span>
-<a name="ln-19"></a>   <span class="c">!</span>
-<a name="ln-20"></a>   <span class="c">!  o normally arrays are allocatable. if a fixed size array is used</span>
-<a name="ln-21"></a>   <span class="c">!    call get_args_fixed_size(3f) and all the values must be</span>
-<a name="ln-22"></a>   <span class="c">!    specified. This is useful when you have something that requires</span>
-<a name="ln-23"></a>   <span class="c">!    a specific number of values. Perhaps a point in space must always</span>
-<a name="ln-24"></a>   <span class="c">!    have three values, for example.</span>
-<a name="ln-25"></a>   <span class="c">!</span>
-<a name="ln-26"></a>   <span class="c">!  o default delimiters are whitespace, comma and colon. Note that</span>
-<a name="ln-27"></a>   <span class="c">!    whitespace delimiters should not be used in the definition,</span>
-<a name="ln-28"></a>   <span class="c">!    but are OK on command input if the entire parameter value is</span>
-<a name="ln-29"></a>   <span class="c">!    quoted. Using space delimiters in the prototype definition is</span>
-<a name="ln-30"></a>   <span class="c">!    not supported (but works) and requires that the value be quoted</span>
-<a name="ln-31"></a>   <span class="c">!    on input in common shells. Adjacent delimiters are treated as</span>
-<a name="ln-32"></a>   <span class="c">!    a single delimiter.</span>
-<a name="ln-33"></a>   <span class="c">!</span>
-<a name="ln-34"></a>   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x (1,2) -y 10,20 -z (2#111,16#-AB) -three 1,2,3,4,5,6 -aarr 111::222,333::444&#39;</span><span class="p">)</span>
-<a name="ln-35"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-<a name="ln-36"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<a name="ln-37"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
-<a name="ln-38"></a>   <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">,</span><span class="n">three</span><span class="p">)</span>
-<a name="ln-39"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;aarr&#39;</span><span class="p">,</span><span class="n">aarr</span><span class="p">)</span>
-<a name="ln-40"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">form</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span>
-<a name="ln-41"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">three</span>
-<a name="ln-42"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">aarr</span>
-<a name="ln-43"></a><span class="k">end program </span><span class="n">demo4</span>
-<a name="ln-44"></a><span class="c">!</span>
-<a name="ln-45"></a><span class="c">! expected output:</span>
-<a name="ln-46"></a><span class="c">!</span>
-<a name="ln-47"></a><span class="c">! (1.00000000,2.00000000i)</span>
-<a name="ln-48"></a><span class="c">! (10.0000000,20.0000000i)</span>
-<a name="ln-49"></a><span class="c">! (7.00000000,-171.000000i)</span>
-<a name="ln-50"></a><span class="c">! (18.0000000,-149.000000i)</span>
-<a name="ln-51"></a><span class="c">! (1.00000000,2.00000000i), (3.00000000,4.00000000i), (5.00000000,6.00000000i)</span>
-<a name="ln-52"></a><span class="c">! (111.000000,222.000000i), (333.000000,444.000000i)</span>
+<a name="ln-2"></a><span class="c">!!  _COMPLEX_ type values</span>
+<a name="ln-3"></a><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_args_fixed_size</span>
+<a name="ln-4"></a><span class="k">implicit none</span>
+<a name="ln-5"></a><span class="kt">complex</span>                      <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>   <span class="c">! scalars</span>
+<a name="ln-6"></a><span class="kt">complex</span><span class="p">,</span><span class="k">allocatable</span>          <span class="kd">::</span> <span class="n">aarr</span><span class="p">(:)</span>   <span class="c">! allocatable array</span>
+<a name="ln-7"></a><span class="kt">complex</span>                      <span class="kd">::</span> <span class="n">three</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c">! fixed-size array</span>
+<a name="ln-8"></a>
+<a name="ln-9"></a><span class="c">! formats to pretty-print a complex value and small complex vector</span>
+<a name="ln-10"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span>   <span class="kd">::</span> <span class="n">form</span><span class="o">=</span><span class="s1">&#39;(&quot;(&quot;,g0,&quot;,&quot;,g0,&quot;i)&quot;:,1x)&#39;</span>
+<a name="ln-11"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span>   <span class="kd">::</span> <span class="n">forms</span><span class="o">=</span><span class="s1">&#39;(*(&quot;(&quot;,g0,&quot;,&quot;,g0,&quot;i)&quot;:,&quot;,&quot;,1x))&#39;</span>
+<a name="ln-12"></a>
+<a name="ln-13"></a>   <span class="c">! COMPLEX VALUES</span>
+<a name="ln-14"></a>   <span class="c">!</span>
+<a name="ln-15"></a>   <span class="c">!  o parenthesis are optional and are ignored in complex values.</span>
+<a name="ln-16"></a>   <span class="c">!</span>
+<a name="ln-17"></a>   <span class="c">!  o base#value is acceptable for base 2 to 32 for whole numbers,</span>
+<a name="ln-18"></a>   <span class="c">!    which is why &quot;i&quot; is not allowed as a suffix on imaginary values</span>
+<a name="ln-19"></a>   <span class="c">!    (because some bases include &quot;i&quot; as a digit).</span>
+<a name="ln-20"></a>   <span class="c">!</span>
+<a name="ln-21"></a>   <span class="c">!  o normally arrays are allocatable. if a fixed size array is used</span>
+<a name="ln-22"></a>   <span class="c">!    call get_args_fixed_size(3f) and all the values must be</span>
+<a name="ln-23"></a>   <span class="c">!    specified. This is useful when you have something that requires</span>
+<a name="ln-24"></a>   <span class="c">!    a specific number of values. Perhaps a point in space must always</span>
+<a name="ln-25"></a>   <span class="c">!    have three values, for example.</span>
+<a name="ln-26"></a>   <span class="c">!</span>
+<a name="ln-27"></a>   <span class="c">!  o default delimiters are whitespace, comma and colon. Note that</span>
+<a name="ln-28"></a>   <span class="c">!    whitespace delimiters should not be used in the definition,</span>
+<a name="ln-29"></a>   <span class="c">!    but are OK on command input if the entire parameter value is</span>
+<a name="ln-30"></a>   <span class="c">!    quoted. Using space delimiters in the prototype definition is</span>
+<a name="ln-31"></a>   <span class="c">!    not supported (but works) and requires that the value be quoted</span>
+<a name="ln-32"></a>   <span class="c">!    on input in common shells. Adjacent delimiters are treated as</span>
+<a name="ln-33"></a>   <span class="c">!    a single delimiter.</span>
+<a name="ln-34"></a>   <span class="c">!</span>
+<a name="ln-35"></a>   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x (1,2) -y 10,20 -z (2#111,16#-AB) -three 1,2,3,4,5,6 -aarr 111::222,333::444&#39;</span><span class="p">)</span>
+<a name="ln-36"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<a name="ln-37"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<a name="ln-38"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+<a name="ln-39"></a>   <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">,</span><span class="n">three</span><span class="p">)</span>
+<a name="ln-40"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;aarr&#39;</span><span class="p">,</span><span class="n">aarr</span><span class="p">)</span>
+<a name="ln-41"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">form</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span>
+<a name="ln-42"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">three</span>
+<a name="ln-43"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">aarr</span>
+<a name="ln-44"></a><span class="k">end program </span><span class="n">demo4</span>
+<a name="ln-45"></a><span class="c">!</span>
+<a name="ln-46"></a><span class="c">! expected output:</span>
+<a name="ln-47"></a><span class="c">!</span>
+<a name="ln-48"></a><span class="c">! (1.00000000,2.00000000i)</span>
+<a name="ln-49"></a><span class="c">! (10.0000000,20.0000000i)</span>
+<a name="ln-50"></a><span class="c">! (7.00000000,-171.000000i)</span>
+<a name="ln-51"></a><span class="c">! (18.0000000,-149.000000i)</span>
+<a name="ln-52"></a><span class="c">! (1.00000000,2.00000000i), (3.00000000,4.00000000i), (5.00000000,6.00000000i)</span>
+<a name="ln-53"></a><span class="c">! (111.000000,222.000000i), (333.000000,444.000000i)</span>
 </pre></div>
 
     </section>
@@ -335,7 +336,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-09-29 08:35  
+             on 2021-09-29 09:12  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

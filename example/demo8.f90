@@ -1,4 +1,5 @@
 program demo8
+!!  multiple keyword and variable pairs on get_args(3f) for limited cases
 !! SOMETIMES YOU CAN PUT MULTIPLE VALUES ON GETARGS(3f)
 use M_CLI2,  only : set_args, get_args
 implicit none

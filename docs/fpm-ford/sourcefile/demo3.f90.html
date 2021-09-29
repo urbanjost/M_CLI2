@@ -266,19 +266,20 @@
     <section>
       <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="hl"><pre><span></span><a name="ln-1"></a><span class="k">program </span><span class="n">demo3</span>
-<a name="ln-2"></a><span class="c">!*! JUST THE BARE ESSENTIALS</span>
-<a name="ln-3"></a><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span>
-<a name="ln-4"></a><span class="k">implicit none</span>
-<a name="ln-5"></a><span class="kt">integer</span>                      <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
-<a name="ln-6"></a><span class="kt">logical</span>                      <span class="kd">::</span> <span class="n">l</span>
-<a name="ln-7"></a><span class="kt">real</span>                         <span class="kd">::</span> <span class="n">size</span>
-<a name="ln-8"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">title</span>
-<a name="ln-9"></a>   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 10 --size:s 12.34567  -l F --title:t &quot;my title&quot;&#39;</span><span class="p">)</span>
-<a name="ln-10"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">)</span> <span class="c">! all the non-allocatables</span>
-<a name="ln-11"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-<a name="ln-12"></a>   <span class="c">! all variables set and of the right type</span>
-<a name="ln-13"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(*(&quot;[&quot;,g0,&quot;]&quot;:,1x))&#39;</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">title</span>
-<a name="ln-14"></a><span class="k">end program </span><span class="n">demo3</span>
+<a name="ln-2"></a><span class="c">!!  example of **basic** use</span>
+<a name="ln-3"></a><span class="c">!*! JUST THE BARE ESSENTIALS</span>
+<a name="ln-4"></a><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span>
+<a name="ln-5"></a><span class="k">implicit none</span>
+<a name="ln-6"></a><span class="kt">integer</span>                      <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+<a name="ln-7"></a><span class="kt">logical</span>                      <span class="kd">::</span> <span class="n">l</span>
+<a name="ln-8"></a><span class="kt">real</span>                         <span class="kd">::</span> <span class="n">size</span>
+<a name="ln-9"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">title</span>
+<a name="ln-10"></a>   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 10 --size:s 12.34567  -l F --title:t &quot;my title&quot;&#39;</span><span class="p">)</span>
+<a name="ln-11"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span> <span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">)</span> <span class="c">! all the non-allocatables</span>
+<a name="ln-12"></a>   <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+<a name="ln-13"></a>   <span class="c">! all variables set and of the right type</span>
+<a name="ln-14"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(*(&quot;[&quot;,g0,&quot;]&quot;:,1x))&#39;</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">title</span>
+<a name="ln-15"></a><span class="k">end program </span><span class="n">demo3</span>
 </pre></div>
 
     </section>
@@ -297,7 +298,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-09-29 08:35  
+             on 2021-09-29 09:12  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

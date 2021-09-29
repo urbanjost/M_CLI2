@@ -1,4 +1,5 @@
 program demo3
+!!  example of **basic** use
 !*! JUST THE BARE ESSENTIALS
 use M_CLI2,  only : set_args, get_args
 implicit none

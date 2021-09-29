@@ -1,5 +1,5 @@
 program demo9
-!! QUICK PROTOTYPE: JUST THE BARE ESSENTIALS
+!!  long and short names using  --LONGNAME:SHORTNAME
 use M_CLI2,  only : set_args, get_args, sget, rget, iget, lget
 implicit none
    call set_args('--length:l 1 --height:h 10 --size:s 12.34567  --switch:X F --title:T "my title"')
