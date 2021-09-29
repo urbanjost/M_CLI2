@@ -115,7 +115,7 @@ dozens of options where various values are frequently reused.
    + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
      query whether an option was used on the commandline
 -->
-## real man-pages ![gmake](docs/images/manpages.gif)
+### real man-pages ![gmake](docs/images/manpages.gif)
    + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
    + [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
 
