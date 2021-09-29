@@ -1,0 +1,7 @@
+<map id="testit" name="testit">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a61550043f4b214b9904bdb3c8bd6436a" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="109,5,265,47"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a06f8bb6dd63fd7ac2a91b46ee89baaa9" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="752,5,919,47"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a98df7b928a09462fa32a10931acf157c" title="m_cli2::expand_response" alt="" coords="313,38,500,65"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a23a8fb8997707bd9e81f6b526667a72c" title="NAMEset_args(3f) &#45; [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD) " alt="" coords="967,13,1095,39"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a3348b0c76dadd62c536e06f82bcb0331" title="m_cli2::cmd_args_to\l_dictionary" alt="" coords="548,35,704,76"/>
+</map>

@@ -1,0 +1,109 @@
+\hypertarget{interfacem__cli2_1_1replace}{}\doxysection{m\+\_\+cli2\+::replace Interface Reference}
+\label{interfacem__cli2_1_1replace}\index{m\_cli2::replace@{m\_cli2::replace}}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_ab4d59b6a69d2768bf724f53604b3d0a9}{replace\+\_\+c}} (list, value, place)
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_a73a0dab38328c3db8a7eef48e27390bd}{replace\+\_\+i}} (list, value, place)
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1replace_a9c995edced1d2665777e794a3aa5b2a0}{replace\+\_\+l}} (list, value, place)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__cli2_1_1replace_ab4d59b6a69d2768bf724f53604b3d0a9}\label{interfacem__cli2_1_1replace_ab4d59b6a69d2768bf724f53604b3d0a9}} 
+\index{m\_cli2::replace@{m\_cli2::replace}!replace\_c@{replace\_c}}
+\index{replace\_c@{replace\_c}!m\_cli2::replace@{m\_cli2::replace}}
+\doxysubsubsection{\texorpdfstring{replace\_c()}{replace\_c()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::replace\+::replace\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{character(len=$\ast$), intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\hypertarget{namespacem__cli2_autotoc_md217}{}\doxysubsubsection{N\+A\+ME}\label{namespacem__cli2_autotoc_md217}
+replace(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} replace entry in a string array at specified position (L\+I\+C\+E\+N\+SE\+:PD)\hypertarget{namespacem__cli2_autotoc_md218}{}\doxysubsubsection{S\+Y\+N\+O\+P\+S\+IS}\label{namespacem__cli2_autotoc_md218}
+subroutine replace(list,value,place)
+
+character(len=$\ast$)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:: value character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(in) \+:: list(\+:) integer, intent(out) \+:: P\+L\+A\+CE\hypertarget{namespacem__cli2_autotoc_md219}{}\doxysubsubsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{namespacem__cli2_autotoc_md219}
+\begin{DoxyVerb}replace a value in an allocatable array at the specified index. Unless the
+array needs the string length to increase this is merely an assign of a value
+to an array element.
+
+The array may be of type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER>
+It is assumed to be sorted in descending order without duplicate values.
+
+The value and list must be of the same type.
+\end{DoxyVerb}
+\hypertarget{namespacem__cli2_autotoc_md220}{}\doxysubsubsection{O\+P\+T\+I\+O\+NS}\label{namespacem__cli2_autotoc_md220}
+\begin{DoxyVerb}VALUE         the value to place in the array
+LIST          is the array.
+PLACE         is the subscript that the entry should be placed at
+\end{DoxyVerb}
+\hypertarget{namespacem__cli2_autotoc_md221}{}\doxysubsubsection{E\+X\+A\+M\+P\+L\+ES}\label{namespacem__cli2_autotoc_md221}
+Replace key-\/value pairs in a dictionary \begin{DoxyVerb}program demo_replace
+use M_CLI2, only  : insert, locate, replace
+! Find if a key is in a list and insert it
+! into the key list and value list if it is not present
+! or replace the associated value if the key existed
+implicit none
+character(len=20)            :: key
+character(len=100)           :: val
+character(len=:),allocatable :: keywords(:)
+character(len=:),allocatable :: values(:)
+integer                      :: i
+integer                      :: place
+call update('b','value of b')
+call update('a','value of a')
+call update('c','value of c')
+call update('c','value of c again')
+call update('d','value of d')
+call update('a','value of a again')
+! show array
+write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
+
+call locate_key('a',place)
+if(place.gt.0)then
+   write(*,*)'The value of "a" is',trim(values(place))
+else
+   write(*,*)'"a" not found'
+endif
+
+contains
+subroutine update(key,val)
+character(len=*),intent(in)  :: key
+character(len=*),intent(in)  :: val
+integer                      :: place
+
+! find where string is or should be
+call locate_key(key,place)
+! if string was not found insert it
+if(place.lt.1)then
+   call insert(keywords,key,abs(place))
+   call insert(values,val,abs(place))
+else ! replace
+   call replace(values,val,place)
+endif
+
+end subroutine update
+\end{DoxyVerb}
+ end program demo\+\_\+replace
+
+Expected output
+
+d==$>$value of d c==$>$value of c again b==$>$value of b a==$>$value of a again\hypertarget{namespacem__cli2_autotoc_md222}{}\doxysubsubsection{A\+U\+T\+H\+OR}\label{namespacem__cli2_autotoc_md222}
+1989,2017 John S. Urban \hypertarget{namespacem__cli2_autotoc_md223}{}\doxysubsubsection{L\+I\+C\+E\+N\+SE}\label{namespacem__cli2_autotoc_md223}
+Public Domain \mbox{\Hypertarget{interfacem__cli2_1_1replace_a73a0dab38328c3db8a7eef48e27390bd}\label{interfacem__cli2_1_1replace_a73a0dab38328c3db8a7eef48e27390bd}} 
+\index{m\_cli2::replace@{m\_cli2::replace}!replace\_i@{replace\_i}}
+\index{replace\_i@{replace\_i}!m\_cli2::replace@{m\_cli2::replace}}
+\doxysubsubsection{\texorpdfstring{replace\_i()}{replace\_i()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::replace\+::replace\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__cli2_1_1replace_a9c995edced1d2665777e794a3aa5b2a0}\label{interfacem__cli2_1_1replace_a9c995edced1d2665777e794a3aa5b2a0}} 
+\index{m\_cli2::replace@{m\_cli2::replace}!replace\_l@{replace\_l}}
+\index{replace\_l@{replace\_l}!m\_cli2::replace@{m\_cli2::replace}}
+\doxysubsubsection{\texorpdfstring{replace\_l()}{replace\_l()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::replace\+::replace\+\_\+l (\begin{DoxyParamCaption}\item[{logical, dimension(\+:), allocatable}]{list,  }\item[{logical, intent(in)}]{value,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/urbanjs/venus/\+V600/github/\+M\+\_\+\+C\+L\+I2/src/\mbox{\hyperlink{M__CLI2_8f90}{M\+\_\+\+C\+L\+I2.\+f90}}\end{DoxyCompactItemize}

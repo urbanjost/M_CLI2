@@ -1,0 +1,14 @@
+<map id="m_cli2::get_anyarray_cc" name="m_cli2::get_anyarray_cc">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="980,197,1099,223"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#ad64ecae6bc1419e8953af2edb5d3ac96" title="m_cli2::locate_key" alt="" coords="233,45,377,71"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#a0e44d7c9058545df8bf09674e9c2e799" title="m_cli2::mystop" alt="" coords="425,95,548,122"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="436,146,537,173"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#a150f312a9f4ec6dd58afb58a9a68f26a" title="NAMEunquote(3f) &#45; [M_CLI2:QUOTES] remove quotes from string as if read with list&#45;directed input (LICE..." alt="" coords="242,197,369,223"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a6be629e75053706bd7e37a4f1010b912" title="NAMElower(3f) &#45; [M_CLI2:CASE] changes a string to lowercase over specified range (LICENSE:PD) ..." alt="" coords="614,146,723,173"/>
+<area shape="rect" id="node8" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_CLI2:QUOTES] add quotes to string as if written with list&#45;directed input (LICENSE:..." alt="" coords="431,197,542,223"/>
+<area shape="rect" id="node9" href="$namespacem__cli2.html#a8e172feb2e4ae4d21d4fceb4e54f593c" title="NAMEmerge_str(3f) &#45; [M_CLI2:LENGTH] pads strings to same length and then calls MERGE(3f) (LICENSE:PD)..." alt="" coords="599,247,738,274"/>
+<area shape="rect" id="node11" href="$namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f" title="m_cli2::replace_str" alt="" coords="596,298,741,325"/>
+<area shape="rect" id="node10" href="$namespacem__cli2.html#ad13853611abfee00d40ffa020662ec8a" title="NAMElenset(3f) &#45; [M_CLI2:LENGTH] return string trimmed or padded to specified length (LICENSE:PD) ..." alt="" coords="804,247,917,274"/>
+<area shape="rect" id="node12" href="$namespacem__cli2.html#a710b26995119aee101959555b1bac8e2" title="NAMEreplace_str(3f) &#45; [M_CLI2:EDITING] function globally replaces one substring for another in string..." alt="" coords="789,349,932,375"/>
+<area shape="rect" id="node13" href="$namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a" title="m_cli2::strtok" alt="" coords="984,349,1095,375"/>
+</map>

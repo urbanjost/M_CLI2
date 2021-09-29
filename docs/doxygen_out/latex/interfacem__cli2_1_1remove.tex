@@ -1,0 +1,82 @@
+\hypertarget{interfacem__cli2_1_1remove}{}\doxysection{m\+\_\+cli2\+::remove Interface Reference}
+\label{interfacem__cli2_1_1remove}\index{m\_cli2::remove@{m\_cli2::remove}}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1remove_aae13960af6c9ed2af46fdfec8e66a8a2}{remove\+\_\+c}} (list, place)
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1remove_a4a30f737b41e6cfca58ef2842d633b27}{remove\+\_\+i}} (list, place)
+\item 
+subroutine \mbox{\hyperlink{interfacem__cli2_1_1remove_a72934a0b165dc3d178ff7cbe6117a5b3}{remove\+\_\+l}} (list, place)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function/\+Subroutine Documentation}
+\mbox{\Hypertarget{interfacem__cli2_1_1remove_aae13960af6c9ed2af46fdfec8e66a8a2}\label{interfacem__cli2_1_1remove_aae13960af6c9ed2af46fdfec8e66a8a2}} 
+\index{m\_cli2::remove@{m\_cli2::remove}!remove\_c@{remove\_c}}
+\index{remove\_c@{remove\_c}!m\_cli2::remove@{m\_cli2::remove}}
+\doxysubsubsection{\texorpdfstring{remove\_c()}{remove\_c()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::remove\+::remove\+\_\+c (\begin{DoxyParamCaption}\item[{character(len=\+:), dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\hypertarget{namespacem__cli2_autotoc_md210}{}\doxysubsubsection{N\+A\+ME}\label{namespacem__cli2_autotoc_md210}
+remove(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} remove entry from an allocatable array at specified position (L\+I\+C\+E\+N\+SE\+:PD)\hypertarget{namespacem__cli2_autotoc_md211}{}\doxysubsubsection{S\+Y\+N\+O\+P\+S\+IS}\label{namespacem__cli2_autotoc_md211}
+subroutine remove(list,place)
+
+character(len=\+:)$\vert$doubleprecision$\vert$real$\vert$integer,intent(inout) \+:: list(\+:) integer, intent(out) \+:: P\+L\+A\+CE\hypertarget{namespacem__cli2_autotoc_md212}{}\doxysubsubsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{namespacem__cli2_autotoc_md212}
+\begin{DoxyVerb}Remove a value from an allocatable array at the specified index.
+The array is assumed to be sorted in descending order. It may be of
+type CHARACTER, DOUBLEPRECISION, REAL, or INTEGER.
+\end{DoxyVerb}
+\hypertarget{namespacem__cli2_autotoc_md213}{}\doxysubsubsection{O\+P\+T\+I\+O\+NS}\label{namespacem__cli2_autotoc_md213}
+\begin{DoxyVerb}list    is the list array.
+PLACE   is the subscript for the entry that should be removed
+\end{DoxyVerb}
+\hypertarget{namespacem__cli2_autotoc_md214}{}\doxysubsubsection{E\+X\+A\+M\+P\+L\+ES}\label{namespacem__cli2_autotoc_md214}
+Sample program \begin{DoxyVerb}program demo_remove
+use M_sort, only : sort_shell
+use M_CLI2, only : locate, remove
+implicit none
+character(len=:),allocatable :: arr(:)
+integer                       :: i
+integer                       :: end
+
+arr=[character(len=20) :: '', 'ZZZ', 'Z', 'aaa', 'b', 'b', 'ab', 'bb', 'xxx' ]
+! make sure sorted in descending order
+call sort_shell(arr,order='d')
+
+end=size(arr)
+write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+call remove(arr,1)
+end=size(arr)
+write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+call remove(arr,4)
+end=size(arr)
+write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
+
+end program demo_remove
+\end{DoxyVerb}
+
+
+Results\+:
+
+Expected output
+
+S\+I\+ZE=9 xxx,bb,b,b,ab,aaa,Z\+ZZ,Z,, S\+I\+ZE=8 bb,b,b,ab,aaa,Z\+ZZ,Z,, S\+I\+ZE=7 bb,b,b,aaa,Z\+ZZ,Z,,\hypertarget{namespacem__cli2_autotoc_md215}{}\doxysubsubsection{A\+U\+T\+H\+OR}\label{namespacem__cli2_autotoc_md215}
+1989,2017 John S. Urban \hypertarget{namespacem__cli2_autotoc_md216}{}\doxysubsubsection{L\+I\+C\+E\+N\+SE}\label{namespacem__cli2_autotoc_md216}
+Public Domain \mbox{\Hypertarget{interfacem__cli2_1_1remove_a4a30f737b41e6cfca58ef2842d633b27}\label{interfacem__cli2_1_1remove_a4a30f737b41e6cfca58ef2842d633b27}} 
+\index{m\_cli2::remove@{m\_cli2::remove}!remove\_i@{remove\_i}}
+\index{remove\_i@{remove\_i}!m\_cli2::remove@{m\_cli2::remove}}
+\doxysubsubsection{\texorpdfstring{remove\_i()}{remove\_i()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::remove\+::remove\+\_\+i (\begin{DoxyParamCaption}\item[{integer, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{interfacem__cli2_1_1remove_a72934a0b165dc3d178ff7cbe6117a5b3}\label{interfacem__cli2_1_1remove_a72934a0b165dc3d178ff7cbe6117a5b3}} 
+\index{m\_cli2::remove@{m\_cli2::remove}!remove\_l@{remove\_l}}
+\index{remove\_l@{remove\_l}!m\_cli2::remove@{m\_cli2::remove}}
+\doxysubsubsection{\texorpdfstring{remove\_l()}{remove\_l()}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::remove\+::remove\+\_\+l (\begin{DoxyParamCaption}\item[{logical, dimension(\+:), allocatable}]{list,  }\item[{integer, intent(in)}]{place }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/urbanjs/venus/\+V600/github/\+M\+\_\+\+C\+L\+I2/src/\mbox{\hyperlink{M__CLI2_8f90}{M\+\_\+\+C\+L\+I2.\+f90}}\end{DoxyCompactItemize}

@@ -1,0 +1,23 @@
+<map id="find_response" name="find_response">
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a0fadbddbbc99595fb68b333b97b89c86" title="m_cli2::fileopen" alt="" coords="173,159,298,185"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a1a3a7cb7ef271b1cfce52525860ac9d7" title="m_cli2::get_env" alt="" coords="173,209,298,236"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#aea44c2fefa8dcd126eab9457a3dd7274" title="m_cli2::join_path" alt="" coords="169,260,302,287"/>
+<area shape="rect" id="node10" href="$namespacem__cli2.html#a6578e29ee4dc56651528e7e0acd29665" title="NAMEsplit(3f) &#45; [M_CLI2:TOKENS] parse string into an array using specified delimiters (LICENSE:PD) ..." alt="" coords="1180,256,1281,283"/>
+<area shape="rect" id="node22" href="$M__CLI2_8f90.html#a7ab877f4328e16b2d8e0fd62fb987cda" title="position_response" alt="" coords="165,391,305,417"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a9ff1d3c4863a0f365fdea81a887ce693" title="m_cli2::separator" alt="" coords="353,199,488,225"/>
+<area shape="rect" id="node21" href="$namespacem__cli2.html#a76af7f7c39e6755e024890d85d488704" title="NAMEsubstitute(3f) &#45; [M_CLI2:EDITING] subroutine globally substitutes one substring for another in st..." alt="" coords="550,5,689,32"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a06f8bb6dd63fd7ac2a91b46ee89baaa9" title="NAMEprototype_and_cmd_args_to_nlist(3f) &#45; [ARGUMENTS:M_CLI2] convert Unix&#45;like command arguments to t..." alt="" coords="536,191,703,233"/>
+<area shape="rect" id="node12" href="$namespacem__cli2.html#ad64ecae6bc1419e8953af2edb5d3ac96" title="m_cli2::locate_key" alt="" coords="1159,117,1303,144"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#a7240f12031027172b87fde623bd77958" title="NAMElongest_command_argument(3f) &#45; [ARGUMENTS:M_args] length of longest argument on command line (LIC..." alt="" coords="751,158,944,199"/>
+<area shape="rect" id="node8" href="$namespacem__cli2.html#a61550043f4b214b9904bdb3c8bd6436a" title="NAMEprototype_to_dictionary(3f) &#45; [ARGUMENTS:M_CLI2] parse user command and store tokens into diction..." alt="" coords="769,223,925,265"/>
+<area shape="rect" id="node9" href="$namespacem__cli2.html#a160d56bc4a10faef7e8a8a4f04f4dadb" title="m_cli2::update" alt="" coords="992,231,1111,257"/>
+<area shape="rect" id="node13" href="$namespacem__cli2.html#a150f312a9f4ec6dd58afb58a9a68f26a" title="NAMEunquote(3f) &#45; [M_CLI2:QUOTES] remove quotes from string as if read with list&#45;directed input (LICE..." alt="" coords="1167,205,1294,232"/>
+<area shape="rect" id="node11" href="$namespacem__cli2.html#a499b7d944455947f85e78820fd3e4a71" title="m_cli2::lower" alt="" coords="1527,256,1637,283"/>
+<area shape="rect" id="node14" href="$namespacem__cli2.html#a63f81a2c027eb5f3e0a77167ac29fc73" title="NAMEquote(3f) &#45; [M_CLI2:QUOTES] add quotes to string as if written with list&#45;directed input (LICENSE:..." alt="" coords="1351,205,1461,232"/>
+<area shape="rect" id="node15" href="$namespacem__cli2.html#a8e172feb2e4ae4d21d4fceb4e54f593c" title="NAMEmerge_str(3f) &#45; [M_CLI2:LENGTH] pads strings to same length and then calls MERGE(3f) (LICENSE:PD)..." alt="" coords="1513,155,1651,181"/>
+<area shape="rect" id="node17" href="$namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f" title="m_cli2::replace_str" alt="" coords="1509,205,1655,232"/>
+<area shape="rect" id="node20" href="$namespacem__cli2.html#a4c12c311327951984c6e1611da23cdfd" title="m_cli2::journal" alt="" coords="1893,155,2012,181"/>
+<area shape="rect" id="node16" href="$namespacem__cli2.html#ad13853611abfee00d40ffa020662ec8a" title="NAMElenset(3f) &#45; [M_CLI2:LENGTH] return string trimmed or padded to specified length (LICENSE:PD) ..." alt="" coords="1717,155,1831,181"/>
+<area shape="rect" id="node18" href="$namespacem__cli2.html#a710b26995119aee101959555b1bac8e2" title="NAMEreplace_str(3f) &#45; [M_CLI2:EDITING] function globally replaces one substring for another in string..." alt="" coords="1703,256,1845,283"/>
+<area shape="rect" id="node19" href="$namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a" title="m_cli2::strtok" alt="" coords="1897,256,2008,283"/>
+</map>
