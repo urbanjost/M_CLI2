@@ -1,6 +1,8 @@
 # M_CLI2.f90 and associated files
-
+<!--
 ![parse](docs/images/parse.png)
+-->
+##  command --longequal=value -L --long value words -- unparsed_words
 
 ## NAME
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
