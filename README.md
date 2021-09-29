@@ -12,7 +12,7 @@
    made for each parameter name to set the variables appropriately in
    the program.
 
-## DOWNLOAD AND BUILD![gmake](docs/images/gnu.gif)
+## DOWNLOAD AND BUILD WITH make(1)![gmake](docs/images/gnu.gif)
    Compile the M_CLI2 module and build all the example programs.
    ```bash
        git clone https://github.com/urbanjost/M_CLI2.git
