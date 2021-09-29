@@ -109,7 +109,7 @@ These demo programs provide templates for the most common usage:
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
-- [ford(1) output](https://urbanjost.github.io/M_attr/fpm-ford/index.html).
+- [ford(1) output](https://urbanjost.github.io/M_M_CLI2/fpm-ford/index.html).
 - [CHANGELOG](docs/CHANGELOG.md)
 - [BUILD STATUS](docs/STATUS.md)
 
