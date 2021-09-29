@@ -3,18 +3,17 @@
 ![parse](docs/images/parse.png)
 
 ## NAME
-
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
 
 ## DESCRIPTION
-
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
    the program. A call to get_args(3f) or one of its variants is then
    made for each parameter name to set the variables appropriately in
    the program.
 
-## DOWNLOAD
+## DOWNLOAD AND BUILD![gmake](docs/images/gnu.gif)
+   Compile the M_CLI2 module and build all the example programs.
    ```bash
        git clone https://github.com/urbanjost/M_CLI2.git
        cd M_CLI2/src
@@ -31,8 +30,10 @@
        # for nvfortran
        make clean
        make F90=nvfortran nvfortran
+
+       # display other options (test, run, doxygen, ford, ...)
+       make help 
    ```
-   This will compile the M_CLI2 module and build all the example programs.
 
 ## SUPPORTS FPM ![parse](docs/images/fpm_logo.gif) 
    Alternatively, download the github repository and build it with
@@ -53,7 +54,6 @@
 ```
 
 ## FUNCTIONAL SPECIFICATION
-
 **This is how the interface works --**
 
 * Pass in a string to set_args(3f) that looks almost like the command
@@ -106,11 +106,10 @@ These demo programs provide templates for the most common usage:
 ### All manpages amalgamated
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
 
-<!--
-### doxygen
-
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
--->
+- [ford(1) output](https://urbanjost.github.io/M_attr/fpm-ford/index.html).
+- [CHANGELOG](docs/CHANGELOG.md)
+- [BUILD STATUS](docs/STATUS.md)
 
 ## EXAMPLE PROGRAM
 

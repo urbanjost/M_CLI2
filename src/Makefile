@@ -73,6 +73,7 @@ help:
 	: # ship                     -- rebuild archive files of manpages               #
 	: # clean                    -- clean directory of object files and executables #
 	: # doxygen                  -- run doxygen(1) if you have it                   #
+	: # ford                     -- run ford(1) if you have it                      #
 	: # help                     -- display this text                               #
 	: ###############################################################################
 
@@ -89,6 +90,9 @@ $(TPROG): $(OBJS)
 .PHONY: doxygen
 doxygen: 
 	doxygen dox.in
+.PHONY: ford
+ford: 
+	cd ..;ford ford.md
 
 .PHONY: test
 test: $(TPROG)
