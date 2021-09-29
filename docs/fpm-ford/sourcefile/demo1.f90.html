@@ -68,6 +68,8 @@
             <li><a href="../lists/procedures.html">Procedures</a></li>
         
                
+            <li><a href="../lists/types.html">Derived Types</a></li>
+        
         
             <li><a href="../lists/programs.html">Programs</a></li>
         
@@ -86,6 +88,8 @@
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
 
                              
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
 
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
 
@@ -126,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 0.5% of total for source files.">19 statements</a>
+    title=" 0.6% of total for source files.">21 statements</a>
      </li> 
      
      
@@ -269,32 +273,34 @@
 <a name="ln-6"></a>
 <a name="ln-7"></a><span class="c">!! DECLARE &quot;ARGS&quot;</span>
 <a name="ln-8"></a>   <span class="kt">real</span>                           <span class="kd">::</span> <span class="n">x</span><span class="p">,</span>  <span class="n">y</span><span class="p">,</span>  <span class="n">z</span><span class="p">,</span>  <span class="n">point</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<a name="ln-9"></a>   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">title</span>
+<a name="ln-9"></a>   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">title</span><span class="p">,</span> <span class="n">anytitle</span>
 <a name="ln-10"></a>   <span class="kt">logical</span>                        <span class="kd">::</span> <span class="n">l</span><span class="p">,</span>  <span class="n">lupper</span>
 <a name="ln-11"></a>
 <a name="ln-12"></a><span class="c">!! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES</span>
-<a name="ln-13"></a>   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T &quot;my title&quot; -l F -L F&#39;</span><span class="p">)</span>
+<a name="ln-13"></a>   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T &quot;my title&quot; --anytitle:: &quot;my title&quot; -l F -L F&#39;</span><span class="p">)</span>
 <a name="ln-14"></a>
 <a name="ln-15"></a><span class="c">!! ALL DONE CRACKING THE COMMAND LINE. GET THE VALUES</span>
 <a name="ln-16"></a>   <span class="n">x</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">);</span> <span class="n">y</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">);</span> <span class="n">z</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
 <a name="ln-17"></a>   <span class="n">l</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">);</span> <span class="n">lupper</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span>
 <a name="ln-18"></a>   <span class="n">title</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span> 
-<a name="ln-19"></a>
-<a name="ln-20"></a>   <span class="c">! With a fixed-size array to ensure the correct number of values are input use</span>
-<a name="ln-21"></a>   <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span><span class="n">point</span><span class="p">)</span>
-<a name="ln-22"></a>
-<a name="ln-23"></a><span class="c">!! USE THE VALUES IN YOUR PROGRAM.</span>
-<a name="ln-24"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39;SUM=&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39; point=&#39;</span><span class="p">,</span><span class="n">point</span>
-<a name="ln-25"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;title=&#39;</span><span class="p">,</span> <span class="nb">trim</span><span class="p">(</span><span class="n">title</span><span class="p">),</span>  <span class="s1">&#39; l=&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="s1">&#39;L=&#39;</span><span class="p">,</span> <span class="n">lupper</span>
-<a name="ln-26"></a>
-<a name="ln-27"></a><span class="k">end program </span><span class="n">demo1</span>
+<a name="ln-19"></a>   <span class="n">anytitle</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;anytitle&#39;</span><span class="p">)</span> 
+<a name="ln-20"></a>
+<a name="ln-21"></a>   <span class="c">! With a fixed-size array to ensure the correct number of values are input use</span>
+<a name="ln-22"></a>   <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span><span class="n">point</span><span class="p">)</span>
+<a name="ln-23"></a>
+<a name="ln-24"></a><span class="c">!! USE THE VALUES IN YOUR PROGRAM.</span>
+<a name="ln-25"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39;SUM=&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39; point=&#39;</span><span class="p">,</span><span class="n">point</span>
+<a name="ln-26"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;title=&#39;</span><span class="p">,</span> <span class="nb">trim</span><span class="p">(</span><span class="n">title</span><span class="p">),</span>  <span class="s1">&#39; l=&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="s1">&#39;L=&#39;</span><span class="p">,</span> <span class="n">lupper</span>
+<a name="ln-27"></a>   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;anytitle=&#39;</span><span class="p">,</span> <span class="nb">trim</span><span class="p">(</span><span class="n">anytitle</span><span class="p">)</span>
 <a name="ln-28"></a>
-<a name="ln-29"></a><span class="c">!! NOTES: WHEN DEFINING THE PROTOTYPE</span>
-<a name="ln-30"></a>   <span class="c">!  o All parameters must be listed with a default value</span>
-<a name="ln-31"></a>   <span class="c">!  o string values must be double-quoted</span>
-<a name="ln-32"></a>   <span class="c">!  o numeric lists must be comma-delimited. No spaces are allowed</span>
-<a name="ln-33"></a>   <span class="c">!  o long keynames must be all lowercase but may be followed by :LETTER where LETTER is a</span>
-<a name="ln-34"></a>   <span class="c">!    single letter that may be of any case that will act as a short name for the same value.</span>
+<a name="ln-29"></a><span class="k">end program </span><span class="n">demo1</span>
+<a name="ln-30"></a>
+<a name="ln-31"></a><span class="c">!! NOTES: WHEN DEFINING THE PROTOTYPE</span>
+<a name="ln-32"></a>   <span class="c">!  o All parameters must be listed with a default value</span>
+<a name="ln-33"></a>   <span class="c">!  o string values must be double-quoted</span>
+<a name="ln-34"></a>   <span class="c">!  o numeric lists must be comma-delimited. No spaces are allowed</span>
+<a name="ln-35"></a>   <span class="c">!  o long keynames must be all lowercase but may be followed by :LETTER where LETTER is a</span>
+<a name="ln-36"></a>   <span class="c">!    single letter that may be of any case that will act as a short name for the same value.</span>
 </pre></div>
 
     </section>
@@ -313,7 +319,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-03-20 22:54  
+             on 2021-09-29 08:35  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

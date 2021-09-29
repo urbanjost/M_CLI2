@@ -68,6 +68,8 @@
             <li><a href="../lists/procedures.html">Procedures</a></li>
         
                
+            <li><a href="../lists/types.html">Derived Types</a></li>
+        
         
             <li><a href="../lists/programs.html">Programs</a></li>
         
@@ -86,6 +88,8 @@
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
 
                              
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
 
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
 
@@ -368,11 +372,10 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 <h2 id="example">EXAMPLE</h2>
 <p>Sample program:</p>
 <div class="codehilite"><pre><span></span><code> <span class="nv">program</span> <span class="nv">demo_set_args</span>
- <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">filenames</span><span class="o">=&gt;</span><span class="nv">unnamed</span>, <span class="nv">set_args</span>, <span class="nv">get_args</span>, <span class="nv">unnamed</span>
+ <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">filenames</span><span class="o">=&gt;</span><span class="nv">unnamed</span>, <span class="nv">set_args</span>, <span class="nv">get_args</span>
  <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">get_args_fixed_size</span>
  <span class="nv">implicit</span> <span class="nv">none</span>
  <span class="nv">integer</span>                      :: <span class="nv">i</span>
- <span class="o">!</span>
  <span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">ARGS</span>
  <span class="nv">real</span>                         :: <span class="nv">x</span>, <span class="nv">y</span>, <span class="nv">z</span>
  <span class="nv">real</span>                         :: <span class="nv">p</span><span class="ss">(</span><span class="mi">3</span><span class="ss">)</span>
@@ -424,71 +427,77 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 
 <h2 id="response-files">RESPONSE FILES</h2>
 <p>If you have no interest in using external files as abbreviations
- you can ignore this section. Otherwise, before calling set_args(3f)
- add:</p>
+  you can ignore this section. Otherwise, before calling set_args(3f)
+  add:</p>
 <div class="codehilite"><pre><span></span><code> use M_CLI2, only : CLI_response_file
  CLI_response_file=.true.
 </code></pre></div>
 
 <p>M_CLI2 Response files are small files containing CLI (Command Line
- Interface) arguments that are used when command lines are so long that
- they would exceed line length limits or so complex that it is useful to
- have a platform-independent method of creating an abbreviation.</p>
-<p>Examples of commands that support similar response files are the Clang
- and Intel compilers, although there is no standard format for the files.</p>
-<p>The file names must end with &ldquo;.rsp&rdquo;.  They are read if you add options
- of the syntax &ldquo;@NAME&rdquo; as the FIRST parameters on your program command
- line calls.</p>
+  Interface) arguments that end with &ldquo;.rsp&rdquo; that can be used when command
+  lines are so long that they would exceed line length limits or so complex
+  that it is useful to have a platform-independent method of creating
+  an abbreviation.</p>
 <p>Shell aliases and scripts are often used for similar purposes (and
- allow for much more complex conditional execution, of course), but
- they generally cannot be used to overcome line length limits and are
- typically platform-specific.</p>
-<p>LOCATING RESPONSE FILES</p>
-<p>The first resource file found that results in lines being processed
- will be used and processing stops after that first match is found. If
- no match is found an error occurs and the program is stopped.</p>
-<p>A search for the response file always starts with the current directory.
- The search then proceeds to look in any additional directories specified
- with the colon-delimited environment variable CLI_RESPONSE_PATH.</p>
-<p>RESPONSE FILE SECTIONS</p>
-<p>A simple response file just has options for calling the program in it.
-  But they can also contain section headers to denote sections that are
-  only executed when a specific OS is being used. In addition a special
-  response file named PROGRAM.rsp can contain multiple abbreviations.</p>
-<p>SEARCH FOR @OSTYPE IN REGULAR FILES (NAME.rsp)</p>
-<p>Assuming the name @NAME was specified on the command line a file named
-  NAME.rsp will be searched for in all those search locations for a string
-  that starts with the string @OSTYPE if the environment variables $OS and
-  $OSTYPE are not blank.</p>
-<p>If $OSTYPE is unset, the value of the variable OS will be used.</p>
-<p>SEARCH FOR UNLABELED DIRECTIVES IN REGULAR FILES (NAME.rsp)</p>
-<p>Then, the same files will be searched for lines before any line
-  starting with &ldquo;@&rdquo;. That is, if there is no special section for the current
-  OS it just looks at the top of the file for unlabeled options.</p>
-<p>SEARCH FOR @OSTYPE@NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)</p>
-<p>Then, if nothing was found a file name EXECUTABLE.rsp will be searched
-  for in the same locations where EXECUTABLE is the basename of the program
-  being executed. This file is always a &ldquo;complex&rdquo; response file that uses
-  the format described below to allow for multiple entries.</p>
-<p>Any complex EXECUTABLE.rsp file found in the current or searched directories
-  will be searched for the string @OSTYPE@NAME first.</p>
-<p>SEARCH FOR @NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)</p>
-<p>The last search is to search all the EXECUTABLE.rsp files for the string
-  @NAME.</p>
-<p>THE SEARCH IS OVER</p>
-<p>Sounds complicated but actually works quite intuitively. Make a file in
- the current directory and put options in it and it will be used. If that
- file ends up needing different cases for different platforms add a line
- like &ldquo;@Linux&rdquo; to the file and some more lines and that will only be
- executed if the environment variable OSTYPE or OS is &ldquo;Linux&rdquo;. If no match
- is found for named sections the lines at the top before any &ldquo;@&rdquo; lines
- will be used as a default if not match is found.</p>
-<p>If you end up using a lot of files like this you can combine them all
- together and put them info a file called &ldquo;program_name.rsp&rdquo; and just
- put lines like @NAME or @OSTYPE@NAME at that top of each section.</p>
+  allow for much more complex conditional execution, of course), but
+  they generally cannot be used to overcome line length limits and are
+  typically platform-specific.</p>
+<p>Examples of commands that support similar response files are the Clang
+  and Intel compilers, although there is no standard format for the files.</p>
+<p>They are read if you add options of the syntax &ldquo;@NAME&rdquo; as the FIRST
+  parameters on your program command line calls. They are not recursive &ndash;
+  that is, an option in a response file cannot be given the value &ldquo;@NAME2&rdquo;
+  to call another response file.</p>
 <p>Note that more than one response name may appear on a command line.</p>
 <p>They are case-sensitive names.</p>
-<p>As mentioned, they must be the first options on the command line.</p>
+<p>LOCATING RESPONSE FILES</p>
+<p>A search for the response file always starts with the current directory.
+  The search then proceeds to look in any additional directories specified
+  with the colon-delimited environment variable CLI_RESPONSE_PATH.</p>
+<p>The first resource file found that results in lines being processed
+  will be used and processing stops after that first match is found. If
+  no match is found an error occurs and the program is stopped.</p>
+<p>RESPONSE FILE SECTIONS</p>
+<p>A simple response file just has options for calling the program in it
+  prefixed with the word &ldquo;options&rdquo;.
+  But they can also contain section headers to denote selections that are
+  only executed when a specific OS is being used, print messages, and
+  execute system commands.</p>
+<p>SEARCHING FOR OSTYPE IN REGULAR FILES</p>
+<p>So assuming the name @NAME was specified on the command line a file
+  named NAME.rsp will be searched for in all the search directories
+  and then in that file a string that starts with the string @OSTYPE
+  (if the environment variables $OS and $OSTYPE are not blank. $OSTYPE
+  takes precedence over $OS).</p>
+<p>SEARCHING FOR UNLABELED DIRECTIVES IN REGULAR FILES</p>
+<p>Then, the same files will be searched for lines above any line starting
+  with &ldquo;@&rdquo;. That is, if there is no special section for the current OS
+  it just looks at the top of the file for unlabeled options.</p>
+<p>SEARCHING FOR OSTYPE AND NAME IN THE COMPOUND FILE</p>
+<p>In addition or instead of files with the same name as the @NAME option
+  on the command line, you can have one file named after the executable
+  name that contains multiple abbreviation names.</p>
+<p>So if your program executable is named EXEC you create a single file
+  called EXEC.rsp and can append all the simple files described above
+  separating them with lines of the form @OSTYPE@NAME or just @NAME.</p>
+<p>So if no specific file for the abbreviation is found a file called
+  &ldquo;EXEC.rsp&rdquo; is searched for where &ldquo;EXEC&rdquo; is the name of the executable.
+  This file is always a &ldquo;compound&rdquo; response file that uses the following format:</p>
+<p>Any compound EXEC.rsp file found in the current or searched directories
+  will be searched for the string @OSTYPE@NAME first.</p>
+<p>Then if nothing is found, the less specific line @NAME is searched for.</p>
+<p>THE SEARCH IS OVER</p>
+<p>Sounds complicated but actually works quite intuitively. Make a file in
+  the current directory and put options in it and it will be used. If that
+  file ends up needing different cases for different platforms add a line
+  like &ldquo;@Linux&rdquo; to the file and some more lines and that will only be
+  executed if the environment variable OSTYPE or OS is &ldquo;Linux&rdquo;. If no match
+  is found for named sections the lines at the top before any &ldquo;@&rdquo; lines
+  will be used as a default if no match is found.</p>
+<p>If you end up using a lot of files like this you can combine them all
+  together and put them into a file called &ldquo;program_name&rdquo;.rsp and just
+  put lines like @NAME or @OSTYPE@NAME at that top of each selection.</p>
+<p>Now, back to the details on just what you can put in the files.</p>
 <h2 id="specification-for-response-files">SPECIFICATION FOR RESPONSE FILES</h2>
 <p>SIMPLE RESPONSE FILES</p>
 <p>The first word of a line is special and has the following meanings:</p>
@@ -508,74 +517,88 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 <span class="n">stop</span>       <span class="n">display</span> <span class="n">message</span> <span class="ow">and</span> <span class="n">stop</span> <span class="n">program</span><span class="o">.</span>
 </code></pre></div>
 
-<p>So if a program that echoed its parameters has a call of the form</p>
-<div class="codehilite"><pre><span></span><code> set_args(&#39;-x 10.0 -y 20.0 --title &quot;my title&quot;)
+<p>So if a program that does nothing but echos its parameters</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">program</span> <span class="nv">testit</span>
+<span class="nv">use</span> <span class="nv">M_CLI2</span>, <span class="nv">only</span> : <span class="nv">set_args</span>, <span class="nv">rget</span>, <span class="nv">sget</span>, <span class="nv">lget</span>
+<span class="nv">use</span> <span class="nv">M_CLI2</span>, <span class="nv">only</span> : <span class="nv">CLI_response_file</span>
+<span class="nv">implicit</span> <span class="nv">none</span>
+   <span class="nv">real</span> :: <span class="nv">x</span>,<span class="nv">y</span>                           <span class="c1">; namelist/args/ x,y</span>
+   <span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span>:<span class="ss">)</span>,<span class="nv">allocatable</span> :: <span class="nv">title</span> <span class="c1">; namelist/args/ title</span>
+   <span class="nv">logical</span> :: <span class="nv">big</span>                        <span class="c1">; namelist/args/ big</span>
+   <span class="nv">CLI_response_file</span><span class="o">=</span>.<span class="nv">true</span>.
+   <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">-x 10.0 -y 20.0 --title &quot;my title&quot; --big F</span><span class="s1">&#39;</span><span class="ss">)</span>
+   <span class="nv">x</span><span class="o">=</span><span class="nv">rget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span><span class="ss">)</span>
+   <span class="nv">y</span><span class="o">=</span><span class="nv">rget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">y</span><span class="s1">&#39;</span><span class="ss">)</span>
+   <span class="nv">title</span><span class="o">=</span><span class="nv">sget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span><span class="ss">)</span>
+   <span class="nv">big</span><span class="o">=</span><span class="nv">lget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">big</span><span class="s1">&#39;</span><span class="ss">)</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="nv">nml</span><span class="o">=</span><span class="nv">args</span><span class="ss">)</span>
+<span class="k">end</span> <span class="nv">program</span> <span class="nv">testit</span>
 </code></pre></div>
 
-<p>And a file in the current directory called &ldquo;a.rsp&rdquo; contained</p>
+<p>And a file in the current directory called &ldquo;a.rsp&rdquo; contains</p>
 <div class="codehilite"><pre><span></span><code> # <span class="nv">defaults</span> <span class="k">for</span> <span class="nv">project</span> <span class="nv">A</span>
  <span class="nv">options</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">1000</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">9999</span>
- <span class="nv">options</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my new default title</span><span class="s2">&quot;</span>
+ <span class="nv">options</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span>
+ <span class="nv">options</span> <span class="o">--</span><span class="nv">big</span> <span class="nv">T</span>
 </code></pre></div>
 
 <p>The program could be called with</p>
-<div class="codehilite"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="n">normal</span><span class="w"></span>
-<span class="err">$</span><span class="n">myprog</span><span class="w"></span>
-<span class="w"> </span><span class="n">X</span><span class="o">=</span><span class="mf">10.0</span><span class="w"> </span><span class="n">Y</span><span class="o">=</span><span class="mf">20.0</span><span class="w"> </span><span class="n">TITLE</span><span class="o">=</span><span class="ss">&quot;my title&quot;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="err">$</span><span class="n">myprog</span><span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="k">call</span><span class="w"></span>
+<span class="w">  </span><span class="n">X</span><span class="o">=</span><span class="mf">10.0</span><span class="w"> </span><span class="n">Y</span><span class="o">=</span><span class="mf">20.0</span><span class="w"> </span><span class="n">TITLE</span><span class="o">=</span><span class="ss">&quot;my title&quot;</span><span class="w"></span>
 
-<span class="err">#</span><span class="w"> </span><span class="n">change</span><span class="w"> </span><span class="n">defaults</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="ss">&quot;a.rsp&quot;</span><span class="w"></span>
-<span class="err">$</span><span class="n">myprog</span><span class="w"> </span><span class="nv">@a</span><span class="w"></span>
-<span class="w"> </span><span class="n">X</span><span class="o">=</span><span class="mf">1000.0</span><span class="w"> </span><span class="n">Y</span><span class="o">=</span><span class="mf">9999.0</span><span class="w"> </span><span class="n">TITLE</span><span class="o">=</span><span class="ss">&quot;my new default title&quot;</span><span class="w"></span>
+<span class="w"> </span><span class="err">$</span><span class="n">myprog</span><span class="w"> </span><span class="nv">@a</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">change</span><span class="w"> </span><span class="n">defaults</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="ss">&quot;a.rsp&quot;</span><span class="w"></span>
+<span class="w"> </span><span class="n">X</span><span class="o">=</span><span class="mf">1000.0</span><span class="w"> </span><span class="n">Y</span><span class="o">=</span><span class="mf">9999.0</span><span class="w"> </span><span class="n">TITLE</span><span class="o">=</span><span class="ss">&quot; &quot;</span><span class="w"></span>
 
-<span class="err">#</span><span class="w"> </span><span class="n">change</span><span class="w"> </span><span class="n">defaults</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="k">use</span><span class="w"> </span><span class="ow">any</span><span class="w"> </span><span class="k">option</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">override</span><span class="w"> </span><span class="n">defaults</span><span class="w"></span>
-<span class="err">$</span><span class="n">myprog</span><span class="w"> </span><span class="nv">@a</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="mi">1234</span><span class="w"></span>
-<span class="w"> </span><span class="n">X</span><span class="o">=</span><span class="mf">1000.0</span><span class="w"> </span><span class="n">Y</span><span class="o">=</span><span class="mf">1234.0</span><span class="w"> </span><span class="n">TITLE</span><span class="o">=</span><span class="ss">&quot;my new default title&quot;</span><span class="w"></span>
+<span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="n">change</span><span class="w"> </span><span class="n">defaults</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="k">use</span><span class="w"> </span><span class="ow">any</span><span class="w"> </span><span class="k">option</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">normal</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">override</span><span class="w"> </span><span class="n">defaults</span><span class="w"></span>
+<span class="w"> </span><span class="err">$</span><span class="n">myprog</span><span class="w"> </span><span class="nv">@a</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="mi">1234</span><span class="w"></span>
+<span class="w">  </span><span class="n">X</span><span class="o">=</span><span class="mf">1000.0</span><span class="w"> </span><span class="n">Y</span><span class="o">=</span><span class="mf">1234.0</span><span class="w"> </span><span class="n">TITLE</span><span class="o">=</span><span class="ss">&quot; &quot;</span><span class="w"></span>
 </code></pre></div>
 
 <p>COMPOUND RESPONSE FILES</p>
 <p>A compound response file has the same basename as the executable with a
- &ldquo;.rsp&rdquo; suffix added. So if your program is named &ldquo;myprg&rdquo; the filename
- must be &ldquo;myprg.rsp&rdquo;.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">Note</span> <span class="n">that</span> <span class="n">here</span> <span class="n n-Quoted">`basename`</span> <span class="n">means</span> <span class="n">the</span> <span class="n">basename</span> <span class="k">of</span> <span class="n">the</span>
+  &ldquo;.rsp&rdquo; suffix added. So if your program is named &ldquo;myprg&rdquo; the filename
+  must be &ldquo;myprg.rsp&rdquo;.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Note</span> <span class="n">that</span> <span class="n">here</span> <span class="n n-Quoted">`basename`</span> <span class="n">means</span> <span class="n">the</span> <span class="k">last</span> <span class="n">leaf</span>  <span class="k">of</span> <span class="n">the</span>
 <span class="k">name</span> <span class="k">of</span> <span class="n">the</span> <span class="n">program</span> <span class="k">as</span> <span class="n">returned</span> <span class="k">by</span> <span class="n">the</span> <span class="n">Fortran</span> <span class="n">intrinsic</span>
 <span class="n">GET_COMMAND_ARGUMENT</span><span class="p">(</span><span class="mi">0</span><span class="p">,...)</span> <span class="n">trimmed</span> <span class="k">of</span> <span class="n">anything</span> <span class="k">after</span> <span class="n">a</span> <span class="n">period</span> <span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">),</span>
 <span class="n">so</span> <span class="n">it</span> <span class="k">is</span> <span class="n">a</span> <span class="n">good</span> <span class="n">idea</span> <span class="k">not</span> <span class="k">to</span> <span class="k">use</span> <span class="n">hidden</span> <span class="n">files</span><span class="p">.</span>
 </code></pre></div>
 
 <p>Unlike simple response files compound response files can contain multiple
- setting names.</p>
-<p>If the environment variable $OSTYPE (first) or $OS is set the search
- will first be for a line of the form (no leading spaces should be used):</p>
+  setting names.</p>
+<p>Specifically in a compound file
+  if the environment variable $OSTYPE (first) or $OS is set the first search
+  will be for a line of the form (no leading spaces should be used):</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">@OSTYPE@alias_name</span><span class="w"></span>
 </code></pre></div>
 
 <p>If no match or if the environment variables $OSTYPE and $OS were not
- set or a match is not found then a line of the form</p>
+  set or a match is not found then a line of the form</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">@alias_name</span><span class="w"></span>
 </code></pre></div>
 
-<p>is searched for. Subsequent lines will be ignored that start with &ldquo;@&rdquo;
- until a line not starting with &ldquo;@&rdquo; is encountered.  Lines will then be
- processed until another line starting with &ldquo;@&rdquo; is found or end-of-file
- is encountered.</p>
+<p>is searched for in simple or compound files. If found subsequent lines
+  will be ignored that start with &ldquo;@&rdquo; until a line not starting with
+  &ldquo;@&rdquo; is encountered.  Lines will then be processed until another line
+  starting with &ldquo;@&rdquo; is found or end-of-file is encountered.</p>
 <p>COMPOUND RESPONSE FILE EXAMPLE
   An example compound file</p>
 <div class="codehilite"><pre><span></span><code>#################<span class="w"></span>
 <span class="p">@</span><span class="k">if</span><span class="w"></span>
 <span class="o">&gt;</span><span class="w"> </span><span class="n">RUNNING</span><span class="w"> </span><span class="n">TESTS</span><span class="w"> </span><span class="n">USING</span><span class="w"> </span><span class="n">RELEASE</span><span class="w"> </span><span class="n">VERSION</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">ifort</span><span class="w"></span>
-<span class="o">-</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">ifort</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="s">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">ifort</span><span class="w"></span>
 #################<span class="w"></span>
 <span class="p">@</span><span class="n">gf</span><span class="w"></span>
 <span class="o">&gt;</span><span class="w"> </span><span class="n">RUNNING</span><span class="w"> </span><span class="n">TESTS</span><span class="w"> </span><span class="n">USING</span><span class="w"> </span><span class="n">RELEASE</span><span class="w"> </span><span class="n">VERSION</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">gfortran</span><span class="w"></span>
-<span class="o">-</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">gfortran</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="s">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">gfortran</span><span class="w"></span>
 #################<span class="w"></span>
 <span class="p">@</span><span class="n">nv</span><span class="w"></span>
 <span class="o">&gt;</span><span class="w"> </span><span class="n">RUNNING</span><span class="w"> </span><span class="n">TESTS</span><span class="w"> </span><span class="n">USING</span><span class="w"> </span><span class="n">RELEASE</span><span class="w"> </span><span class="n">VERSION</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">nvfortran</span><span class="w"></span>
-<span class="o">-</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">nvfortran</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="s">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">nvfortran</span><span class="w"></span>
 #################<span class="w"></span>
 <span class="p">@</span><span class="n">nag</span><span class="w"></span>
 <span class="o">&gt;</span><span class="w"> </span><span class="n">RUNNING</span><span class="w"> </span><span class="n">TESTS</span><span class="w"> </span><span class="n">USING</span><span class="w"> </span><span class="n">RELEASE</span><span class="w"> </span><span class="n">VERSION</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">nagfor</span><span class="w"></span>
-<span class="o">-</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">nagfor</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="s">test</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">nagfor</span><span class="w"></span>
 #<span class="w"></span>
 #################<span class="w"></span>
 #<span class="w"> </span><span class="n">OS</span><span class="o">-</span><span class="n">specific</span><span class="w"> </span><span class="n">example</span><span class="p">:</span><span class="w"></span>
@@ -583,10 +606,10 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 #<span class="w"></span>
 #<span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">executables</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="p">(</span><span class="n">assuming</span><span class="w"> </span><span class="n">install</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">exists</span><span class="p">)</span><span class="w"></span>
 #<span class="w"></span>
-<span class="sx">!mkdir -p ~/.local/bin</span><span class="w"></span>
-<span class="o">-</span><span class="w"> </span><span class="nb">run</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">gfortran</span><span class="w"> </span><span class="o">--</span><span class="n">runner</span><span class="w"> </span><span class="s">&quot;install -vbp -m 0711 -t ~/.local/bin&quot;</span><span class="w"></span>
+<span class="nb">system</span><span class="w"> </span><span class="nb">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">~/</span><span class="p">.</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="s">run</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">gfortran</span><span class="w"> </span><span class="o">--</span><span class="n">runner</span><span class="w"> </span><span class="s">&quot;install -vbp -m 0711 -t ~/.local/bin&quot;</span><span class="w"></span>
 <span class="p">@</span><span class="n">install</span><span class="w"></span>
-<span class="p">@</span><span class="n">STOP</span><span class="w"> </span><span class="n">INSTALL</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">SUPPORTED</span><span class="w"> </span><span class="n">ON</span><span class="w"> </span><span class="n">THIS</span><span class="w"> </span><span class="n">PLATFORM</span><span class="w"> </span><span class="n">OR</span><span class="w"> </span>$<span class="n">OSTYPE</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">SET</span><span class="w"></span>
+<span class="n">STOP</span><span class="w"> </span><span class="s">INSTALL</span><span class="w"> </span><span class="s">NOT</span><span class="w"> </span><span class="s">SUPPORTED</span><span class="w"> </span><span class="s">ON</span><span class="w"> </span><span class="s">THIS</span><span class="w"> </span><span class="s">PLATFORM</span><span class="w"> </span><span class="s">OR</span><span class="w"> </span><span class="s">$OSTYPE</span><span class="w"> </span><span class="s">NOT</span><span class="w"> </span><span class="s">SET</span><span class="w"></span>
 #<span class="w"></span>
 #################<span class="w"></span>
 <span class="p">@</span><span class="n">fpm</span><span class="p">@</span><span class="n">testall</span><span class="w"></span>
@@ -923,7 +946,7 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-03-20 22:54  
+             on 2021-09-29 08:35  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

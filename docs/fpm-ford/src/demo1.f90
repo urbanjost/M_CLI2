@@ -6,16 +6,17 @@ program demo1
 
 !! DECLARE "ARGS"
    real                           :: x,  y,  z,  point(3)
-   character(len=:), allocatable  :: title
+   character(len=:), allocatable  :: title, anytitle
    logical                        :: l,  lupper
 
 !! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES
-   call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" -l F -L F')
+   call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" --anytitle:: "my title" -l F -L F')
 
 !! ALL DONE CRACKING THE COMMAND LINE. GET THE VALUES
    x=rget('x'); y=rget('y'); z=rget('z')
    l=lget('l'); lupper=lget('L')
    title=sget('title') 
+   anytitle=sget('anytitle') 
 
    ! With a fixed-size array to ensure the correct number of values are input use
    call get_args_fixed_size('point',point)
@@ -23,6 +24,7 @@ program demo1
 !! USE THE VALUES IN YOUR PROGRAM.
    write(*, '(*(g0:,1x))')'x=',x, 'y=',y, 'z=',z, 'SUM=',x+y+z, ' point=',point
    write(*, '(*(g0:,1x))')'title=', trim(title),  ' l=', l, 'L=', lupper
+   write(*, '(*(g0:,1x))')'anytitle=', trim(anytitle)
 
 end program demo1
 

@@ -171,11 +171,4 @@ commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
  + ifort (IFORT) 19.1.3.304 20200925
  + nvfortran 20.7-0 LLVM 64-bit target on x86-64 Linux
 
-## FEEDBACK ##
--------
-   Please provide feedback on the
-   [wiki](https://github.com/urbanjost/M_CLI2/wiki) or in the
-   [__issues__](https://github.com/urbanjost/M_CLI2/issues)
-   section or star the repository if you use the module (or let me know
-   why not and let others know what you did use!).
 -------

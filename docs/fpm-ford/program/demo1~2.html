@@ -68,6 +68,8 @@
             <li><a href="../lists/procedures.html">Procedures</a></li>
         
                
+            <li><a href="../lists/types.html">Derived Types</a></li>
+        
         
             <li><a href="../lists/programs.html">Programs</a></li>
         
@@ -86,6 +88,8 @@
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
 
                              
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+
 
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
 
@@ -126,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.2% of total for programs.">19 statements</a>
+    title=" 3.4% of total for programs.">21 statements</a>
      </li> 
      
      
@@ -169,6 +173,8 @@
   <div id="vars-0" class="panel-collapse collapse">
     <div class="list-group">
       
+      <a class="list-group-item" href="../program/demo1~2.html#variable-anytitle">anytitle</a>
+      
       <a class="list-group-item" href="../program/demo1~2.html#variable-l~6">l</a>
       
       <a class="list-group-item" href="../program/demo1~2.html#variable-lupper">lupper</a>
@@ -177,9 +183,9 @@
       
       <a class="list-group-item" href="../program/demo1~2.html#variable-title~6">title</a>
       
-      <a class="list-group-item" href="../program/demo1~2.html#variable-x~7">x</a>
+      <a class="list-group-item" href="../program/demo1~2.html#variable-x~8">x</a>
       
-      <a class="list-group-item" href="../program/demo1~2.html#variable-y~7">y</a>
+      <a class="list-group-item" href="../program/demo1~2.html#variable-y~8">y</a>
       
       <a class="list-group-item" href="../program/demo1~2.html#variable-z~5">z</a>
       
@@ -264,6 +270,8 @@
   <div id="vars-1" class="panel-collapse collapse">
     <div class="list-group">
       
+      <a class="list-group-item" href="../program/demo1~2.html#variable-anytitle">anytitle</a>
+      
       <a class="list-group-item" href="../program/demo1~2.html#variable-l~6">l</a>
       
       <a class="list-group-item" href="../program/demo1~2.html#variable-lupper">lupper</a>
@@ -272,9 +280,9 @@
       
       <a class="list-group-item" href="../program/demo1~2.html#variable-title~6">title</a>
       
-      <a class="list-group-item" href="../program/demo1~2.html#variable-x~7">x</a>
+      <a class="list-group-item" href="../program/demo1~2.html#variable-x~8">x</a>
       
-      <a class="list-group-item" href="../program/demo1~2.html#variable-y~7">y</a>
+      <a class="list-group-item" href="../program/demo1~2.html#variable-y~8">y</a>
       
       <a class="list-group-item" href="../program/demo1~2.html#variable-z~5">z</a>
       
@@ -327,6 +335,20 @@
 
 
 <tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-anytitle"></span>character(len=:),</td>
+  
+  
+  <td>allocatable</td><td>::</td>
+  <td><strong>anytitle</strong></td><td></td><td></td><td></td>
+  
+</tr>
 
   
   
@@ -390,7 +412,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-x~7"></span>real</td>
+  <td><span class="anchor" id="variable-x~8"></span>real</td>
   
   
   <td></td><td>::</td>
@@ -404,7 +426,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-y~7"></span>real</td>
+  <td><span class="anchor" id="variable-y~8"></span>real</td>
   
   
   <td></td><td>::</td>
@@ -457,16 +479,17 @@
 
 <span class="c">!! DECLARE &quot;ARGS&quot;</span>
    <span class="kt">real</span>                           <span class="kd">::</span> <span class="n">x</span><span class="p">,</span>  <span class="n">y</span><span class="p">,</span>  <span class="n">z</span><span class="p">,</span>  <span class="n">point</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">title</span>
+   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span> <span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">title</span><span class="p">,</span> <span class="n">anytitle</span>
    <span class="kt">logical</span>                        <span class="kd">::</span> <span class="n">l</span><span class="p">,</span>  <span class="n">lupper</span>
 
 <span class="c">!! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES</span>
-   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T &quot;my title&quot; -l F -L F&#39;</span><span class="p">)</span>
+   <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T &quot;my title&quot; --anytitle:: &quot;my title&quot; -l F -L F&#39;</span><span class="p">)</span>
 
 <span class="c">!! ALL DONE CRACKING THE COMMAND LINE. GET THE VALUES</span>
    <span class="n">x</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">);</span> <span class="n">y</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">);</span> <span class="n">z</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
    <span class="n">l</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">);</span> <span class="n">lupper</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span>
    <span class="n">title</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span> 
+   <span class="n">anytitle</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;anytitle&#39;</span><span class="p">)</span> 
 
    <span class="c">! With a fixed-size array to ensure the correct number of values are input use</span>
    <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span><span class="n">point</span><span class="p">)</span>
@@ -474,6 +497,7 @@
 <span class="c">!! USE THE VALUES IN YOUR PROGRAM.</span>
    <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39;SUM=&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39; point=&#39;</span><span class="p">,</span><span class="n">point</span>
    <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;title=&#39;</span><span class="p">,</span> <span class="nb">trim</span><span class="p">(</span><span class="n">title</span><span class="p">),</span>  <span class="s1">&#39; l=&#39;</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="s1">&#39;L=&#39;</span><span class="p">,</span> <span class="n">lupper</span>
+   <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;anytitle=&#39;</span><span class="p">,</span> <span class="nb">trim</span><span class="p">(</span><span class="n">anytitle</span><span class="p">)</span>
 
 <span class="k">end program </span><span class="n">demo1</span>
 </pre></div>
@@ -496,7 +520,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-03-20 22:54  
+             on 2021-09-29 08:35  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

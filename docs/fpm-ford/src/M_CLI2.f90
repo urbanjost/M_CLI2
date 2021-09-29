@@ -171,11 +171,11 @@ logical,save                      :: G_keyword_single_letter=.true.
 character(len=:),allocatable,save :: G_passed_in
 logical,save                      :: G_remaining_on, G_remaining_option_allowed
 character(len=:),allocatable,save :: G_remaining
-character(len=:),allocatable,save :: G_subcommand  ! possible candidate for a subcommand
+character(len=:),allocatable,save :: G_subcommand              ! possible candidate for a subcommand
 character(len=:),allocatable,save :: G_STOP_MESSAGE
 integer,save                      :: G_STOP
 logical,save                      :: G_STOPON
-logical,save                      :: G_STRICT    ! strict short and long rules or allow -longname and --shortname
+logical,save                      :: G_STRICT                  ! strict short and long rules or allow -longname and --shortname
 !----------------------------------------------
 ! try out response files
 logical,save                      :: CLI_RESPONSE_FILE=.false. ! allow @name abbreviations
@@ -536,15 +536,13 @@ end subroutine check_commandline
 !!           command arguments go into the character array "UNUSED".
 !!##EXAMPLE
 !!
-!!
 !! Sample program:
 !!
 !!     program demo_set_args
-!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+!!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
 !!     use M_CLI2,  only : get_args_fixed_size
 !!     implicit none
 !!     integer                      :: i
-!!     !
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
 !!     real                         :: p(3)
@@ -595,103 +593,108 @@ end subroutine check_commandline
 !!
 !!##RESPONSE FILES
 !!
-!! If you have no interest in using external files as abbreviations
-!! you can ignore this section. Otherwise, before calling set_args(3f)
-!! add:
+!!  If you have no interest in using external files as abbreviations
+!!  you can ignore this section. Otherwise, before calling set_args(3f)
+!!  add:
 !!
 !!     use M_CLI2, only : CLI_response_file
 !!     CLI_response_file=.true.
 !!
-!! M_CLI2 Response files are small files containing CLI (Command Line
-!! Interface) arguments that are used when command lines are so long that
-!! they would exceed line length limits or so complex that it is useful to
-!! have a platform-independent method of creating an abbreviation.
+!!  M_CLI2 Response files are small files containing CLI (Command Line
+!!  Interface) arguments that end with ".rsp" that can be used when command
+!!  lines are so long that they would exceed line length limits or so complex
+!!  that it is useful to have a platform-independent method of creating
+!!  an abbreviation.
 !!
-!! Examples of commands that support similar response files are the Clang
-!! and Intel compilers, although there is no standard format for the files.
+!!  Shell aliases and scripts are often used for similar purposes (and
+!!  allow for much more complex conditional execution, of course), but
+!!  they generally cannot be used to overcome line length limits and are
+!!  typically platform-specific.
 !!
-!! The file names must end with ".rsp".  They are read if you add options
-!! of the syntax "@NAME" as the FIRST parameters on your program command
-!! line calls.
+!!  Examples of commands that support similar response files are the Clang
+!!  and Intel compilers, although there is no standard format for the files.
 !!
-!! Shell aliases and scripts are often used for similar purposes (and
-!! allow for much more complex conditional execution, of course), but
-!! they generally cannot be used to overcome line length limits and are
-!! typically platform-specific.
+!!  They are read if you add options of the syntax "@NAME" as the FIRST
+!!  parameters on your program command line calls. They are not recursive --
+!!  that is, an option in a response file cannot be given the value "@NAME2"
+!!  to call another response file.
+!!
+!!  Note that more than one response name may appear on a command line.
+!!
+!!  They are case-sensitive names.
 !!
 !!   LOCATING RESPONSE FILES
 !!
-!! The first resource file found that results in lines being processed
-!! will be used and processing stops after that first match is found. If
-!! no match is found an error occurs and the program is stopped.
+!!  A search for the response file always starts with the current directory.
+!!  The search then proceeds to look in any additional directories specified
+!!  with the colon-delimited environment variable CLI_RESPONSE_PATH.
 !!
-!! A search for the response file always starts with the current directory.
-!! The search then proceeds to look in any additional directories specified
-!! with the colon-delimited environment variable CLI_RESPONSE_PATH.
+!!  The first resource file found that results in lines being processed
+!!  will be used and processing stops after that first match is found. If
+!!  no match is found an error occurs and the program is stopped.
 !!
 !!   RESPONSE FILE SECTIONS
 !!
-!!  A simple response file just has options for calling the program in it.
-!!  But they can also contain section headers to denote sections that are
-!!  only executed when a specific OS is being used. In addition a special
-!!  response file named PROGRAM.rsp can contain multiple abbreviations.
+!!  A simple response file just has options for calling the program in it
+!!  prefixed with the word "options".
+!!  But they can also contain section headers to denote selections that are
+!!  only executed when a specific OS is being used, print messages, and
+!!  execute system commands.
 !!
-!!   SEARCH FOR @OSTYPE IN REGULAR FILES (NAME.rsp)
+!!   SEARCHING FOR OSTYPE IN REGULAR FILES
 !!
-!!  Assuming the name @NAME was specified on the command line a file named
-!!  NAME.rsp will be searched for in all those search locations for a string
-!!  that starts with the string @OSTYPE if the environment variables $OS and
-!!  $OSTYPE are not blank.
+!!  So assuming the name @NAME was specified on the command line a file
+!!  named NAME.rsp will be searched for in all the search directories
+!!  and then in that file a string that starts with the string @OSTYPE
+!!  (if the environment variables $OS and $OSTYPE are not blank. $OSTYPE
+!!  takes precedence over $OS).
 !!
-!!  If $OSTYPE is unset, the value of the variable OS will be used.
+!!   SEARCHING FOR UNLABELED DIRECTIVES IN REGULAR FILES
 !!
-!!   SEARCH FOR UNLABELED DIRECTIVES IN REGULAR FILES (NAME.rsp)
+!!  Then, the same files will be searched for lines above any line starting
+!!  with "@". That is, if there is no special section for the current OS
+!!  it just looks at the top of the file for unlabeled options.
 !!
-!!  Then, the same files will be searched for lines before any line
-!!  starting with "@". That is, if there is no special section for the current
-!!  OS it just looks at the top of the file for unlabeled options.
+!!   SEARCHING FOR OSTYPE AND NAME IN THE COMPOUND FILE
 !!
-!!   SEARCH FOR @OSTYPE@NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
+!!  In addition or instead of files with the same name as the @NAME option
+!!  on the command line, you can have one file named after the executable
+!!  name that contains multiple abbreviation names.
 !!
-!!  Then, if nothing was found a file name EXECUTABLE.rsp will be searched
-!!  for in the same locations where EXECUTABLE is the basename of the program
-!!  being executed. This file is always a "complex" response file that uses
-!!  the format described below to allow for multiple entries.
+!!  So if your program executable is named EXEC you create a single file
+!!  called EXEC.rsp and can append all the simple files described above
+!!  separating them with lines of the form @OSTYPE@NAME or just @NAME.
 !!
-!!  Any complex EXECUTABLE.rsp file found in the current or searched directories
+!!  So if no specific file for the abbreviation is found a file called
+!!  "EXEC.rsp" is searched for where "EXEC" is the name of the executable.
+!!  This file is always a "compound" response file that uses the following format:
+!!
+!!  Any compound EXEC.rsp file found in the current or searched directories
 !!  will be searched for the string @OSTYPE@NAME first.
 !!
-!!   SEARCH FOR @NAME IN THE COMPLEX FILE (EXECUTABLE.rsp)
-!!
-!!  The last search is to search all the EXECUTABLE.rsp files for the string
-!!  @NAME.
+!!  Then if nothing is found, the less specific line @NAME is searched for.
 !!
 !!   THE SEARCH IS OVER
 !!
-!! Sounds complicated but actually works quite intuitively. Make a file in
-!! the current directory and put options in it and it will be used. If that
-!! file ends up needing different cases for different platforms add a line
-!! like "@Linux" to the file and some more lines and that will only be
-!! executed if the environment variable OSTYPE or OS is "Linux". If no match
-!! is found for named sections the lines at the top before any "@" lines
-!! will be used as a default if not match is found.
+!!  Sounds complicated but actually works quite intuitively. Make a file in
+!!  the current directory and put options in it and it will be used. If that
+!!  file ends up needing different cases for different platforms add a line
+!!  like "@Linux" to the file and some more lines and that will only be
+!!  executed if the environment variable OSTYPE or OS is "Linux". If no match
+!!  is found for named sections the lines at the top before any "@" lines
+!!  will be used as a default if no match is found.
 !!
-!! If you end up using a lot of files like this you can combine them all
-!! together and put them info a file called "program_name.rsp" and just
-!! put lines like @NAME or @OSTYPE@NAME at that top of each section.
+!!  If you end up using a lot of files like this you can combine them all
+!!  together and put them into a file called "program_name".rsp and just
+!!  put lines like @NAME or @OSTYPE@NAME at that top of each selection.
 !!
-!! Note that more than one response name may appear on a command line.
-!!
-!! They are case-sensitive names.
-!!
-!! As mentioned, they must be the first options on the command line.
-!!
+!!  Now, back to the details on just what you can put in the files.
 !!
 !!##SPECIFICATION FOR RESPONSE FILES
 !!
 !!   SIMPLE RESPONSE FILES
 !!
-!! The first word of a line is special and has the following meanings:
+!!  The first word of a line is special and has the following meanings:
 !!
 !!    options|-  Command options following the rules of the SET_ARGS(3f)
 !!               prototype. So
@@ -708,58 +711,72 @@ end subroutine check_commandline
 !!    print|>    Message to screen
 !!    stop       display message and stop program.
 !!
-!! So if a program that echoed its parameters has a call of the form
+!!  So if a program that does nothing but echos its parameters
 !!
-!!     set_args('-x 10.0 -y 20.0 --title "my title")
+!!    program testit
+!!    use M_CLI2, only : set_args, rget, sget, lget
+!!    use M_CLI2, only : CLI_response_file
+!!    implicit none
+!!       real :: x,y                           ; namelist/args/ x,y
+!!       character(len=:),allocatable :: title ; namelist/args/ title
+!!       logical :: big                        ; namelist/args/ big
+!!       CLI_response_file=.true.
+!!       call set_args('-x 10.0 -y 20.0 --title "my title" --big F')
+!!       x=rget('x')
+!!       y=rget('y')
+!!       title=sget('title')
+!!       big=lget('big')
+!!       write(*,nml=args)
+!!    end program testit
 !!
-!! And a file in the current directory called "a.rsp" contained
+!!  And a file in the current directory called "a.rsp" contains
 !!
 !!     # defaults for project A
 !!     options -x 1000 -y 9999
-!!     options --title "my new default title"
+!!     options --title " "
+!!     options --big T
 !!
-!! The program could be called with
+!!  The program could be called with
 !!
-!!    # normal
-!!    $myprog
-!!     X=10.0 Y=20.0 TITLE="my title"
+!!     $myprog     # normal call
+!!      X=10.0 Y=20.0 TITLE="my title"
 !!
-!!    # change defaults as specified in "a.rsp"
-!!    $myprog @a
-!!     X=1000.0 Y=9999.0 TITLE="my new default title"
+!!     $myprog @a  # change defaults as specified in "a.rsp"
+!!     X=1000.0 Y=9999.0 TITLE=" "
 !!
-!!    # change defaults but use any option as normal to override defaults
-!!    $myprog @a -y 1234
-!!     X=1000.0 Y=1234.0 TITLE="my new default title"
+!!     # change defaults but use any option as normal to override defaults
+!!     $myprog @a -y 1234
+!!      X=1000.0 Y=1234.0 TITLE=" "
 !!
 !!   COMPOUND RESPONSE FILES
 !!
-!! A compound response file has the same basename as the executable with a
-!! ".rsp" suffix added. So if your program is named "myprg" the filename
-!! must be "myprg.rsp".
+!!  A compound response file has the same basename as the executable with a
+!!  ".rsp" suffix added. So if your program is named "myprg" the filename
+!!  must be "myprg.rsp".
 !!
-!!    Note that here `basename` means the basename of the
+!!    Note that here `basename` means the last leaf  of the
 !!    name of the program as returned by the Fortran intrinsic
 !!    GET_COMMAND_ARGUMENT(0,...) trimmed of anything after a period ("."),
 !!    so it is a good idea not to use hidden files.
 !!
-!! Unlike simple response files compound response files can contain multiple
-!! setting names.
+!!  Unlike simple response files compound response files can contain multiple
+!!  setting names.
 !!
-!! If the environment variable $OSTYPE (first) or $OS is set the search
-!! will first be for a line of the form (no leading spaces should be used):
+!!  Specifically in a compound file
+!!  if the environment variable $OSTYPE (first) or $OS is set the first search
+!!  will be for a line of the form (no leading spaces should be used):
 !!
 !!    @OSTYPE@alias_name
 !!
-!! If no match or if the environment variables $OSTYPE and $OS were not
-!! set or a match is not found then a line of the form
+!!  If no match or if the environment variables $OSTYPE and $OS were not
+!!  set or a match is not found then a line of the form
 !!
 !!    @alias_name
 !!
-!! is searched for. Subsequent lines will be ignored that start with "@"
-!! until a line not starting with "@" is encountered.  Lines will then be
-!! processed until another line starting with "@" is found or end-of-file
-!! is encountered.
+!!  is searched for in simple or compound files. If found subsequent lines
+!!  will be ignored that start with "@" until a line not starting with
+!!  "@" is encountered.  Lines will then be processed until another line
+!!  starting with "@" is found or end-of-file is encountered.
 !!
 !!   COMPOUND RESPONSE FILE EXAMPLE
 !!  An example compound file
@@ -767,19 +784,19 @@ end subroutine check_commandline
 !!    #################
 !!    @if
 !!    > RUNNING TESTS USING RELEASE VERSION AND ifort
-!!    - test --release --compiler ifort
+!!    options test --release --compiler ifort
 !!    #################
 !!    @gf
 !!    > RUNNING TESTS USING RELEASE VERSION AND gfortran
-!!    - test --release --compiler gfortran
+!!    options test --release --compiler gfortran
 !!    #################
 !!    @nv
 !!    > RUNNING TESTS USING RELEASE VERSION AND nvfortran
-!!    - test --release --compiler nvfortran
+!!    options test --release --compiler nvfortran
 !!    #################
 !!    @nag
 !!    > RUNNING TESTS USING RELEASE VERSION AND nagfor
-!!    - test --release --compiler nagfor
+!!    options test --release --compiler nagfor
 !!    #
 !!    #################
 !!    # OS-specific example:
@@ -787,10 +804,10 @@ end subroutine check_commandline
 !!    #
 !!    # install executables in directory (assuming install(1) exists)
 !!    #
-!!    !mkdir -p ~/.local/bin
-!!    - run --release T --compiler gfortran --runner "install -vbp -m 0711 -t ~/.local/bin"
+!!    system mkdir -p ~/.local/bin
+!!    options run --release T --compiler gfortran --runner "install -vbp -m 0711 -t ~/.local/bin"
 !!    @install
-!!    @STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
+!!    STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
 !!    #
 !!    #################
 !!    @fpm@testall
@@ -820,6 +837,7 @@ end subroutine check_commandline
 !!
 !!##LICENSE
 !!      Public Domain
+
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -1021,6 +1039,7 @@ integer                       :: i
 integer                       :: j
    G_subcommand=''
    G_options_only=.true.
+   sub=''
 
    if(.not.allocated(unnamed))then
       allocate(character(len=0) :: unnamed(0))
@@ -1759,7 +1778,7 @@ integer                                  :: lines_processed
 contains
 !===================================================================================================================================
 subroutine find_and_read_response_file(rname)
-! seach for a simple file named the same as the @NAME field with one entry assumed in it
+! search for a simple file named the same as the @NAME field with one entry assumed in it
 character(len=*),intent(in)  :: rname
 character(len=:),allocatable :: paths(:)
 character(len=:),allocatable :: testpath
@@ -2180,6 +2199,7 @@ logical                      :: next_mandatory
          endif
          cycle
       endif
+
       dummy=current_argument//'   '
       current_argument_padded=current_argument//'   '
 
@@ -2236,7 +2256,8 @@ logical                      :: next_mandatory
             if(len(current_argument).lt.1)then
                G_remaining=G_remaining//'"" '
             elseif(current_argument(1:1).eq.'-')then
-               G_remaining=G_remaining//current_argument//' '
+               !get fancier to handle spaces and =!G_remaining=G_remaining//current_argument//' '
+               G_remaining=G_remaining//'"'//current_argument//'" '
             else
                G_remaining=G_remaining//'"'//current_argument//'" '
             endif
@@ -2262,7 +2283,8 @@ logical                      :: next_mandatory
                   if(len(current_argument).lt.1)then
                         G_remaining=G_remaining//'"" '
                   elseif(current_argument(1:1).eq.'-')then
-                        G_remaining=G_remaining//current_argument//' '
+                       !get fancier to handle spaces and =!G_remaining=G_remaining//current_argument//' '
+                        G_remaining=G_remaining//'"'//current_argument//'" '
                   else
                         G_remaining=G_remaining//'"'//current_argument//'" '
                   endif
@@ -2356,7 +2378,8 @@ integer :: iequal
           iright=index(current_argument,' ')
           if(iright.eq.0)iright=len(current_argument)
           iequal=index(current_argument(:iright),'=')
-          if(iequal.ne.0.and.current_argument(1:1).eq.'-')then
+          if(next_mandatory)then
+          elseif(iequal.ne.0.and.current_argument(1:1).eq.'-')then
              if(iequal.ne.len(current_argument))then
                 right_hand_side=current_argument(iequal+1:)
              else
@@ -3305,7 +3328,7 @@ end function longest_command_argument
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, nospace)
+subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, sep)
 implicit none
 
 ! ident_13="@(#)M_CLI2::journal(3f): writes a message to a string composed of any standard scalar types"
@@ -3314,11 +3337,11 @@ character(len=*),intent(in)   :: where
 class(*),intent(in)           :: g0
 class(*),intent(in),optional  :: g1, g2, g3, g4, g5, g6, g7, g8 ,g9
 class(*),intent(in),optional  :: ga, gb, gc, gd, ge, gf, gg, gh ,gi, gj
-logical,intent(in),optional   :: nospace
+character(len=*),intent(in),optional :: sep
 if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g1)
 if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g2)
-if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(nospace)
-write(*,'(a)')str(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj ,nospace)
+if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(sep)
+write(*,'(a)')str(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, sep)
 end subroutine journal
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -3329,11 +3352,11 @@ end subroutine journal
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
-!!    function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,nospace)
+!!    function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,sep)
 !!
 !!     class(*),intent(in),optional  :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9
 !!     class(*),intent(in),optional  :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj
-!!     logical,intent(in),optional   :: nospace
+!!     character(len=*),intent(in),optional :: sep
 !!     character,len=(:),allocatable :: str
 !!
 !!##DESCRIPTION
@@ -3348,7 +3371,7 @@ end subroutine journal
 !!                single-dimensioned arrays. Currently, mixing scalar
 !!                arguments and array arguments is not supported.
 !!
-!!    nospace     if nospace=.true., then no spaces are added between values
+!!    sep         separator to place between values. Defaults to a space.
 !!##RETURNS
 !!    str     description to print
 !!##EXAMPLES
@@ -3373,7 +3396,7 @@ end subroutine journal
 !!
 !!       ! create a format on the fly
 !!       biggest=huge(0)
-!!       frmt=str('(*(i',int(log10(real(biggest))),':,1x))',nospace=.true.)
+!!       frmt=str('(*(i',int(log10(real(biggest))),':,1x))',sep=' ')
 !!       write(*,*)'format=',frmt
 !!
 !!       ! although it will often work, using str(3f) in an I/O statement is not recommended
@@ -3398,7 +3421,7 @@ end subroutine journal
 !!    Public Domain
 function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, &
                   & generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, &
-                  & nospace)
+                  & sep)
 implicit none
 
 ! ident_14="@(#)M_CLI2::msg_scalar(3fp): writes a message to a string composed of any standard scalar types"
@@ -3407,19 +3430,18 @@ class(*),intent(in),optional  :: generic0, generic1, generic2, generic3, generic
 class(*),intent(in),optional  :: generic5, generic6, generic7, generic8, generic9
 class(*),intent(in),optional  :: generica, genericb, genericc, genericd, generice
 class(*),intent(in),optional  :: genericf, genericg, generich, generici, genericj
-logical,intent(in),optional   :: nospace
+character(len=*),intent(in),optional :: sep
+character(len=:),allocatable  :: sep_local
 character(len=:), allocatable :: msg_scalar
 character(len=4096)           :: line
 integer                       :: istart
 integer                       :: increment
    if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR'
-   if(present(nospace))then
-      if(nospace)then
-         increment=1
-      else
-         increment=2
-      endif
+   if(present(sep))then
+      sep_local=sep
+      increment=len(sep_local)+1
    else
+      sep_local=' '
       increment=2
    endif
    if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR'
@@ -3477,13 +3499,14 @@ class(*),intent(in) :: generic
    end select
    if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:START'
    istart=len_trim(line)+increment
+   line=trim(line)//sep_local
 end subroutine print_generic
 !===================================================================================================================================
 end function msg_scalar
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,nospace)
+function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,sep)
 implicit none
 
 ! ident_15="@(#)M_CLI2::msg_one(3fp): writes a message to a string composed of any standard one dimensional types"
@@ -3491,18 +3514,17 @@ implicit none
 class(*),intent(in)           :: generic0(:)
 class(*),intent(in),optional  :: generic1(:), generic2(:), generic3(:), generic4(:), generic5(:)
 class(*),intent(in),optional  :: generic6(:), generic7(:), generic8(:), generic9(:)
-logical,intent(in),optional   :: nospace
+character(len=*),intent(in),optional :: sep
+character(len=:),allocatable  :: sep_local
 character(len=:), allocatable :: msg_one
 character(len=4096)           :: line
 integer                       :: istart
 integer                       :: increment
-   if(present(nospace))then
-      if(nospace)then
-         increment=1
-      else
-         increment=2
-      endif
+   if(present(sep))then
+      sep_local=sep
+      increment=len(sep_local)+1
    else
+      sep_local=' '
       increment=2
    endif
 
@@ -3543,8 +3565,8 @@ integer :: i
       class default
          call mystop(-22,'unknown type in *print_generic*')
    end select
-   line=trim(line)//"]"
-   istart=len_trim(line)+increment
+   istart=len_trim(line)+increment+1
+   line=trim(line)//"]"//sep_local
 end subroutine print_generic
 !===================================================================================================================================
 end function msg_one
@@ -5941,7 +5963,12 @@ function lget(n); logical                      :: lget; character(len=*),intent(
 function igs(n); integer,allocatable          :: igs(:); character(len=*),intent(in) :: n; call get_args(n,igs); end function igs
 function rgs(n); real,allocatable             :: rgs(:); character(len=*),intent(in) :: n; call get_args(n,rgs); end function rgs
 function dgs(n); real(kind=dp),allocatable    :: dgs(:); character(len=*),intent(in) :: n; call get_args(n,dgs); end function dgs
-function sgs(n); character(len=:),allocatable :: sgs(:); character(len=*),intent(in) :: n; call get_args(n,sgs); end function sgs
+function sgs(n,delims)
+character(len=:),allocatable         :: sgs(:)
+character(len=*),optional,intent(in) :: delims
+character(len=*),intent(in)          :: n
+   call get_args(n,sgs,delims)
+end function sgs
 function cgs(n); complex,allocatable          :: cgs(:); character(len=*),intent(in) :: n; call get_args(n,cgs); end function cgs
 function lgs(n); logical,allocatable          :: lgs(:); character(len=*),intent(in) :: n; call get_args(n,lgs); end function lgs
 !===================================================================================================================================

@@ -1,9 +1,8 @@
            program demo_set_args
-           use M_CLI2,  only : filenames=>unnamed, set_args, get_args, unnamed
+           use M_CLI2,  only : filenames=>unnamed, set_args, get_args
            use M_CLI2,  only : get_args_fixed_size
            implicit none
            integer                      :: i
-           !
            ! DEFINE ARGS
            real                         :: x, y, z
            real                         :: p(3)
