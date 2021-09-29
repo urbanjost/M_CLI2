@@ -26,9 +26,9 @@
 !!    parsing using a simple prototype.
 !!
 !!    Typically one call to SET_ARGS(3f) is made to define the command
-!!    arguments, set default values and parse the command line. Then a
-!!    call is made to GET_ARGS(3f) for each command keyword to obtain the
-!!    argument values.
+!!    arguments, set default values and parse the command line. Then a call
+!!    is made to the convenience commands based on GET_ARGS(3f) for each
+!!    command keyword to obtain the argument values.
 !!
 !!    The documentation for SET_ARGS(3f) and GET_ARGS(3f) provides further
 !!    details.

@@ -57,7 +57,7 @@ all: $(PROG) $(TPROG)
 $(PROG): $(OBJS)
 	-$(F90) $(LDFLAGS) $@.f90 -o $@ $(OBJS) $(LIBS)
 clean:
-	rm -f $(PROG) $(CPROG) $(OBJS) *.mod *.o
+	rm -f $(PROG) $(CPROG) $(TPROG) $(OBJS) *.mod *.o
 .SUFFIXES: $(SUFFIXES) .f90 .F90 
 .f90.o:
 	$(F90) $(F90FLAGS) -c $<

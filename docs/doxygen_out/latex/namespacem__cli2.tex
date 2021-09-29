@@ -295,7 +295,7 @@ Available procedures and variables\+:
 use M\+\_\+\+C\+L\+I2, only \+: set\+\_\+args, \mbox{\hyperlink{interfacem__cli2_1_1get__args}{get\+\_\+args}}, unnamed, remaining, args use M\+\_\+\+C\+L\+I2, only \+: \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__length}{get\+\_\+args\+\_\+fixed\+\_\+length}}, \mbox{\hyperlink{interfacem__cli2_1_1get__args__fixed__size}{get\+\_\+args\+\_\+fixed\+\_\+size}} use M\+\_\+\+C\+L\+I2, only \+: specified ! convenience functions use M\+\_\+\+C\+L\+I2, only \+: dget, iget, lget, rget, sget, cget use M\+\_\+\+C\+L\+I2, only \+: dgets, igets, lgets, rgets, sgets, cgets\hypertarget{namespacem__cli2_autotoc_md2}{}\doxysubsubsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{namespacem__cli2_autotoc_md2}
 Allow for command line parsing much like standard Unix command line parsing using a simple prototype.
 
-Typically one call to S\+E\+T\+\_\+\+A\+R\+G\+S(3f) is made to define the command arguments, set default values and parse the command line. Then a call is made to G\+E\+T\+\_\+\+A\+R\+G\+S(3f) for each command keyword to obtain the argument values.
+Typically one call to S\+E\+T\+\_\+\+A\+R\+G\+S(3f) is made to define the command arguments, set default values and parse the command line. Then a call is made to the convenience commands based on G\+E\+T\+\_\+\+A\+R\+G\+S(3f) for each command keyword to obtain the argument values.
 
 The documentation for S\+E\+T\+\_\+\+A\+R\+G\+S(3f) and G\+E\+T\+\_\+\+A\+R\+G\+S(3f) provides further details.\hypertarget{namespacem__cli2_autotoc_md3}{}\doxysubsubsection{E\+X\+A\+M\+P\+LE}\label{namespacem__cli2_autotoc_md3}
 Sample program using type conversion routines \begin{DoxyVerb}program demo_M_CLI2
