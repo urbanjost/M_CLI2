@@ -14,6 +14,19 @@
    made for each parameter name to set the variables appropriately in
    the program.
 
+## EXAMPLES
+These demo programs provide templates for the most common usage:
+- [demo1](example/demo1.f90) using the convenience functions
+- [demo2](example/demo2.f90) putting everything including **help** and **version** information into a contained procedure.
+- [demo3](example/demo3.f90) example of **basic** use
+- [demo4](example/demo4.f90) _COMPLEX_ type values
+- [demo5](example/demo5.f90) _CHARACTER_ type values
+- [demo6](example/demo6.f90) a complicated example showing how to create a command with subcommands
+- [demo7](example/demo7.f90) controlling array delimiter characters
+- [demo8](example/demo8.f90) multiple keyword and variable pairs on get_args(3f) for limited cases
+- [demo9](example/demo9.f90) long and short names using  --LONGNAME:SHORTNAME
+- [demo10](example/demo10.f90) full usage and even equivalencing
+
 ## DOWNLOAD AND BUILD WITH make(1)![gmake](docs/images/gnu.gif)
    Compile the M_CLI2 module and build all the example programs.
    ```bash
@@ -81,29 +94,15 @@ just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.
 
 ## DOCUMENTATION
-These demo programs provide templates for the most common usage:
-
-- [demo1](example/demo1.f90) using the convenience functions
-- [demo2](example/demo2.f90) putting everything including **help** and **version** information into a contained procedure.
-- [demo3](example/demo3.f90) example of **basic** use
-- [demo4](example/demo4.f90) _COMPLEX_ type values
-- [demo5](example/demo5.f90) _CHARACTER_ type values
-- [demo6](example/demo6.f90) a complicated example showing how to create a command with subcommands
-- [demo7](example/demo7.f90) controlling array delimiter characters
-- [demo8](example/demo8.f90) multiple keyword and variable pairs on get_args(3f) for limited cases
-- [demo9](example/demo9.f90) long and short names using  --LONGNAME:SHORTNAME
-- [demo10](example/demo10.f90) full usage and even equivalencing
-
 ### manpages
-- [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html)  -- An overview of the M_CLI2 module
-- [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html)  -- parses the command line options
-- [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html)  -- obtain parameter values for allocatable arrays and scalars
+- [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html) -- An overview of the M_CLI2 module
+- [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html) -- parses the command line options
+- [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html) -- obtain parameter values for allocatable arrays and scalars
   This also documents the functions iget,igets,rget,rgets,sget,sgets,lget,lgets, ... .
 #### less frequently used 
 - [get_args_fixed_length](https://urbanjost.github.io/M_CLI2/get_args_fixed_length.3m_cli2.html)  -- obtain parameter values for fixed-length character variable
 - [get_args_fixed_size](https://urbanjost.github.io/M_CLI2/get_args_fixed_size.3m_cli2.html)  -- obtain parameter values for fixed-size arrays
 - [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html)  -- query whether an option was used on the commandline
-
 
 ### All manpages amalgamated
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All manpages consolidated using JavaScript
@@ -114,7 +113,6 @@ These demo programs provide templates for the most common usage:
 - [BUILD STATUS](docs/STATUS.md)
 
 ## EXAMPLE PROGRAM
-
 This short program defines a command that can be called like
 
 ```bash
@@ -133,14 +131,14 @@ This short program defines a command that can be called like
    use M_CLI2, only : get_args_fixed_size
    implicit none
    integer :: i
-   !! DEFINE ARGUMENTS
+   !! Define arguments
    real                          :: x, y, z, point(3)
    integer,allocatable           :: p(:)
    character(len=:),allocatable  :: title
    logical                       :: l, lbig
    !! DEFINE COMMAND
       call set_args('-x 1 -y 2.0 -z 3.5e0 --point -1,-2,-3 -p 11,-22,33 --title "my title" -l F -L F')
-   !! GET VALUES USING CONVENIENCE FUNCTIONS
+   !! Get values using convenience functions
       x=rget('x') 
       y=rget('y') 
       z=rget('z')
@@ -149,16 +147,12 @@ This short program defines a command that can be called like
       p=igets('p')
       title=sget('title')
       call get_args_fixed_size('point',point) ! this will ensure three values are specified
-   !! USE THE VALUES IN YOUR PROGRAM.
-      write(*,*)'x=',x
-      write(*,*)'y=',y
-      write(*,*)'z=',z
-      write(*,*)'point=',point
-      write(*,*)'p=',p
-      write(*,*)'l=',l
-      write(*,*)'lbig=',lbig
+   !! Use the values in your program.
+      write(*,*)'x=',x, 'y=',y, 'z=',z
+      write(*,*)'point=',point, 'p=',p
+      write(*,*)'l=',l,'lbig=',lbig
       write(*,*)'title=',title
-   !! OPTIONAL UNNAMED VALUES FROM COMMAND LINE
+   !! Optional unnamed values from command line
       if(size(files).gt.0)then
          write(*,'(a)')'files:'
          write(*,'(i6.6,3a)')(i,'[',files(i),']',i=1,size(files))
@@ -172,4 +166,10 @@ commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
  + ifort (IFORT) 19.1.3.304 20200925
  + nvfortran 20.7-0 LLVM 64-bit target on x86-64 Linux
 
--------
+commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
+ + GNU Fortran (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0
+ + ifort (IFORT) 2021.3.0 20210609
+ + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem 
+---
+Last updated:   Wed Sep 29 17:34:52 2021 -0400
+
