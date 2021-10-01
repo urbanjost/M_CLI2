@@ -14,6 +14,43 @@
    made for each parameter name to set the variables appropriately in
    the program.
 
+## EXAMPLE PROGRAM
+This short program defines a command that can be called like
+
+```bash
+   ./show -x 10 -y -20 -p 10,20,30 --title 'plot of stuff' -L
+   # these parameters are defined automatically 
+   ./show --usage 
+   ./show --help
+   ./show --version
+   # you must supply text for "help" and "version" to be useful.
+```
+```fortran
+   program show
+   use M_CLI2, only : set_args, lget, rget, sget, igets
+   implicit none
+   real                          :: x, y, z, sum
+   integer,allocatable           :: p(:)
+   character(len=:),allocatable  :: title
+   logical                       :: l, lbig
+      ! Define command and default values and parse supplied command line options
+      call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title "my title" -l F -L F')
+      ! Get values using convenience functions
+      sum=rget('x') + rget('y') + rget('z')
+      title=sget('title')
+      p=igets('p')
+      l=lget('l')
+      lbig=lget('L')
+      write(*,*)sum,l,lbig,p,title
+   end program show
+```
+An arbitrary number of strings such as filenames may be passed in on
+the end of commands, you can query whether an option was supplied,
+and get_args*(3f) routines can be used for refining options such as
+requiring lists of a specified size. Passing in some character arrays
+allows you to automatically have a --help and --version switch as well, 
+as explained below.
+
 ## DEMO PROGRAMS![demos](docs/images/demo.gif)
 These demo programs provide templates for the most common usage:
 - [demo1](example/demo1.f90) using the convenience functions
@@ -119,60 +156,14 @@ dozens of options where various values are frequently reused.
    + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
    + [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
 
-- [CHANGELOG](docs/CHANGELOG.md)
-
 ### developer documentation  
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
 - [ford(1) output](https://urbanjost.github.io/M_CLI2/fpm-ford/index.html).
+
+### logs
+- [CHANGELOG](docs/CHANGELOG.md)
 - [BUILD STATUS](docs/STATUS.md)
 
-## EXAMPLE PROGRAM
-This short program defines a command that can be called like
-
-```bash
-   ./show -x 10 -y -20 --point 10,20,30 --title 'plot of stuff' *.in
-   ./show -z 300
-   # the unnamed values (often filenames) are returned as an array of strings
-   ./show *
-   # these parameters are defined automatically but you must supply text for --version to be useful.
-   ./show --usage
-   ./show --help
-   ./show --version
-```
-```fortran
-   program show
-   use M_CLI2, only : set_args, lget, rget,sget, igets, files=>unnamed
-   use M_CLI2, only : get_args_fixed_size
-   implicit none
-   integer :: i
-   !! Define arguments
-   real                          :: x, y, z, point(3)
-   integer,allocatable           :: p(:)
-   character(len=:),allocatable  :: title
-   logical                       :: l, lbig
-   !! DEFINE COMMAND
-      call set_args('-x 1 -y 2.0 -z 3.5e0 --point -1,-2,-3 -p 11,-22,33 --title "my title" -l F -L F')
-   !! Get values using convenience functions
-      x=rget('x') 
-      y=rget('y') 
-      z=rget('z')
-      l=lget('l')
-      lbig=lget('L')
-      p=igets('p')
-      title=sget('title')
-      call get_args_fixed_size('point',point) ! this will ensure three values are specified
-   !! Use the values in your program.
-      write(*,*)'x=',x, 'y=',y, 'z=',z
-      write(*,*)'point=',point, 'p=',p
-      write(*,*)'l=',l,'lbig=',lbig
-      write(*,*)'title=',title
-   !! Optional unnamed values from command line
-      if(size(files).gt.0)then
-         write(*,'(a)')'files:'
-         write(*,'(i6.6,3a)')(i,'[',files(i),']',i=1,size(files))
-      endif
-   end program show
-```
 ## COMMIT TESTS ##
 
 commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
@@ -186,4 +177,3 @@ commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
  + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem 
 ---
 Last updated:   Wed Sep 29 17:34:52 2021 -0400
-
