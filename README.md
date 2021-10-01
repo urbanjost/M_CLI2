@@ -162,7 +162,7 @@ dozens of options where various values are frequently reused.
 
 ### logs
 - [CHANGELOG](docs/CHANGELOG.md)
-- [BUILD STATUS](docs/STATUS.md)
+- [STATUS](docs/STATUS.md) of most recent CI/CD runs
 
 ## COMMIT TESTS ##
 
