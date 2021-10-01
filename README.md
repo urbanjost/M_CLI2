@@ -14,7 +14,7 @@
    made for each parameter name to set the variables appropriately in
    the program.
 
-## EXAMPLES
+## DEMO PROGRAMS![demos](docs/images/demo.gif)
 These demo programs provide templates for the most common usage:
 - [demo1](example/demo1.f90) using the convenience functions
 - [demo2](example/demo2.f90) putting everything including **help** and **version** information into a contained procedure.
