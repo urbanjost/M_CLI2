@@ -34,11 +34,10 @@ contains
    character(len=:),allocatable  :: help_text(:), version_text(:)
 
    !! DEFINE COMMAND PROTOTYPE
-   !!  o All parameters must be listed with a default value
-   !!  o string values  must be double-quoted
-   !!  o numeric lists must be comma-delimited. No spaces are allowed
-   !!  o a short uppercase name -L maps to a variable in the NAMELIST of name L_
-   !!  o long keynames must be all lowercase
+   !!  o All parameters   must be listed with a default value
+   !!  o string values    must be double-quoted
+   !!  o numeric lists    must be comma-delimited. No spaces are allowed
+   !!  o long keynames    must be all lowercase
 
    character(len=*),parameter :: cmd='&
    & -x 1 -y 2 -z 3     &
