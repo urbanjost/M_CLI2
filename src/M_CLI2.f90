@@ -376,8 +376,12 @@ integer                                          :: iback
          return
       endif
    elseif(get('version').eq.'T')then
-      call journal('sc','*check_commandline* no version text')
-      call mystop(4,'displayed default version text')
+      if(.not.G_STOPON)then
+         call journal('sc','*check_commandline* no version text')
+         call mystop(4,'displayed default version text')
+      else
+         G_STOP_MESSAGE = 'no version text'
+      endif
       return
    endif
 contains
@@ -390,7 +394,9 @@ integer :: ilength
    call get_command_argument(number=0,value=cmd_name)
    G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
    call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
-   call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
+   if(.not.G_STOPON)then
+      call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
+   endif
    deallocate(cmd_name)
 end subroutine default_help
 end subroutine check_commandline
@@ -2222,7 +2228,7 @@ logical                      :: next_mandatory
             call ifnull()
          endif
          call locate_key(current_argument_padded(2:),pointer)
-         if(pointer.le.0.and.G_STOPON)then
+         if(pointer.le.0)then
             jj=len(current_argument)
             if(G_STRICT.and.jj.gt.2)then  ! in strict mode this might be multiple single-character values
               do kk=2,jj
