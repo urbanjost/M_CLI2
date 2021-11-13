@@ -377,7 +377,7 @@ integer                                          :: iback
       endif
    elseif(get('version').eq.'T')then
 
-      if(.not.G_QUIET)then
+      if(G_QUIET)then
          G_STOP_MESSAGE = 'no version text'
       else
          call journal('sc','*check_commandline* no version text')
