@@ -2205,7 +2205,7 @@ logical                      :: next_mandatory
             call ifnull()
          endif
          call locate_key(current_argument_padded(3:),pointer)
-         if(pointer.le.0.and.G_STOPON)then
+         if(pointer.le.0)then
             call print_dictionary('UNKNOWN LONG KEYWORD: '//current_argument)
             call mystop(1)
             return
