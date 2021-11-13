@@ -175,7 +175,7 @@ character(len=:),allocatable,save :: G_remaining
 character(len=:),allocatable,save :: G_subcommand              ! possible candidate for a subcommand
 character(len=:),allocatable,save :: G_STOP_MESSAGE
 integer,save                      :: G_STOP
-logical,save                      :: G_STOPON
+logical,save                      :: G_QUIET
 logical,save                      :: G_STRICT                  ! strict short and long rules or allow -longname and --shortname
 !----------------------------------------------
 ! try out response files
@@ -376,12 +376,13 @@ integer                                          :: iback
          return
       endif
    elseif(get('version').eq.'T')then
-      if(.not.G_STOPON)then
-         call journal('sc','*check_commandline* no version text')
-         call mystop(4,'displayed default version text')
-      else
+
+      if(.not.G_QUIET)then
          G_STOP_MESSAGE = 'no version text'
+      else
+         call journal('sc','*check_commandline* no version text')
       endif
+         call mystop(4,'displayed default version text')
       return
    endif
 contains
@@ -394,7 +395,7 @@ integer :: ilength
    call get_command_argument(number=0,value=cmd_name)
    G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
    call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
-   if(.not.G_STOPON)then
+   if(.not.G_QUIET)then
       call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
    endif
    deallocate(cmd_name)
@@ -867,9 +868,9 @@ integer                                           :: ibig
    G_STOP=0
    G_STOP_MESSAGE=''
    if(present(ierr))then
-      G_STOPON=.false.
+      G_QUIET=.true.
    else
-      G_STOPON=.true.
+      G_QUIET=.false.
    endif
    ibig=longest_command_argument() ! bug in gfortran. len=0 should be fine
    if(allocated(unnamed)) deallocate(unnamed)
@@ -2492,7 +2493,7 @@ subroutine print_dictionary(header,stop)
 character(len=*),intent(in),optional :: header
 logical,intent(in),optional          :: stop
 integer          :: i
-   if(G_STOPON)return
+   if(G_QUIET)return
    if(present(header))then
       if(header.ne.'')then
          write(warn,'(a)')header
@@ -6046,9 +6047,9 @@ end function sg
 !===================================================================================================================================
 subroutine mystop(sig,msg)
 ! negative signal means always stop program
-! else do not stop and set G_STOP_MESSAGE if G_STOPON is false
+! else do not stop and set G_STOP_MESSAGE if G_QUIET is true
 ! or
-! print message and stop if G_STOPON is true
+! print message and stop if G_QUIET is false
 ! the MSG is NOT for displaying except for internal errors when the program will be stopped.
 ! It is for returning a value when the stop is being ignored
 !
@@ -6059,7 +6060,7 @@ character(len=*),intent(in),optional :: msg
       if(present(msg))call journal('sc',msg)
       !x!stop abs(sig)
       stop 1
-   elseif(G_STOPON)then
+   elseif(.not.G_QUIET)then
       stop
    else
       if(present(msg)) then

@@ -271,7 +271,7 @@ character(len=\+:), allocatable, save \mbox{\hyperlink{namespacem__cli2_a246c88b
 \item 
 integer, save \mbox{\hyperlink{namespacem__cli2_a66413d5960c7ee74dea6f77ce6e197c1}{g\+\_\+stop}}
 \item 
-logical, save \mbox{\hyperlink{namespacem__cli2_aaba9dd35f5bb9acfe0b5cb09bc01c14a}{g\+\_\+stopon}}
+logical, save \mbox{\hyperlink{namespacem__cli2_abf955f3ab5afc1bd79594a68112e0bb1}{g\+\_\+quiet}}
 \item 
 logical, save \mbox{\hyperlink{namespacem__cli2_ad61c12a6d0436488847f2f3b2d128116}{g\+\_\+strict}}
 \item 
@@ -546,7 +546,7 @@ Typical usage\+: \begin{DoxyVerb} program check_commandline
 \end{DoxyVerb}
  
 
-References debug\+\_\+m\+\_\+cli2, default\+\_\+help(), g\+\_\+stop\+\_\+message, g\+\_\+stopon, gen, get(), journal(), mystop(), and print\+\_\+dictionary().
+References debug\+\_\+m\+\_\+cli2, default\+\_\+help(), g\+\_\+quiet, g\+\_\+stop\+\_\+message, gen, get(), journal(), mystop(), and print\+\_\+dictionary().
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -2144,7 +2144,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-References g\+\_\+stop, g\+\_\+stop\+\_\+message, g\+\_\+stopon, and journal().
+References g\+\_\+quiet, g\+\_\+stop, g\+\_\+stop\+\_\+message, and journal().
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -2205,7 +2205,7 @@ Typical usage\+: \begin{DoxyVerb}  program demo_print_dictionary
 John S. Urban, 2019 \hypertarget{namespacem__cli2_autotoc_md85}{}\doxysubsubsection{L\+I\+C\+E\+N\+SE}\label{namespacem__cli2_autotoc_md85}
 Public Domain 
 
-References args, atleast(), counts, g\+\_\+remaining, g\+\_\+stopon, keywords, mystop(), present\+\_\+in, shorts, unnamed, and values.
+References args, atleast(), counts, g\+\_\+quiet, g\+\_\+remaining, keywords, mystop(), present\+\_\+in, shorts, unnamed, and values.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -2939,7 +2939,7 @@ The intel Fortran compiler now calls the response files \char`\"{}indirect
 John S. Urban, 2019\hypertarget{namespacem__cli2_autotoc_md25}{}\doxysubsubsection{L\+I\+C\+E\+N\+SE}\label{namespacem__cli2_autotoc_md25}
 Public Domain 
 
-References args, check\+\_\+commandline(), cli\+\_\+response\+\_\+file, debug\+\_\+m\+\_\+cli2, g\+\_\+append, g\+\_\+options\+\_\+only, g\+\_\+passed\+\_\+in, g\+\_\+response, g\+\_\+response\+\_\+ignored, g\+\_\+stop, g\+\_\+stop\+\_\+message, g\+\_\+stopon, gen, longest\+\_\+command\+\_\+argument(), prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), split(), unnamed, and wipe\+\_\+dictionary().
+References args, check\+\_\+commandline(), cli\+\_\+response\+\_\+file, debug\+\_\+m\+\_\+cli2, g\+\_\+append, g\+\_\+options\+\_\+only, g\+\_\+passed\+\_\+in, g\+\_\+quiet, g\+\_\+response, g\+\_\+response\+\_\+ignored, g\+\_\+stop, g\+\_\+stop\+\_\+message, gen, longest\+\_\+command\+\_\+argument(), prototype\+\_\+and\+\_\+cmd\+\_\+args\+\_\+to\+\_\+nlist(), split(), unnamed, and wipe\+\_\+dictionary().
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -3524,6 +3524,12 @@ Here is the caller graph for this function\+:\nopagebreak
 \doxysubsubsection{\texorpdfstring{g\_passed\_in}{g\_passed\_in}}
 {\footnotesize\ttfamily character(len=\+:), allocatable, save m\+\_\+cli2\+::g\+\_\+passed\+\_\+in\hspace{0.3cm}{\ttfamily [private]}}
 
+\mbox{\Hypertarget{namespacem__cli2_abf955f3ab5afc1bd79594a68112e0bb1}\label{namespacem__cli2_abf955f3ab5afc1bd79594a68112e0bb1}} 
+\index{m\_cli2@{m\_cli2}!g\_quiet@{g\_quiet}}
+\index{g\_quiet@{g\_quiet}!m\_cli2@{m\_cli2}}
+\doxysubsubsection{\texorpdfstring{g\_quiet}{g\_quiet}}
+{\footnotesize\ttfamily logical, save m\+\_\+cli2\+::g\+\_\+quiet\hspace{0.3cm}{\ttfamily [private]}}
+
 \mbox{\Hypertarget{namespacem__cli2_a5529c2dd592148fb175692b42a519cfd}\label{namespacem__cli2_a5529c2dd592148fb175692b42a519cfd}} 
 \index{m\_cli2@{m\_cli2}!g\_remaining@{g\_remaining}}
 \index{g\_remaining@{g\_remaining}!m\_cli2@{m\_cli2}}
@@ -3565,12 +3571,6 @@ Here is the caller graph for this function\+:\nopagebreak
 \index{g\_stop\_message@{g\_stop\_message}!m\_cli2@{m\_cli2}}
 \doxysubsubsection{\texorpdfstring{g\_stop\_message}{g\_stop\_message}}
 {\footnotesize\ttfamily character(len=\+:), allocatable, save m\+\_\+cli2\+::g\+\_\+stop\+\_\+message\hspace{0.3cm}{\ttfamily [private]}}
-
-\mbox{\Hypertarget{namespacem__cli2_aaba9dd35f5bb9acfe0b5cb09bc01c14a}\label{namespacem__cli2_aaba9dd35f5bb9acfe0b5cb09bc01c14a}} 
-\index{m\_cli2@{m\_cli2}!g\_stopon@{g\_stopon}}
-\index{g\_stopon@{g\_stopon}!m\_cli2@{m\_cli2}}
-\doxysubsubsection{\texorpdfstring{g\_stopon}{g\_stopon}}
-{\footnotesize\ttfamily logical, save m\+\_\+cli2\+::g\+\_\+stopon\hspace{0.3cm}{\ttfamily [private]}}
 
 \mbox{\Hypertarget{namespacem__cli2_ad61c12a6d0436488847f2f3b2d128116}\label{namespacem__cli2_ad61c12a6d0436488847f2f3b2d128116}} 
 \index{m\_cli2@{m\_cli2}!g\_strict@{g\_strict}}
