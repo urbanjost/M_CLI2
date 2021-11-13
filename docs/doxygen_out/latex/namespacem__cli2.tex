@@ -74,7 +74,7 @@ character(len=1) function \mbox{\hyperlink{namespacem__cli2_a1088af256b857d10b42
 \item 
 character(len=1) function \mbox{\hyperlink{namespacem__cli2_a9ff1d3c4863a0f365fdea81a887ce693}{separator}} ()
 \item 
-subroutine \mbox{\hyperlink{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}{cmd\+\_\+args\+\_\+to\+\_\+dictionary}} (check)
+subroutine \mbox{\hyperlink{namespacem__cli2_a4377e8cb5b593470df7dd8c52cdfc3fd}{cmd\+\_\+args\+\_\+to\+\_\+dictionary}} ()
 \item 
 subroutine, public \mbox{\hyperlink{namespacem__cli2_af7dc9c4b19e394533df4a8ef42fa111b}{print\+\_\+dictionary}} (header, stop)
 \item 
@@ -328,8 +328,8 @@ call set_args('                         &
         & --title "my title" -l F -L F  &
         & --logicals  F F F F F         &
         & -logi F T F                   &
-        ! note space between quotes is required
         & --label " " &
+        ! note space between quotes is required
         & ')
 ! ASSIGN VALUES TO ELEMENTS
 call get_args('x',x)         ! SCALARS
@@ -562,28 +562,28 @@ Here is the caller graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{namespacem__cli2_ada8b5e7a86778085f55821ec31c5977a_icgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}\label{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331}} 
+\mbox{\Hypertarget{namespacem__cli2_a4377e8cb5b593470df7dd8c52cdfc3fd}\label{namespacem__cli2_a4377e8cb5b593470df7dd8c52cdfc3fd}} 
 \index{m\_cli2@{m\_cli2}!cmd\_args\_to\_dictionary@{cmd\_args\_to\_dictionary}}
 \index{cmd\_args\_to\_dictionary@{cmd\_args\_to\_dictionary}!m\_cli2@{m\_cli2}}
 \doxysubsubsection{\texorpdfstring{cmd\_args\_to\_dictionary()}{cmd\_args\_to\_dictionary()}}
-{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::cmd\+\_\+args\+\_\+to\+\_\+dictionary (\begin{DoxyParamCaption}\item[{logical, intent(in), optional}]{check }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+{\footnotesize\ttfamily subroutine m\+\_\+cli2\+::cmd\+\_\+args\+\_\+to\+\_\+dictionary\hspace{0.3cm}{\ttfamily [private]}}
 
 
 
-References args, debug\+\_\+m\+\_\+cli2, expand\+\_\+response(), g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, g\+\_\+response, g\+\_\+strict, gen, get(), get\+\_\+next\+\_\+argument(), ifnull(), keywords, locate\+\_\+key(), mandatory, mystop(), print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
+References args, debug\+\_\+m\+\_\+cli2, expand\+\_\+response(), g\+\_\+keyword\+\_\+single\+\_\+letter, g\+\_\+remaining, g\+\_\+remaining\+\_\+on, g\+\_\+remaining\+\_\+option\+\_\+allowed, g\+\_\+response, g\+\_\+stopon, g\+\_\+strict, gen, get(), get\+\_\+next\+\_\+argument(), ifnull(), keywords, locate\+\_\+key(), mandatory, mystop(), print\+\_\+dictionary(), quote(), unnamed, update(), and upper().
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331_cgraph}
+\includegraphics[width=350pt]{namespacem__cli2_a4377e8cb5b593470df7dd8c52cdfc3fd_cgraph}
 \end{center}
 \end{figure}
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{namespacem__cli2_a3348b0c76dadd62c536e06f82bcb0331_icgraph}
+\includegraphics[width=350pt]{namespacem__cli2_a4377e8cb5b593470df7dd8c52cdfc3fd_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacem__cli2_a710b26995119aee101959555b1bac8e2}\label{namespacem__cli2_a710b26995119aee101959555b1bac8e2}} 

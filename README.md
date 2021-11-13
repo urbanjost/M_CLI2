@@ -2,8 +2,6 @@
 <!--
 ![parse](docs/images/parse.png)
 -->
-##  command --longequal=value -L --long value words -- unparsed_words
-
 ## NAME
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
 
@@ -23,13 +21,13 @@ This short program defines a command that can be called like
    ./show --usage 
    ./show --help
    ./show --version
-   # you must supply text for "help" and "version" to be useful.
+   # you must supply text for "help" and "version" if desired.
 ```
 ```fortran
    program show
    use M_CLI2, only : set_args, lget, rget, sget, igets
    implicit none
-   real                          :: x, y, z, sum
+   real                          :: sum
    integer,allocatable           :: p(:)
    character(len=:),allocatable  :: title
    logical                       :: l, lbig
@@ -46,7 +44,7 @@ This short program defines a command that can be called like
 ```
 An arbitrary number of strings such as filenames may be passed in on
 the end of commands, you can query whether an option was supplied,
-and get_args*(3f) routines can be used for refining options such as
+and get_args(3f)-related routines can be used for refining options such as
 requiring lists of a specified size. Passing in some character arrays
 allows you to automatically have a --help and --version switch as well, 
 as explained below.
@@ -114,7 +112,7 @@ These demo programs provide templates for the most common usage:
 
 * you add calls to the get_args(3f) procedure or one of its variants (
   The alternatives allow you to use a simple function-based interface
-  model or allow for special cases when you want to use fixed length.
+  model. There are special routines for when you want to use fixed length.
   CHARACTER variables or fixed-size arrays instead of the allocatable
   variables best used with get_args(3f)).
 

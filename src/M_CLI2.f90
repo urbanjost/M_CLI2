@@ -67,8 +67,8 @@
 !!             & --title "my title" -l F -L F  &
 !!             & --logicals  F F F F F         &
 !!             & -logi F T F                   &
-!!             ! note space between quotes is required
 !!             & --label " " &
+!!             ! note space between quotes is required
 !!             & ')
 !!     ! ASSIGN VALUES TO ELEMENTS
 !!     call get_args('x',x)         ! SCALARS
@@ -114,13 +114,14 @@
 !!     Public Domain
 !===================================================================================================================================
 module M_CLI2
-!use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT
-!use, intrinsic :: iso_fortran_env, only : stdin=>INPUT_UNIT
-use, intrinsic :: iso_fortran_env, only : warn=>OUTPUT_UNIT ! ERROR_UNIT
+use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT, warn=>OUTPUT_UNIT
+
+! copied to M_CLI2 for a stand-alone version
 !use M_strings,                     only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value, atleast
 !use M_list,                        only : insert, locate, remove, replace
 !use M_args,                        only : longest_command_argument
 !use M_journal,                     only : journal
+
 implicit none
 integer,parameter,private :: dp=kind(0.0d0)
 integer,parameter,private :: sp=kind(0.0)
@@ -1697,7 +1698,7 @@ integer                               :: iused
       call prototype_to_dictionary(string)          ! build dictionary from prototype
    else
       if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:CALL CMD_ARGS_TO_DICTIONARY:CHECK=',.true.
-      call cmd_args_to_dictionary(check=.true.)
+      call cmd_args_to_dictionary()
    endif
 
    if(len(G_remaining).gt.1)then                    ! if -- was in prototype then after -- on input return rest in this string
@@ -2156,10 +2157,8 @@ end function separator
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-subroutine cmd_args_to_dictionary(check)
+subroutine cmd_args_to_dictionary()
 ! convert command line arguments to dictionary entries
-logical,intent(in),optional  :: check
-logical                      :: check_local
 !x!logical                      :: guess_if_value
 integer                      :: pointer
 character(len=:),allocatable :: lastkeyword
@@ -2174,11 +2173,6 @@ logical                      :: nomore
 logical                      :: next_mandatory
    if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:START'
    next_mandatory=.false.
-   if(present(check))then
-      check_local=check
-   else
-      check_local=.false.
-   endif
    nomore=.false.
    pointer=0
    lastkeyword=' '
@@ -2211,7 +2205,7 @@ logical                      :: next_mandatory
             call ifnull()
          endif
          call locate_key(current_argument_padded(3:),pointer)
-         if(pointer.le.0.and.check_local)then
+         if(pointer.le.0.and.G_STOPON)then
             call print_dictionary('UNKNOWN LONG KEYWORD: '//current_argument)
             call mystop(1)
             return
@@ -2228,7 +2222,7 @@ logical                      :: next_mandatory
             call ifnull()
          endif
          call locate_key(current_argument_padded(2:),pointer)
-         if(pointer.le.0.and.check_local)then
+         if(pointer.le.0.and.G_STOPON)then
             jj=len(current_argument)
             if(G_STRICT.and.jj.gt.2)then  ! in strict mode this might be multiple single-character values
               do kk=2,jj
