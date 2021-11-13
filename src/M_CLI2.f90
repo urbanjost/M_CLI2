@@ -2486,6 +2486,7 @@ subroutine print_dictionary(header,stop)
 character(len=*),intent(in),optional :: header
 logical,intent(in),optional          :: stop
 integer          :: i
+   if(G_STOPON)return
    if(present(header))then
       if(header.ne.'')then
          write(warn,'(a)')header
