@@ -333,6 +333,7 @@ integer                                          :: i
 integer                                          :: istart
 integer                                          :: iback
    if(get('usage').eq.'T')then
+      G_QUIET=.false.
       call print_dictionary('USAGE:')
       !x!call default_help()
       call mystop(32)
@@ -2198,7 +2199,7 @@ logical                      :: next_mandatory
          if(G_remaining_option_allowed)then
             G_remaining_on=.true.
          endif
-         cycle
+         cycle GET_ARGS
       endif
 
       dummy=current_argument//'   '
@@ -2213,6 +2214,11 @@ logical                      :: next_mandatory
          endif
          call locate_key(current_argument_padded(3:),pointer)
          if(pointer.le.0)then
+            if(G_QUIET)then
+               lastkeyword="UNKNOWN"
+               pointer=0
+               cycle GET_ARGS
+            endif
             call print_dictionary('UNKNOWN LONG KEYWORD: '//current_argument)
             call mystop(1)
             return
@@ -2239,6 +2245,11 @@ logical                      :: next_mandatory
                     call update(keywords(pointer),'T')
                  else
                     call print_dictionary('UNKNOWN COMPOUND SHORT KEYWORD:'//letter//' in '//current_argument)
+                    if(G_QUIET)then
+                       lastkeyword="UNKNOWN"
+                       pointer=0
+                       cycle GET_ARGS
+                    endif
                     call mystop(2)
                     return
                  endif
@@ -2246,6 +2257,11 @@ logical                      :: next_mandatory
               enddo
             else
                call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
+               if(G_QUIET)then
+                  lastkeyword="UNKNOWN"
+                  pointer=0
+                  cycle GET_ARGS
+               endif
                call mystop(2)
                return
             endif
