@@ -333,7 +333,6 @@ integer                                          :: i
 integer                                          :: istart
 integer                                          :: iback
    if(get('usage').eq.'T')then
-      G_QUIET=.false.
       call print_dictionary('USAGE:')
       !x!call default_help()
       call mystop(32)
@@ -383,7 +382,7 @@ integer                                          :: iback
       else
          call journal('sc','*check_commandline* no version text')
       endif
-         call mystop(4,'displayed default version text')
+      call mystop(4,'displayed default version text')
       return
    endif
 contains
