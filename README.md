@@ -128,7 +128,7 @@ complex commands. This option is generally not needed by programs with
 just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.
 
-## DOCUMENTATION
+## DOCUMENTATION   ![docs](docs/images/docs.gif)
 ### man-pages as HTML
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
 - [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) --
