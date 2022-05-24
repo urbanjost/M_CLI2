@@ -130,19 +130,19 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="14.8% of total for procedures.">47 statements</a>
+    title="15.9% of total for procedures.">47 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/M_CLI2.f90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/M_CLI2.F90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/m_cli2.f90.html'>M_CLI2.f90</a></li>
+     <li><a href='../sourcefile/m_cli2.f90.html'>M_CLI2.F90</a></li>
     
      <li><a href='../module/m_cli2.html'>M_CLI2</a></li>
     
@@ -243,7 +243,7 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 </code></pre></div>
 
 <h2 id="description">DESCRIPTION</h2>
-<div class="codehilite"><pre><span></span><code> <span class="nv">SET_ARGS</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">requires</span> <span class="nv">a</span> <span class="nv">unix</span><span class="o">-</span><span class="nv">like</span> <span class="nv">command</span> <span class="nv">prototype</span> <span class="k">for</span> <span class="nv">defining</span>
+<div class="codehilite"><pre><span></span><code> <span class="nv">SET_ARGS</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">requires</span> <span class="nv">a</span> <span class="mi">1</span><span class="o">-</span><span class="nv">like</span> <span class="nv">command</span> <span class="nv">prototype</span> <span class="k">for</span> <span class="nv">defining</span>
  <span class="nv">arguments</span> <span class="nv">and</span> <span class="nv">default</span> <span class="nv">command</span><span class="o">-</span><span class="nv">line</span> <span class="nv">options</span>. <span class="nv">Argument</span> <span class="nv">values</span> <span class="nv">are</span> <span class="k">then</span>
  <span class="nv">read</span> <span class="nv">using</span> <span class="nv">GET_ARGS</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span>.
 
@@ -252,26 +252,26 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 </code></pre></div>
 
 <h2 id="options">OPTIONS</h2>
-<div class="codehilite"><pre><span></span><code>  <span class="nv">DESCRIPTION</span>   <span class="nv">composed</span> <span class="nv">of</span> <span class="nv">all</span> <span class="nv">command</span> <span class="nv">arguments</span> <span class="nv">concatenated</span>
-                <span class="nv">into</span> <span class="nv">a</span> <span class="nv">Unix</span><span class="o">-</span><span class="nv">like</span> <span class="nv">command</span> <span class="nv">prototype</span> <span class="nv">string</span>. <span class="k">For</span>
-                <span class="nv">example</span>:
+<div class="codehilite"><pre><span></span><code><span class="nv">DEFINITION</span>  <span class="nv">composed</span> <span class="nv">of</span> <span class="nv">all</span> <span class="nv">command</span> <span class="nv">arguments</span> <span class="nv">concatenated</span>
+            <span class="nv">into</span> <span class="nv">a</span> <span class="nv">Unix</span><span class="o">-</span><span class="nv">like</span> <span class="nv">command</span> <span class="nv">prototype</span> <span class="nv">string</span>. <span class="k">For</span>
+            <span class="nv">example</span>:
 
-                  <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">-L F -ints 10,20,30 -title &quot;my title&quot; -R 10.3</span><span class="s1">&#39;</span><span class="ss">)</span>
+             <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">-L F -ints 10,20,30 -title &quot;my title&quot; -R 10.3</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-                <span class="nv">DESCRIPTION</span> <span class="nv">is</span> <span class="nv">pre</span><span class="o">-</span><span class="nv">defined</span> <span class="nv">to</span> <span class="nv">act</span> <span class="nv">as</span> <span class="k">if</span> <span class="nv">started</span> <span class="nv">with</span>
-                <span class="nv">the</span> <span class="nv">reserved</span> <span class="nv">options</span> <span class="s1">&#39;</span><span class="s">--verbose F --usage F --help</span>
-                <span class="nv">F</span> <span class="o">--</span><span class="nv">version</span> <span class="nv">F</span><span class="s1">&#39;</span><span class="s">. The --usage option is processed when</span>
-                <span class="nv">the</span> <span class="nv">set_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">routine</span> <span class="nv">is</span> <span class="nv">called</span>. <span class="nv">The</span> <span class="nv">same</span> <span class="nv">is</span> <span class="nv">true</span>
-                <span class="k">for</span> <span class="o">--</span><span class="nv">help</span> <span class="nv">and</span> <span class="o">--</span><span class="nv">version</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">optional</span> <span class="nv">help_text</span>
-                <span class="nv">and</span> <span class="nv">version_text</span> <span class="nv">options</span> <span class="nv">are</span> <span class="nv">provided</span>.
+            <span class="nv">DEFINITION</span> <span class="nv">is</span> <span class="nv">pre</span><span class="o">-</span><span class="nv">defined</span> <span class="nv">to</span> <span class="nv">act</span> <span class="nv">as</span> <span class="k">if</span> <span class="nv">started</span> <span class="nv">with</span>
+            <span class="nv">the</span> <span class="nv">reserved</span> <span class="nv">options</span> <span class="s1">&#39;</span><span class="s">--verbose F --usage F --help</span>
+            <span class="nv">F</span> <span class="o">--</span><span class="nv">version</span> <span class="nv">F</span><span class="s1">&#39;</span><span class="s">. The --usage option is processed when</span>
+            <span class="nv">the</span> <span class="nv">set_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">routine</span> <span class="nv">is</span> <span class="nv">called</span>. <span class="nv">The</span> <span class="nv">same</span> <span class="nv">is</span> <span class="nv">true</span>
+            <span class="k">for</span> <span class="o">--</span><span class="nv">help</span> <span class="nv">and</span> <span class="o">--</span><span class="nv">version</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">optional</span> <span class="nv">help_text</span>
+            <span class="nv">and</span> <span class="nv">version_text</span> <span class="nv">options</span> <span class="nv">are</span> <span class="nv">provided</span>.
 
-                <span class="nv">see</span> <span class="s2">&quot;</span><span class="s">DEFINING THE PROTOTYPE</span><span class="s2">&quot;</span> <span class="nv">in</span> <span class="nv">the</span> <span class="k">next</span> <span class="nv">section</span> <span class="k">for</span>
-                <span class="nv">further</span> <span class="nv">details</span>.
+            <span class="nv">see</span> <span class="s2">&quot;</span><span class="s">DEFINING THE PROTOTYPE</span><span class="s2">&quot;</span> <span class="nv">in</span> <span class="nv">the</span> <span class="k">next</span> <span class="nv">section</span> <span class="k">for</span>
+            <span class="nv">further</span> <span class="nv">details</span>.
 
-  <span class="nv">HELP_TEXT</span>     <span class="k">if</span> <span class="nv">present</span>, <span class="nv">will</span> <span class="nv">be</span> <span class="nv">displayed</span> <span class="k">if</span> <span class="nv">program</span> <span class="nv">is</span> <span class="nv">called</span> <span class="nv">with</span>
-                <span class="o">--</span><span class="nv">help</span> <span class="nv">switch</span>, <span class="nv">and</span> <span class="k">then</span> <span class="nv">the</span> <span class="nv">program</span> <span class="nv">will</span> <span class="nv">terminate</span>. <span class="k">If</span>
-                <span class="nv">not</span> <span class="nv">supplied</span>, <span class="nv">the</span> <span class="nv">command</span> <span class="nv">line</span> <span class="nv">initialization</span> <span class="nv">string</span>
-                <span class="nv">will</span> <span class="nv">be</span> <span class="nv">shown</span> <span class="nv">when</span> <span class="o">--</span><span class="nv">help</span> <span class="nv">is</span> <span class="nv">used</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">commandline</span>.
+<span class="nv">HELP_TEXT</span>   <span class="k">if</span> <span class="nv">present</span>, <span class="nv">will</span> <span class="nv">be</span> <span class="nv">displayed</span> <span class="k">if</span> <span class="nv">program</span> <span class="nv">is</span> <span class="nv">called</span> <span class="nv">with</span>
+            <span class="o">--</span><span class="nv">help</span> <span class="nv">switch</span>, <span class="nv">and</span> <span class="k">then</span> <span class="nv">the</span> <span class="nv">program</span> <span class="nv">will</span> <span class="nv">terminate</span>. <span class="k">If</span>
+            <span class="nv">not</span> <span class="nv">supplied</span>, <span class="nv">the</span> <span class="nv">command</span> <span class="nv">line</span> <span class="nv">initialization</span> <span class="nv">string</span>
+            <span class="nv">will</span> <span class="nv">be</span> <span class="nv">shown</span> <span class="nv">when</span> <span class="o">--</span><span class="nv">help</span> <span class="nv">is</span> <span class="nv">used</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">commandline</span>.
 
   <span class="nv">VERSION_TEXT</span>  <span class="k">if</span> <span class="nv">present</span>, <span class="nv">will</span> <span class="nv">be</span> <span class="nv">displayed</span> <span class="k">if</span> <span class="nv">program</span> <span class="nv">is</span> <span class="nv">called</span> <span class="nv">with</span>
                 <span class="o">--</span><span class="nv">version</span> <span class="nv">switch</span>, <span class="nv">and</span> <span class="k">then</span> <span class="nv">the</span> <span class="nv">program</span> <span class="nv">will</span> <span class="nv">terminate</span>.
@@ -579,7 +579,7 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 
 <p>is searched for in simple or compound files. If found subsequent lines
   will be ignored that start with &ldquo;@&rdquo; until a line not starting with
-  &ldquo;@&rdquo; is encountered.  Lines will then be processed until another line
+  &ldquo;@&rdquo; is encountered. Lines will then be processed until another line
   starting with &ldquo;@&rdquo; is found or end-of-file is encountered.</p>
 <p>COMPOUND RESPONSE FILE EXAMPLE
   An example compound file</p>
@@ -607,7 +607,7 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
 #<span class="w"> </span><span class="n">install</span><span class="w"> </span><span class="n">executables</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">directory</span><span class="w"> </span><span class="p">(</span><span class="n">assuming</span><span class="w"> </span><span class="n">install</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">exists</span><span class="p">)</span><span class="w"></span>
 #<span class="w"></span>
 <span class="nb">system</span><span class="w"> </span><span class="nb">mkdir</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="w"> </span><span class="o">~/</span><span class="p">.</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="w"></span>
-<span class="n">options</span><span class="w"> </span><span class="s">run</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">--</span><span class="n">compiler</span><span class="w"> </span><span class="n">gfortran</span><span class="w"> </span><span class="o">--</span><span class="n">runner</span><span class="w"> </span><span class="s">&quot;install -vbp -m 0711 -t ~/.local/bin&quot;</span><span class="w"></span>
+<span class="n">options</span><span class="w"> </span><span class="s">run</span><span class="w"> </span><span class="o">--</span><span class="nb">release</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">--</span><span class="n">runner</span><span class="w"> </span><span class="s">&quot;install -vbp -m 0711 -t ~/.local/bin&quot;</span><span class="w"></span>
 <span class="p">@</span><span class="n">install</span><span class="w"></span>
 <span class="n">STOP</span><span class="w"> </span><span class="s">INSTALL</span><span class="w"> </span><span class="s">NOT</span><span class="w"> </span><span class="s">SUPPORTED</span><span class="w"> </span><span class="s">ON</span><span class="w"> </span><span class="s">THIS</span><span class="w"> </span><span class="s">PLATFORM</span><span class="w"> </span><span class="s">OR</span><span class="w"> </span><span class="s">$OSTYPE</span><span class="w"> </span><span class="s">NOT</span><span class="w"> </span><span class="s">SET</span><span class="w"></span>
 #<span class="w"></span>
@@ -892,9 +892,9 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
    <span class="n">G_STOP</span><span class="o">=</span><span class="mi">0</span>
    <span class="n">G_STOP_MESSAGE</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
    <span class="k">if</span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">ierr</span><span class="p">))</span><span class="k">then</span>
-<span class="k">      </span><span class="n">G_STOPON</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<span class="k">      </span><span class="n">G_QUIET</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
    <span class="k">else</span>
-<span class="k">      </span><span class="n">G_STOPON</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<span class="k">      </span><span class="n">G_QUIET</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
    <span class="k">endif</span>
 <span class="k">   </span><span class="n">ibig</span><span class="o">=</span><span class="n">longest_command_argument</span><span class="p">()</span> <span class="c">! bug in gfortran. len=0 should be fine</span>
    <span class="k">if</span><span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">unnamed</span><span class="p">))</span> <span class="k">deallocate</span><span class="p">(</span><span class="n">unnamed</span><span class="p">)</span>
@@ -940,13 +940,13 @@ public subroutine set_args(prototype, help_text, version_text, string, ierr, err
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-10-01 08:10  
+             on 2022-05-23 20:34  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

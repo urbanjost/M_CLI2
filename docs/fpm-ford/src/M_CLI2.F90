@@ -7,8 +7,8 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] - command line argument parsing
-!!     using a prototype command
+!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] - command line argument
+!!     parsing using a prototype command
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -312,7 +312,8 @@ contains
 !!      real               :: x, y, z
 !!      character(len=*),parameter :: cmd='-x 1 -y 2 -z 3'
 !!         version_text=[character(len=80) :: "version 1.0","author: me"]
-!!         help_text=[character(len=80) :: "wish I put instructions","here","I suppose?"]
+!!         help_text=[character(len=80) :: &
+!!                 & "wish I put instructions","here","I suppose?"]
 !!         call set_args(cmd,help_text,version_text)
 !!         call get_args('x',x,'y',y,'z',z)
 !!         ! All done cracking the command line. Use the values in your program.
@@ -429,26 +430,26 @@ end subroutine check_commandline
 !!
 !!##OPTIONS
 !!
-!!      DESCRIPTION   composed of all command arguments concatenated
-!!                    into a Unix-like command prototype string. For
-!!                    example:
+!!    DEFINITION  composed of all command arguments concatenated
+!!                into a Unix-like command prototype string. For
+!!                example:
 !!
-!!                      call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
+!!                 call set_args('-L F -ints 10,20,30 -title "my title" -R 10.3')
 !!
-!!                    DESCRIPTION is pre-defined to act as if started with
-!!                    the reserved options '--verbose F --usage F --help
-!!                    F --version F'. The --usage option is processed when
-!!                    the set_args(3f) routine is called. The same is true
-!!                    for --help and --version if the optional help_text
-!!                    and version_text options are provided.
+!!                DEFINITION is pre-defined to act as if started with
+!!                the reserved options '--verbose F --usage F --help
+!!                F --version F'. The --usage option is processed when
+!!                the set_args(3f) routine is called. The same is true
+!!                for --help and --version if the optional help_text
+!!                and version_text options are provided.
 !!
-!!                    see "DEFINING THE PROTOTYPE" in the next section for
-!!                    further details.
+!!                see "DEFINING THE PROTOTYPE" in the next section for
+!!                further details.
 !!
-!!      HELP_TEXT     if present, will be displayed if program is called with
-!!                    --help switch, and then the program will terminate. If
-!!                    not supplied, the command line initialization string
-!!                    will be shown when --help is used on the commandline.
+!!    HELP_TEXT   if present, will be displayed if program is called with
+!!                --help switch, and then the program will terminate. If
+!!                not supplied, the command line initialization string
+!!                will be shown when --help is used on the commandline.
 !!
 !!      VERSION_TEXT  if present, will be displayed if program is called with
 !!                    --version switch, and then the program will terminate.
@@ -783,7 +784,7 @@ end subroutine check_commandline
 !!
 !!  is searched for in simple or compound files. If found subsequent lines
 !!  will be ignored that start with "@" until a line not starting with
-!!  "@" is encountered.  Lines will then be processed until another line
+!!  "@" is encountered. Lines will then be processed until another line
 !!  starting with "@" is found or end-of-file is encountered.
 !!
 !!   COMPOUND RESPONSE FILE EXAMPLE
@@ -813,7 +814,7 @@ end subroutine check_commandline
 !!    # install executables in directory (assuming install(1) exists)
 !!    #
 !!    system mkdir -p ~/.local/bin
-!!    options run --release T --compiler gfortran --runner "install -vbp -m 0711 -t ~/.local/bin"
+!!    options run --release T --runner "install -vbp -m 0711 -t ~/.local/bin"
 !!    @install
 !!    STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
 !!    #
@@ -1114,7 +1115,6 @@ end subroutine set_usage
 !!
 !!##SYNOPSIS
 !!
-!!
 !!     recursive subroutine prototype_to_dictionary(string)
 !!
 !!      character(len=*),intent(in)     ::  string
@@ -1253,7 +1253,7 @@ integer                           :: place
 
       else       ! currnt is not one of the special characters
          ! the space after a keyword before the value
-         if(currnt == " ".and.itype  ==  KEYW)then
+         if(currnt == " " .and. itype  ==  KEYW)then
             ! switch from building a keyword string to building a value string
             itype=VAL
             ! beginning of a delimited value
@@ -1343,38 +1343,36 @@ end subroutine prototype_to_dictionary
 !!
 !!    ! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED
 !!    ! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM
-!!       call set_args(' -flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3')
+!!     call set_args('-flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3')
 !!
 !!    ! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME
-!!       call get_args('flag',flag)
-!!       if(specified('f'))call get_args('f',flag)
-!!       call get_args('ints',ints)
-!!       if(specified('i'))call get_args('i',ints)
-!!       call get_args('twonames',twonames)
-!!       if(specified('T'))call get_args('T',twonames)
+!!     call get_args('flag',flag)
+!!     if(specified('f'))call get_args('f',flag)
+!!     call get_args('ints',ints)
+!!     if(specified('i'))call get_args('i',ints)
+!!     call get_args('twonames',twonames)
+!!     if(specified('T'))call get_args('T',twonames)
 !!
-!!       ! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE
-!!       ! ANY(3f) and ALL(3f)
-!!       write(*,*)specified(['twonames','T       '])
-!!       write(*,*)'ANY:',any(specified(['twonames','T       ']))
-!!       write(*,*)'ALL:',all(specified(['twonames','T       ']))
+!!     ! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE
+!!     ! ANY(3f) and ALL(3f)
+!!     write(*,*)specified(['twonames','T       '])
+!!     write(*,*)'ANY:',any(specified(['twonames','T       ']))
+!!     write(*,*)'ALL:',all(specified(['twonames','T       ']))
 !!
-!!       ! FOR MUTUALLY EXCLUSIVE
-!!       if (all(specified(['twonames','T       '])))then
-!!           write(*,*)'You specified both names -T and -twonames'
-!!       endif
+!!     ! FOR MUTUALLY EXCLUSIVE
+!!     if (all(specified(['twonames','T       '])))then
+!!         write(*,*)'You specified both names -T and -twonames'
+!!     endif
 !!
-!!       ! FOR REQUIRED PARAMETER
-!!       if (.not.any(specified(['twonames','T       '])))then
-!!           write(*,*)'You must specify -T or -twonames'
-!!       endif
-!!
-!!    ! USE VALUES
+!!     ! FOR REQUIRED PARAMETER
+!!     if (.not.any(specified(['twonames','T       '])))then
+!!         write(*,*)'You must specify -T or -twonames'
+!!     endif
+!!     ! USE VALUES
 !!       write(*,*)'flag=',flag
 !!       write(*,*)'ints=',ints
 !!       write(*,*)'twonames=',twonames
-!!    end program demo_specified
-!!
+!!     end program demo_specified
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
@@ -1402,8 +1400,6 @@ end function specified
 !!      keyword and value
 !!      (LICENSE:PD)
 !!##SYNOPSIS
-!!
-!!
 !!
 !!     subroutine update(key,val)
 !!
@@ -1440,12 +1436,14 @@ logical                               :: set_mandatory
    call split(trim(key),long_short,':',nulls='return') ! split long:short keyname or long:short:: or long:: or short::
    ! check for :: on end
    isize=size(long_short)
+
    if(isize.gt.0)then                     ! very special-purpose syntax where if ends in :: next field is a value even
       if(long_short(isize).eq.'')then     ! if it starts with a dash, for --flags option on fpm(1).
          set_mandatory=.true.
          long_short=long_short(:isize-1)
       endif
    endif
+
    select case(size(long_short))
    case(0)
       long=''
@@ -1471,6 +1469,7 @@ logical                               :: set_mandatory
       long=trim(long_short(1))
       short=trim(long_short(2))
    end select
+
    if(present(val))then
       val_local=val
       iilen=len_trim(val_local)
@@ -1515,10 +1514,10 @@ end subroutine update
 !===================================================================================================================================
 !>
 !!##NAME
-!!      wipe_dictionary(3fp) - [ARGUMENTS:M_CLI2] reset private M_CLI2(3fm) dictionary to empty
+!!      wipe_dictionary(3fp) - [ARGUMENTS:M_CLI2] reset private M_CLI2(3fm)
+!!      dictionary to empty
 !!      (LICENSE:PD)
 !!##SYNOPSIS
-!!
 !!
 !!      subroutine wipe_dictionary()
 !!##DESCRIPTION
@@ -1555,12 +1554,14 @@ end subroutine wipe_dictionary
 !===================================================================================================================================
 !>
 !!##NAME
-!!      get(3f) - [ARGUMENTS:M_CLI2] get dictionary value associated with key name in private M_CLI2(3fm) dictionary
+!!    get(3f) - [ARGUMENTS:M_CLI2] get dictionary value associated with
+!!    key name in private M_CLI2(3fm) dictionary
 !!##SYNOPSIS
 !!
 !!
 !!##DESCRIPTION
-!!      Get dictionary value associated with key name in private M_CLI2(3fm) dictionary.
+!!    Get dictionary value associated with key name in private M_CLI2(3fm)
+!!    dictionary.
 !!##OPTIONS
 !!##RETURNS
 !!##EXAMPLE
@@ -1583,10 +1584,10 @@ end function get
 !===================================================================================================================================
 !>
 !!##NAME
-!!      prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_CLI2] convert Unix-like command arguments to table
+!!      prototype_and_cmd_args_to_nlist(3f) - [ARGUMENTS:M_CLI2] convert
+!!      Unix-like command arguments to table
 !!      (LICENSE:PD)
 !!##SYNOPSIS
-!!
 !!
 !!     subroutine prototype_and_cmd_args_to_nlist(prototype)
 !!
@@ -1597,7 +1598,6 @@ end function get
 !!##OPTIONS
 !!      prototype
 !!##EXAMPLE
-!!
 !!
 !! Sample program
 !!
@@ -1618,14 +1618,16 @@ end function get
 !!
 !!      ! uppercase keywords get an underscore to make it easier o remember
 !!      logical            :: l_,h_,v_
-!!      character(len=256) :: a_,b_                  ! character variables must be long enough to hold returned value
+!!      ! character variables must be long enough to hold returned value
+!!      character(len=256) :: a_,b_
 !!      integer            :: c_(3)
 !!
 !!         ! give command template with default values
 !!         ! all values except logicals get a value.
 !!         ! strings must be delimited with double quotes
 !!         ! A string has to have at least one character as for -A
-!!         ! lists of numbers should be comma-delimited. No spaces are allowed in lists of numbers
+!!         ! lists of numbers should be comma-delimited.
+!!         ! No spaces are allowed in lists of numbers
 !!         call prototype_and_cmd_args_to_nlist('&
 !!         & -l -v -h -LVH -x 0 -y 0.0 -z 0.0d0 -p 0,0 &
 !!         & -A " " -B "Value B" -C 10,20,30 -c (-123,-456)',readme)
@@ -2449,11 +2451,10 @@ end subroutine cmd_args_to_dictionary
 !===================================================================================================================================
 !>
 !!##NAME
-!!     print_dictionary(3f) - [ARGUMENTS:M_CLI2] print internal dictionary created by calls to set_args(3f)
+!!     print_dictionary(3f) - [ARGUMENTS:M_CLI2] print internal dictionary
+!!     created by calls to set_args(3f)
 !!     (LICENSE:PD)
 !!##SYNOPSIS
-!!
-!!
 !!
 !!     subroutine print_dictionary(header,stop)
 !!
@@ -2602,10 +2603,13 @@ end function strtok
 !==================================================================================================================================!
 !>
 !!##NAME
-!!     get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments
+!!     get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing
+!!     command line arguments
 !!     (LICENSE:PD)
 !!
 !!##SYNOPSIS
+!!
+!!   get_args(3f) and its convenience functions:
 !!
 !!     use M_CLI2, only : get_args
 !!     ! convenience functions
@@ -2616,16 +2620,14 @@ end function strtok
 !!
 !!      character(len=*),intent(in) :: name
 !!
-!!      character(len=:),allocatable :: value
+!!      type(${TYPE}),allocatable,intent(out) :: value(:)
 !!      ! or
-!!      character(len=:),allocatable :: value(:)
-!!      ! or
-!!      [real|doubleprecision|integer|logical|complex] :: value
-!!      ! or
-!!      [real|doubleprecision|integer|logical|complex],allocatable :: value(:)
+!!      type(${TYPE}),allocatable,intent(out) :: value
 !!
 !!      character(len=*),intent(in),optional :: delimiters
 !!
+!!      where ${TYPE} may be from the set
+!!              {real,doubleprecision,integer,logical,complex,character(len=:)}
 !!##DESCRIPTION
 !!
 !!    GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
@@ -2714,7 +2716,8 @@ end function strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line
+!!    get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values
+!!    for fixed-length string when parsing command line
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -2766,7 +2769,8 @@ end function strtok
 !===================================================================================================================================
 !>
 !!##NAME
-!!    get_args_fixed_size(3f) - [ARGUMENTS:M_CLI2] return keyword values for fixed-size array when parsing command line arguments
+!!    get_args_fixed_size(3f) - [ARGUMENTS:M_CLI2] return keyword values
+!!    for fixed-size array when parsing command line arguments
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3301,7 +3305,8 @@ end subroutine get_scalar_logical
 !===================================================================================================================================
 !>
 !!##NAME
-!!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest argument on command line
+!!    longest_command_argument(3f) - [ARGUMENTS:M_args] length of longest
+!!    argument on command line
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -3310,7 +3315,8 @@ end subroutine get_scalar_logical
 !!     integer :: ilongest
 !!
 !!##DESCRIPTION
-!!    length of longest argument on command line. Useful when allocating storage for holding arguments.
+!!    length of longest argument on command line. Useful when allocating
+!!    storage for holding arguments.
 !!##RESULT
 !!    longest_command_argument  length of longest command argument
 !!##EXAMPLE
@@ -3402,7 +3408,8 @@ end subroutine journal
 !!       character(len=:),allocatable :: frmt
 !!       integer                      :: biggest
 !!
-!!       pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
+!!       pr=str('HUGE(3f) integers',huge(0),'and real',&
+!!               & huge(0.0),'and double',huge(0.0d0))
 !!       write(*,'(a)')pr
 !!       pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
 !!       write(*,'(a)')pr
@@ -3416,18 +3423,21 @@ end subroutine journal
 !!       frmt=str('(*(i',int(log10(real(biggest))),':,1x))',sep=' ')
 !!       write(*,*)'format=',frmt
 !!
-!!       ! although it will often work, using str(3f) in an I/O statement is not recommended
-!!       ! because if an error occurs str(3f) will try to write while part of an I/O statement
-!!       ! which not all compilers can handle and is currently non-standard
+!!       ! although it will often work, using str(3f) in an I/O statement
+!!       ! is not recommended because if an error occurs str(3f) will try
+!!       ! to write while part of an I/O statement which not all compilers
+!!       ! can handle and is currently non-standard
 !!       write(*,*)str('program will now stop')
 !!
 !!       end program demo_msg
 !!
 !!  Output
 !!
-!!     HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308
+!!     HUGE(3f) integers 2147483647 and real 3.40282347E+38 and
+!!     double 1.7976931348623157E+308
 !!     real            : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38
-!!     doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308
+!!     doubleprecision : 1.7976931348623157E+308 0.0000000000000000
+!!     12345.678900000001 2.2250738585072014E-308
 !!     complex         : (3.40282347E+38,1.17549435E-38)
 !!      format=(*(i9:,1x))
 !!      program will now stop
@@ -3732,7 +3742,8 @@ end subroutine a2d
 !===================================================================================================================================
 !>
 !!##NAME
-!!    split(3f) - [M_CLI2:TOKENS] parse string into an array using specified delimiters
+!!    split(3f) - [M_CLI2:TOKENS] parse string into an array using specified
+!!    delimiters
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -3992,7 +4003,8 @@ integer                       :: imax                   ! length of longest toke
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace_str(3f) - [M_CLI2:EDITING] function globally replaces one substring for another in string
+!!    replace_str(3f) - [M_CLI2:EDITING] function globally replaces one
+!!    substring for another in string
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4018,7 +4030,8 @@ integer                       :: imax                   ! length of longest toke
 !!     cmd         alternate way to specify old and new string, in
 !!                 the form c/old/new/; where "/" can be any character
 !!                 not in "old" or "new"
-!!     range       if present, only change range(1) to range(2) of occurrences of old string
+!!     range       if present, only change range(1) to range(2) of
+!!                 occurrences of old string
 !!     ierr        error code. iF ier = -1 bad directive, >= 0 then
 !!                 count of changes made
 !!     clip        whether to return trailing spaces or not. Defaults to .false.
@@ -4055,7 +4068,8 @@ integer                       :: imax                   ! length of longest toke
 !!       targetline=replace_str('a b ab baaa aaaa','a','',range=[3,5])
 !!       write(*,*)'replace a with null instances 3 to 5 ['//targetline//']'
 !!
-!!       targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa','aa','CCCC',range=[3,5])
+!!       targetline=replace_str('a b ab baaa aaaa aa aa a a a aa aaaaaa',&
+!!        & 'aa','CCCC',range=[3,5])
 !!       write(*,*)'replace aa with CCCC instances 3 to 5 ['//targetline//']'
 !!
 !!       contains
@@ -4096,7 +4110,8 @@ integer                       :: imax                   ! length of longest toke
 !!     replace a with A [A b Ab bAAA AAAA]
 !!     replace a with A instances 3 to 5 [a b ab bAAA aaaa]
 !!     replace a with null instances 3 to 5 [a b ab b aaaa]
-!!     replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC a a a aa aaaaaa]
+!!     replace aa with CCCC instances 3 to 5 [a b ab baaa aaCCCC CCCC CCCC
+!!     a a a aa aaaaaa]
 !!
 !!##AUTHOR
 !!    John S. Urban
@@ -4263,7 +4278,8 @@ end function replace_str
 !===================================================================================================================================
 !>
 !!##NAME
-!!     quote(3f) - [M_CLI2:QUOTES] add quotes to string as if written with list-directed input
+!!     quote(3f) - [M_CLI2:QUOTES] add quotes to string as if written with
+!!     list-directed input
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -4280,13 +4296,16 @@ end function replace_str
 !!
 !!##OPTIONS
 !!    str         input string to add quotes to, using the rules of
-!!                list-directed input (single quotes are replaced by two adjacent quotes)
+!!                list-directed input (single quotes are replaced by two
+!!                adjacent quotes)
 !!    mode        alternate quoting methods are supported:
 !!
 !!                   DOUBLE   default. replace quote with double quotes
-!!                   ESCAPE   replace quotes with backslash-quote instead of double quotes
+!!                   ESCAPE   replace quotes with backslash-quote instead
+!!                            of double quotes
 !!
-!!    clip        default is to trim leading and trailing spaces from the string. If CLIP
+!!    clip        default is to trim leading and trailing spaces from the
+!!                string. If CLIP
 !!                is .FALSE. spaces are not trimmed
 !!
 !!##RESULT
@@ -4366,7 +4385,8 @@ end function quote
 !===================================================================================================================================
 !>
 !!##NAME
-!!     unquote(3f) - [M_CLI2:QUOTES] remove quotes from string as if read with list-directed input
+!!     unquote(3f) - [M_CLI2:QUOTES] remove quotes from string as if read
+!!     with list-directed input
 !!     (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -4393,7 +4413,8 @@ end function quote
 !!                character from being processed as a quote, but simply as
 !!                a plain character.
 !!##RESULT
-!!    unquoted_str  The output string, which is based on removing quotes from quoted_str.
+!!    unquoted_str  The output string, which is based on removing quotes
+!!                  from quoted_str.
 !!##EXAMPLE
 !!
 !! Sample program:
@@ -4525,7 +4546,8 @@ end function i2s
 !===================================================================================================================================
 !>
 !!##NAME
-!!    merge_str(3f) - [M_CLI2:LENGTH] pads strings to same length and then calls MERGE(3f)
+!!    merge_str(3f) - [M_CLI2:LENGTH] pads strings to same length and then
+!!                    calls MERGE(3f)
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4613,7 +4635,8 @@ end function merge_str
 !>
 !!##NAME
 !!
-!!    decodebase(3f) - [M_CLI2:BASE] convert whole number string in base [2-36] to base 10 number
+!!    decodebase(3f) - [M_CLI2:BASE] convert whole number string in base
+!!                     [2-36] to base 10 number
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4762,7 +4785,8 @@ end function decodebase
 !===================================================================================================================================
 !>
 !!##NAME
-!!    lenset(3f) - [M_CLI2:LENGTH] return string trimmed or padded to specified length
+!!    lenset(3f) - [M_CLI2:LENGTH] return string trimmed or padded to
+!!                 specified length
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4818,7 +4842,8 @@ end function lenset
 !===================================================================================================================================
 !>
 !!##NAME
-!!      value_to_string(3f) - [M_CLI2:NUMERIC] return numeric string from a numeric value
+!!      value_to_string(3f) - [M_CLI2:NUMERIC] return numeric string from
+!!                            a numeric value
 !!      (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -4856,8 +4881,10 @@ end function lenset
 !!
 !!##RETURNS
 !!       CHARS   returned string representing input value, must be at least
-!!               23 characters long; or what is required by optional FMT if longer.
-!!       IILEN   position of last non-blank character in returned string; optional.
+!!               23 characters long; or what is required by optional FMT
+!!               if longer.
+!!       IILEN   position of last non-blank character in returned string;
+!!               optional.
 !!       IERR    If not zero, error occurred; optional.
 !!##EXAMPLE
 !!
@@ -4982,7 +5009,8 @@ end subroutine value_to_string
 !===================================================================================================================================
 !>
 !!##NAME
-!!    trimzeros_(3fp) - [M_CLI2:NUMERIC] Delete trailing zeros from numeric decimal string
+!!    trimzeros_(3fp) - [M_CLI2:NUMERIC] Delete trailing zeros from numeric
+!!                      `decimal string
 !!    (LICENSE:PD)
 !!##SYNOPSIS
 !!
@@ -4994,8 +5022,8 @@ end subroutine value_to_string
 !!    number. If the resulting string would end in a decimal point, one
 !!    trailing zero is added.
 !!##OPTIONS
-!!    str   input string will be assumed to be a numeric value and have trailing
-!!          zeros removed
+!!    str   input string will be assumed to be a numeric value and have
+!!          trailing zeros removed
 !!##EXAMPLES
 !!
 !! Sample program:
@@ -5060,7 +5088,8 @@ end subroutine trimzeros_
 !===================================================================================================================================
 !>
 !!##NAME
-!!    substitute(3f) - [M_CLI2:EDITING] subroutine globally substitutes one substring for another in string
+!!    substitute(3f) - [M_CLI2:EDITING] subroutine globally substitutes
+!!                     one substring for another in string
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5253,7 +5282,8 @@ end subroutine substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    locate(3f) - [M_CLI2] finds the index where a string is found or should be in a sorted array
+!!    locate(3f) - [M_CLI2] finds the index where a string is found or
+!!                 should be in a sorted array
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS

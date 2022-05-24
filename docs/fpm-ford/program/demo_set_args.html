@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 5.0% of total for programs.">31 statements</a>
+    title=" 4.8% of total for programs.">31 statements</a>
      </li> 
      
      
@@ -177,13 +177,13 @@
       
       <a class="list-group-item" href="../program/demo_set_args.html#variable-ints~2">ints</a>
       
-      <a class="list-group-item" href="../program/demo_set_args.html#variable-l~10">l</a>
+      <a class="list-group-item" href="../program/demo_set_args.html#variable-l~11">l</a>
       
       <a class="list-group-item" href="../program/demo_set_args.html#variable-lbig~4">lbig</a>
       
-      <a class="list-group-item" href="../program/demo_set_args.html#variable-p~5">p</a>
+      <a class="list-group-item" href="../program/demo_set_args.html#variable-p~6">p</a>
       
-      <a class="list-group-item" href="../program/demo_set_args.html#variable-title~11">title</a>
+      <a class="list-group-item" href="../program/demo_set_args.html#variable-title~13">title</a>
       
       <a class="list-group-item" href="../program/demo_set_args.html#variable-x~12">x</a>
       
@@ -272,13 +272,13 @@
       
       <a class="list-group-item" href="../program/demo_set_args.html#variable-ints~2">ints</a>
       
-      <a class="list-group-item" href="../program/demo_set_args.html#variable-l~10">l</a>
+      <a class="list-group-item" href="../program/demo_set_args.html#variable-l~11">l</a>
       
       <a class="list-group-item" href="../program/demo_set_args.html#variable-lbig~4">lbig</a>
       
-      <a class="list-group-item" href="../program/demo_set_args.html#variable-p~5">p</a>
+      <a class="list-group-item" href="../program/demo_set_args.html#variable-p~6">p</a>
       
-      <a class="list-group-item" href="../program/demo_set_args.html#variable-title~11">title</a>
+      <a class="list-group-item" href="../program/demo_set_args.html#variable-title~13">title</a>
       
       <a class="list-group-item" href="../program/demo_set_args.html#variable-x~12">x</a>
       
@@ -370,7 +370,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-l~10"></span>logical</td>
+  <td><span class="anchor" id="variable-l~11"></span>logical</td>
   
   
   <td></td><td>::</td>
@@ -398,7 +398,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-p~5"></span>real</td>
+  <td><span class="anchor" id="variable-p~6"></span>real</td>
   
   
   <td></td><td>::</td>
@@ -412,7 +412,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-title~11"></span>character(len=:),</td>
+  <td><span class="anchor" id="variable-title~13"></span>character(len=:),</td>
   
   
   <td>allocatable</td><td>::</td>
@@ -485,58 +485,58 @@
     
     <section>
     <h2 id="src">Source Code</h2>
-    <div class="highlight"><pre><span></span>           <span class="k">program </span><span class="n">demo_set_args</span>
-           <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">filenames</span><span class="o">=&gt;</span><span class="n">unnamed</span><span class="p">,</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span>
-           <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">get_args_fixed_size</span>
-           <span class="k">implicit none</span>
-<span class="k">           </span><span class="kt">integer</span>                      <span class="kd">::</span> <span class="n">i</span>
-           <span class="c">! DEFINE ARGS</span>
-           <span class="kt">real</span>                         <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
-           <span class="kt">real</span>                         <span class="kd">::</span> <span class="n">p</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-           <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">title</span>
-           <span class="kt">logical</span>                      <span class="kd">::</span> <span class="n">l</span><span class="p">,</span> <span class="n">lbig</span>
-           <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span>          <span class="kd">::</span> <span class="n">ints</span><span class="p">(:)</span>
-           <span class="c">!</span>
-           <span class="c">!  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)</span>
-           <span class="c">!  AND READ COMMAND LINE</span>
-           <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; &amp;</span>
-<span class="s1">              ! reals</span>
-<span class="s1">              &amp; -x 1 -y 2.3 -z 3.4e2 &amp;</span>
-<span class="s1">              ! integer array</span>
-<span class="s1">              &amp; -p -1,-2,-3 &amp;</span>
-<span class="s1">              ! always double-quote strings</span>
-<span class="s1">              &amp; --title &quot;my title&quot; &amp;</span>
-<span class="s1">              ! set all logical values to F or T.</span>
-<span class="s1">              &amp; -l F -L F &amp;</span>
-<span class="s1">              ! set allocatable size to zero if you like by using a delimiter</span>
-<span class="s1">              &amp; -ints , &amp;</span>
-<span class="s1">              ! string should be a single character at a minimum</span>
-<span class="s1">              &amp; --label &quot; &quot; &amp;</span>
-<span class="s1">              &amp; &#39;</span><span class="p">)</span>
-           <span class="c">! ASSIGN VALUES TO ELEMENTS</span>
-           <span class="c">!     SCALARS</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">lbig</span><span class="p">)</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span>      <span class="c">! ALLOCATABLE ARRAY</span>
-           <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>    <span class="c">! ALLOCATABLE STRING</span>
-           <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="n">p</span><span class="p">)</span> <span class="c">! NON-ALLOCATABLE ARRAY</span>
-           <span class="c">! USE VALUES</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;p=&#39;</span><span class="p">,</span><span class="n">p</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;title=&#39;</span><span class="p">,</span><span class="n">title</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;l=&#39;</span><span class="p">,</span><span class="n">l</span>
-           <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;L=&#39;</span><span class="p">,</span><span class="n">lbig</span>
-           <span class="c">! UNNAMED VALUES</span>
-           <span class="k">if</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">filenames</span><span class="p">).</span><span class="n">gt</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
-<span class="k">              write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(i6.6,3a)&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="n">filenames</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">filenames</span><span class="p">))</span>
-           <span class="k">endif</span>
-<span class="k">           end program </span><span class="n">demo_set_args</span>
+    <div class="highlight"><pre><span></span>      <span class="k">program </span><span class="n">demo_set_args</span>
+      <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">filenames</span><span class="o">=&gt;</span><span class="n">unnamed</span><span class="p">,</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span>
+      <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">get_args_fixed_size</span>
+      <span class="k">implicit none</span>
+<span class="k">      </span><span class="kt">integer</span>                      <span class="kd">::</span> <span class="n">i</span>
+      <span class="c">! DEFINE ARGS</span>
+      <span class="kt">real</span>                         <span class="kd">::</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
+      <span class="kt">real</span>                         <span class="kd">::</span> <span class="n">p</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+      <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span> <span class="kd">::</span> <span class="n">title</span>
+      <span class="kt">logical</span>                      <span class="kd">::</span> <span class="n">l</span><span class="p">,</span> <span class="n">lbig</span>
+      <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span>          <span class="kd">::</span> <span class="n">ints</span><span class="p">(:)</span>
+      <span class="c">!</span>
+      <span class="c">!  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)</span>
+      <span class="c">!  AND READ COMMAND LINE</span>
+      <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; &amp;</span>
+<span class="s1">         ! reals</span>
+<span class="s1">         &amp; -x 1 -y 2.3 -z 3.4e2 &amp;</span>
+<span class="s1">         ! integer array</span>
+<span class="s1">         &amp; -p -1,-2,-3 &amp;</span>
+<span class="s1">         ! always double-quote strings</span>
+<span class="s1">         &amp; --title &quot;my title&quot; &amp;</span>
+<span class="s1">         ! set all logical values to F or T.</span>
+<span class="s1">         &amp; -l F -L F &amp;</span>
+<span class="s1">         ! set allocatable size to zero if you like by using a delimiter</span>
+<span class="s1">         &amp; -ints , &amp;</span>
+<span class="s1">         ! string should be a single character at a minimum</span>
+<span class="s1">         &amp; --label &quot; &quot; &amp;</span>
+<span class="s1">         &amp; &#39;</span><span class="p">)</span>
+      <span class="c">! ASSIGN VALUES TO ELEMENTS</span>
+      <span class="c">!     SCALARS</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">lbig</span><span class="p">)</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span>      <span class="c">! ALLOCATABLE ARRAY</span>
+      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>    <span class="c">! ALLOCATABLE STRING</span>
+      <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">,</span><span class="n">p</span><span class="p">)</span> <span class="c">! NON-ALLOCATABLE ARRAY</span>
+      <span class="c">! USE VALUES</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;p=&#39;</span><span class="p">,</span><span class="n">p</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;title=&#39;</span><span class="p">,</span><span class="n">title</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;l=&#39;</span><span class="p">,</span><span class="n">l</span>
+      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;L=&#39;</span><span class="p">,</span><span class="n">lbig</span>
+      <span class="c">! UNNAMED VALUES</span>
+      <span class="k">if</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">filenames</span><span class="p">).</span><span class="n">gt</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
+<span class="k">         write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(i6.6,3a)&#39;</span><span class="p">)(</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39;[&#39;</span><span class="p">,</span><span class="n">filenames</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="p">,</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">filenames</span><span class="p">))</span>
+      <span class="k">endif</span>
+<span class="k">      end program </span><span class="n">demo_set_args</span>
 </pre></div>
 
     </section>
@@ -551,13 +551,13 @@
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-10-01 08:10  
+             on 2022-05-23 20:34  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

@@ -2,6 +2,7 @@
 src_dir: src
          example
          test
+	 docs/images
 output_dir: docs/fpm-ford
 project: M_CLI2
 summary: command line parsing

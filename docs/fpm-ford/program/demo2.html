@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 5.6% of total for programs.">35 statements</a>
+    title=" 5.5% of total for programs.">35 statements</a>
      </li> 
      
      
@@ -175,19 +175,19 @@
       
       <a class="list-group-item" href="../program/demo2.html#variable-i~4">i</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-l~3">l</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-l~4">l</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-l_~2">l_</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-l_~3">l_</a>
       
       <a class="list-group-item" href="../program/demo2.html#variable-point~2">point</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-title~3">title</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-title~4">title</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-x~4">x</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-x~5">x</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-y~4">y</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-y~5">y</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-z~2">z</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-z~3">z</a>
       
     </div>
   </div>
@@ -283,19 +283,19 @@
       
       <a class="list-group-item" href="../program/demo2.html#variable-i~4">i</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-l~3">l</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-l~4">l</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-l_~2">l_</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-l_~3">l_</a>
       
       <a class="list-group-item" href="../program/demo2.html#variable-point~2">point</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-title~3">title</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-title~4">title</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-x~4">x</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-x~5">x</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-y~4">y</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-y~5">y</a>
       
-      <a class="list-group-item" href="../program/demo2.html#variable-z~2">z</a>
+      <a class="list-group-item" href="../program/demo2.html#variable-z~3">z</a>
       
     </div>
   </div>
@@ -379,7 +379,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-l~3"></span>logical</td>
+  <td><span class="anchor" id="variable-l~4"></span>logical</td>
   
   
   <td></td><td>::</td>
@@ -393,7 +393,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-l_~2"></span>logical</td>
+  <td><span class="anchor" id="variable-l_~3"></span>logical</td>
   
   
   <td></td><td>::</td>
@@ -421,7 +421,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-title~3"></span>character(len=80)</td>
+  <td><span class="anchor" id="variable-title~4"></span>character(len=80)</td>
   
   
   <td></td><td>::</td>
@@ -435,7 +435,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-x~4"></span>integer</td>
+  <td><span class="anchor" id="variable-x~5"></span>integer</td>
   
   
   <td></td><td>::</td>
@@ -449,7 +449,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-y~4"></span>integer</td>
+  <td><span class="anchor" id="variable-y~5"></span>integer</td>
   
   
   <td></td><td>::</td>
@@ -463,7 +463,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-z~2"></span>integer</td>
+  <td><span class="anchor" id="variable-z~3"></span>integer</td>
   
   
   <td></td><td>::</td>
@@ -565,11 +565,10 @@ subroutine <a href='../proc/parse.html'>parse</a>()
    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">help_text</span><span class="p">(:),</span> <span class="n">version_text</span><span class="p">(:)</span>
 
    <span class="c">!! DEFINE COMMAND PROTOTYPE</span>
-   <span class="c">!!  o All parameters must be listed with a default value</span>
-   <span class="c">!!  o string values  must be double-quoted</span>
-   <span class="c">!!  o numeric lists must be comma-delimited. No spaces are allowed</span>
-   <span class="c">!!  o a short uppercase name -L maps to a variable in the NAMELIST of name L_</span>
-   <span class="c">!!  o long keynames must be all lowercase</span>
+   <span class="c">!!  o All parameters   must be listed with a default value</span>
+   <span class="c">!!  o string values    must be double-quoted</span>
+   <span class="c">!!  o numeric lists    must be comma-delimited. No spaces are allowed</span>
+   <span class="c">!!  o long keynames    must be all lowercase</span>
 
    <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;&amp;</span>
 <span class="s1">   &amp; -x 1 -y 2 -z 3     &amp;</span>
@@ -627,13 +626,13 @@ subroutine <a href='../proc/parse.html'>parse</a>()
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-10-01 08:10  
+             on 2022-05-23 20:34  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

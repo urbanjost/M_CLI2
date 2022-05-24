@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.4% of total for source files.">50 statements</a>
+    title=" 1.3% of total for source files.">50 statements</a>
      </li> 
      
      
@@ -265,100 +265,100 @@
 
     <section>
       <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl"><pre><span></span><a name="ln-1"></a>          <span class="k">program </span><span class="n">demo_get_subcommand</span>
-<a name="ln-2"></a>          <span class="c">!x! SUBCOMMANDS</span>
-<a name="ln-3"></a>          <span class="c">!x! For a command with subcommands like git(1)</span>
-<a name="ln-4"></a>          <span class="c">!x! you can make separate namelists for each subcommand.</span>
-<a name="ln-5"></a>          <span class="c">!x! You can call this program which has two subcommands (run, test),</span>
-<a name="ln-6"></a>          <span class="c">!x! like this:</span>
-<a name="ln-7"></a>          <span class="c">!x!    demo_get_subcommand --help</span>
-<a name="ln-8"></a>          <span class="c">!x!    demo_get_subcommand run -x -y -z -title -l -L</span>
-<a name="ln-9"></a>          <span class="c">!x!    demo_get_subcommand test -title -l -L -testname</span>
-<a name="ln-10"></a>          <span class="c">!x!    demo_get_subcommand run --help</span>
-<a name="ln-11"></a>             <span class="k">implicit none</span>
-<a name="ln-12"></a>          <span class="c">!x! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES</span>
-<a name="ln-13"></a>             <span class="kt">real</span>               <span class="kd">::</span> <span class="n">x</span><span class="o">=-</span><span class="mi">99</span><span class="mf">9.0</span><span class="p">,</span><span class="n">y</span><span class="o">=-</span><span class="mi">99</span><span class="mf">9.0</span><span class="p">,</span><span class="n">z</span><span class="o">=-</span><span class="mi">99</span><span class="mf">9.0</span>
-<a name="ln-14"></a>             <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;not set&quot;</span>
-<a name="ln-15"></a>             <span class="kt">logical</span>            <span class="kd">::</span> <span class="n">l</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-16"></a>             <span class="kt">logical</span>            <span class="kd">::</span> <span class="n">l_</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-17"></a>             <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">testname</span><span class="o">=</span><span class="s2">&quot;not set&quot;</span>
-<a name="ln-18"></a>             <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">name</span>
-<a name="ln-19"></a>             <span class="k">call </span><span class="n">parse</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="c">!x! DEFINE AND PARSE COMMAND LINE</span>
-<a name="ln-20"></a>             <span class="c">!x! ALL DONE CRACKING THE COMMAND LINE.</span>
-<a name="ln-21"></a>             <span class="c">!x! USE THE VALUES IN YOUR PROGRAM.</span>
-<a name="ln-22"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;command was &#39;</span><span class="p">,</span><span class="n">name</span>
-<a name="ln-23"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;x,y,z .... &#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span>
-<a name="ln-24"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;title .... &#39;</span><span class="p">,</span><span class="n">title</span>
-<a name="ln-25"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;l,l_ ..... &#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">l_</span>
-<a name="ln-26"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;testname . &#39;</span><span class="p">,</span><span class="n">testname</span>
-<a name="ln-27"></a>          <span class="k">contains</span>
-<a name="ln-28"></a><span class="k">          subroutine </span><span class="n">parse</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-<a name="ln-29"></a>          <span class="c">!x! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY</span>
-<a name="ln-30"></a>          <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span> <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_args_fixed_length</span>
-<a name="ln-31"></a>          <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span> <span class="k">only</span> <span class="p">:</span> <span class="n">get_subcommand</span>
-<a name="ln-32"></a>          <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span> <span class="k">only</span> <span class="p">:</span> <span class="n">CLI_RESPONSE_FILE</span>
-<a name="ln-33"></a>          <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">name</span>    <span class="c">! the subcommand name</span>
-<a name="ln-34"></a>          <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">help_text</span><span class="p">(:),</span> <span class="n">version_text</span><span class="p">(:)</span>
-<a name="ln-35"></a>             <span class="n">CLI_RESPONSE_FILE</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
-<a name="ln-36"></a>          <span class="c">! define version text</span>
-<a name="ln-37"></a>             <span class="n">version_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
-<a name="ln-38"></a>                <span class="s1">&#39;@(#)PROGRAM:     demo_get_subcommand            &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-39"></a>                <span class="s1">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-40"></a>                <span class="s1">&#39;@(#)VERSION:     1.0 20200715     &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-41"></a>                <span class="s1">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-42"></a>                <span class="s1">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-43"></a>                <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-44"></a>              <span class="c">! general help for &quot;demo_get_subcommand --help&quot;</span>
-<a name="ln-45"></a>              <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
-<a name="ln-46"></a>               <span class="s1">&#39; allowed subcommands are          &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-47"></a>               <span class="s1">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-48"></a>               <span class="s1">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-49"></a>               <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-50"></a>             <span class="c">! find the subcommand name by looking for first word on command</span>
-<a name="ln-51"></a>             <span class="c">! not starting with dash</span>
-<a name="ln-52"></a>             <span class="n">name</span> <span class="o">=</span> <span class="n">get_subcommand</span><span class="p">()</span>
-<a name="ln-53"></a>             <span class="k">select case</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-<a name="ln-54"></a>             <span class="k">case</span><span class="p">(</span><span class="s1">&#39;run&#39;</span><span class="p">)</span>
-<a name="ln-55"></a>              <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
-<a name="ln-56"></a>               <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-57"></a>               <span class="s1">&#39; Help for subcommand &quot;run&quot;        &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-58"></a>               <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-59"></a>               <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-60"></a>              <span class="k">call </span><span class="n">set_args</span><span class="p">(</span> <span class="p">&amp;</span>
-<a name="ln-61"></a>              <span class="p">&amp;</span> <span class="s1">&#39;-x 1 -y 2 -z 3 --title &quot;my title&quot; -l F -L F&#39;</span><span class="p">,&amp;</span>
-<a name="ln-62"></a>              <span class="p">&amp;</span> <span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span>
-<a name="ln-63"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-<a name="ln-64"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<a name="ln-65"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
-<a name="ln-66"></a>              <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-<a name="ln-67"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
-<a name="ln-68"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span>
-<a name="ln-69"></a>             <span class="k">case</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
-<a name="ln-70"></a>              <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
-<a name="ln-71"></a>               <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-72"></a>               <span class="s1">&#39; Help for subcommand &quot;test&quot;       &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-73"></a>               <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-74"></a>               <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-75"></a>              <span class="k">call </span><span class="n">set_args</span><span class="p">(&amp;</span>
-<a name="ln-76"></a>              <span class="p">&amp;</span> <span class="s1">&#39;--title &quot;my title&quot; -l F -L F --testname &quot;Test&quot;&#39;</span><span class="p">,&amp;</span>
-<a name="ln-77"></a>              <span class="p">&amp;</span> <span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span>
-<a name="ln-78"></a>              <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-<a name="ln-79"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
-<a name="ln-80"></a>              <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span>
-<a name="ln-81"></a>              <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;testname&#39;</span><span class="p">,</span><span class="n">testname</span><span class="p">)</span>
-<a name="ln-82"></a>             <span class="k">case </span><span class="n">default</span>
-<a name="ln-83"></a>              <span class="c">! process help and version</span>
-<a name="ln-84"></a>              <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span>
-<a name="ln-85"></a>              <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(*(a))&#39;</span><span class="p">)</span><span class="s1">&#39;unknown or missing subcommand [&#39;</span><span class="p">,</span><span class="nb">trim</span><span class="p">(</span><span class="n">name</span><span class="p">),</span><span class="s1">&#39;]&#39;</span>
-<a name="ln-86"></a>              <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span>  <span class="p">&amp;</span>
-<a name="ln-87"></a>              <span class="s1">&#39; allowed subcommands are          &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-88"></a>              <span class="s1">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-89"></a>              <span class="s1">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-90"></a>              <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-91"></a>              <span class="k">stop</span>
-<a name="ln-92"></a><span class="k">             end select</span>
-<a name="ln-93"></a><span class="k">          end subroutine </span><span class="n">parse</span>
-<a name="ln-94"></a>          <span class="k">end program </span><span class="n">demo_get_subcommand</span>
+    <div class="hl"><pre><span></span><a name="ln-1"></a>     <span class="k">program </span><span class="n">demo_get_subcommand</span>
+<a name="ln-2"></a>     <span class="c">!x! SUBCOMMANDS</span>
+<a name="ln-3"></a>     <span class="c">!x! For a command with subcommands like git(1)</span>
+<a name="ln-4"></a>     <span class="c">!x! you can make separate namelists for each subcommand.</span>
+<a name="ln-5"></a>     <span class="c">!x! You can call this program which has two subcommands (run, test),</span>
+<a name="ln-6"></a>     <span class="c">!x! like this:</span>
+<a name="ln-7"></a>     <span class="c">!x!    demo_get_subcommand --help</span>
+<a name="ln-8"></a>     <span class="c">!x!    demo_get_subcommand run -x -y -z -title -l -L</span>
+<a name="ln-9"></a>     <span class="c">!x!    demo_get_subcommand test -title -l -L -testname</span>
+<a name="ln-10"></a>     <span class="c">!x!    demo_get_subcommand run --help</span>
+<a name="ln-11"></a>        <span class="k">implicit none</span>
+<a name="ln-12"></a>     <span class="c">!x! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES</span>
+<a name="ln-13"></a>        <span class="kt">real</span>               <span class="kd">::</span> <span class="n">x</span><span class="o">=-</span><span class="mi">99</span><span class="mf">9.0</span><span class="p">,</span><span class="n">y</span><span class="o">=-</span><span class="mi">99</span><span class="mf">9.0</span><span class="p">,</span><span class="n">z</span><span class="o">=-</span><span class="mi">99</span><span class="mf">9.0</span>
+<a name="ln-14"></a>        <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;not set&quot;</span>
+<a name="ln-15"></a>        <span class="kt">logical</span>            <span class="kd">::</span> <span class="n">l</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-16"></a>        <span class="kt">logical</span>            <span class="kd">::</span> <span class="n">l_</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-17"></a>        <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">testname</span><span class="o">=</span><span class="s2">&quot;not set&quot;</span>
+<a name="ln-18"></a>        <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>  <span class="kd">::</span> <span class="n">name</span>
+<a name="ln-19"></a>        <span class="k">call </span><span class="n">parse</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="c">!x! DEFINE AND PARSE COMMAND LINE</span>
+<a name="ln-20"></a>        <span class="c">!x! ALL DONE CRACKING THE COMMAND LINE.</span>
+<a name="ln-21"></a>        <span class="c">!x! USE THE VALUES IN YOUR PROGRAM.</span>
+<a name="ln-22"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;command was &#39;</span><span class="p">,</span><span class="n">name</span>
+<a name="ln-23"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;x,y,z .... &#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span>
+<a name="ln-24"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;title .... &#39;</span><span class="p">,</span><span class="n">title</span>
+<a name="ln-25"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;l,l_ ..... &#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">l_</span>
+<a name="ln-26"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;testname . &#39;</span><span class="p">,</span><span class="n">testname</span>
+<a name="ln-27"></a>     <span class="k">contains</span>
+<a name="ln-28"></a><span class="k">     subroutine </span><span class="n">parse</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<a name="ln-29"></a>     <span class="c">!x! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY</span>
+<a name="ln-30"></a>     <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span> <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">get_args_fixed_length</span>
+<a name="ln-31"></a>     <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span> <span class="k">only</span> <span class="p">:</span> <span class="n">get_subcommand</span>
+<a name="ln-32"></a>     <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span> <span class="k">only</span> <span class="p">:</span> <span class="n">CLI_RESPONSE_FILE</span>
+<a name="ln-33"></a>     <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">)</span>              <span class="kd">::</span> <span class="n">name</span>    <span class="c">! the subcommand name</span>
+<a name="ln-34"></a>     <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">help_text</span><span class="p">(:),</span> <span class="n">version_text</span><span class="p">(:)</span>
+<a name="ln-35"></a>        <span class="n">CLI_RESPONSE_FILE</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
+<a name="ln-36"></a>     <span class="c">! define version text</span>
+<a name="ln-37"></a>        <span class="n">version_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
+<a name="ln-38"></a>           <span class="s1">&#39;@(#)PROGRAM:     demo_get_subcommand            &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-39"></a>           <span class="s1">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-40"></a>           <span class="s1">&#39;@(#)VERSION:     1.0 20200715     &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-41"></a>           <span class="s1">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-42"></a>           <span class="s1">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-43"></a>           <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-44"></a>         <span class="c">! general help for &quot;demo_get_subcommand --help&quot;</span>
+<a name="ln-45"></a>         <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
+<a name="ln-46"></a>          <span class="s1">&#39; allowed subcommands are          &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-47"></a>          <span class="s1">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-48"></a>          <span class="s1">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-49"></a>          <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-50"></a>        <span class="c">! find the subcommand name by looking for first word on command</span>
+<a name="ln-51"></a>        <span class="c">! not starting with dash</span>
+<a name="ln-52"></a>        <span class="n">name</span> <span class="o">=</span> <span class="n">get_subcommand</span><span class="p">()</span>
+<a name="ln-53"></a>        <span class="k">select case</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<a name="ln-54"></a>        <span class="k">case</span><span class="p">(</span><span class="s1">&#39;run&#39;</span><span class="p">)</span>
+<a name="ln-55"></a>         <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
+<a name="ln-56"></a>          <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-57"></a>          <span class="s1">&#39; Help for subcommand &quot;run&quot;        &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-58"></a>          <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-59"></a>          <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-60"></a>         <span class="k">call </span><span class="n">set_args</span><span class="p">(</span> <span class="p">&amp;</span>
+<a name="ln-61"></a>         <span class="p">&amp;</span> <span class="s1">&#39;-x 1 -y 2 -z 3 --title &quot;my title&quot; -l F -L F&#39;</span><span class="p">,&amp;</span>
+<a name="ln-62"></a>         <span class="p">&amp;</span> <span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span>
+<a name="ln-63"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<a name="ln-64"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<a name="ln-65"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+<a name="ln-66"></a>         <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+<a name="ln-67"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+<a name="ln-68"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span>
+<a name="ln-69"></a>        <span class="k">case</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<a name="ln-70"></a>         <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
+<a name="ln-71"></a>          <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-72"></a>          <span class="s1">&#39; Help for subcommand &quot;test&quot;       &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-73"></a>          <span class="s1">&#39;                                  &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-74"></a>          <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-75"></a>         <span class="k">call </span><span class="n">set_args</span><span class="p">(&amp;</span>
+<a name="ln-76"></a>         <span class="p">&amp;</span> <span class="s1">&#39;--title &quot;my title&quot; -l F -L F --testname &quot;Test&quot;&#39;</span><span class="p">,&amp;</span>
+<a name="ln-77"></a>         <span class="p">&amp;</span> <span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span>
+<a name="ln-78"></a>         <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+<a name="ln-79"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+<a name="ln-80"></a>         <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span>
+<a name="ln-81"></a>         <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;testname&#39;</span><span class="p">,</span><span class="n">testname</span><span class="p">)</span>
+<a name="ln-82"></a>        <span class="k">case </span><span class="n">default</span>
+<a name="ln-83"></a>         <span class="c">! process help and version</span>
+<a name="ln-84"></a>         <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span>
+<a name="ln-85"></a>         <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(*(a))&#39;</span><span class="p">)</span><span class="s1">&#39;unknown or missing subcommand [&#39;</span><span class="p">,</span><span class="nb">trim</span><span class="p">(</span><span class="n">name</span><span class="p">),</span><span class="s1">&#39;]&#39;</span>
+<a name="ln-86"></a>         <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span>  <span class="p">&amp;</span>
+<a name="ln-87"></a>         <span class="s1">&#39; allowed subcommands are          &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-88"></a>         <span class="s1">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-89"></a>         <span class="s1">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-90"></a>         <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-91"></a>         <span class="k">stop</span>
+<a name="ln-92"></a><span class="k">        end select</span>
+<a name="ln-93"></a><span class="k">     end subroutine </span><span class="n">parse</span>
+<a name="ln-94"></a>     <span class="k">end program </span><span class="n">demo_get_subcommand</span>
 </pre></div>
 
     </section>
@@ -371,13 +371,13 @@
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-10-01 08:10  
+             on 2022-05-23 20:34  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

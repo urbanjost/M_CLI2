@@ -130,7 +130,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 1.0% of total for source files.">35 statements</a>
+    title=" 0.9% of total for source files.">35 statements</a>
      </li> 
      
      
@@ -301,54 +301,53 @@
 <a name="ln-34"></a>   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">help_text</span><span class="p">(:),</span> <span class="n">version_text</span><span class="p">(:)</span>
 <a name="ln-35"></a>
 <a name="ln-36"></a>   <span class="c">!! DEFINE COMMAND PROTOTYPE</span>
-<a name="ln-37"></a>   <span class="c">!!  o All parameters must be listed with a default value</span>
-<a name="ln-38"></a>   <span class="c">!!  o string values  must be double-quoted</span>
-<a name="ln-39"></a>   <span class="c">!!  o numeric lists must be comma-delimited. No spaces are allowed</span>
-<a name="ln-40"></a>   <span class="c">!!  o a short uppercase name -L maps to a variable in the NAMELIST of name L_</span>
-<a name="ln-41"></a>   <span class="c">!!  o long keynames must be all lowercase</span>
-<a name="ln-42"></a>
-<a name="ln-43"></a>   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;&amp;</span>
-<a name="ln-44"></a><span class="s1">   &amp; -x 1 -y 2 -z 3     &amp;</span>
-<a name="ln-45"></a><span class="s1">   &amp; --point -1,-2,-3   &amp;</span>
-<a name="ln-46"></a><span class="s1">   &amp; --title &quot;my title&quot; &amp;</span>
-<a name="ln-47"></a><span class="s1">   &amp; -l F -L F          &amp;</span>
-<a name="ln-48"></a><span class="s1">   &amp; &#39;</span>
-<a name="ln-49"></a>
-<a name="ln-50"></a>      <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
-<a name="ln-51"></a>         <span class="s1">&#39;NAME                                                    &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-52"></a>         <span class="s1">&#39;   myprocedure(1) - make all things possible            &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-53"></a>         <span class="s1">&#39;SYNOPSIS                                                &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-54"></a>         <span class="s1">&#39;   function myprocedure(stuff)                          &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-55"></a>         <span class="s1">&#39;   class(*) :: stuff                                    &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-56"></a>         <span class="s1">&#39;DESCRIPTION                                             &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-57"></a>         <span class="s1">&#39;   myprocedure(1) makes all things possible given STUFF &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-58"></a>         <span class="s1">&#39;OPTIONS                                                 &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-59"></a>         <span class="s1">&#39;   STUFF  things to do things to                        &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-60"></a>         <span class="s1">&#39;RETURNS                                                 &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-61"></a>         <span class="s1">&#39;   MYPROCEDURE  the answers you want                    &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-62"></a>         <span class="s1">&#39;EXAMPLE                                                 &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-63"></a>         <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-64"></a>
-<a name="ln-65"></a>      <span class="n">version_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
-<a name="ln-66"></a>         <span class="s1">&#39;@(#)PROGRAM:     demo2            &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-67"></a>         <span class="s1">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-68"></a>         <span class="s1">&#39;@(#)VERSION:     1.0 20200115     &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-69"></a>         <span class="s1">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-70"></a>         <span class="s1">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
-<a name="ln-71"></a>         <span class="s1">&#39;&#39;</span> <span class="p">]</span>
-<a name="ln-72"></a>
-<a name="ln-73"></a>      <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">help_text</span><span class="p">,</span> <span class="n">version_text</span><span class="p">)</span>
-<a name="ln-74"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
-<a name="ln-75"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-<a name="ln-76"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
-<a name="ln-77"></a>      <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span><span class="n">point</span><span class="p">)</span>
-<a name="ln-78"></a>      <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
-<a name="ln-79"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
-<a name="ln-80"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span>
-<a name="ln-81"></a>
-<a name="ln-82"></a>   <span class="k">end subroutine </span><span class="n">parse</span>
-<a name="ln-83"></a>
-<a name="ln-84"></a><span class="k">end program </span><span class="n">demo2</span>
+<a name="ln-37"></a>   <span class="c">!!  o All parameters   must be listed with a default value</span>
+<a name="ln-38"></a>   <span class="c">!!  o string values    must be double-quoted</span>
+<a name="ln-39"></a>   <span class="c">!!  o numeric lists    must be comma-delimited. No spaces are allowed</span>
+<a name="ln-40"></a>   <span class="c">!!  o long keynames    must be all lowercase</span>
+<a name="ln-41"></a>
+<a name="ln-42"></a>   <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span> <span class="kd">::</span> <span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;&amp;</span>
+<a name="ln-43"></a><span class="s1">   &amp; -x 1 -y 2 -z 3     &amp;</span>
+<a name="ln-44"></a><span class="s1">   &amp; --point -1,-2,-3   &amp;</span>
+<a name="ln-45"></a><span class="s1">   &amp; --title &quot;my title&quot; &amp;</span>
+<a name="ln-46"></a><span class="s1">   &amp; -l F -L F          &amp;</span>
+<a name="ln-47"></a><span class="s1">   &amp; &#39;</span>
+<a name="ln-48"></a>
+<a name="ln-49"></a>      <span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
+<a name="ln-50"></a>         <span class="s1">&#39;NAME                                                    &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-51"></a>         <span class="s1">&#39;   myprocedure(1) - make all things possible            &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-52"></a>         <span class="s1">&#39;SYNOPSIS                                                &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-53"></a>         <span class="s1">&#39;   function myprocedure(stuff)                          &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-54"></a>         <span class="s1">&#39;   class(*) :: stuff                                    &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-55"></a>         <span class="s1">&#39;DESCRIPTION                                             &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-56"></a>         <span class="s1">&#39;   myprocedure(1) makes all things possible given STUFF &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-57"></a>         <span class="s1">&#39;OPTIONS                                                 &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-58"></a>         <span class="s1">&#39;   STUFF  things to do things to                        &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-59"></a>         <span class="s1">&#39;RETURNS                                                 &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-60"></a>         <span class="s1">&#39;   MYPROCEDURE  the answers you want                    &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-61"></a>         <span class="s1">&#39;EXAMPLE                                                 &#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-62"></a>         <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-63"></a>
+<a name="ln-64"></a>      <span class="n">version_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span> <span class="kd">::</span> <span class="p">&amp;</span>
+<a name="ln-65"></a>         <span class="s1">&#39;@(#)PROGRAM:     demo2            &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-66"></a>         <span class="s1">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-67"></a>         <span class="s1">&#39;@(#)VERSION:     1.0 20200115     &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-68"></a>         <span class="s1">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-69"></a>         <span class="s1">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-70"></a>         <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+<a name="ln-71"></a>
+<a name="ln-72"></a>      <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">help_text</span><span class="p">,</span> <span class="n">version_text</span><span class="p">)</span>
+<a name="ln-73"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<a name="ln-74"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<a name="ln-75"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+<a name="ln-76"></a>      <span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;point&#39;</span><span class="p">,</span><span class="n">point</span><span class="p">)</span>
+<a name="ln-77"></a>      <span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span>
+<a name="ln-78"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+<a name="ln-79"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span>
+<a name="ln-80"></a>
+<a name="ln-81"></a>   <span class="k">end subroutine </span><span class="n">parse</span>
+<a name="ln-82"></a>
+<a name="ln-83"></a><span class="k">end program </span><span class="n">demo2</span>
 </pre></div>
 
     </section>
@@ -361,13 +360,13 @@
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-10-01 08:10  
+             on 2022-05-23 20:34  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>

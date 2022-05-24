@@ -11,7 +11,7 @@ program demo1
    logical                        :: l,  lupper
 
 !! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES
-   call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" --anytitle:: "my title" -l F -L F')
+   call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" --anytitle:a "my title" -l F -L F')
 
 !! ALL DONE CRACKING THE COMMAND LINE. GET THE VALUES
    x=rget('x'); y=rget('y'); z=rget('z')

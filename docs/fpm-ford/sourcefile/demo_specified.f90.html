@@ -265,47 +265,46 @@
 
     <section>
       <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="hl"><pre><span></span><a name="ln-1"></a>          <span class="k">program </span><span class="n">demo_specified</span>
-<a name="ln-2"></a>          <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">specified</span>
-<a name="ln-3"></a>          <span class="k">implicit none</span>
-<a name="ln-4"></a>          <span class="c">! DEFINE ARGS</span>
-<a name="ln-5"></a>          <span class="kt">integer</span>                 <span class="kd">::</span> <span class="n">flag</span>
-<a name="ln-6"></a>          <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span>     <span class="kd">::</span> <span class="n">ints</span><span class="p">(:)</span>
-<a name="ln-7"></a>          <span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span>        <span class="kd">::</span> <span class="n">twonames</span><span class="p">(:)</span>
+    <div class="hl"><pre><span></span><a name="ln-1"></a>     <span class="k">program </span><span class="n">demo_specified</span>
+<a name="ln-2"></a>     <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span>  <span class="k">only</span> <span class="p">:</span> <span class="n">set_args</span><span class="p">,</span> <span class="n">get_args</span><span class="p">,</span> <span class="n">specified</span>
+<a name="ln-3"></a>     <span class="k">implicit none</span>
+<a name="ln-4"></a>     <span class="c">! DEFINE ARGS</span>
+<a name="ln-5"></a>     <span class="kt">integer</span>                 <span class="kd">::</span> <span class="n">flag</span>
+<a name="ln-6"></a>     <span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span>     <span class="kd">::</span> <span class="n">ints</span><span class="p">(:)</span>
+<a name="ln-7"></a>     <span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span>        <span class="kd">::</span> <span class="n">twonames</span><span class="p">(:)</span>
 <a name="ln-8"></a>
-<a name="ln-9"></a>          <span class="c">! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED</span>
-<a name="ln-10"></a>          <span class="c">! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM</span>
-<a name="ln-11"></a>             <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; -flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3&#39;</span><span class="p">)</span>
+<a name="ln-9"></a>     <span class="c">! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED</span>
+<a name="ln-10"></a>     <span class="c">! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM</span>
+<a name="ln-11"></a>      <span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3&#39;</span><span class="p">)</span>
 <a name="ln-12"></a>
-<a name="ln-13"></a>          <span class="c">! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME</span>
-<a name="ln-14"></a>             <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span>
-<a name="ln-15"></a>             <span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span>
-<a name="ln-16"></a>             <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span>
-<a name="ln-17"></a>             <span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span>
-<a name="ln-18"></a>             <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="p">)</span>
-<a name="ln-19"></a>             <span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="p">)</span>
+<a name="ln-13"></a>     <span class="c">! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME</span>
+<a name="ln-14"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span>
+<a name="ln-15"></a>      <span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span>
+<a name="ln-16"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span>
+<a name="ln-17"></a>      <span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span>
+<a name="ln-18"></a>      <span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="p">)</span>
+<a name="ln-19"></a>      <span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="p">)</span>
 <a name="ln-20"></a>
-<a name="ln-21"></a>             <span class="c">! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE</span>
-<a name="ln-22"></a>             <span class="c">! ANY(3f) and ALL(3f)</span>
-<a name="ln-23"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])</span>
-<a name="ln-24"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ANY:&#39;</span><span class="p">,</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">]))</span>
-<a name="ln-25"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ALL:&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">]))</span>
+<a name="ln-21"></a>      <span class="c">! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE</span>
+<a name="ln-22"></a>      <span class="c">! ANY(3f) and ALL(3f)</span>
+<a name="ln-23"></a>      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])</span>
+<a name="ln-24"></a>      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ANY:&#39;</span><span class="p">,</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">]))</span>
+<a name="ln-25"></a>      <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ALL:&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">]))</span>
 <a name="ln-26"></a>
-<a name="ln-27"></a>             <span class="c">! FOR MUTUALLY EXCLUSIVE</span>
-<a name="ln-28"></a>             <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])))</span><span class="k">then</span>
-<a name="ln-29"></a><span class="k">                 write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You specified both names -T and -twonames&#39;</span>
-<a name="ln-30"></a>             <span class="k">endif</span>
+<a name="ln-27"></a>      <span class="c">! FOR MUTUALLY EXCLUSIVE</span>
+<a name="ln-28"></a>      <span class="k">if</span> <span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])))</span><span class="k">then</span>
+<a name="ln-29"></a><span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You specified both names -T and -twonames&#39;</span>
+<a name="ln-30"></a>      <span class="k">endif</span>
 <a name="ln-31"></a>
-<a name="ln-32"></a>             <span class="c">! FOR REQUIRED PARAMETER</span>
-<a name="ln-33"></a>             <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])))</span><span class="k">then</span>
-<a name="ln-34"></a><span class="k">                 write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You must specify -T or -twonames&#39;</span>
-<a name="ln-35"></a>             <span class="k">endif</span>
-<a name="ln-36"></a>
-<a name="ln-37"></a>          <span class="c">! USE VALUES</span>
-<a name="ln-38"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;flag=&#39;</span><span class="p">,</span><span class="n">flag</span>
-<a name="ln-39"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span>
-<a name="ln-40"></a>             <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;twonames=&#39;</span><span class="p">,</span><span class="n">twonames</span>
-<a name="ln-41"></a>          <span class="k">end program </span><span class="n">demo_specified</span>
+<a name="ln-32"></a>      <span class="c">! FOR REQUIRED PARAMETER</span>
+<a name="ln-33"></a>      <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])))</span><span class="k">then</span>
+<a name="ln-34"></a><span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You must specify -T or -twonames&#39;</span>
+<a name="ln-35"></a>      <span class="k">endif</span>
+<a name="ln-36"></a>      <span class="c">! USE VALUES</span>
+<a name="ln-37"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;flag=&#39;</span><span class="p">,</span><span class="n">flag</span>
+<a name="ln-38"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span>
+<a name="ln-39"></a>        <span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;twonames=&#39;</span><span class="p">,</span><span class="n">twonames</span>
+<a name="ln-40"></a>      <span class="k">end program </span><span class="n">demo_specified</span>
 </pre></div>
 
     </section>
@@ -318,13 +317,13 @@
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2021 
+        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2021-10-01 08:10  
+             on 2022-05-23 20:34  
           </p>
         </div>
         <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>
