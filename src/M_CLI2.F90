@@ -270,8 +270,8 @@ contains
 !!
 !!      subroutine check_commandline(help_text,version_text,ierr,errmsg)
 !!
-!!       character(len=:),allocatable,intent(in),optional :: help_text(:)
-!!       character(len=:),allocatable,intent(in),optional :: version_text(:)
+!!       character(len=*),intent(in),optional :: help_text(:)
+!!       character(len=*),intent(in),optional :: version_text(:)
 !!
 !!##DESCRIPTION
 !!     Checks the commandline  and processes the implicit --help, --version,
@@ -327,12 +327,12 @@ contains
 !!      end program check_commandline
 !===================================================================================================================================
 subroutine check_commandline(help_text,version_text)
-character(len=:),allocatable,intent(in),optional :: help_text(:)
-character(len=:),allocatable,intent(in),optional :: version_text(:)
-character(len=:),allocatable                     :: line
-integer                                          :: i
-integer                                          :: istart
-integer                                          :: iback
+character(len=*),intent(in),optional :: help_text(:)
+character(len=*),intent(in),optional :: version_text(:)
+character(len=:),allocatable         :: line
+integer                              :: i
+integer                              :: istart
+integer                              :: iback
    if(get('usage').eq.'T')then
       call print_dictionary('USAGE:')
       !x!call default_help()
@@ -361,12 +361,6 @@ integer                                          :: iback
                istart=5
                iback=1
             endif
-         endif
-         if(debug_m_cli2)write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:ALLOCATED',allocated(version_text)
-         if(allocated(version_text).and.debug_m_cli2)then
-            write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:LEN',len(version_text)
-            write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:SIZE',size(version_text)
-            write(*,gen)'<DEBUG>CHECK_COMMANDLINE:VERSION_TEXT:LEN',version_text
          endif
          do i=1,size(version_text)
             !xINTEL BUG*!call journal('sc',version_text(i)(istart:len_trim(version_text(i))-iback))
@@ -415,8 +409,8 @@ end subroutine check_commandline
 !!     subroutine set_args(definition,help_text,version_text,ierr,errmsg)
 !!
 !!      character(len=*),intent(in),optional              :: definition
-!!      character(len=:),intent(in),allocatable,optional  :: help_text
-!!      character(len=:),intent(in),allocatable,optional  :: version_text
+!!      character(len=*),intent(in),optional              :: help_text(:)
+!!      character(len=*),intent(in),optional              :: version_text(:)
 !!      integer,intent(out),optional                      :: ierr
 !!      character(len=:),intent(out),allocatable,optional :: errmsg
 !!##DESCRIPTION
@@ -855,8 +849,8 @@ subroutine set_args(prototype,help_text,version_text,string,ierr,errmsg)
 ! ident_2="@(#)M_CLI2::set_args(3f): parse prototype string"
 
 character(len=*),intent(in)                       :: prototype
-character(len=:),intent(in),allocatable,optional  :: help_text(:)
-character(len=:),intent(in),allocatable,optional  :: version_text(:)
+character(len=*),intent(in),optional              :: help_text(:)
+character(len=*),intent(in),optional              :: version_text(:)
 character(len=*),intent(in),optional              :: string
 integer,intent(out),optional                      :: ierr
 character(len=:),intent(out),allocatable,optional :: errmsg
