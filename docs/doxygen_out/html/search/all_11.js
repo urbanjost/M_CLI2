@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['trimzeros_5f_147',['trimzeros_',['../namespacem__cli2.html#a770a66475094fd80493d46498de1ebf7',1,'m_cli2']]]
+  ['unquote_2e3m_5fcli2_2eman_2etxt_70',['unquote.3m_cli2.man.txt',['../unquote_83m__cli2_8man_8txt.html',1,'']]],
+  ['update_2e3m_5fcli2_2eman_2etxt_71',['update.3m_cli2.man.txt',['../update_83m__cli2_8man_8txt.html',1,'']]]
 ];

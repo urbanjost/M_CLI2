@@ -31,22 +31,29 @@ This short program defines a command that can be called like
    integer,allocatable           :: p(:)
    character(len=:),allocatable  :: title
    logical                       :: l, lbig
+      !
       ! Define command and default values and parse supplied command line options
+      !
       call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title "my title" -l F -L F')
+      !
       ! Get values using convenience functions
+      !
       sum=rget('x') + rget('y') + rget('z')
       title=sget('title')
       p=igets('p')
       l=lget('l')
       lbig=lget('L')
+      !
+      ! All ready to go
+      !
       write(*,*)sum,l,lbig,p,title
    end program show
 ```
 An arbitrary number of strings such as filenames may be passed in on
-the end of commands, you can query whether an option was supplied,
-and get_args(3f)-related routines can be used for refining options such as
+the end of commands, you can query whether an option was supplied, and
+get_args(3f)-related routines can be used for refining options such as
 requiring lists of a specified size. Passing in some character arrays
-allows you to automatically have a --help and --version switch as well, 
+allows you to automatically have a --help and --version switch as well,
 as explained below.
 
 ## DEMO PROGRAMS![demos](docs/images/demo.gif)
@@ -131,9 +138,8 @@ dozens of options where various values are frequently reused.
 
 ## DOCUMENTATION   ![docs](docs/images/docs.gif)
 ### man-pages as HTML
+- [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) -- man-pages index of individual procedures
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
-- [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) --
-  man-pages index of individual procedures
 <!--
    + [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html) --
      An overview of the M_CLI2 module

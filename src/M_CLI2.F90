@@ -7,7 +7,7 @@
 !===================================================================================================================================
 !>
 !!##NAME
-!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] - command line argument
+!!     M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] command line argument
 !!     parsing using a prototype command
 !!     (LICENSE:PD)
 !!##SYNOPSIS

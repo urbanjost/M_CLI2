@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['a2d_174',['a2d',['../namespacem__cli2.html#ad9e1de0ea9d2b4ed758b2a76bf143bd2',1,'m_cli2']]],
-  ['a2i_175',['a2i',['../namespacem__cli2.html#a0be58233adafc0bf10dfe69300a05b9f',1,'m_cli2']]],
-  ['atleast_176',['atleast',['../namespacem__cli2.html#af56d0ddfe2e4b840de521eecae5386e1',1,'m_cli2']]]
+  ['arrival_110',['Arrival',['../decodebase_83m__cli2_8man_8txt.html#aa1d86444cc22af662eb84056478c0c25',1,'decodebase.3m_cli2.man.txt']]]
 ];

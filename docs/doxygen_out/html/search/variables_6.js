@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mandatory_302',['mandatory',['../structm__cli2_1_1option.html#a06e972d26c7a4f0ea2c8854dc23f81cf',1,'m_cli2::option::mandatory()'],['../namespacem__cli2.html#a9c589209a3652026a32353cd2d0a3afc',1,'m_cli2::mandatory()']]]
+  ['logical_139',['LOGICAL',['../get__args_83m__cli2_8man_8txt.html#aa45b1eb55aa06aa1ec227a099a30d923',1,'get_args.3m_cli2.man.txt']]],
+  ['long_140',['long',['../value__to__string_83m__cli2_8man_8txt.html#a0333e6798800505afd2c813eaebdf7d5',1,'value_to_string.3m_cli2.man.txt']]]
 ];

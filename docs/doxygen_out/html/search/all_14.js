@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wipe_5fdictionary_155',['wipe_dictionary',['../namespacem__cli2.html#ab1525b0419475486f520ef502daa5e94',1,'m_cli2']]]
+  ['x_75',['x',['../set__args_83m__cli2_8man_8txt.html#a6a3ad642604209b64f53eb426c6e320e',1,'set_args.3m_cli2.man.txt']]]
 ];
