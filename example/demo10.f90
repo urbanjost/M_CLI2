@@ -1,4 +1,4 @@
-program demo1
+program demo10
 !!  full usage and even equivalencing
 use M_CLI2,  only : set_args, get_args, unnamed
 use M_CLI2,  only : get_args_fixed_size, get_args_fixed_length
@@ -49,4 +49,4 @@ equivalence(point,p)
       write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
    endif
 
-end program demo1
+end program demo10

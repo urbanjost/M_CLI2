@@ -1,4 +1,4 @@
-program testit
+program demo11
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
 
 type point
@@ -74,4 +74,4 @@ write(*,nml_dot)
 ! via M_CLI2(3f), although if TLI (terminal screen GUIs) or GUIs are supported later by
 ! M_CLI2(3f) doing validation in the input forms themselves would be more desirable.
 
-end program testit
+end program demo11
