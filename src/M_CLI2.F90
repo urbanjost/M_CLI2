@@ -862,8 +862,8 @@ end subroutine check_commandline
 !!
 !!    The intel Fortran compiler now calls the response files "indirect
 !!    files" and does not add the implied suffix ".rsp" to the files
-!!    anymore. It also allows the @NAME syntax anywhere on the command
-!!    line, not just at the beginning. --  20201212
+!!    anymore. It also allows the @NAME syntax anywhere on the command line,
+!!    not just at the beginning. -- 20201212
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
