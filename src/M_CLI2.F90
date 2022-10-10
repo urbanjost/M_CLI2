@@ -3787,7 +3787,7 @@ character(len=3),save        :: nan_string='NaN'
             valu=onerr
          end select
       else                                                      ! set return value to NaN
-         read(nan_string,'(g3.3)')valu
+         read(nan_string,'(f3.3)')valu
       endif
       if(local_chars.ne.'eod')then                           ! print warning message except for special value "eod"
          call journal('sc','*a2d* - cannot produce number from string ['//trim(chars)//']')
