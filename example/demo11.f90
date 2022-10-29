@@ -23,7 +23,7 @@ character(len=80)           :: readme !(3)
 
 ! even number from 10 to 30 inclusive
 do i=1,100
-   if(all([i.ge.10,i.le.30,i/2*2.eq.i]))then
+   if(all([i >= 10,i <= 30,i/2*2 == i]))then
       write(*,*)'good',i
    endif
 enddo
@@ -32,12 +32,12 @@ enddo
 
 ! matched
 name='red'
-if(any(name.eq.[character(len=10) :: 'red','white','blue']))then
+if(any(name == [character(len=10) :: 'red','white','blue']))then
    write(*,*)'matches ', name
 endif
 ! not matched
 name='teal'
-if(any(name.eq.[character(len=10) :: 'red','white','blue']))then
+if(any(name == [character(len=10) :: 'red','white','blue']))then
    write(*,*)'matches ', name
 endif
 

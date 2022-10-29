@@ -44,7 +44,7 @@ equivalence(point,p)
    !
    ! the optional unnamed values on the command line are
    ! accumulated in the character array "UNNAMED"
-   if(size(unnamed).gt.0)then
+   if(size(unnamed) > 0)then
       write(*,'(a)')'files:'
       write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
    endif
