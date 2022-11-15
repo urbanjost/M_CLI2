@@ -11,7 +11,7 @@ jobs:
         os: [ macos-latest ]
         include:
         - os: macos-latest
-          gcc_v: 12
+          gcc_v: 9
     env:
       FC: gfortran
       GCC_V: ${{ matrix.gcc_v }}

@@ -3461,7 +3461,7 @@ end subroutine journal
 !!
 !! Sample program:
 !!
-!!       program demo_msg
+!!       program demo_str
 !!       use M_CLI2, only : str
 !!       implicit none
 !!       character(len=:),allocatable :: pr
@@ -3480,7 +3480,7 @@ end subroutine journal
 !!
 !!       ! create a format on the fly
 !!       biggest=huge(0)
-!!       frmt=str('(*(i',int(log10(real(biggest))),':,1x))',sep=' ')
+!!       frmt=str('(*(i',nint(log10(real(biggest))),':,1x))',sep=' ')
 !!       write(*,*)'format=',frmt
 !!
 !!       ! although it will often work, using str(3f) in an I/O statement
@@ -3489,7 +3489,7 @@ end subroutine journal
 !!       ! can handle and is currently non-standard
 !!       write(*,*)str('program will now stop')
 !!
-!!       end program demo_msg
+!!       end program demo_str
 !!
 !!  Output
 !!
@@ -4814,7 +4814,7 @@ integer           :: ierr
      do i=1, long
         k=long+1-i
         ch=string_local(k:k)
-        IF(CH.EQ.'-'.AND.K.EQ.1)THEN
+        IF(CH == '-'.AND.K == 1)THEN
            out_sign=-1
            cycle
         endif
@@ -5486,7 +5486,7 @@ integer                                 :: error
       maxtry=0
       place=-1
    else
-      maxtry=int(log(float(arraysize))/log(2.0)+1.0)
+      maxtry=nint(log(float(arraysize))/log(2.0)+1.0)
       place=(arraysize+1)/2
    endif
    imin=1
