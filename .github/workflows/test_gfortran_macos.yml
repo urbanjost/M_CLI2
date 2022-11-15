@@ -24,7 +24,7 @@ jobs:
     - name: Install GFortran macOS
       run: |
           ls /usr/local/bin/gfortran-*
-          ln -s /usr/local/bin/gfortran-${GCC_V} /usr/local/bin/gfortran
+          ln -f -s /usr/local/bin/gfortran-${GCC_V} /usr/local/bin/gfortran
           which gfortran-${GCC_V}
           which gfortran
 

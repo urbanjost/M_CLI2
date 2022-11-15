@@ -1,0 +1,264 @@
+ name: openbsd via macos-12
+
+ on: [push, pull_request]
+
+ jobs:
+   test:
+     runs-on: macos-12
+     name: A job to run test in OpenBSD
+     env:
+       MYTOKEN : ${{ secrets.MYTOKEN }}
+       MYTOKEN2: "value2"
+     steps:
+     - uses: actions/checkout@v2
+     - name: Test in OpenBSD
+       id: test
+       uses: vmactions/openbsd-vm@v0
+       with:
+         envs: 'MYTOKEN MYTOKEN2'
+         usesh: true
+         mem: 4096
+         prepare: |
+           pkg_add bash
+           pkg_add curl
+
+         run: |
+           set -x -v
+           pwd
+           ls -lah
+           whoami
+           env
+           gfortran --version
+# Marketplace Actions OpenBSD-vm
+#
+# GitHub Action
+# OpenBSD-vm
+# v0.1.2 Pre-release
+# Run GitHub CI in OpenBSD Test
+#
+# Use this action to run your CI in OpenBSD.
+#
+# The github workflow only supports Ubuntu, Windows and MacOS. But what if you need to use OpenBSD?
+#
+# This action is to support OpenBSD.
+#
+# Sample workflow test.yml:
+#
+# name: Test
+#
+# on: [push]
+#
+# jobs:
+#   test:
+#     runs-on: macos-12
+#     name: A job to run test in OpenBSD
+#     env:
+#       MYTOKEN : ${{ secrets.MYTOKEN }}
+#       MYTOKEN2: "value2"
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Test in OpenBSD
+#       id: test
+#       uses: vmactions/openbsd-vm@v0
+#       with:
+#         envs: 'MYTOKEN MYTOKEN2'
+#         usesh: true
+#         prepare: |
+#           pkg_add curl
+#
+#         run: |
+#
+#           pwd
+#           ls -lah
+#           whoami
+#           env
+#
+#
+#
+#
+#
+# The latest major version is: v0, which is the most recommended to use. (You can also use the latest full version: v0.1.2)
+#
+# The runs-on: macos-12 must be macos-12.
+#
+# The envs: 'MYTOKEN MYTOKEN2' is the env names that you want to pass into the vm.
+#
+# The run: xxxxx is the command you want to run in the vm.
+#
+# The env variables are all copied into the VM, and the source code and directory are all synchronized into the VM.
+#
+# The working dir for run in the VM is the same as in the Host machine.
+#
+# All the source code tree in the Host machine are mounted into the VM.
+#
+# All the GITHUB_* as well as CI=true env variables are passed into the VM.
+#
+# So, you will have the same directory and same default env variables when you run the CI script.
+#
+# The default shell in OpenBSD is ksh, if you want to use sh to execute the run script, please set usesh to true.
+#
+# The code is shared from the host to the VM via rsync, you can choose to use to sshfs share code instead.
+#
+#
+# ...
+#
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Test
+#       id: test
+#       uses: vmactions/openbsd-vm@v0
+#       with:
+#         envs: 'MYTOKEN MYTOKEN2'
+#         usesh: true
+#         sync: sshfs
+#         prepare: |
+#           pkg_add curl
+#
+#
+#
+# ...
+#
+#
+# When using rsync, you can define copyback: false to not copy files back from the VM in to the host.
+#
+#
+# ...
+#
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Test
+#       id: test
+#       uses: vmactions/openbsd-vm@v0
+#       with:
+#         envs: 'MYTOKEN MYTOKEN2'
+#         usesh: true
+#         sync: rsync
+#         copyback: false
+#         prepare: |
+#           pkg_add curl
+#
+#
+#
+# ...
+#
+#
+# You can add NAT port between the host and the VM.
+#
+# ...
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Test
+#       id: test
+#       uses: vmactions/openbsd-vm@v0
+#       with:
+#         envs: 'MYTOKEN MYTOKEN2'
+#         usesh: true
+#         nat: |
+#           "8080": "80"
+#           "8443": "443"
+#           udp:"8081": "80"
+# ...
+#
+# The default memory of the VM is 1024MB, you can use mem option to set the memory size:
+#
+# ...
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Test
+#       id: test
+#       uses: vmactions/openbsd-vm@v0
+#       with:
+#         envs: 'MYTOKEN MYTOKEN2'
+#         usesh: true
+#         mem: 2048
+# ...
+#
+# It uses the latest OpenBSD 7.2 by default, you can use release option to use another version of OpenBSD:
+#
+# ...
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Test
+#       id: test
+#       uses: vmactions/openbsd-vm@v0
+#       with:
+#         release: 7.1
+# ...
+#
+# All the supported releases are here: OpenBSD 7.1, 7.2
+# Under the hood
+#
+# GitHub only supports Ubuntu, Windows and MacOS out of the box.
+#
+# However, the MacOS support virtualization. It has VirtualBox installed.
+#
+# So, we run the OpenBSD VM in VirtualBox on MacOS.
+#
+# Contributors
+# @Neilpang @dependabot
+# Categories
+# Continuous integration Testing
+# Links
+# vmactions/openbsd-vm
+#
+# OpenBSD-vm is not certified by GitHub. It is provided by a third-party
+# and is governed by separate terms of service, privacy policy, and support
+# documentation.
+# Footer
+# © 2022 GitHub, Inc.
+
+
+#  Build:
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        os: [ubuntu-latest ]
+#        include:
+#        - os: ubuntu-latest
+#          gcc_v: 10
+#
+#    env:
+#      FC: gfortran
+#      GCC_V: ${{ matrix.gcc_v }}
+#      TZ: UTC+04:00
+#
+#    steps:
+#    - name: Checkout code
+#      uses: actions/checkout@v1
+#
+#    - name: Install GFortran Linux
+#      run: |
+#        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+#        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+#        --slave /usr/bingcov gcov /usr/bin/gcov-${GCC_V}
+#
+#    - name: Install fpm
+#      run: |
+#           echo $PATH
+#           pwd
+#           uname -a
+#           wget https://raw.githubusercontent.com/urbanjost/index/main/bootstrap/fpm.F90
+#           mkdir -p /home/runner/.local/bin
+#           gfortran fpm.F90 -o /home/runner/.local/bin/fpm
+#           ls -l
+#
+#    - name: Display environment
+#      run: |
+#        #make -k -p -fNOTTHERE
+#        echo "end" > foo.f90
+#        gfortran -cpp -E -dM foo.f90
+#        gfortran --version
+#        fpm --version
+#
+#    - name: ubuntu with gfortran (debug)
+#      run: fpm test --profile debug
+#
+#    - name: ubuntu with gfortran (release)
+#      run: fpm test --profile release
+#
+##    - name: Run demo programs (fpm run)
+##      run: fpm run --profile release
+#
+#    - name: cleanup Linux
+#      run: ls -ltras
