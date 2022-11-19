@@ -121,7 +121,10 @@ These demo programs provide templates for the most common usage:
 
    NOTE: These instructions are very likely to change and to include
    instructions for other compilers, especially for shared libraries
-   which varies significantly from compiler to compiler.
+   which varies significantly from compiler to compiler. For some builds
+   it is simpler to make a Makefile for each compiler, which might be
+   required for a more comprehensive build unless you are very familiar
+   with gmake(1).
 
    If you always use one compiler it is relatively simple, otherwise
    make sure you know what your system requires and change the Makefile
