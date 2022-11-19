@@ -73,37 +73,68 @@ These demo programs provide templates for the most common usage:
 
 ## DOWNLOAD AND BUILD WITH make(1)![gmake](docs/images/gnu.gif)
    Compile the M_CLI2 module and build all the example programs.
-   ```bash
+```bash
        git clone https://github.com/urbanjost/M_CLI2.git
        cd M_CLI2/src
        # change Makefile if not using one of the listed compilers
      
        # for gfortran
        make clean
-       make F90=gfortran gfortran
+       make gfortran
      
        # for ifort
        make clean
-       make F90=ifort ifort
+       make ifort
 
        # for nvfortran
        make clean
-       make F90=nvfortran nvfortran
+       make nvfortran
 
        # display other options (test, run, doxygen, ford, ...)
        make help 
-   ```
+```
+   To install you then generally copy the *.mod file and *.a file to
+   an appropriate directory.  Unfortunately, the specifics vary but in
+   general if you have a directory $HOME/.local/lib and copy those files
+   there then you can generally enter something like
+```bash
+     gfortran -L$HOME/.local/lib -lM_CLI2  myprogram.f90 -o myprogram
+```
+   There are different methods for adding the directory to your default
+   load path, but frequently you can append the directory you have
+   placed the files in into colon-separated list of directories in the
+   $LD_LIBRARY_PATH environment variable, and then the -L option will
+   not be required (or it's equivalent in your programming environment).
+
+   **NOTE**: If you use multiple Fortran compilers you may need to create
+   a different directory for each compiler. I would recommend it, such
+   as $HOME/.local/lib/gfortran/.
+
+   If you desire a shared library as well, for gfortran you may enter
+```bash
+     make clean gfortran gfortran_install
+```
+   and everything needed will be placed in libgfortran/ that you may
+   add to an appropriate area, such as $HOME/.local/lib/gfortran/.
+
+   NOTE: These instructions are very likely to change and to include
+   instructions for other compilers, especially for shared libraries
+   which varies significantly from compiler to compiler.
+
+   If you always use one compiler it is relatively simple, otherwise
+   make sure you know what your system requires and change the Makefile
+   as appropriate.
 
 ## SUPPORTS FPM ![parse](docs/images/fpm_logo.gif) 
    Alternatively, download the github repository and build it with
    fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
 
-   ```bash
+```bash
         git clone https://github.com/urbanjost/M_CLI2.git
         cd M_CLI2
         fpm test   # build and test the module
 	fpm install # install the module (in the default location)
-   ```
+```
 
    or just list it as a dependency in your fpm.toml project file.
 
