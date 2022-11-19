@@ -44,7 +44,7 @@ nvfortran: all
 	@echo built with $(F90)
 
 ifort: F90=ifort
-ifort: FCFLAGS := -warn all -traceback
+ifort: FCFLAGS := -warn all -traceback -fpic
 ifort: all
 	@echo built with $(F90)
 
@@ -81,7 +81,26 @@ gfortran_install: $(OBJS)
 	# put directory in load path and run using shared version
 	env LD_LIBRARY_PATH=libgfortran/:${LD_LIBRARY_PATH} ./hello_shared
 	# show one is static and other needs shared library
-	ldd hello_shared hello_static
+	-env LD_LIBRARY_PATH=libgfortran/:${LD_LIBRARY_PATH} ldd hello_shared hello_static
+ifort_install: $(OBJS)
+	# very Linux/Unix/BSD/.. specific and just for ifort
+	mkdir -p libifort/
+	# static library and modules
+	$(AR) $(ARFLAGS) libifort/libM_CLI2.a $^
+	cp *.mod libifort/
+	# shared library
+	ifort -shared -o libifort/lib$(LIB).so.1 $(OBJS)
+	cd libifort && ln -sf lib$(LIB).so.1 lib$(LIB).so 
+	@echo example static build
+	ifort -static sample/hello.f90 -Llibifort -lM_CLI2 -o hello_static
+	./hello_static
+
+	@echo example shared build
+	ifort sample/hello.f90 -Llibifort -lM_CLI2 -o hello_shared
+	# put directory in load path and run using shared version
+	env LD_LIBRARY_PATH=libifort/:${LD_LIBRARY_PATH} ./hello_shared
+	# show one is static and other needs shared library
+	-env LD_LIBRARY_PATH=libifort/:${LD_LIBRARY_PATH} ldd hello_shared hello_static
 
 .SUFFIXES: $(SUFFIXES) .f90 .F90 
 .f90.o:
@@ -96,7 +115,8 @@ help:
 	: # OPTIONS:                                                                    #
 	: # run               -- run manpage demo programs                              #
 	: # test              -- run test programs                                      #
-	: # gfortran_install  -- place static and shared library in ./lib for gfortran  #
+	: # gfortran_install  -- place static and shared library in ./libgfortran       #
+	: # ifort_install     -- place static and shared library in ./libifort          #
 	: ###############################################################################
 	: # man                     -- show all manpages as text                        #
 	: # ship                    -- rebuild archive files of manpages                #
@@ -110,6 +130,7 @@ help:
 	: # make clean                                                                  #
 	: # make ifort run                                                              #
 	: # make clean gfortran gfortran_install # create libgfortran/                  #
+	: # make clean ifort ifort_install # create libifort/                           #
 	: ###############################################################################
 
 .PHONY: clean

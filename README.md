@@ -118,6 +118,9 @@ These demo programs provide templates for the most common usage:
 ```
    and everything needed by gfortran will be placed in libgfortran/ that
    you may add to an appropriate area, such as $HOME/.local/lib/gfortran/.
+```bash
+     make clean ifort ifort_install # same for ifort
+```
 
    NOTE: These instructions are very likely to change and to include
    instructions for other compilers, especially for shared libraries
