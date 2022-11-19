@@ -102,10 +102,12 @@ These demo programs provide templates for the most common usage:
 ```
    There are different methods for adding the directory to your default
    load path, but frequently you can append the directory you have
-   placed the files in into colon-separated list of directories in the
+   placed the files in into the colon-separated list of directories in the
    $LD_LIBRARY_PATH environment variable, and then the -L option will
    not be required (or it's equivalent in your programming environment).
-
+```bash
+       export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+```
    **NOTE**: If you use multiple Fortran compilers you may need to create
    a different directory for each compiler. I would recommend it, such
    as $HOME/.local/lib/gfortran/.
@@ -114,8 +116,8 @@ These demo programs provide templates for the most common usage:
 ```bash
      make clean gfortran gfortran_install
 ```
-   and everything needed will be placed in libgfortran/ that you may
-   add to an appropriate area, such as $HOME/.local/lib/gfortran/.
+   and everything needed by gfortran will be placed in libgfortran/ that
+   you may add to an appropriate area, such as $HOME/.local/lib/gfortran/.
 
    NOTE: These instructions are very likely to change and to include
    instructions for other compilers, especially for shared libraries
