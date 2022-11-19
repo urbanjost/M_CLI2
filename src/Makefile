@@ -21,35 +21,33 @@ PROG = ${PROGFILES:.f90=}
 SRCS = M_CLI2.f90 
 OBJS = M_CLI2.o 
 LIBRARY := libM_CLI2.a
+COMPILER=AAAAAAAAA
 LIB := M_CLI2
 # platform-specific values you will probably change
 #
-#
-# This is a compiler bug. It is well-known, but not fixed in GCC yet. You
-# can see the report at https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91442
-# 
-# You can either ignore it, or disable the "may be used uninitialized"
-# warnings with -Wno-maybe-uninitialized or compile with optimizations
-# (-O1 and more).
 gfortran: F90=gfortran
 gfortran: FCFLAGS := -Wall -Wextra -Wimplicit-interface -fPIC -fmax-errors=1 \
           -g -O -fcheck=bounds -fcheck=array-temps -fbacktrace -fcoarray=single
 gfortran: FCFLAGS := -g -O -std=f2018 -fPIC -Wno-maybe-uninitialized -Wno-uninitialized
+gfortran_install: COMPILER=gfortran
 gfortran: all
 	@echo built with $(F90)
 
 nvfortran: F90=nvfortran
 nvfortran: FCFLAGS := -Minform=inform -Mbackslash -traceback
+nvfortran_install: COMPILER=nvfortran
 nvfortran: all
 	@echo built with $(F90)
 
 ifort: F90=ifort
 ifort: FCFLAGS := -warn all -traceback -fpic
+ifort_install: COMPILER=ifort
 ifort: all
 	@echo built with $(F90)
 
 nagfor: F90=nagfor
 nagfor: FCFLAGS := -C all
+nagfor_install: COMPILER=nagfor
 nagfor: all
 	@echo built with $(F90)
 
@@ -63,44 +61,31 @@ $(TPROG): $(LIBRARY)
 	-$(F90) $(LDFLAGS) $@.f90 -L. -l$(LIB) -o $@ 
 $(LIBRARY): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
-gfortran_install: $(OBJS)
-	# very Linux/Unix/BSD/.. specific and just for gfortran
-	mkdir -p libgfortran/
+gfortran_install ifort_install: $(OBJS)
+	# very Linux/Unix/BSD/.. specific and just for $(COMPILER)
+	mkdir -p lib$(COMPILER)/
 	# static library and modules
-	$(AR) $(ARFLAGS) libgfortran/libM_CLI2.a $^
-	cp *.mod libgfortran/
+	$(AR) $(ARFLAGS) lib$(COMPILER)/libM_CLI2.a $^
+	cp *.mod lib$(COMPILER)/
 	# shared library
-	gfortran -Wl,-soname,lib$(LIB).so.1 -shared -o libgfortran/lib$(LIB).so.1 $(OBJS)
-	cd libgfortran && ln -sf lib$(LIB).so.1 lib$(LIB).so 
+	#
+	[ "$(COMPILER)" = 'gfortran' ] && $(COMPILER) -shared -Wl,-soname,lib$(LIB).so.1 -o lib$(COMPILER)/lib$(LIB).so.1 $(OBJS)|| echo G
+	[ "$(COMPILER)" = 'ifort' ]    && $(COMPILER) -shared                            -o lib$(COMPILER)/lib$(LIB).so.1 $(OBJS)|| echo I
+
+	cd lib$(COMPILER) && ln -sf lib$(LIB).so.1 lib$(LIB).so 
 	@echo example static build
-	gfortran -static sample/hello.f90 -Llibgfortran -lM_CLI2 -o hello_static
+
+	[ "$(COMPILER)" = 'gfortran' ] && $(COMPILER) -static sample/hello.f90 -Llib$(COMPILER) -lM_CLI2 -o hello_static || echo G
+	[ "$(COMPILER)" = 'ifort' ]    && $(COMPILER) -static sample/hello.f90 -Llib$(COMPILER) -lM_CLI2 -o hello_static || echo I
+
 	./hello_static
 
 	@echo example shared build
-	gfortran sample/hello.f90 -Llibgfortran -lM_CLI2 -o hello_shared
+	$(COMPILER) sample/hello.f90 -Llib$(COMPILER) -lM_CLI2 -o hello_shared
 	# put directory in load path and run using shared version
-	env LD_LIBRARY_PATH=libgfortran/:${LD_LIBRARY_PATH} ./hello_shared
+	env LD_LIBRARY_PATH=lib$(COMPILER)/:${LD_LIBRARY_PATH} ./hello_shared
 	# show one is static and other needs shared library
-	-env LD_LIBRARY_PATH=libgfortran/:${LD_LIBRARY_PATH} ldd hello_shared hello_static
-ifort_install: $(OBJS)
-	# very Linux/Unix/BSD/.. specific and just for ifort
-	mkdir -p libifort/
-	# static library and modules
-	$(AR) $(ARFLAGS) libifort/libM_CLI2.a $^
-	cp *.mod libifort/
-	# shared library
-	ifort -shared -o libifort/lib$(LIB).so.1 $(OBJS)
-	cd libifort && ln -sf lib$(LIB).so.1 lib$(LIB).so 
-	@echo example static build
-	ifort -static sample/hello.f90 -Llibifort -lM_CLI2 -o hello_static
-	./hello_static
-
-	@echo example shared build
-	ifort sample/hello.f90 -Llibifort -lM_CLI2 -o hello_shared
-	# put directory in load path and run using shared version
-	env LD_LIBRARY_PATH=libifort/:${LD_LIBRARY_PATH} ./hello_shared
-	# show one is static and other needs shared library
-	-env LD_LIBRARY_PATH=libifort/:${LD_LIBRARY_PATH} ldd hello_shared hello_static
+	-env LD_LIBRARY_PATH=lib$(COMPILER)/:${LD_LIBRARY_PATH} ldd hello_shared hello_static
 
 .SUFFIXES: $(SUFFIXES) .f90 .F90 
 .f90.o:
