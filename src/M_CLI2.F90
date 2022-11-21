@@ -739,10 +739,14 @@ end subroutine check_commandline
 !!               System commands are executed as a simple call to
 !!               system (so a cd(1) or setting a shell variable
 !!               would not effect subsequent lines, for example)
+!!               BEFORE the command being processed.
 !!    print|>    Message to screen
 !!    stop       display message and stop program.
 !!
-!!
+!!  NOTE: system commands are executed when encountered, but options are
+!!  gathered from multiple option lines and passed together at the end of
+!!  processing of the block; so all commands will be executed BEFORE the
+!!  command for which options are being supplied no matter where they occur.
 !!
 !!  So if a program that does nothing but echos its parameters
 !!
