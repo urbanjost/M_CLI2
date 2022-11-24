@@ -2097,6 +2097,8 @@ logical :: with_suffix
       call split(path,file_parts,delimiters='\/.')
       if(size(file_parts) >= 2)then
          base = trim(file_parts(size(file_parts)-1))
+      elseif(size(file_parts)==1)then
+         base = trim(file_parts(1))
       else
          base = ''
       endif
@@ -3436,9 +3438,6 @@ class(*),intent(in)           :: g0
 class(*),intent(in),optional  :: g1, g2, g3, g4, g5, g6, g7, g8 ,g9
 class(*),intent(in),optional  :: ga, gb, gc, gd, ge, gf, gg, gh ,gi, gj
 character(len=*),intent(in),optional :: sep
-if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g1)
-if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(g2)
-if(debug_m_cli2)write(*,*)'<DEBUG>JOURNAL:',present(sep)
 write(*,'(a)')str(g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, sep)
 end subroutine journal
 !===================================================================================================================================
@@ -3538,7 +3537,6 @@ character(len=:), allocatable :: msg_scalar
 character(len=4096)           :: line
 integer                       :: istart
 integer                       :: increment
-   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR'
    if(present(sep))then
       sep_local=sep
       increment=len(sep_local)+1
@@ -3546,13 +3544,10 @@ integer                       :: increment
       sep_local=' '
       increment=2
    endif
-   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR'
 
    istart=1
    line=''
-   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR:CALL GENERIC:GENERIC0'
    if(present(generic0))call print_generic(generic0)
-   if(debug_m_cli2)write(*,gen)'<DEBUG>:MSG_SCALAR:CALL GENERIC:GENERIC1'
    if(present(generic1))call print_generic(generic1)
    if(present(generic2))call print_generic(generic2)
    if(present(generic3))call print_generic(generic3)
@@ -3578,8 +3573,6 @@ contains
 subroutine print_generic(generic)
 use,intrinsic :: iso_fortran_env, only : int8, int16, int32, int64, real32, real64, real128
 class(*),intent(in) :: generic
-   if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:START'
-   if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:LINE',trim(line)
    select type(generic)
       type is (integer(kind=int8));     write(line(istart:),'(i0)') generic
       type is (integer(kind=int16));    write(line(istart:),'(i0)') generic
@@ -3587,19 +3580,14 @@ class(*),intent(in) :: generic
       type is (integer(kind=int64));    write(line(istart:),'(i0)') generic
       type is (real(kind=real32));      write(line(istart:),'(1pg0)') generic
       type is (real(kind=real64))
-         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:REAL64'
          write(line(istart:),'(1pg0)') generic
       !x! DOES NOT WORK WITH NVFORTRAN: type is (real(kind=real128));     write(line(istart:),'(1pg0)') generic
       type is (logical)
-         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:REAL64'
          write(line(istart:),'(l1)') generic
       type is (character(len=*))
-         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:CHARACTER'
-         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:ISTART:',istart
          write(line(istart:),'(a)') trim(generic)
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
-   if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:START'
    istart=len_trim(line)+increment
    line=trim(line)//sep_local
 end subroutine print_generic
@@ -3660,8 +3648,6 @@ integer :: i
       !x! DOES NOT WORK WITH ifort:     type is (real(kind=real256));     write(error_unit,'(1pg0)',advance='no') generic
       type is (logical);                write(line(istart:),'("[",*(l1,1x))') generic
       type is (character(len=*))
-         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:CHARACTER'
-         if(debug_m_cli2)write(*,gen)'<DEBUG>PRINT_GENERIC:ISTART:',istart
          write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
       type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
       class default
