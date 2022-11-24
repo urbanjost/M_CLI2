@@ -646,13 +646,12 @@ end subroutine check_commandline
 !!  that is, an option in a response file cannot be given the value "@NAME2"
 !!  to call another response file.
 !!
-!!  Primarily to support MSWindows Powershell, ":NAME" may be used instead
-!!  of "@NAME" as "@" is a special character in Powershell, and requires
-!!  being quoted with a grave character.
-!!
-!!  Note that more than one response name may appear on a command line.
+!!  More than one response name may appear on a command line.
 !!
 !!  They are case-sensitive names.
+!!
+!!  Note "@" s a special character in Powershell, and requires being escaped
+!!  with a grave character.
 !!
 !!   LOCATING RESPONSE FILES
 !!
@@ -1105,7 +1104,7 @@ integer                       :: j
    ! look for @NAME if CLI_RESPONSE_FILE=.TRUE. AND LOAD THEM
    do i = 1, command_argument_count()
       call get_command_argument(i, cmdarg)
-      if(scan(adjustl(cmdarg(1:1)),'@:')  ==  1)then
+      if(scan(adjustl(cmdarg(1:1)),'@')  ==  1)then
          call get_prototype(cmdarg,prototype)
          call split(prototype,array)
          ! assume that if using subcommands first word not starting with dash is the subcommand
@@ -1770,17 +1769,11 @@ end subroutine prototype_and_cmd_args_to_nlist
 subroutine expand_response(name)
 character(len=*),intent(in)  :: name
 character(len=:),allocatable :: prototype
-character(len=:),allocatable :: name_at
 logical                      :: hold
-
-   ! support : instead of @ as first character
-   name_at=name//' '
-   if(name_at(1:1).eq.':')name_at(1:1)='@'
-   name_at=trim(name_at)
 
    if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:START:NAME=',name
 
-   call get_prototype(name_at,prototype)
+   call get_prototype(name,prototype)
 
    if(prototype /= '')then
       hold=G_append
@@ -1808,6 +1801,7 @@ character(len=4096)                      :: line !x! assuming input never this l
 character(len=256)                       :: message
 character(len=:),allocatable             :: array(:) ! output array of tokens
 integer                                  :: lines_processed
+
    lines_processed=0
    plain_name=name//'  '
    plain_name=trim(name(2:))
@@ -2371,7 +2365,7 @@ logical                      :: next_mandatory
             args=[character(len=imax) :: args,current_argument]
          else
             imax=max(len(unnamed),len(current_argument))
-            if(scan(current_argument//' ','@:') == 1.and.G_response)then
+            if(scan(current_argument//' ','@') == 1.and.G_response)then
                if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:1:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
                call expand_response(current_argument)
             else
@@ -2398,7 +2392,7 @@ logical                      :: next_mandatory
                   args=[character(len=imax) :: args,current_argument]
                else
                   imax=max(len(unnamed),len(current_argument))
-                  if(scan(current_argument//' ','@:') == 1.and.G_response)then
+                  if(scan(current_argument//' ','@') == 1.and.G_response)then
                if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:2:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
                      call expand_response(current_argument)
                   else
