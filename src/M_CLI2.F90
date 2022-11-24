@@ -2097,7 +2097,7 @@ logical :: with_suffix
       call split(path,file_parts,delimiters='\/.')
       if(size(file_parts) >= 2)then
          base = trim(file_parts(size(file_parts)-1))
-      elseif(size(file_parts)==1)then
+      elseif(size(file_parts) == 1)then
          base = trim(file_parts(1))
       else
          base = ''
