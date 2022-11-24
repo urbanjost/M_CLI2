@@ -8,11 +8,6 @@ new features, changes, and relevant notifications.
 ---
 **2022-11-23**  John S. Urban  <https://github.com/urbanjost>
 ### :green_circle: ADD:
-   + To support MSWindows powershell the response file names can be
-     invoked from the command line using :NAME as well as @NAME, as
-     @ is a special character in powershell that requires quoting 
-     by being prefixed with a grave character, becoming cumbersome
-     to type.
    + Developer debug mode can be invoked by setting the environment
      variable $CLI_DEBUG_MODE to TRUE.
 ### :red_circle: FIX:
