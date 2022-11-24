@@ -646,6 +646,10 @@ end subroutine check_commandline
 !!  that is, an option in a response file cannot be given the value "@NAME2"
 !!  to call another response file.
 !!
+!!  Primarily to support MSWindows Powershell, ":NAME" may be used instead
+!!  of "@NAME" as "@" is a special character in Powershell, and requires
+!!  being quoted with a grave character.
+!!
 !!  Note that more than one response name may appear on a command line.
 !!
 !!  They are case-sensitive names.
