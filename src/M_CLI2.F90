@@ -1768,11 +1768,20 @@ end subroutine prototype_and_cmd_args_to_nlist
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine expand_response(name)
-character(len=*),intent(in) :: name
+character(len=*),intent(in)  :: name
 character(len=:),allocatable :: prototype
-logical :: hold
+character(len=:),allocatable :: name_at
+logical                      :: hold
+
+   ! support : instead of @ as first character
+   name_at=name//' '
+   if(name_at(1:1).eq.':')name_at(1:1)='@'
+   name_at=trim(name_at)
+
    if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:START:NAME=',name
-   call get_prototype(name,prototype)
+
+   call get_prototype(name_at,prototype)
+
    if(prototype /= '')then
       hold=G_append
       G_append=.false.
@@ -1780,7 +1789,9 @@ logical :: hold
       call prototype_to_dictionary(prototype)       ! build dictionary from prototype
       G_append=hold
    endif
+
    if(debug_m_cli2)write(*,gen)'<DEBUG>EXPAND_RESPONSE:END'
+
 end subroutine expand_response
 !===================================================================================================================================
 subroutine get_prototype(name,prototype) ! process @name abbreviations
