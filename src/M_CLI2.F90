@@ -150,7 +150,6 @@ implicit none
 integer,parameter,private :: dp=kind(0.0d0)
 integer,parameter,private :: sp=kind(0.0)
 private
-!logical,save :: debug_m_cli2=.true.
 logical,public,save :: debug_m_cli2=.false.
 !===================================================================================================================================
 character(len=*),parameter          :: gen='(*(g0))'
@@ -791,7 +790,7 @@ end subroutine check_commandline
 !!  ".rsp" suffix added. So if your program is named "myprg" the filename
 !!  must be "myprg.rsp".
 !!
-!!    Note that here `basename` means the last leaf  of the
+!!    Note that here `basename` means the last leaf of the
 !!    name of the program as returned by the Fortran intrinsic
 !!    GET_COMMAND_ARGUMENT(0,...) trimmed of anything after a period ("."),
 !!    so it is a good idea not to use hidden files.
@@ -891,6 +890,16 @@ integer,intent(out),optional                      :: ierr
 character(len=:),intent(out),allocatable,optional :: errmsg
 character(len=:),allocatable                      :: hold               ! stores command line argument
 integer                                           :: ibig
+character(len=:),allocatable                      :: debug_mode
+
+   debug_mode= upper(get_env('CLI_DEBUG_MODE','FALSE'))//' '
+   select case(debug_mode(1:1))
+   case('Y','T')
+      debug_m_cli2=.true.
+   end select
+   write(*,*)'GOT HERE A:',debug_m_cli2
+   write(*,*)'GOT HERE B:',debug_mode
+
    G_response=CLI_RESPONSE_FILE
    G_options_only=.false.
    G_append=.true.
@@ -1094,7 +1103,7 @@ integer                       :: j
    ! look for @NAME if CLI_RESPONSE_FILE=.TRUE. AND LOAD THEM
    do i = 1, command_argument_count()
       call get_command_argument(i, cmdarg)
-      if(adjustl(cmdarg(1:1))  ==  '@')then
+      if(scan(adjustl(cmdarg(1:1)),'@:')  ==  1)then
          call get_prototype(cmdarg,prototype)
          call split(prototype,array)
          ! assume that if using subcommands first word not starting with dash is the subcommand
@@ -1808,13 +1817,13 @@ integer                                  :: lines_processed
    ! look for ARG0.rsp  with @OS@NAME  section in it and position to it
    if(os /= '@')then
       search_for=os//name
-      call find_and_read_response_file(basename(get_name(),suffix=.true.))
+      call find_and_read_response_file(basename(get_name(),suffix=.false.))
       if(lines_processed /= 0)return
    endif
 
    ! look for ARG0.rsp  with a section called @NAME in it and position to it
    search_for=name
-   call find_and_read_response_file(basename(get_name(),suffix=.true.))
+   call find_and_read_response_file(basename(get_name(),suffix=.false.))
    if(lines_processed /= 0)return
 
    write(*,gen)'<ERROR> response name ['//trim(name)//'] not found'
@@ -2347,7 +2356,7 @@ logical                      :: next_mandatory
             args=[character(len=imax) :: args,current_argument]
          else
             imax=max(len(unnamed),len(current_argument))
-            if(index(current_argument//' ','@') == 1.and.G_response)then
+            if(scan(current_argument//' ','@:') == 1.and.G_response)then
                if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:1:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
                call expand_response(current_argument)
             else
@@ -2374,7 +2383,7 @@ logical                      :: next_mandatory
                   args=[character(len=imax) :: args,current_argument]
                else
                   imax=max(len(unnamed),len(current_argument))
-                  if(index(current_argument//' ','@') == 1.and.G_response)then
+                  if(scan(current_argument//' ','@:') == 1.and.G_response)then
                if(debug_m_cli2)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:2:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
                      call expand_response(current_argument)
                   else
