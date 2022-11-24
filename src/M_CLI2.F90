@@ -897,8 +897,6 @@ character(len=:),allocatable                      :: debug_mode
    case('Y','T')
       debug_m_cli2=.true.
    end select
-   write(*,*)'GOT HERE A:',debug_m_cli2
-   write(*,*)'GOT HERE B:',debug_mode
 
    G_response=CLI_RESPONSE_FILE
    G_options_only=.false.
