@@ -24,6 +24,7 @@
 
          run: |
            set -x -v
+           ln -s /usr/local/bin/bash /bin/bash
            pwd
            ls -lah
            whoami
