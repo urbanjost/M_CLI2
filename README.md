@@ -2,17 +2,17 @@
 <!--
 ![parse](docs/images/parse.png)
 -->
-## NAME
+## Name
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
 
-## DESCRIPTION
+## Description
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
    the program. A call to get_args(3f) or one of its variants is then
    made for each parameter name to set the variables appropriately in
    the program.
 
-## EXAMPLE PROGRAM
+## Example Program
 This short program defines a command that can be called like
 
 ```bash
@@ -56,7 +56,7 @@ requiring lists of a specified size. Passing in some character arrays
 allows you to automatically have a --help and --version switch as well,
 as explained below.
 
-## DEMO PROGRAMS![demos](docs/images/demo.gif)
+## Demo Programs![demos](docs/images/demo.gif)
 These demo programs provide templates for the most common usage:
 
 * [demo1B](example/demo1.f90)  basic with help and version, using the convenience functions
@@ -71,7 +71,7 @@ These demo programs provide templates for the most common usage:
 * [demo9](example/demo9.f90)   long and short names using  --LONGNAME:SHORTNAME
 * [demo10](example/demo10.f90) full usage and even equivalencing
 
-## DOWNLOAD AND BUILD WITH make(1)![gmake](docs/images/gnu.gif)
+## Download and Build with Make(1)![gmake](docs/images/gnu.gif)
    Compile the M_CLI2 module and build all the example programs.
 ```bash
        git clone https://github.com/urbanjost/M_CLI2.git
@@ -133,7 +133,7 @@ These demo programs provide templates for the most common usage:
    make sure you know what your system requires and change the Makefile
    as appropriate.
 
-## SUPPORTS FPM ![parse](docs/images/fpm_logo.gif) 
+## Supports FPM ![parse](docs/images/fpm_logo.gif) 
    Alternatively, download the github repository and build it with
    fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
 
@@ -151,7 +151,7 @@ These demo programs provide templates for the most common usage:
         M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
 ```
 
-## FUNCTIONAL SPECIFICATION
+## Functional Specification
 **This is how the interface works --**
 
 * Pass in a string to set_args(3f) that looks almost like the command
@@ -168,7 +168,7 @@ These demo programs provide templates for the most common usage:
   be updated using values from the command line and queried and ready
   to use in your program.
 
-## RESPONSE FILES
+## Response files
 [Response files](response.md) are supported as described in the documentation for
 [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html).
 They are a system-independent way to create short abbreviations for long
@@ -176,7 +176,7 @@ complex commands. This option is generally not needed by programs with
 just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.
 
-## DOCUMENTATION   ![docs](docs/images/docs.gif)
+## Documentation   ![docs](docs/images/docs.gif)
 ### man-pages as HTML
 - [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) -- man-pages index of individual procedures
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
@@ -209,7 +209,7 @@ dozens of options where various values are frequently reused.
 - [CHANGELOG](docs/CHANGELOG.md)
 - [STATUS](docs/STATUS.md) of most recent CI/CD runs
 
-## COMMIT TESTS ##
+## Commit Tests ##
 
 commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
  + GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)
