@@ -21,7 +21,7 @@ logical            :: l, l_
 
    !! THE OPTIONAL UNNAMED VALUES ON THE COMMAND LINE ARE
    !! ACCUMULATED IN THE CHARACTER ARRAY "UNNAMED"
-   if(size(unnamed).gt.0)then
+   if(size(unnamed) > 0)then
       write(*,'(a)')'files:'
       write(*,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
    endif

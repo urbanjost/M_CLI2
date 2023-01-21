@@ -56,13 +56,13 @@ character(len=*),parameter   :: fmt='(*("[",g0,"]":,1x))'
    call get_args('fx_size_fx_len',arr)
    ! or
    arr=sgets('fx_size_fx_len')
-   if(size(arr).ne.3)write(*,*)'not right size'
-   if(len(arr).gt.19)write(*,*)'longer than wanted'
+   if(size(arr) /= 3)write(*,*)'not right size'
+   if(len(arr) > 19)write(*,*)'longer than wanted'
 
    call get_args('fx_len_scalar',a)
    !or
    a=sget('fx_len_scalar')
-   if(len(a).gt.19)write(*,*)'too long'
+   if(len(a) > 19)write(*,*)'too long'
    write(*,*)a,len(a)
    write(*,*)arr,len(arr),size(arr)
 

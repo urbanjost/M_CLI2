@@ -1,8 +1,9 @@
 program demo1
 !!  using the convenience functions
    use M_CLI2, only : set_args, get_args_fixed_size 
-   use M_CLI2, only :  dget,  iget,  lget,  rget,  sget,  cget ! for scalars
+   use M_CLI2, only : dget,  iget,  lget,  rget,  sget,  cget ! for scalars
    use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets ! for allocatable arrays
+   use M_CLI2, only : CLI_response_file
    implicit none
 
 !! DECLARE "ARGS"
@@ -10,14 +11,18 @@ program demo1
    character(len=:), allocatable  :: title, anytitle
    logical                        :: l,  lupper
 
+   CLI_response_file=.true.
 !! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES
    call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" --anytitle:a "my title" -l F -L F')
 
 !! ALL DONE CRACKING THE COMMAND LINE. GET THE VALUES
-   x=rget('x'); y=rget('y'); z=rget('z')
-   l=lget('l'); lupper=lget('L')
-   title=sget('title') 
-   anytitle=sget('anytitle') 
+   x = rget('x')
+   y = rget('y')
+   z = rget('z')
+   l = lget('l')
+   lupper = lget('L')
+   title = sget('title') 
+   anytitle = sget('anytitle') 
 
    ! With a fixed-size array to ensure the correct number of values are input use
    call get_args_fixed_size('point',point)

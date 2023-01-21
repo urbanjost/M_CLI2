@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="command line parsing">
-    
     <meta name="author" content="John S. Urban" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,53 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
             <li><a href="../lists/programs.html">Programs</a></li>
-        
+       
             </ul>
-            </li>
-
-
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
-
-          </ul>
         
+            </li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
+          </ul>
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -103,138 +72,88 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>get_subcommand
       <small>Function</small>
-    
+      
     </h1>
-    
-<div class="row">
-  <div class="col-lg-12">
-<div class="well well-sm">
-  <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-    
-    
-     <li><i class="fa fa-list-ol"></i>
-       <a data-toggle="tooltip"
-    data-placement="bottom" data-html="true"
-    title="15.9% of total for procedures.">47 statements</a>
-     </li> 
-     
-     
-     
-    <li><i class="fa fa-code"></i><a href="../src/M_CLI2.F90"> Source File</a></li>
-     
-     
-  </ul>
-  <ol class="breadcrumb in-well text-right">
-  
-    
-     <li><a href='../sourcefile/m_cli2.f90.html'>M_CLI2.F90</a></li>
-    
-     <li><a href='../module/m_cli2.html'>M_CLI2</a></li>
-    
-  
-     <li class="active">get_subcommand</li>
-  </ol>
-</div>
-</div>
-</div>
-<script>
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-  })
-</script>
+      <div class="row" id="info-bar">
+    <div class="col-lg-12">
+      <div class="well well-sm">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+          <li id="statements"><i class="fa fa-list-ol"></i>
+            <a data-toggle="tooltip"
+               data-placement="bottom" data-html="true"
+               title="17.4% of total for procedures.">47 statements</a>
+          </li>
+
+            <li id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/M_CLI2.F90"> Source File</a>
+            </li>
+        </ul>
+        <ol class="breadcrumb in-well text-right">
+              <li><a href='../sourcefile/m_cli2.f90.html'>M_CLI2.F90</a></li>
+              <li><a href='../module/m_cli2.html'>M_CLI2</a></li>
+          <li class="active">get_subcommand</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
 
   </div>
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
+      <div id="sidebar">
+      <h3>Contents</h3>
   
-<h3>Contents</h3>
- 
-
-
-
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-0">Variables</a></h3></div>
-  <div id="vars-0" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-array">array</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-cmdarg">cmdarg</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-i">i</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-ilongest">ilongest</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-j">j</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-prototype">prototype</a>
-      
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/get_subcommand.html#src">get_subcommand</a>
+      </div>
     </div>
+
+
   </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/get_subcommand.html#src">get_subcommand</a>
-  </div>
-</div>
-
-
-
-</div>
 
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>
-public function get_subcommand() result(sub)
-    
-    
-   
+    <h2>public  function get_subcommand() result(sub)  
 </h2>
     
-  
 
-
-    
     <h2 id="name">NAME</h2>
 <div class="codehilite"><pre><span></span><code><span class="nv">get_subcommand</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">ARGUMENTS</span>:<span class="nv">M_CLI2</span>] <span class="nv">special</span><span class="o">-</span><span class="nv">case</span> <span class="nv">routine</span> <span class="k">for</span>
 <span class="nv">handling</span> <span class="nv">subcommands</span> <span class="nv">on</span> <span class="nv">a</span> <span class="nv">command</span> <span class="nv">line</span>
@@ -367,289 +286,139 @@ command with subcommands.
 <h2 id="license">LICENSE</h2>
 <div class="codehilite"><pre><span></span><code>  Public Domain
 </code></pre></div>
-    
 
     <h3>Arguments</h3>
-    
     <em>None</em>
     <br>
-    
-    
-    
-    
-    
-    
-    
-   <h3>Return Value <small><span class="anchor" id="variable-sub"></span>character(len=:),
-  allocatable</small></h3>
-    
-    
-    
-    
-     
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-sub"></span>
+          character(len=:), allocatable
+        </small>
+      </h3>
+      
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
- 
-
-
-
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#vars-1">Variables</a></h3></div>
-  <div id="vars-1" class="panel-collapse collapse">
-    <div class="list-group">
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-array">array</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-cmdarg">cmdarg</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-i">i</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-ilongest">ilongest</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-j">j</a>
-      
-      <a class="list-group-item" href="../proc/get_subcommand.html#variable-prototype">prototype</a>
-      
+        <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/get_subcommand.html#src">get_subcommand</a>
+      </div>
     </div>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="panel panel-primary">
-  <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
-  <div class="list-group">
-    <a class="list-group-item" href="../proc/get_subcommand.html#src">get_subcommand</a>
-  </div>
-</div>
-
 
 
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    <section>    
-      <h2>Variables</h2>
-    
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th><th>Visibility</th>
-
-<th>Attributes</th><th></th><th>Name</th><th></th><th>Initial</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-array"></span>character(len=:),</td>
-  
-  <td>public,</td>
-  <td>allocatable</td><td>::</td>
-  <td><strong>array</strong>(:)</td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-cmdarg"></span>character(len=:),</td>
-  
-  <td>public,</td>
-  <td>allocatable</td><td>::</td>
-  <td><strong>cmdarg</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-i"></span>integer,</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>i</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-ilongest"></span>integer,</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>ilongest</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-j"></span>integer,</td>
-  
-  <td>public</td>
-  <td></td><td>::</td>
-  <td><strong>j</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-prototype"></span>character(len=:),</td>
-  
-  <td>public,</td>
-  <td>allocatable</td><td>::</td>
-  <td><strong>prototype</strong></td><td></td><td></td><td></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-    </section>
-    <br>
-    
-    
-    
     
     
 
     
     
-    
-    
-    
 
 
-    
-    
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">get_subcommand</span><span class="p">()</span> <span class="k">result</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+    <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">get_subcommand</span><span class="p">()</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="w"></span>
 
-<span class="c">! ident_3=&quot;@(#)M_CLI2::get_subcommand(3f): parse prototype string to get subcommand, allowing for response files&quot;</span>
+<span class="c">! ident_3=&quot;@(#) M_CLI2 get_subcommand(3f) parse prototype string to get subcommand allowing for response files&quot;</span>
 
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">sub</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">cmdarg</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="k">array</span><span class="p">(:)</span>
-<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span>  <span class="kd">::</span> <span class="n">prototype</span>
-<span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">ilongest</span>
-<span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">i</span>
-<span class="kt">integer</span>                       <span class="kd">::</span> <span class="n">j</span>
-   <span class="n">G_subcommand</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
-   <span class="n">G_options_only</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span>
-   <span class="n">sub</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sub</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">cmdarg</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="k">array</span><span class="p">(:)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">prototype</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">ilongest</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">j</span><span class="w"></span>
+<span class="w">   </span><span class="n">G_subcommand</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="n">G_options_only</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
+<span class="w">   </span><span class="n">sub</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="w"></span>
 
-   <span class="k">if</span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">allocated</span><span class="p">(</span><span class="n">unnamed</span><span class="p">))</span><span class="k">then</span>
-<span class="k">      allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="kd">::</span> <span class="n">unnamed</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-   <span class="k">endif</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">allocated</span><span class="p">(</span><span class="n">unnamed</span><span class="p">))</span><span class="k">then</span>
+<span class="k">      allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">unnamed</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="w"></span>
+<span class="w">   </span><span class="k">endif</span>
 
-<span class="k">   </span><span class="n">ilongest</span><span class="o">=</span><span class="n">longest_command_argument</span><span class="p">()</span>
-   <span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">63</span><span class="p">,</span><span class="n">ilongest</span><span class="p">))</span><span class="kd">::</span> <span class="n">cmdarg</span><span class="p">)</span>
-   <span class="n">cmdarg</span><span class="p">(:)</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-   <span class="c">! look for @NAME if CLI_RESPONSE_FILE=.TRUE. AND LOAD THEM</span>
-   <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">command_argument_count</span><span class="p">()</span>
-      <span class="k">call </span><span class="nb">get_command_argument</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">cmdarg</span><span class="p">)</span>
-      <span class="k">if</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">))</span> <span class="p">.</span><span class="n">eq</span><span class="p">.</span> <span class="s1">&#39;@&#39;</span><span class="p">)</span><span class="k">then</span>
-<span class="k">         call </span><span class="n">get_prototype</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">,</span><span class="n">prototype</span><span class="p">)</span>
-         <span class="k">call </span><span class="n">split</span><span class="p">(</span><span class="n">prototype</span><span class="p">,</span><span class="k">array</span><span class="p">)</span>
-         <span class="c">! assume that if using subcommands first word not starting with dash is the subcommand</span>
-         <span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="k">array</span><span class="p">)</span>
-            <span class="k">if</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">)(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">))</span> <span class="p">.</span><span class="n">ne</span><span class="p">.</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="k">then</span>
-<span class="k">            </span><span class="n">G_subcommand</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
-            <span class="n">sub</span><span class="o">=</span><span class="n">G_subcommand</span>
-            <span class="k">exit</span>
+<span class="k">   </span><span class="n">ilongest</span><span class="o">=</span><span class="n">longest_command_argument</span><span class="p">()</span><span class="w"></span>
+<span class="w">   </span><span class="k">allocate</span><span class="p">(</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="mi">63</span><span class="p">,</span><span class="n">ilongest</span><span class="p">))</span><span class="kd">::</span><span class="w"> </span><span class="n">cmdarg</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">cmdarg</span><span class="p">(:)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="c">! look for @NAME if CLI_RESPONSE_FILE=.TRUE. AND LOAD THEM</span>
+<span class="w">   </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">command_argument_count</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="k">call </span><span class="nb">get_command_argument</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">cmdarg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="nb">scan</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">)),</span><span class="s1">&#39;@&#39;</span><span class="p">)</span><span class="w">  </span><span class="o">==</span><span class="w">  </span><span class="mi">1</span><span class="p">)</span><span class="k">then</span>
+<span class="k">         call </span><span class="n">get_prototype</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">,</span><span class="n">prototype</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="k">call </span><span class="n">split</span><span class="p">(</span><span class="n">prototype</span><span class="p">,</span><span class="k">array</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="c">! assume that if using subcommands first word not starting with dash is the subcommand</span>
+<span class="w">         </span><span class="k">do </span><span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="k">array</span><span class="p">)</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">)(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">))</span><span class="w">  </span><span class="o">/=</span><span class="w">  </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="k">then</span>
+<span class="k">            </span><span class="n">G_subcommand</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="w"></span>
+<span class="w">            </span><span class="n">sub</span><span class="o">=</span><span class="n">G_subcommand</span><span class="w"></span>
+<span class="w">            </span><span class="k">exit</span>
 <span class="k">         endif</span>
 <span class="k">         enddo</span>
 <span class="k">      endif</span>
 <span class="k">   enddo</span>
 
-<span class="k">   if</span><span class="p">(</span><span class="n">G_subcommand</span><span class="p">.</span><span class="n">ne</span><span class="p">.</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="k">then</span>
-<span class="k">      </span><span class="n">sub</span><span class="o">=</span><span class="n">G_subcommand</span>
-   <span class="n">elseif</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">unnamed</span><span class="p">).</span><span class="n">ne</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
-<span class="k">      </span><span class="n">sub</span><span class="o">=</span><span class="n">unnamed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-   <span class="k">else</span>
-<span class="k">      </span><span class="n">cmdarg</span><span class="p">(:)</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-      <span class="k">do </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">command_argument_count</span><span class="p">()</span>
-         <span class="k">call </span><span class="nb">get_command_argument</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">cmdarg</span><span class="p">)</span>
-         <span class="k">if</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">))</span> <span class="p">.</span><span class="n">ne</span><span class="p">.</span> <span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="k">then</span>
-<span class="k">            </span><span class="n">sub</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">)</span>
-           <span class="k">exit</span>
+<span class="k">   if</span><span class="p">(</span><span class="n">G_subcommand</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="k">then</span>
+<span class="k">      </span><span class="n">sub</span><span class="o">=</span><span class="n">G_subcommand</span><span class="w"></span>
+<span class="w">   </span><span class="n">elseif</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">unnamed</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
+<span class="k">      </span><span class="n">sub</span><span class="o">=</span><span class="n">unnamed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">else</span>
+<span class="k">      </span><span class="n">cmdarg</span><span class="p">(:)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nb">command_argument_count</span><span class="p">()</span><span class="w"></span>
+<span class="w">         </span><span class="k">call </span><span class="nb">get_command_argument</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">cmdarg</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="nb">adjustl</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="p">))</span><span class="w">  </span><span class="o">/=</span><span class="w">  </span><span class="s1">&#39;-&#39;</span><span class="p">)</span><span class="k">then</span>
+<span class="k">            </span><span class="n">sub</span><span class="o">=</span><span class="nb">trim</span><span class="p">(</span><span class="n">cmdarg</span><span class="p">)</span><span class="w"></span>
+<span class="w">           </span><span class="k">exit</span>
 <span class="k">        endif</span>
 <span class="k">      enddo</span>
 <span class="k">   endif</span>
-<span class="k">   </span><span class="n">G_options_only</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<span class="k">end function </span><span class="n">get_subcommand</span>
+<span class="k">   </span><span class="n">G_options_only</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="k">end function </span><span class="n">get_subcommand</span><span class="w"></span>
 </pre></div>
 
     </section>
     <br>
     
-    
     </div>
   </div>
-
 
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2022 
-                                          </p></div>
-        <div class="col-xs-6 col-md-4 col-md-push-4">
+        <div class="col-xs-6 col-md-6"><p>M_CLI2 was developed by John S. Urban<br>&copy; 2023 
+</p>
+        </div>
+        <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
-            <a href="https://github.com/cmacmackin/ford">FORD</a>
-             on 2022-06-08 21:13  
-          </p>
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2023-01-21 18:24            </p>
         </div>
-        <div class="col-xs-12 col-md-4 col-md-pull-4"><p class="text-center"> M_CLI2 was developed by John S. Urban</p></div>
       </div>
       <br>
       </div> <!-- /container -->    
@@ -675,14 +444,11 @@ command with subcommands.
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

@@ -252,26 +252,26 @@ interface str
 end interface str
 !===================================================================================================================================
 
-private locate        ! [M_CLI2] find PLACE in sorted character array where value can be found or should be placed
+private locate_       ! [M_CLI2] find PLACE in sorted character array where value can be found or should be placed
    private locate_c
-private insert        ! [M_CLI2] insert entry into a sorted allocatable array at specified position
+private insert_       ! [M_CLI2] insert entry into a sorted allocatable array at specified position
    private insert_c
    private insert_i
    private insert_l
-private replace       ! [M_CLI2] replace entry by index from a sorted allocatable array if it is present
+private replace_      ! [M_CLI2] replace entry by index from a sorted allocatable array if it is present
    private replace_c
    private replace_i
    private replace_l
-private remove        ! [M_CLI2] delete entry by index from a sorted allocatable array if it is present
+private remove_       ! [M_CLI2] delete entry by index from a sorted allocatable array if it is present
    private remove_c
    private remove_i
    private remove_l
 
 ! Generic subroutine inserts element into allocatable array at specified position
-interface  locate;   module procedure locate_c                            ; end interface
-interface  insert;   module procedure insert_c,      insert_i,  insert_l  ; end interface
-interface  replace;  module procedure replace_c,     replace_i, replace_l ; end interface
-interface  remove;   module procedure remove_c,      remove_i,  remove_l  ; end interface
+interface  locate_;  module procedure locate_c                            ; end interface
+interface  insert_;  module procedure insert_c,      insert_i,  insert_l  ; end interface
+interface  replace_; module procedure replace_c,     replace_i, replace_l ; end interface
+interface  remove_;  module procedure remove_c,      remove_i,  remove_l  ; end interface
 !-----------------------------------------------------------------------------------------------------------------------------------
 ! convenience functions
 interface cgets;module procedure cgs, cg;end interface
@@ -1519,12 +1519,12 @@ logical                               :: set_mandatory
       iilen=len_trim(val_local)
       call locate_key(long,place)                  ! find where string is or should be
       if(place < 1)then                                ! if string was not found insert it
-         call insert(keywords,long,iabs(place))
-         call insert(values,val_local,iabs(place))
-         call insert(counts,iilen,iabs(place))
-         call insert(shorts,short,iabs(place))
-         call insert(present_in,.true.,iabs(place))
-         call insert(mandatory,set_mandatory,iabs(place))
+         call insert_(keywords,long,iabs(place))
+         call insert_(values,val_local,iabs(place))
+         call insert_(counts,iilen,iabs(place))
+         call insert_(shorts,short,iabs(place))
+         call insert_(present_in,.true.,iabs(place))
+         call insert_(mandatory,set_mandatory,iabs(place))
       else
          if(present_in(place))then                      ! if multiple keywords append values with space between them
             if(G_append)then
@@ -1537,19 +1537,19 @@ logical                               :: set_mandatory
             endif
             iilen=len_trim(val_local)
          endif
-         call replace(values,val_local,place)
-         call replace(counts,iilen,place)
-         call replace(present_in,.true.,place)
+         call replace_(values,val_local,place)
+         call replace_(counts,iilen,place)
+         call replace_(present_in,.true.,place)
       endif
    else                                                 ! if no value is present remove the keyword and related values
       call locate_key(long,place)                       ! check name as long and short
       if(place > 0)then
-         call remove(keywords,place)
-         call remove(values,place)
-         call remove(counts,place)
-         call remove(shorts,place)
-         call remove(present_in,place)
-         call remove(mandatory,place)
+         call remove_(keywords,place)
+         call remove_(values,place)
+         call remove_(counts,place)
+         call remove_(shorts,place)
+         call remove_(present_in,place)
+         call remove_(mandatory,place)
       endif
    endif
 end subroutine update
@@ -5348,13 +5348,13 @@ end subroutine substitute
 !===================================================================================================================================
 !>
 !!##NAME
-!!    locate(3f) - [M_CLI2] finds the index where a string is found or
-!!                 should be in a sorted array
+!!    locate_(3f) - [M_CLI2] finds the index where a string is found or
+!!                  should be in a sorted array
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine locate(list,value,place,ier,errmsg)
+!!   subroutine locate_(list,value,place,ier,errmsg)
 !!
 !!    character(len=:)|doubleprecision|real|integer,allocatable :: list(:)
 !!    character(len=*)|doubleprecision|real|integer,intent(in)  :: value
@@ -5365,7 +5365,7 @@ end subroutine substitute
 !!
 !!##DESCRIPTION
 !!
-!!    LOCATE(3f) finds the index where the VALUE is found or should
+!!    LOCATE_(3f) finds the index where the VALUE is found or should
 !!    be found in an array. The array must be sorted in descending
 !!    order (highest at top). If VALUE is not found it returns the index
 !!    where the name should be placed at with a negative sign.
@@ -5401,7 +5401,7 @@ end subroutine substitute
 !!
 !!     program demo_locate
 !!     use M_sort, only : sort_shell
-!!     use M_CLI2, only : locate
+!!     use M_CLI2, only : locate_
 !!     implicit none
 !!     character(len=:),allocatable  :: arr(:)
 !!     integer                       :: i
@@ -5423,7 +5423,7 @@ end subroutine substitute
 !!     character(len=*)             :: string
 !!     integer                      :: place, plus, ii, end
 !!     ! find where string is or should be
-!!     call locate(arr,string,place)
+!!     call locate_(arr,string,place)
 !!     write(*,*)'for "'//string//'" index is ',place, size(arr)
 !!     ! if string was not found insert it
 !!     if(place < 1)then
@@ -5521,13 +5521,13 @@ integer                                 :: error
       place=(imax+imin)/2
 
       if(place > arraysize.or.place <= 0)then
-         message='*locate* error: search is out of bounds of list. Probably an unsorted input array'
+         message='*locate_* error: search is out of bounds of list. Probably an unsorted input array'
          error=-1
          exit LOOP
       endif
 
    enddo
-   message='*locate* exceeded allowed tries. Probably an unsorted input array'
+   message='*locate_* exceeded allowed tries. Probably an unsorted input array'
    endblock LOOP
    if(present(ier))then
       ier=error
@@ -5544,12 +5544,12 @@ end subroutine locate_c
 !===================================================================================================================================
 !>
 !!##NAME
-!!    remove(3f) - [M_CLI2] remove entry from an allocatable array at specified position
+!!    remove_(3f) - [M_CLI2] remove entry from an allocatable array at specified position
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine remove(list,place)
+!!   subroutine remove_(list,place)
 !!
 !!    character(len=:)|doubleprecision|real|integer,intent(inout) :: list(:)
 !!    integer, intent(out) :: PLACE
@@ -5572,7 +5572,7 @@ end subroutine locate_c
 !!
 !!     program demo_remove
 !!     use M_sort, only : sort_shell
-!!     use M_CLI2, only : locate, remove
+!!     use M_CLI2, only : locate_, remove_
 !!     implicit none
 !!     character(len=:),allocatable :: arr(:)
 !!     integer                       :: i
@@ -5584,10 +5584,10 @@ end subroutine locate_c
 !!
 !!     end=size(arr)
 !!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-!!     call remove(arr,1)
+!!     call remove_(arr,1)
 !!     end=size(arr)
 !!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
-!!     call remove(arr,4)
+!!     call remove_(arr,4)
 !!     end=size(arr)
 !!     write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
 !!
@@ -5668,12 +5668,12 @@ end subroutine remove_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    replace(3f) - [M_CLI2] replace entry in a string array at specified position
+!!    replace_(3f) - [M_CLI2] replace entry in a string array at specified position
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine replace(list,value,place)
+!!   subroutine replace_(list,value,place)
 !!
 !!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
 !!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
@@ -5702,7 +5702,7 @@ end subroutine remove_i
 !! Replace key-value pairs in a dictionary
 !!
 !!     program demo_replace
-!!     use M_CLI2, only  : insert, locate, replace
+!!     use M_CLI2, only  : insert_, locate_, replace_
 !!     ! Find if a key is in a list and insert it
 !!     ! into the key list and value list if it is not present
 !!     ! or replace the associated value if the key existed
@@ -5739,14 +5739,14 @@ end subroutine remove_i
 !!     call locate_key(key,place)
 !!     ! if string was not found insert it
 !!     if(place < 1)then
-!!        call insert(keywords,key,abs(place))
-!!        call insert(values,val,abs(place))
+!!        call insert_(keywords,key,abs(place))
+!!        call insert_(values,val,abs(place))
 !!     else ! replace
-!!        call replace(values,val,place)
+!!        call replace_(values,val,place)
 !!     endif
 !!
 !!     end subroutine update
-!!    end program demo_replace
+!!    end program demo_replace_
 !!
 !!   Expected output
 !!
@@ -5831,12 +5831,12 @@ end subroutine replace_i
 !===================================================================================================================================
 !>
 !!##NAME
-!!    insert(3f) - [M_CLI2] insert entry into a string array at specified position
+!!    insert_(3f) - [M_CLI2] insert entry into a string array at specified position
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
 !!
-!!   subroutine insert(list,value,place)
+!!   subroutine insert_(list,value,place)
 !!
 !!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
 !!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
@@ -5862,7 +5862,7 @@ end subroutine replace_i
 !!
 !!     program demo_insert
 !!     use M_sort, only : sort_shell
-!!     use M_CLI2, only : locate, insert
+!!     use M_CLI2, only : locate_, insert_
 !!     implicit none
 !!     character(len=:),allocatable :: arr(:)
 !!     integer                       :: i
@@ -5888,17 +5888,17 @@ end subroutine replace_i
 !!
 !!     end=size(arr)
 !!     ! find where string is or should be
-!!     call locate(arr,string,place)
+!!     call locate_(arr,string,place)
 !!     ! if string was not found insert it
 !!     if(place < 1)then
-!!        call insert(arr,string,abs(place))
+!!        call insert_(arr,string,abs(place))
 !!     endif
 !!     ! show array
 !!     end=size(arr)
 !!     write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
 !!
 !!     end subroutine update
-!!     end program demo_insert
+!!     end program demo_insert_
 !!
 !!   Results:
 !!
@@ -6223,10 +6223,10 @@ integer                                 :: ii
       if(ii > 1)then
          place=ii-1
       else
-         call locate(keywords,value,place)
+         call locate_(keywords,value,place)
       endif
    else
-      call locate(keywords,value,place)
+      call locate_(keywords,value,place)
    endif
 end subroutine locate_key
 !===================================================================================================================================
