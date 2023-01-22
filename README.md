@@ -54,7 +54,7 @@ the end of commands, you can query whether an option was supplied, and
 get_args(3f)-related routines can be used for refining options such as
 requiring lists of a specified size. Passing in some character arrays
 allows you to automatically have a --help and --version switch as well,
-as explained below.
+as explained using the examples below.
 
 ## Demo Programs![demos](docs/images/demo.gif)
 These demo programs provide templates for the most common usage:
@@ -102,9 +102,10 @@ These demo programs provide templates for the most common usage:
 ```
    There are different methods for adding the directory to your default
    load path, but frequently you can append the directory you have
-   placed the files in into the colon-separated list of directories in the
-   $LD_LIBRARY_PATH environment variable, and then the -L option will
-   not be required (or it's equivalent in your programming environment).
+   placed the files in into the colon-separated list of directories
+   in the $LD_LIBRARY_PATH or $LIBRARY_PATH environment variable, and
+   then the -L option will not be required (or it's equivalent in your
+   programming environment).
 ```bash
        export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
 ```
@@ -122,8 +123,8 @@ These demo programs provide templates for the most common usage:
      make clean ifort ifort_install # same for ifort
 ```
 
-   NOTE: These instructions are very likely to change and to include
-   instructions for other compilers, especially for shared libraries
+   NOTE: These instructions are specific to a ULS (Unix-Like System) and 
+   may differ, especially for those wishing to generate shared libraries
    which varies significantly from compiler to compiler. For some builds
    it is simpler to make a Makefile for each compiler, which might be
    required for a more comprehensive build unless you are very familiar
@@ -134,23 +135,19 @@ These demo programs provide templates for the most common usage:
    as appropriate.
 
 ## Supports FPM ![parse](docs/images/fpm_logo.gif) 
-   Alternatively, download the github repository and build it with
+   Alternatively, fpm(1) users may download the github repository and build it with
    fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
-
 ```bash
         git clone https://github.com/urbanjost/M_CLI2.git
         cd M_CLI2
         fpm test   # build and test the module
 	fpm install # install the module (in the default location)
 ```
-
    or just list it as a dependency in your fpm.toml project file.
-
 ```toml
         [dependencies]
         M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
 ```
-
 ## Functional Specification
 **This is how the interface works --**
 
@@ -221,4 +218,7 @@ commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
  + ifort (IFORT) 2021.3.0 20210609
  + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem 
 ---
+<!--
 Last updated:   Wed Sep 29 17:34:52 2021 -0400
+-->
+Last update: Sat 21 Jan 2023 11:10:53 PM EST
