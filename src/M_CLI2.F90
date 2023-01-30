@@ -1202,7 +1202,6 @@ end subroutine set_usage
 !!      Public Domain
 !===================================================================================================================================
 recursive subroutine prototype_to_dictionary(string)
-implicit none
 
 ! ident_4="@(#) M_CLI2 prototype_to_dictionary(3f) parse user command and store tokens into dictionary"
 
@@ -1690,7 +1689,6 @@ end function get
 !!      Public Domain
 !===================================================================================================================================
 subroutine prototype_and_cmd_args_to_nlist(prototype,string)
-implicit none
 
 ! ident_5="@(#) M_CLI2 prototype_and_cmd_args_to_nlist create dictionary from prototype if not null and update from command line"
 
@@ -1996,7 +1994,6 @@ character(len=256)                       :: message_local
 end function fileopen
 !===================================================================================================================================
 function get_env(NAME,DEFAULT) result(VALUE)
-implicit none
 character(len=*),intent(in)          :: NAME
 character(len=*),intent(in),optional :: DEFAULT
 character(len=:),allocatable         :: VALUE
@@ -2052,7 +2049,6 @@ end function join_path
 !===================================================================================================================================
 function get_name() result(name)
 ! get the pathname of arg0
-implicit none
 character(len=:),allocatable :: arg0
 integer                      :: arg0_length
 integer                      :: istat
@@ -2112,7 +2108,6 @@ end function basename
 !===================================================================================================================================
 function separator2() result(sep)
 ! use the pathname returned as arg0 to determine pathname separator
-implicit none
 character(len=:),allocatable :: arg0
 integer                      :: arg0_length
 integer                      :: istat
@@ -2195,7 +2190,6 @@ function separator() result(sep)
 !!    end program demo_separator
 
 ! use the pathname returned as arg0 to determine pathname separator
-implicit none
 integer                      :: ios
 integer                      :: i
 logical                      :: existing=.false.
@@ -3055,7 +3049,7 @@ end subroutine get_anyarray_r
 !===================================================================================================================================
 subroutine get_anyarray_x(keyword,xarray,delimiters)
 character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
-complex,allocatable                  :: xarray(:)
+complex(kind=sp),allocatable         :: xarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
 integer                              :: half,sz,i
@@ -3074,7 +3068,7 @@ integer                              :: half,sz,i
    if(allocated(xarray))deallocate(xarray)
    allocate(xarray(half))
    do i=1,sz,2
-      xarray((i+1)/2)=cmplx( darray(i),darray(i+1) )
+      xarray((i+1)/2)=cmplx( darray(i),darray(i+1),kind=sp )
    enddo
    !x!================================================================================================
 
@@ -3434,7 +3428,6 @@ end function longest_command_argument
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, sep)
-implicit none
 
 ! ident_13="@(#) M_CLI2 journal(3f) writes a message to a string composed of any standard scalar types"
 
@@ -3528,7 +3521,6 @@ end subroutine journal
 function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, &
                   & generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, &
                   & sep)
-implicit none
 
 ! ident_14="@(#) M_CLI2 msg_scalar(3fp) writes a message to a string composed of any standard scalar types"
 
@@ -3602,7 +3594,6 @@ end function msg_scalar
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,sep)
-implicit none
 
 ! ident_15="@(#) M_CLI2 msg_one(3fp) writes a message to a string composed of any standard one dimensional types"
 
@@ -4773,7 +4764,6 @@ end function merge_str
 !!##LICENSE
 !!    Public Domain
 logical function decodebase(string,basein,out_baseten)
-implicit none
 
 ! ident_24="@(#) M_CLI2 decodebase(3f) convert whole number string in base [2-36] to base 10 number"
 
@@ -6002,7 +5992,6 @@ end subroutine insert_i
 !===================================================================================================================================
 subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,g8, n9,g9, &
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
-implicit none
 
 ! ident_39="@(#) M_CLI2 many_args(3fp) allow for multiple calls to get_args(3f)"
 
