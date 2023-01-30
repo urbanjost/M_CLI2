@@ -24,3 +24,12 @@ M_CLI2_dep = declare_dependency(
     link_with : M_CLI2_lib,
     include_directories : M_CLI2_inc,
 )
+
+test(
+    'runTests',
+    executable(
+        'runTests',
+        'test/test_suite_M_CLI2.f90',
+        dependencies : M_CLI2_dep,
+    ),
+)
