@@ -51,6 +51,7 @@ jobs:
          TZ: UTC+04:00
 
     - name: Build with meson
+      shell: msys2 {0}
       run: |
         meson --version
         meson setup build -Dbuildtype=debug
