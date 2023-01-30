@@ -3074,7 +3074,7 @@ integer                              :: half,sz,i
    if(allocated(xarray))deallocate(xarray)
    allocate(xarray(half))
    do i=1,sz,2
-      xarray((i+1)/2)=cmplx( darray(i),darray(i+1) )
+      xarray((i+1)/2)=cmplx( darray(i),darray(i+1),kind=sp )
    enddo
    !x!================================================================================================
 
