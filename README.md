@@ -148,6 +148,22 @@ These demo programs provide templates for the most common usage:
         [dependencies]
         M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
 ```
+
+## Supports Meson
+   Alternatively, meson(1) users may download the github repository and build it with
+   meson ( as described at [Meson Build System](https://mesonbuild.com/) )
+```bash
+        git clone https://github.com/urbanjost/M_CLI2.git
+        cd M_CLI2
+        meson setup _build
+        meson test -C _build  # build and test the module
+        meson install -C _build --destdir <DIR> # install the module (in the <DIR> location)
+```
+   or just list it as a [subproject dependency](https://mesonbuild.com/Subprojects.html) in your meson.build project file.
+```meson
+        M_CLI2_dep = subproject('M_CLI2').get_variable('M_CLI2_dep')
+```
+
 ## Functional Specification
 **This is how the interface works --**
 
