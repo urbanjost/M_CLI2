@@ -58,8 +58,9 @@ as explained using the examples below.
 
 ## Demo Programs![demos](docs/images/demo.gif)
 These demo programs provide templates for the most common usage:
-
+<!--
 * [demo1B](example/demo1.f90)  basic with help and version, using the convenience functions
+-->
 * [demo1](example/demo1.f90)   using the convenience functions
 * [demo2](example/demo2.f90)   putting everything including **help** and **version** information into a contained procedure.
 * [demo3](example/demo3.f90)   example of **basic** use
@@ -68,7 +69,10 @@ These demo programs provide templates for the most common usage:
 * [demo6](example/demo6.f90)   a complicated example showing how to create a command with subcommands
 * [demo7](example/demo7.f90)   controlling array delimiter characters
 * [demo8](example/demo8.f90)   multiple keyword and variable pairs on get_args(3f) for limited cases
-* [demo9](example/demo9.f90)   long and short names using  --LONGNAME:SHORTNAME
+* [demo9](example/demo9.f90)   long and short names using --LONGNAME:SHORTNAME. When all keys have 
+                               a long and short name "strict mode" is invoked where "--" is required
+			       for long names and "-" for short names; and Boolean values may be 
+			       bundled together.
 * [demo10](example/demo10.f90) full usage and even equivalencing
 
 ## Download and Build with Make(1)![gmake](docs/images/gnu.gif)

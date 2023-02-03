@@ -479,11 +479,11 @@ end subroutine check_commandline
 !!##DEFINING THE PROTOTYPE
 !!         o all keywords on the prototype MUST get a value.
 !!
-!!         o logicals MUST be set to F or T.
+!!            + logicals must be set to F or T.
 !!
-!!         o strings MUST be delimited with double-quotes and
-!!           must be at least one space. Internal double-quotes
-!!           are represented with two double-quotes.
+!!            + strings must be delimited with double-quotes and
+!!              must be at least one space. Internal double-quotes
+!!              are represented with two double-quotes.
 !!
 !!         o numeric keywords are not allowed; but this allows
 !!           negative numbers to be used as values.
@@ -491,11 +491,14 @@ end subroutine check_commandline
 !!         o lists of values should be comma-delimited unless a
 !!           user-specified delimiter is used. The prototype
 !!           must use the same array delimiters as the call to
-!!           the family of get_args*(3f) called.
+!!           get the value.
 !!
-!!         o long names (--keyword) should be all lowercase
+!!         o Long names should always be more than one character.
 !!
-!!         o The simplest way to have short names is to suffix the long
+!!         o It is recommended long names (--keyword) should be all lowercase
+!!           but are case-sensitive.
+!!
+!!         o The recommended way to have short names is to suffix the long
 !!           name with :LETTER If this syntax is used then logical shorts
 !!           may be combined on the command line and -- and - prefixes are
 !!           strictly enforced.
@@ -506,8 +509,8 @@ end subroutine check_commandline
 !!
 !!         o A very special behavior occurs if the keyword name ends in ::.
 !!           The next parameter is taken as a value even if it starts with -.
-!!           This is not generally recommended but is noted here for
-!!           completeness.
+!!           This is not generally recommended but is useful in rare cases
+!!           where non-numeric values starting with a dash are desired.
 !!
 !!         o to define a zero-length allocatable array make the
 !!           value a delimiter (usually a comma).
@@ -523,8 +526,7 @@ end subroutine check_commandline
 !!      When invoking the program line note that (subject to change) the
 !!      following variations from other common command-line parsers:
 !!
-!!         o Long names should be all lowercase and always more than one
-!!           character.
+!!         o Long names should always be more than one character.
 !!
 !!         o values for duplicate keywords are appended together with a space
 !!           separator when a command line is executed.
@@ -539,9 +541,8 @@ end subroutine check_commandline
 !!           alphabetical order will define what the Fortran variable
 !!           values become).
 !!
-!!           The second of the names should only be called with a
-!!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
-!!           for that name.
+!!           The second of the names should only be queried if the
+!!           SPECIFIED(3f) function is .TRUE. for that name.
 !!
 !!           Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 !!
@@ -550,7 +551,7 @@ end subroutine check_commandline
 !!           is required not -abc unless all the keywords are logicals
 !!           (Boolean keys).
 !!
-!!         o shuffling is not supported. Values should follow their
+!!         o shuffling is not supported. Values immediately follow their
 !!           keywords.
 !!
 !!         o if a parameter value of just "-" is supplied it is
@@ -559,9 +560,11 @@ end subroutine check_commandline
 !!         o values not matching a keyword go into the character
 !!           array "UNUSED".
 !!
-!!         o if the keyword "--" is encountered the rest of the
-!!           command arguments go into the character array "UNUSED".
+!!         o if the keyword "--" is encountered on the commadn line the
+!!           rest of the command arguments go into the character array
+!!           "UNUSED".
 !!##EXAMPLE
+!!
 !!
 !! Sample program:
 !!
@@ -1481,7 +1484,7 @@ logical                               :: set_mandatory
    isize=size(long_short)
 
    if(isize > 0)then                     ! very special-purpose syntax where if ends in :: next field is a value even
-      if(long_short(isize) == '')then     ! if it starts with a dash, for --flags option on fpm(1).
+      if(long_short(isize) == '')then    ! if it starts with a dash, for --flags option on fpm(1).
          set_mandatory=.true.
          long_short=long_short(:isize-1)
       endif

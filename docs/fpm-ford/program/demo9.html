@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 2.3% of total for programs.">10 statements</a>
+               title=" 2.7% of total for programs.">12 statements</a>
           </li>
 
             <li id="source-file">
@@ -117,7 +117,19 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-  
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#vars-0">Variables</a>
+        </h3>
+      </div>
+      <div id="vars-0" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../program/demo9.html#variable-all">all</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -161,12 +173,28 @@
       </ul>
     </div>
 
-    <p>long and short names using  &ndash;LONGNAME:SHORTNAME</p>
+    <p>long and short names using &ndash;LONGNAME:SHORTNAME</p>
+<p>When all keys have a long and short name &ldquo;strict mode&rdquo; is invoked where
+ &ldquo;-&rdquo; is required for short names; and Boolean values may be bundled
+ together. For example:</p>
+<p>demo9 -XYZ</p>
 <br>
      <section class="visible-xs visible-sm hidden-md">
          <h3>Contents</h3>
   
-  
+      <div class="panel panel-primary">
+      <div class="panel-heading text-left">
+        <h3 class="panel-title">
+          <a data-toggle="collapse" href="#vars-1">Variables</a>
+        </h3>
+      </div>
+      <div id="vars-1" class="panel-collapse collapse">
+        <div class="list-group">
+            <a class="list-group-item" href="../program/demo9.html#variable-all">all</a>
+        </div>
+      </div>
+    </div>
+
   
   
   
@@ -196,6 +224,39 @@
      <br class="visible-xs visible-sm hidden-md">
 
 
+    <section>
+    <h2>Variables</h2>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+<th></th><th>Initial</th>        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-all"></span>
+              character(len=*),
+            </td>
+            <td>
+parameter               
+            </td>
+            <td>::</td>
+            <td><strong>all</strong></td>
+<td> =</td>
+                <td>'(*(g0))'</td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+    </section>
+    <br>
     
     
     
@@ -207,15 +268,30 @@
     <section>
     <h2 id="src">Source Code</h2>
     <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">demo9</span><span class="w"></span>
-<span class="c">!!  long and short names using  --LONGNAME:SHORTNAME</span>
-<span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="p">,</span><span class="w"> </span><span class="n">iget</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="w"></span>
+<span class="c">!&gt; long and short names using --LONGNAME:SHORTNAME</span>
+<span class="c">!!</span>
+<span class="c">!!  When all keys have a long and short name &quot;strict mode&quot; is invoked where</span>
+<span class="c">!!  &quot;-&quot; is required for short names; and Boolean values may be bundled</span>
+<span class="c">!!  together. For example:</span>
+<span class="c">!!</span>
+<span class="c">!!    demo9 -XYZ</span>
+<span class="c">!!</span>
+<span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="w"></span>
 <span class="k">implicit none</span>
-<span class="k">   call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;--length:l 1 --height:h 10 --size:s 12.34567  --switch:X F --title:T &quot;my title&quot;&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;--length or -l is &#39;</span><span class="p">,</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;--height or -h is &#39;</span><span class="p">,</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;--size or -s is   &#39;</span><span class="p">,</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;size&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;--switch or -X is &#39;</span><span class="p">,</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;switch&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;--title or -T is  &#39;</span><span class="p">,</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">all</span><span class="o">=</span><span class="s1">&#39;(*(g0))&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;    &amp;</span>
+<span class="s1">   &amp; --length:l 10    &amp;</span>
+<span class="s1">   &amp; --height:h 12.45 &amp;</span>
+<span class="s1">   &amp; --switchX:X F    &amp;</span>
+<span class="s1">   &amp; --switchY:Y F    &amp;</span>
+<span class="s1">   &amp; --switchZ:Z F    &amp;</span>
+<span class="s1">   &amp; --title:T &quot;my title&quot;&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="s1">&#39;--length or -l .... &#39;</span><span class="p">,</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;length&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="s1">&#39;--height or -h .... &#39;</span><span class="p">,</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="s1">&#39;--switchX or -X ... &#39;</span><span class="p">,</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;switchX&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="s1">&#39;--switchY or -Y ... &#39;</span><span class="p">,</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;switchY&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="s1">&#39;--switchZ or -Z ... &#39;</span><span class="p">,</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;switchZ&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">print all</span><span class="p">,</span><span class="s1">&#39;--title or -T ..... &#39;</span><span class="p">,</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span><span class="w"></span>
 <span class="k">end program </span><span class="n">demo9</span><span class="w"></span>
 </pre></div>
 
@@ -236,7 +312,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 01:18            </p>
         </div>
       </div>
       <br>

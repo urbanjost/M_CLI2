@@ -479,11 +479,11 @@ end subroutine check_commandline
 !!##DEFINING THE PROTOTYPE
 !!         o all keywords on the prototype MUST get a value.
 !!
-!!         o logicals MUST be set to F or T.
+!!            + logicals must be set to F or T.
 !!
-!!         o strings MUST be delimited with double-quotes and
-!!           must be at least one space. Internal double-quotes
-!!           are represented with two double-quotes.
+!!            + strings must be delimited with double-quotes and
+!!              must be at least one space. Internal double-quotes
+!!              are represented with two double-quotes.
 !!
 !!         o numeric keywords are not allowed; but this allows
 !!           negative numbers to be used as values.
@@ -491,11 +491,14 @@ end subroutine check_commandline
 !!         o lists of values should be comma-delimited unless a
 !!           user-specified delimiter is used. The prototype
 !!           must use the same array delimiters as the call to
-!!           the family of get_args*(3f) called.
+!!           get the value.
 !!
-!!         o long names (--keyword) should be all lowercase
+!!         o Long names should always be more than one character.
 !!
-!!         o The simplest way to have short names is to suffix the long
+!!         o It is recommended long names (--keyword) should be all lowercase
+!!           but are case-sensitive.
+!!
+!!         o The recommended way to have short names is to suffix the long
 !!           name with :LETTER If this syntax is used then logical shorts
 !!           may be combined on the command line and -- and - prefixes are
 !!           strictly enforced.
@@ -506,8 +509,8 @@ end subroutine check_commandline
 !!
 !!         o A very special behavior occurs if the keyword name ends in ::.
 !!           The next parameter is taken as a value even if it starts with -.
-!!           This is not generally recommended but is noted here for
-!!           completeness.
+!!           This is not generally recommended but is useful in rare cases
+!!           where non-numeric values starting with a dash are desired.
 !!
 !!         o to define a zero-length allocatable array make the
 !!           value a delimiter (usually a comma).
@@ -523,8 +526,7 @@ end subroutine check_commandline
 !!      When invoking the program line note that (subject to change) the
 !!      following variations from other common command-line parsers:
 !!
-!!         o Long names should be all lowercase and always more than one
-!!           character.
+!!         o Long names should always be more than one character.
 !!
 !!         o values for duplicate keywords are appended together with a space
 !!           separator when a command line is executed.
@@ -539,9 +541,8 @@ end subroutine check_commandline
 !!           alphabetical order will define what the Fortran variable
 !!           values become).
 !!
-!!           The second of the names should only be called with a
-!!           GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
-!!           for that name.
+!!           The second of the names should only be queried if the
+!!           SPECIFIED(3f) function is .TRUE. for that name.
 !!
 !!           Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 !!
@@ -550,7 +551,7 @@ end subroutine check_commandline
 !!           is required not -abc unless all the keywords are logicals
 !!           (Boolean keys).
 !!
-!!         o shuffling is not supported. Values should follow their
+!!         o shuffling is not supported. Values immediately follow their
 !!           keywords.
 !!
 !!         o if a parameter value of just "-" is supplied it is
@@ -559,9 +560,11 @@ end subroutine check_commandline
 !!         o values not matching a keyword go into the character
 !!           array "UNUSED".
 !!
-!!         o if the keyword "--" is encountered the rest of the
-!!           command arguments go into the character array "UNUSED".
+!!         o if the keyword "--" is encountered on the commadn line the
+!!           rest of the command arguments go into the character array
+!!           "UNUSED".
 !!##EXAMPLE
+!!
 !!
 !! Sample program:
 !!
@@ -1202,7 +1205,6 @@ end subroutine set_usage
 !!      Public Domain
 !===================================================================================================================================
 recursive subroutine prototype_to_dictionary(string)
-implicit none
 
 ! ident_4="@(#) M_CLI2 prototype_to_dictionary(3f) parse user command and store tokens into dictionary"
 
@@ -1482,7 +1484,7 @@ logical                               :: set_mandatory
    isize=size(long_short)
 
    if(isize > 0)then                     ! very special-purpose syntax where if ends in :: next field is a value even
-      if(long_short(isize) == '')then     ! if it starts with a dash, for --flags option on fpm(1).
+      if(long_short(isize) == '')then    ! if it starts with a dash, for --flags option on fpm(1).
          set_mandatory=.true.
          long_short=long_short(:isize-1)
       endif
@@ -1690,7 +1692,6 @@ end function get
 !!      Public Domain
 !===================================================================================================================================
 subroutine prototype_and_cmd_args_to_nlist(prototype,string)
-implicit none
 
 ! ident_5="@(#) M_CLI2 prototype_and_cmd_args_to_nlist create dictionary from prototype if not null and update from command line"
 
@@ -1996,7 +1997,6 @@ character(len=256)                       :: message_local
 end function fileopen
 !===================================================================================================================================
 function get_env(NAME,DEFAULT) result(VALUE)
-implicit none
 character(len=*),intent(in)          :: NAME
 character(len=*),intent(in),optional :: DEFAULT
 character(len=:),allocatable         :: VALUE
@@ -2052,7 +2052,6 @@ end function join_path
 !===================================================================================================================================
 function get_name() result(name)
 ! get the pathname of arg0
-implicit none
 character(len=:),allocatable :: arg0
 integer                      :: arg0_length
 integer                      :: istat
@@ -2112,7 +2111,6 @@ end function basename
 !===================================================================================================================================
 function separator2() result(sep)
 ! use the pathname returned as arg0 to determine pathname separator
-implicit none
 character(len=:),allocatable :: arg0
 integer                      :: arg0_length
 integer                      :: istat
@@ -2195,7 +2193,6 @@ function separator() result(sep)
 !!    end program demo_separator
 
 ! use the pathname returned as arg0 to determine pathname separator
-implicit none
 integer                      :: ios
 integer                      :: i
 logical                      :: existing=.false.
@@ -3055,7 +3052,7 @@ end subroutine get_anyarray_r
 !===================================================================================================================================
 subroutine get_anyarray_x(keyword,xarray,delimiters)
 character(len=*),intent(in)          :: keyword      ! keyword to retrieve value from dictionary
-complex,allocatable                  :: xarray(:)
+complex(kind=sp),allocatable         :: xarray(:)
 character(len=*),intent(in),optional :: delimiters
 real(kind=dp),allocatable            :: darray(:)    ! function type
 integer                              :: half,sz,i
@@ -3074,7 +3071,7 @@ integer                              :: half,sz,i
    if(allocated(xarray))deallocate(xarray)
    allocate(xarray(half))
    do i=1,sz,2
-      xarray((i+1)/2)=cmplx( darray(i),darray(i+1) )
+      xarray((i+1)/2)=cmplx( darray(i),darray(i+1),kind=sp )
    enddo
    !x!================================================================================================
 
@@ -3434,7 +3431,6 @@ end function longest_command_argument
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 subroutine journal(where, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj, sep)
-implicit none
 
 ! ident_13="@(#) M_CLI2 journal(3f) writes a message to a string composed of any standard scalar types"
 
@@ -3528,7 +3524,6 @@ end subroutine journal
 function msg_scalar(generic0, generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9, &
                   & generica, genericb, genericc, genericd, generice, genericf, genericg, generich, generici, genericj, &
                   & sep)
-implicit none
 
 ! ident_14="@(#) M_CLI2 msg_scalar(3fp) writes a message to a string composed of any standard scalar types"
 
@@ -3602,7 +3597,6 @@ end function msg_scalar
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function msg_one(generic0,generic1, generic2, generic3, generic4, generic5, generic6, generic7, generic8, generic9,sep)
-implicit none
 
 ! ident_15="@(#) M_CLI2 msg_one(3fp) writes a message to a string composed of any standard one dimensional types"
 
@@ -4773,7 +4767,6 @@ end function merge_str
 !!##LICENSE
 !!    Public Domain
 logical function decodebase(string,basein,out_baseten)
-implicit none
 
 ! ident_24="@(#) M_CLI2 decodebase(3f) convert whole number string in base [2-36] to base 10 number"
 
@@ -6002,7 +5995,6 @@ end subroutine insert_i
 !===================================================================================================================================
 subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,g8, n9,g9, &
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
-implicit none
 
 ! ident_39="@(#) M_CLI2 many_args(3fp) allow for multiple calls to get_args(3f)"
 

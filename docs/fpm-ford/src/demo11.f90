@@ -1,6 +1,6 @@
 program demo11
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
-
+implicit none
 type point
    integer           :: x=0
    integer           :: y=0
@@ -11,7 +11,8 @@ type(point) :: dot; namelist /nml_dot/ dot
 
 character(len=:),allocatable :: name
 character(len=:),allocatable :: string
-character(len=80)           :: readme !(3)
+character(len=80)            :: readme !(3)
+integer                      :: i
 
 ! M_CLI2 does not have validators except for SELECTED(3f) and
 ! a check whether the input conforms to the type with get_args(3f)

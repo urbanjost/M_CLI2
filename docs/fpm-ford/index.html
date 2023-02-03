@@ -142,11 +142,13 @@ the end of commands, you can query whether an option was supplied, and
 get_args(3f)-related routines can be used for refining options such as
 requiring lists of a specified size. Passing in some character arrays
 allows you to automatically have a &ndash;help and &ndash;version switch as well,
-as explained below.</p>
+as explained using the examples below.</p>
 <h2 id="demo-programs">Demo Programs<img alt="demos" src="docs/images/demo.gif"></h2>
 <p>These demo programs provide templates for the most common usage:</p>
+<!--
+* [demo1B](example/demo1.f90)  basic with help and version, using the convenience functions
+-->
 <ul>
-<li><a href="example/demo1.f90">demo1B</a>  basic with help and version, using the convenience functions</li>
 <li><a href="example/demo1.f90">demo1</a>   using the convenience functions</li>
 <li><a href="example/demo2.f90">demo2</a>   putting everything including <strong>help</strong> and <strong>version</strong> information into a contained procedure.</li>
 <li><a href="example/demo3.f90">demo3</a>   example of <strong>basic</strong> use</li>
@@ -155,7 +157,10 @@ as explained below.</p>
 <li><a href="example/demo6.f90">demo6</a>   a complicated example showing how to create a command with subcommands</li>
 <li><a href="example/demo7.f90">demo7</a>   controlling array delimiter characters</li>
 <li><a href="example/demo8.f90">demo8</a>   multiple keyword and variable pairs on get_args(3f) for limited cases</li>
-<li><a href="example/demo9.f90">demo9</a>   long and short names using  &ndash;LONGNAME:SHORTNAME</li>
+<li><a href="example/demo9.f90">demo9</a>   long and short names using &ndash;LONGNAME:SHORTNAME. When all keys have 
+                               a long and short name &ldquo;strict mode&rdquo; is invoked where &ldquo;&ndash;&rdquo; is required
+                   for long names and &ldquo;-&rdquo; for short names; and Boolean values may be 
+                   bundled together.</li>
 <li><a href="example/demo10.f90">demo10</a> full usage and even equivalencing</li>
 </ul>
 <h2 id="download-and-build-with-make1">Download and Build with Make(1)<img alt="gmake" src="docs/images/gnu.gif"></h2>
@@ -189,9 +194,10 @@ as explained below.</p>
 
 <p>There are different methods for adding the directory to your default
    load path, but frequently you can append the directory you have
-   placed the files in into the colon-separated list of directories in the
-   $LD_LIBRARY_PATH environment variable, and then the -L option will
-   not be required (or it&rsquo;s equivalent in your programming environment).</p>
+   placed the files in into the colon-separated list of directories
+   in the $LD_LIBRARY_PATH or $LIBRARY_PATH environment variable, and
+   then the -L option will not be required (or it&rsquo;s equivalent in your
+   programming environment).</p>
 <div class="codehilite"><pre><span></span><code>       <span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/lib:<span class="nv">$LD_LIBRARY_PATH</span>
 </code></pre></div>
 
@@ -207,8 +213,8 @@ as explained below.</p>
 <div class="codehilite"><pre><span></span><code>     make clean ifort ifort_install <span class="c1"># same for ifort</span>
 </code></pre></div>
 
-<p>NOTE: These instructions are very likely to change and to include
-   instructions for other compilers, especially for shared libraries
+<p>NOTE: These instructions are specific to a ULS (Unix-Like System) and 
+   may differ, especially for those wishing to generate shared libraries
    which varies significantly from compiler to compiler. For some builds
    it is simpler to make a Makefile for each compiler, which might be
    required for a more comprehensive build unless you are very familiar
@@ -217,7 +223,7 @@ as explained below.</p>
    make sure you know what your system requires and change the Makefile
    as appropriate.</p>
 <h2 id="supports-fpm">Supports FPM <img alt="parse" src="docs/images/fpm_logo.gif"></h2>
-<p>Alternatively, download the github repository and build it with
+<p>Alternatively, fpm(1) users may download the github repository and build it with
    fpm ( as described at <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> )</p>
 <div class="codehilite"><pre><span></span><code>        git clone https://github.com/urbanjost/M_CLI2.git
         <span class="nb">cd</span> M_CLI2
@@ -228,6 +234,20 @@ as explained below.</p>
 <p>or just list it as a dependency in your fpm.toml project file.</p>
 <div class="codehilite"><pre><span></span><code><span class="w">        </span><span class="k">[dependencies]</span><span class="w"></span>
 <span class="w">        </span><span class="n">M_CLI2</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">git</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;https://github.com/urbanjost/M_CLI2.git&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<h2 id="supports-meson">Supports Meson</h2>
+<p>Alternatively, meson(1) users may download the github repository and build it with
+   meson ( as described at <a href="https://mesonbuild.com/">Meson Build System</a> )</p>
+<div class="codehilite"><pre><span></span><code>        git clone https://github.com/urbanjost/M_CLI2.git
+        <span class="nb">cd</span> M_CLI2
+        meson setup _build
+        meson <span class="nb">test</span> -C _build  <span class="c1"># build and test the module</span>
+        meson install -C _build --destdir &lt;DIR&gt; <span class="c1"># install the module (in the &lt;DIR&gt; location)</span>
+</code></pre></div>
+
+<p>or just list it as a <a href="https://mesonbuild.com/Subprojects.html">subproject dependency</a> in your meson.build project file.</p>
+<div class="codehilite"><pre><span></span><code><span class="w">        </span><span class="n">M_CLI2_dep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">subproject</span><span class="p">(</span><span class="s">&#39;M_CLI2&#39;</span><span class="p">).</span><span class="n">get_variable</span><span class="p">(</span><span class="s">&#39;M_CLI2_dep&#39;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="functional-specification">Functional Specification</h2>
@@ -304,7 +324,10 @@ dozens of options where various values are frequently reused.</p>
  + ifort (IFORT) 2021.3.0 20210609
  + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem </p>
 <hr>
-<h2 id="last-updated-wed-sep-29-173452-2021-0400">Last updated:   Wed Sep 29 17:34:52 2021 -0400</h2>
+<!--
+Last updated:   Wed Sep 29 17:34:52 2021 -0400
+-->
+<h2 id="last-update-sat-21-jan-2023-111053-pm-est">Last update: Sat 21 Jan 2023 11:10:53 PM EST</h2>
         </div>
         <div class="col-md-4">
 	  <div class="well">
@@ -369,7 +392,7 @@ dozens of options where various values are frequently reused.</p>
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 01:18            </p>
         </div>
       </div>
       <br>
