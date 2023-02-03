@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 2.8% of total for programs.">12 statements</a>
+               title=" 2.5% of total for programs.">12 statements</a>
           </li>
 
             <li id="source-file">
@@ -128,8 +128,8 @@
             <a class="list-group-item" href="../program/demo3~2.html#variable-l~4">l</a>
             <a class="list-group-item" href="../program/demo3~2.html#variable-size~2">size</a>
             <a class="list-group-item" href="../program/demo3~2.html#variable-title~4">title</a>
-            <a class="list-group-item" href="../program/demo3~2.html#variable-x~5">x</a>
-            <a class="list-group-item" href="../program/demo3~2.html#variable-y~5">y</a>
+            <a class="list-group-item" href="../program/demo3~2.html#variable-x~6">x</a>
+            <a class="list-group-item" href="../program/demo3~2.html#variable-y~6">y</a>
         </div>
       </div>
     </div>
@@ -177,8 +177,7 @@
       </ul>
     </div>
 
-    <p>example of <strong>basic</strong> use
-! JUST THE BARE ESSENTIALS</p>
+    <p>@(#) example of <strong>basic</strong> use using just the bare essentials</p>
 <br>
      <section class="visible-xs visible-sm hidden-md">
          <h3>Contents</h3>
@@ -194,8 +193,8 @@
             <a class="list-group-item" href="../program/demo3~2.html#variable-l~4">l</a>
             <a class="list-group-item" href="../program/demo3~2.html#variable-size~2">size</a>
             <a class="list-group-item" href="../program/demo3~2.html#variable-title~4">title</a>
-            <a class="list-group-item" href="../program/demo3~2.html#variable-x~5">x</a>
-            <a class="list-group-item" href="../program/demo3~2.html#variable-y~5">y</a>
+            <a class="list-group-item" href="../program/demo3~2.html#variable-x~6">x</a>
+            <a class="list-group-item" href="../program/demo3~2.html#variable-y~6">y</a>
         </div>
       </div>
     </div>
@@ -291,7 +290,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x~5"></span>
+              <span class="anchor" id="variable-x~6"></span>
               integer
             </td>
             <td>
@@ -307,7 +306,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-y~5"></span>
+              <span class="anchor" id="variable-y~6"></span>
               integer
             </td>
             <td>
@@ -337,18 +336,17 @@
     <section>
     <h2 id="src">Source Code</h2>
     <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">demo3</span><span class="w"></span>
-<span class="c">!!  example of **basic** use</span>
-<span class="c">!*! JUST THE BARE ESSENTIALS</span>
+<span class="c">!!  @(#) example of **basic** use using just the bare essentials</span>
 <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args</span><span class="w"></span>
 <span class="k">implicit none</span>
 <span class="kt">integer</span><span class="w">                      </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"></span>
 <span class="kt">logical</span><span class="w">                      </span><span class="kd">::</span><span class="w"> </span><span class="n">l</span><span class="w"></span>
 <span class="kt">real</span><span class="w">                         </span><span class="kd">::</span><span class="w"> </span><span class="n">size</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">title</span><span class="w"></span>
-<span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 10 --size:s 12.34567  -l F --title:t &quot;my title&quot;&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 10 --size 12.34567  -l F --title &quot;my title&quot;&#39;</span><span class="p">)</span><span class="w"></span>
 <span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">)</span><span class="w"> </span><span class="c">! all the non-allocatables</span>
 <span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span><span class="w"></span>
-<span class="w">   </span><span class="c">! all variables set and of the right type</span>
+<span class="w">   </span><span class="c">! Done. all variables set and of the right type</span>
 <span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(*(&quot;[&quot;,g0,&quot;]&quot;:,1x))&#39;</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">title</span><span class="w"></span>
 <span class="k">end program </span><span class="n">demo3</span><span class="w"></span>
 </pre></div>
@@ -370,7 +368,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 21:53            </p>
         </div>
       </div>
       <br>

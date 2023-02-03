@@ -1,5 +1,5 @@
 program demo10
-!!  full usage and even equivalencing
+!! @(#) full usage and even equivalencing
 use M_CLI2,  only : set_args, get_args, unnamed
 use M_CLI2,  only : get_args_fixed_size, get_args_fixed_length
 use M_CLI2,  only : specified ! only needed if equivalence keynames

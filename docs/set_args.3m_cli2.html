@@ -119,7 +119,7 @@ example:
 </TD></TR>
 <TR><TD colspan=2>
 <PRE>
-                call set_args(&#146;-L F -ints 10,20,30 -title "my title" -R 10.3&#146;)
+                call set_args(&#146;-L F --ints 1,2,3 --title "my title" -R 10.3&#146;)
 <P>
 </PRE>
 DEFINITION is pre-defined to act as if started with
@@ -166,24 +166,23 @@ a description of the error if ierr is present
 
 </A>
 <BLOCKQUOTE>
+<P>
 <TABLE cellpadding=3>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
 all keywords on the prototype MUST get a value.
 </TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-logicals MUST be set to F or T.
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-strings MUST be delimited with double-quotes and
-must be at least one space. Internal double-quotes
-are represented with two double-quotes.
-</TD></TR>
+<TR></TR></TABLE><!-- .nf -->
+<PRE>
+      + logicals must be set to F or T.
+<P>
+      + strings must be delimited with double-quotes and
+        must be at least one space. Internal double-quotes
+        are represented with two double-quotes.
+<P>
+</PRE>
+<TABLE cellpadding=3>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
@@ -196,32 +195,7 @@ o
 lists of values should be comma-delimited unless a
 user-specified delimiter is used. The prototype
 must use the same array delimiters as the call to
-the family of get_args*(3f) called.
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-long names (<B>--keyword</B>) should be all lowercase
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-The simplest way to have short names is to suffix the long
-name with :LETTER If this syntax is used then logical shorts
-may be combined on the command line and -- and - prefixes are
-strictly enforced.
-<P>
-mapping of short names to long names not using the
-<B>--LONGNAME</B>:SHORTNAME syntax is demonstrated in the manpage
-for SPECIFIED(3f).
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-A very special behavior occurs if the keyword name ends in ::.
-The next parameter is taken as a value even if it starts with -.
-This is not generally recommended but is noted here for
-completeness.
+get the value.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -233,6 +207,54 @@ value a delimiter (usually a comma).
 o
 </TD><TD>
 all unused values go into the character array UNNAMED
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; LONG AND SHORT NAMES</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+It is recommended long names (<B>--keyword</B>) should be all lowercase
+but are case-sensitive by default, unless set_mode(&#146;ignorecase&#146;)
+is in effect.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+Long names should always be more than one character.
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+The recommended way to have short names is to suffix the long
+name with :LETTER in the definition. If this syntax is used
+then logical shorts may be combined on the command line.
+<P>
+Mapping of short names to long names __not__ using the
+<B>--LONGNAME</B>:SHORTNAME syntax is demonstrated in the manpage
+for SPECIFIED(3f).
+</TD></TR>
+<TR></TR></TABLE></BLOCKQUOTE>
+<A name=>
+
+    <H4>&nbsp; &nbsp; SPECIAL BEHAVIORS</H4>
+</A>
+<BLOCKQUOTE>
+<P>
+<TABLE cellpadding=3>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+A very special behavior occurs if the keyword name ends in ::.
+When the program is called the next parameter is taken as
+a value even if it starts with -. This is not generally
+recommended but is useful in rare cases where non-numeric
+values starting with a dash are desired.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -251,27 +273,14 @@ the UNNAMED array. This is not needed for normal processing.
 <BLOCKQUOTE>
 When invoking the program line note that (subject to change) the
 following variations from other common command-line parsers:
-<BLOCKQUOTE>
 <TABLE cellpadding=3><!-- tsb: When invoking the program line note that (subject to change) the
  -->
 <TR></TR><TR></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-Long names should be all lowercase and always more than one
-character.
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
 values for duplicate keywords are appended together with a space
 separator when a command line is executed.
-</TD></TR>
-<TR valign=top><TD width=3%>
-o
-</TD><TD>
-numeric keywords are not allowed; but this allows
-negative numbers to be used as values.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
@@ -283,24 +292,23 @@ line will have undefined results (currently, their ASCII
 alphabetical order will define what the Fortran variable
 values become).
 <P>
-The second of the names should only be called with a
-GET_ARGS*(3f) routine if the SPECIFIED(3f) function is .TRUE.
-for that name.
+The second of the names should only be queried if the
+SPECIFIED(3f) function is .TRUE. for that name.
 <P>
 Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-short keywords cannot be combined unless they were defined
-using the <B>--LONGNAME</B>:SHORTNAME syntax. Even then <B>-a</B> <B>-b</B> <B>-c</B>
-is required not <B>-abc</B> unless all the keywords are logicals
-(Boolean keys).
+short Boolean keywords cannot be combined reliably unless
+"set_mode(&#146;strict&#146;)" is in effect. Short names that require
+a value cannot be bundled together. Non-Boolean key names may
+not be bundled.
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-shuffling is not supported. Values should follow their
+shuffling is not supported. Values immediately follow their
 keywords.
 </TD></TR>
 <TR valign=top><TD width=3%>
@@ -318,17 +326,18 @@ array "UNUSED".
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-if the keyword "--" is encountered the rest of the
-command arguments go into the character array "UNUSED".
+if the keyword "--" is encountered on the command line the
+rest of the command arguments go into the character array
+"UNUSED".
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
-</BLOCKQUOTE>
 <A name=6>
 
      <H3>EXAMPLE</H3>
 
 </A>
 <BLOCKQUOTE>
+<P>
 Sample program:
 <P>
 <PRE>
@@ -353,12 +362,12 @@ Sample program:
        & -p -1,-2,-3 &
        ! always double-quote strings
        & --title "my title" &
+       ! string should be a single character at a minimum
+       & --label " ", &
        ! set all logical values to F or T.
        & -l F -L F &
        ! set allocatable size to zero if you like by using a delimiter
-       & -ints , &
-       ! string should be a single character at a minimum
-       & --label " " &
+       & --ints , &
        & &#146;)
     ! ASSIGN VALUES TO ELEMENTS
     !     SCALARS
@@ -399,8 +408,8 @@ you can ignore this section. Otherwise, before calling set_args(3f)
 add:
 <P>
 <PRE>
-    use M_CLI2, only : CLI_response_file
-    CLI_response_file=.true.
+    use M_CLI2, only : set_mode
+    call set_mode(&#146;response_file&#146;)
 <P>
 </PRE>
 M_CLI2 Response files are small files containing CLI (Command Line
@@ -566,13 +575,12 @@ So if a program that does nothing but echos its parameters
 <P>
 <PRE>
    program testit
-   use M_CLI2, only : set_args, rget, sget, lget
-   use M_CLI2, only : CLI_response_file
+   use M_CLI2, only : set_args, rget, sget, lget, set_mode
    implicit none
       real :: x,y                           ; namelist/args/ x,y
       character(len=:),allocatable :: title ; namelist/args/ title
       logical :: big                        ; namelist/args/ big
-      CLI_response_file=.true.
+      call set_mode(&#146;response_file&#146;)
       call set_args(&#146;-x 10.0 -y 20.0 --title "my title" --big F&#146;)
       x=rget(&#146;x&#146;)
       y=rget(&#146;y&#146;)
@@ -730,7 +738,7 @@ John S. Urban, 2019
 Public Domain
 </BLOCKQUOTE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I>Nemo Release 3.1</I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>January 30, 2023</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 71a64dac-e50e-4113-ad9f-48973f444978 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I>Nemo Release 3.1</I></TD> <TD width=33% align=center>set_args (3m_cli2)</TD> <TD align=right width=33%><I>February 03, 2023</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from cd31f48d-b861-40f7-b2de-6c4dcb4fdeb9 using man macros.</FONT>
 <br><br><center><img src="images/set_args.gif"></center>
 </div>
 </div>

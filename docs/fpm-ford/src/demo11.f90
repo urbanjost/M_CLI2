@@ -1,6 +1,7 @@
 program demo11
+!! @(#) examples of validating values with ALL(3f) and ANY(3f)
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
-
+implicit none
 type point
    integer           :: x=0
    integer           :: y=0
@@ -11,9 +12,10 @@ type(point) :: dot; namelist /nml_dot/ dot
 
 character(len=:),allocatable :: name
 character(len=:),allocatable :: string
-character(len=80)           :: readme !(3)
+character(len=80)            :: readme !(3)
+integer                      :: i
 
-! M_CLI2 does not have validators except for SELECTED(3f) and
+! M_CLI2 does not have validators except for SPECIFIED(3f) and
 ! a check whether the input conforms to the type with get_args(3f)
 ! and the convenience functions like inum(3f). But Fortran already
 ! has powerful validation capabilities, especially with the use
@@ -23,7 +25,7 @@ character(len=80)           :: readme !(3)
 
 ! even number from 10 to 30 inclusive
 do i=1,100
-   if(all([i >= 10,i <= 30,i/2*2 == i]))then
+   if(all([i >= 10,i <= 30,(i/2)*2 == i]))then
       write(*,*)'good',i
    endif
 enddo

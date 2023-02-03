@@ -1,9 +1,8 @@
 program demo1
-!!  using the convenience functions
-   use M_CLI2, only : set_args, get_args_fixed_size 
+!!  @(#) using the convenience functions
+   use M_CLI2, only : set_args, get_args_fixed_size, set_mode
    use M_CLI2, only : dget,  iget,  lget,  rget,  sget,  cget ! for scalars
    use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets ! for allocatable arrays
-   use M_CLI2, only : CLI_response_file
    implicit none
 
 !! DECLARE "ARGS"
@@ -11,7 +10,7 @@ program demo1
    character(len=:), allocatable  :: title, anytitle
    logical                        :: l,  lupper
 
-   CLI_response_file=.true.
+   call set_mode('response_file')
 !! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES
    call set_args('-x 1.1 -y 2e3 -z -3.9 --point:p -1,-2,-3 --title:T "my title" --anytitle:a "my title" -l F -L F')
 

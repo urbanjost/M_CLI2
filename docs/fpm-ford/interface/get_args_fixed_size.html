@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 1.1% of total for procedures.</p>Including implementation: 24 statements,  8.9% of total for procedures.">3 statements</a>
+               title="<p> 1.0% of total for procedures.</p>Including implementation: 24 statements,  8.2% of total for procedures.">3 statements</a>
           </li>
 
             <li id="source-file">
@@ -205,9 +205,9 @@
 </h3></div>
     <div class="panel-body">
         <h2 id="name">NAME</h2>
-<div class="codehilite"><pre><span></span><code> <span class="nv">get_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">ARGUMENTS</span>:<span class="nv">M_CLI2</span>] <span class="k">return</span> <span class="nv">keyword</span> <span class="nv">values</span> <span class="nv">when</span> <span class="nv">parsing</span>
- <span class="nv">command</span> <span class="nv">line</span> <span class="nv">arguments</span>
- <span class="ss">(</span><span class="nv">LICENSE</span>:<span class="nv">PD</span><span class="ss">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nv">get_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">ARGUMENTS</span>:<span class="nv">M_CLI2</span>] <span class="k">return</span> <span class="nv">keyword</span> <span class="nv">values</span> <span class="nv">when</span> <span class="nv">parsing</span>
+<span class="nv">command</span> <span class="nv">line</span> <span class="nv">arguments</span>
+<span class="ss">(</span><span class="nv">LICENSE</span>:<span class="nv">PD</span><span class="ss">)</span>
 </code></pre></div>
 
 <h2 id="synopsis">SYNOPSIS</h2>
@@ -284,9 +284,9 @@
  <span class="o">!</span>   <span class="nv">o</span> <span class="nv">only</span> <span class="nv">quote</span> <span class="nv">strings</span> <span class="nv">and</span> <span class="nv">use</span> <span class="nv">double</span><span class="o">-</span><span class="nv">quotes</span>
  <span class="o">!</span>   <span class="nv">o</span> <span class="nv">set</span> <span class="nv">all</span> <span class="nv">logical</span> <span class="nv">values</span> <span class="nv">to</span> <span class="nv">F</span> <span class="nv">or</span> <span class="nv">T</span>.
  <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> &amp;</span>
-    <span class="o">&amp;-</span><span class="nv">x</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">2</span> <span class="o">-</span><span class="nv">z</span> <span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">2</span> <span class="o">-</span><span class="nv">z</span> <span class="mi">3</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">F</span>  <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">--</span><span class="nv">label</span> <span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
@@ -357,7 +357,7 @@
  <span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">ARGS</span>
  <span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span><span class="mi">80</span><span class="ss">)</span>   :: <span class="nv">title</span>
  <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> &amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
  <span class="o">!</span> <span class="nv">ASSIGN</span> <span class="nv">VALUES</span> <span class="nv">TO</span> <span class="nv">ELEMENTS</span>
     <span class="k">call</span> <span class="nl">get_args_fixed_length</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>,<span class="nv">title</span><span class="ss">)</span>
@@ -430,7 +430,7 @@
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">10</span>.<span class="mi">0</span>,<span class="mi">20</span>.<span class="mi">0</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">11</span>.<span class="mi">0</span>,<span class="mi">22</span>.<span class="mi">0</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span>,<span class="nv">T</span>,<span class="nv">F</span>,<span class="nv">T</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">T</span>,<span class="nv">F</span>,<span class="nv">T</span>,<span class="nv">F</span>  <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">--</span><span class="nv">cmp</span> <span class="mi">111</span>,<span class="mi">222</span>.<span class="mi">0</span>,<span class="mi">333</span>.<span class="mi">0</span><span class="nv">e0</span>,<span class="mi">4444</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
@@ -540,7 +540,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 21:53            </p>
         </div>
       </div>
       <br>

@@ -11,9 +11,9 @@
       !   o only quote strings and use double-quotes
       !   o set all logical values to F or T.
       call set_args(' &
-         &-x 1 -y 2 -z 3 &
-         &-p -1,-2,-3 &
-         &--title "my title" &
+         & -x 1 -y 2 -z 3 &
+         & -p -1,-2,-3 &
+         & --title "my title" &
          & -l F -L F  &
          & --label " " &
          & ')

@@ -4,7 +4,7 @@
       ! DEFINE ARGS
       character(len=80)   :: title
       call set_args(' &
-         & -title "my title" &
+         & --title "my title" &
          & ')
       ! ASSIGN VALUES TO ELEMENTS
          call get_args_fixed_length('title',title)

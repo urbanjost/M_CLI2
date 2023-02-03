@@ -1,5 +1,5 @@
 program demo5
-!!  _CHARACTER_ type values
+!! @(#) _CHARACTER_ type values
 !! character variables have a length, unlike number variables
 use M_CLI2, only : set_args, get_args
 use M_CLI2, only : get_args_fixed_size, get_args_fixed_length

@@ -1,6 +1,5 @@
 program demo2
-!!  putting everything including **help** and **version** information
-!!  into a contained procedure.
+!!  @(#) all parsing and **help** and **version** information in a contained procedure.
 use M_CLI2,  only : unnamed
 implicit none
 integer            :: i

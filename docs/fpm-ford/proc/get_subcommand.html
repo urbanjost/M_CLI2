@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="17.4% of total for procedures.">47 statements</a>
+               title="16.0% of total for procedures.">47 statements</a>
           </li>
 
             <li id="source-file">
@@ -213,30 +213,29 @@ command with subcommands.
 <span class="s">subroutine parse(name)</span>
 <span class="s">!x! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY</span>
 <span class="s">use M_CLI2, only : set_args, get_args, get_args_fixed_length</span>
-<span class="s">use M_CLI2, only : get_subcommand</span>
-<span class="s">use M_CLI2, only : CLI_RESPONSE_FILE</span>
+<span class="s">use M_CLI2, only : get_subcommand, set_mode</span>
 <span class="s">character(len=*)              :: name    ! the subcommand name</span>
 <span class="s">character(len=:),allocatable  :: help_text(:), version_text(:)</span>
-<span class="s">   CLI_RESPONSE_FILE=.true.</span>
-<span class="s">! define version text</span>
-<span class="s">   version_text=[character(len=80) :: &amp;</span>
-<span class="s">      &#39;</span><span class="p">@(</span>#<span class="p">)</span><span class="n">PROGRAM</span><span class="p">:</span><span class="w">     </span><span class="n">demo_get_subcommand</span><span class="w">            </span><span class="o">&gt;</span><span class="s">&#39;, &amp;</span>
-<span class="s">      &#39;</span><span class="p">@(</span>#<span class="p">)</span><span class="n">DESCRIPTION</span><span class="p">:</span><span class="w"> </span><span class="n">My</span><span class="w"> </span><span class="nb">demo</span><span class="w"> </span><span class="n">program</span><span class="w">  </span><span class="o">&gt;</span><span class="s">&#39;, &amp;</span>
-<span class="s">      &#39;</span><span class="p">@(</span>#<span class="p">)</span><span class="n">VERSION</span><span class="p">:</span><span class="w">     </span><span class="mf">1.0</span><span class="w"> </span><span class="mi">20200715</span><span class="w">     </span><span class="o">&gt;</span><span class="s">&#39;, &amp;</span>
-<span class="s">      &#39;</span><span class="p">@(</span>#<span class="p">)</span><span class="n">AUTHOR</span><span class="p">:</span><span class="w">      </span><span class="n">me</span><span class="p">,</span><span class="w"> </span><span class="n">myself</span><span class="p">,</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">I</span><span class="o">&gt;</span><span class="s">&#39;, &amp;</span>
-<span class="s">      &#39;</span><span class="p">@(</span>#<span class="p">)</span><span class="n">LICENSE</span><span class="p">:</span><span class="w">     </span><span class="n">Public</span><span class="w"> </span><span class="n">Domain</span><span class="w">    </span><span class="o">&gt;</span><span class="s">&#39;, &amp;</span>
-<span class="s">      &#39;&#39; ]</span>
-<span class="s">    ! general help for &quot;demo_get_subcommand --help&quot;</span>
-<span class="s">    help_text=[character(len=80) :: &amp;</span>
-<span class="s">     &#39;</span><span class="w"> </span><span class="n">allowed</span><span class="w"> </span><span class="n">subcommands</span><span class="w"> </span><span class="n">are</span><span class="w">          </span><span class="s">&#39;, &amp;</span>
-<span class="s">     &#39;</span><span class="w">   </span><span class="o">*</span><span class="w"> </span><span class="nb">run</span><span class="w">  </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="o">-</span><span class="nb">title</span><span class="w"> </span><span class="o">-</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="n">z</span><span class="w">   </span><span class="s">&#39;, &amp;</span>
-<span class="s">     &#39;</span><span class="w">   </span><span class="o">*</span><span class="w"> </span><span class="n">test</span><span class="w"> </span><span class="o">-</span><span class="n">l</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="o">-</span><span class="nb">title</span><span class="w">            </span><span class="s">&#39;, &amp;</span>
-<span class="s">     &#39;&#39; ]</span>
-<span class="s">   ! find the subcommand name by looking for first word on command</span>
-<span class="s">   ! not starting with dash</span>
-<span class="s">   name = get_subcommand()</span>
-<span class="s">   select case(name)</span>
-<span class="s">   case(&#39;</span><span class="nb">run</span><span class="o">&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="s">   call set_mode(&#39;</span><span class="n">response_file</span><span class="o">&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="sx">! define version text</span><span class="w"></span>
+<span class="w">   </span><span class="n">version_text</span><span class="p">=[</span><span class="n">character</span><span class="p">(</span><span class="n">len</span><span class="p">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;@(#)PROGRAM:     demo_get_subcommand            &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;@(#)VERSION:     1.0 20200715     &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">      </span><span class="s">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span>!<span class="w"> </span><span class="n">general</span><span class="w"> </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s">&quot;demo_get_subcommand --help&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">help_text</span><span class="p">=[</span><span class="n">character</span><span class="p">(</span><span class="n">len</span><span class="p">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="s">&#39; allowed subcommands are          &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="s">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="s">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="s">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
+<span class="w">   </span>!<span class="w"> </span><span class="nb">find</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">subcommand</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">looking</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">command</span><span class="w"></span>
+<span class="w">   </span>!<span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">dash</span><span class="w"></span>
+<span class="w">   </span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">get_subcommand</span><span class="p">()</span><span class="w"></span>
+<span class="w">   </span><span class="n">select</span><span class="w"> </span><span class="k">case</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s">&#39;run&#39;</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="n">help_text</span><span class="p">=[</span><span class="n">character</span><span class="p">(</span><span class="n">len</span><span class="p">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
 <span class="w">     </span><span class="s">&#39;                                  &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
 <span class="w">     </span><span class="s">&#39; Help for subcommand &quot;run&quot;        &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
@@ -417,7 +416,7 @@ command with subcommands.
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 21:53            </p>
         </div>
       </div>
       <br>

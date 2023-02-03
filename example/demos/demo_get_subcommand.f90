@@ -28,11 +28,10 @@
      subroutine parse(name)
      !x! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
      use M_CLI2, only : set_args, get_args, get_args_fixed_length
-     use M_CLI2, only : get_subcommand
-     use M_CLI2, only : CLI_RESPONSE_FILE
+     use M_CLI2, only : get_subcommand, set_mode
      character(len=*)              :: name    ! the subcommand name
      character(len=:),allocatable  :: help_text(:), version_text(:)
-        CLI_RESPONSE_FILE=.true.
+        call set_mode('response_file')
      ! define version text
         version_text=[character(len=80) :: &
            '@(#)PROGRAM:     demo_get_subcommand            >', &

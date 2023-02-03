@@ -1,5 +1,5 @@
 program demo4
-!!  _COMPLEX_ type values
+!!  @(#) _COMPLEX_ type values
 use M_CLI2,  only : set_args, get_args, get_args_fixed_size
 implicit none
 complex                      :: x, y, z   ! scalars

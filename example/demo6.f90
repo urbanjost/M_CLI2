@@ -1,14 +1,14 @@
 program demo6
-! SUBCOMMANDS
-!
-! For a command with subcommands like git(1) you can call this program
-! which has two subcommands (run, test), like this:
-!
-!    demo6 --help
-!    demo6 run -x -y -z -title -l -L
-!    demo6 test -title -l -L -testname
-!    demo6 run --help
-!
+!! @(#) SUBCOMMANDS
+!!
+!! For a command with subcommands like git(1) you can call this program
+!! which has two subcommands (run, test), like this:
+!!
+!!    demo6 --help
+!!    demo6 run -x -y -z -title -l -L
+!!    demo6 test -title -l -L -testname
+!!    demo6 run --help
+!!
 use M_CLI2, only : set_args, get_args, get_args_fixed_length, get_subcommand
 use M_CLI2, only : rget,sget,lget
 use M_CLI2, only : CLI_RESPONSE_FILE

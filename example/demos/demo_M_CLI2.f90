@@ -27,7 +27,7 @@
               & --point 11.11, 22.22, 33.33e0 &
               & --title "my title" -l F -L F  &
               & --logicals  F F F F F         &
-              & -logi F T F                   &
+              & --logi F T F                  &
               & --label " " &
               ! note space between quotes is required
               & ')

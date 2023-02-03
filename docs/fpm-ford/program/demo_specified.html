@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 6.0% of total for programs.">26 statements</a>
+               title=" 5.3% of total for programs.">26 statements</a>
           </li>
 
             <li id="source-file">
@@ -127,7 +127,7 @@
         <div class="list-group">
             <a class="list-group-item" href="../program/demo_specified.html#variable-flag">flag</a>
             <a class="list-group-item" href="../program/demo_specified.html#variable-ints">ints</a>
-            <a class="list-group-item" href="../program/demo_specified.html#variable-twonames">twonames</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-two_names">two_names</a>
         </div>
       </div>
     </div>
@@ -190,7 +190,7 @@
         <div class="list-group">
             <a class="list-group-item" href="../program/demo_specified.html#variable-flag">flag</a>
             <a class="list-group-item" href="../program/demo_specified.html#variable-ints">ints</a>
-            <a class="list-group-item" href="../program/demo_specified.html#variable-twonames">twonames</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-two_names">two_names</a>
         </div>
       </div>
     </div>
@@ -270,14 +270,14 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-twonames"></span>
+              <span class="anchor" id="variable-two_names"></span>
               real,
             </td>
             <td>
               allocatable
             </td>
             <td>::</td>
-            <td><strong>twonames</strong>(:)</td>
+            <td><strong>two_names</strong>(:)</td>
                 <td></td>
                 <td></td>
             <td>
@@ -305,39 +305,42 @@
 <span class="w">     </span><span class="c">! DEFINE ARGS</span>
 <span class="w">     </span><span class="kt">integer</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">flag</span><span class="w"></span>
 <span class="w">     </span><span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">ints</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">     </span><span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">twonames</span><span class="p">(:)</span><span class="w"></span>
+<span class="w">     </span><span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">two_names</span><span class="p">(:)</span><span class="w"></span>
 
 <span class="w">     </span><span class="c">! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED</span>
 <span class="w">     </span><span class="c">! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM</span>
-<span class="w">      </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-flag 1 -f 1 -ints 1,2,3 -i 1,2,3 -twonames 11.3 -T 11.3&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;&amp;</span>
+<span class="s1">         &amp; --flag 1 -f 1 &amp;</span>
+<span class="s1">         &amp; --ints 1,2,3 -i 1,2,3 &amp;</span>
+<span class="s1">         &amp; --two_names 11.3 -T 11.3&#39;</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">     </span><span class="c">! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME</span>
 <span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="n">two_names</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="n">two_names</span><span class="p">)</span><span class="w"></span>
 
 <span class="w">      </span><span class="c">! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE</span>
 <span class="w">      </span><span class="c">! ANY(3f) and ALL(3f)</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ANY:&#39;</span><span class="p">,</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">]))</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ALL:&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">]))</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">])</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ANY:&#39;</span><span class="p">,</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">]))</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ALL:&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">]))</span><span class="w"></span>
 
 <span class="w">      </span><span class="c">! FOR MUTUALLY EXCLUSIVE</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])))</span><span class="k">then</span>
-<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You specified both names -T and -twonames&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">])))</span><span class="k">then</span>
+<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You specified both names -T and -two_names&#39;</span><span class="w"></span>
 <span class="w">      </span><span class="k">endif</span><span class="w"></span>
 
 <span class="w">      </span><span class="c">! FOR REQUIRED PARAMETER</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;twonames&#39;</span><span class="p">,</span><span class="s1">&#39;T       &#39;</span><span class="p">])))</span><span class="k">then</span>
-<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You must specify -T or -twonames&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">])))</span><span class="k">then</span>
+<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You must specify -T or -two_names&#39;</span><span class="w"></span>
 <span class="w">      </span><span class="k">endif</span><span class="w"></span>
 <span class="w">      </span><span class="c">! USE VALUES</span>
 <span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;flag=&#39;</span><span class="p">,</span><span class="n">flag</span><span class="w"></span>
 <span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span><span class="w"></span>
-<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;twonames=&#39;</span><span class="p">,</span><span class="n">twonames</span><span class="w"></span>
+<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;two_names=&#39;</span><span class="p">,</span><span class="n">two_names</span><span class="w"></span>
 <span class="w">      </span><span class="k">end program </span><span class="n">demo_specified</span><span class="w"></span>
 </pre></div>
 
@@ -358,7 +361,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 21:53            </p>
         </div>
       </div>
       <br>

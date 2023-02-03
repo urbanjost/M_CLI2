@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="100.0% of total for modules and submodules.">3080 statements</a>
+               title="100.0% of total for modules and submodules.">3079 statements</a>
           </li>
 
             <li id="source-file">
@@ -128,7 +128,6 @@
         <div class="list-group">
             <a class="list-group-item" href="../module/m_cli2.html#variable-cli_response_file">CLI_RESPONSE_FILE</a>
             <a class="list-group-item" href="../module/m_cli2.html#variable-args">args</a>
-            <a class="list-group-item" href="../module/m_cli2.html#variable-debug_m_cli2">debug_m_cli2</a>
             <a class="list-group-item" href="../module/m_cli2.html#variable-remaining">remaining</a>
             <a class="list-group-item" href="../module/m_cli2.html#variable-unnamed">unnamed</a>
         </div>
@@ -194,6 +193,7 @@
         <div class="list-group">
             <a class="list-group-item" href="../module/m_cli2.html#proc-print_dictionary">print_dictionary</a>
             <a class="list-group-item" href="../module/m_cli2.html#proc-set_args">set_args</a>
+            <a class="list-group-item" href="../module/m_cli2.html#proc-set_mode">set_mode</a>
         </div>
       </div>
     </div>
@@ -212,16 +212,16 @@
     
     <div class="col-md-9" id='text'>
     <h2 id="name">NAME</h2>
-<div class="codehilite"><pre><span></span><code> M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] command line argument
- parsing using a prototype command
- (LICENSE:PD)
+<div class="codehilite"><pre><span></span><code>M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] command line argument
+parsing using a prototype command
+(LICENSE:PD)
 </code></pre></div>
 
 <h2 id="synopsis">SYNOPSIS</h2>
 <p>Available procedures and variables:</p>
-<div class="codehilite"><pre><span></span><code>  use M_CLI2, only : set_args, get_args, unnamed, remaining, args
+<div class="codehilite"><pre><span></span><code>  use M_CLI2, only : set_args, get_args, specified, set_mode
+  use M_CLI2, only : unnamed, remaining, args
   use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
-  use M_CLI2, only : specified
   ! convenience functions
   use M_CLI2, only : dget, iget, lget, rget, sget, cget
   use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets
@@ -247,10 +247,10 @@
  <span class="nv">implicit</span> <span class="nv">none</span>
  <span class="nv">real</span>    :: <span class="nv">x</span>, <span class="nv">y</span>
  <span class="nv">integer</span> :: <span class="nv">i</span>
-    <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> -y 0.0 -x 0.0 -v F</span><span class="s1">&#39;</span><span class="ss">)</span>
+    <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> -y 0.0 -x 0.0 --debug F</span><span class="s1">&#39;</span><span class="ss">)</span>
     <span class="nv">x</span><span class="o">=</span><span class="nv">rget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span><span class="ss">)</span>
     <span class="nv">y</span><span class="o">=</span><span class="nv">rget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">y</span><span class="s1">&#39;</span><span class="ss">)</span>
-    <span class="k">if</span><span class="ss">(</span><span class="nv">lget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">v</span><span class="s1">&#39;</span><span class="ss">))</span><span class="k">then</span>
+    <span class="k">if</span><span class="ss">(</span><span class="nv">lget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">debug</span><span class="s1">&#39;</span><span class="ss">))</span><span class="k">then</span>
        <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">X=</span><span class="s1">&#39;</span>,<span class="nv">x</span>
        <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">Y=</span><span class="s1">&#39;</span>,<span class="nv">y</span>
        <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ATAN2(Y,X)=</span><span class="s1">&#39;</span>,<span class="nv">atan2</span><span class="ss">(</span><span class="nv">x</span><span class="o">=</span><span class="nv">x</span>,<span class="nv">y</span><span class="o">=</span><span class="nv">y</span><span class="ss">)</span>
@@ -264,7 +264,7 @@
  <span class="k">end</span> <span class="nv">program</span> <span class="nv">minimal</span>
 </code></pre></div>
 
-<p>Sample program using type get_args() and variants</p>
+<p>Sample program using get_args() and variants</p>
 <div class="codehilite"><pre><span></span><code> <span class="nv">program</span> <span class="nv">demo_M_CLI2</span>
  <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">set_args</span>, <span class="nv">get_args</span>
  <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">filenames</span><span class="o">=&gt;</span><span class="nv">unnamed</span>
@@ -294,7 +294,7 @@
          <span class="o">&amp;</span> <span class="o">--</span><span class="nv">point</span> <span class="mi">11</span>.<span class="mi">11</span>, <span class="mi">22</span>.<span class="mi">22</span>, <span class="mi">33</span>.<span class="mi">33</span><span class="nv">e0</span> <span class="o">&amp;</span>
          <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">F</span>  <span class="o">&amp;</span>
          <span class="o">&amp;</span> <span class="o">--</span><span class="nv">logicals</span>  <span class="nv">F</span> <span class="nv">F</span> <span class="nv">F</span> <span class="nv">F</span> <span class="nv">F</span>         <span class="o">&amp;</span>
-         <span class="o">&amp;</span> <span class="o">-</span><span class="nv">logi</span> <span class="nv">F</span> <span class="nv">T</span> <span class="nv">F</span>                   <span class="o">&amp;</span>
+         <span class="o">&amp;</span> <span class="o">--</span><span class="nv">logi</span> <span class="nv">F</span> <span class="nv">T</span> <span class="nv">F</span>                  <span class="o">&amp;</span>
          <span class="o">&amp;</span> <span class="o">--</span><span class="nv">label</span> <span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span> <span class="o">&amp;</span>
          <span class="o">!</span> <span class="nv">note</span> <span class="nv">space</span> <span class="nv">between</span> <span class="nv">quotes</span> <span class="nv">is</span> <span class="nv">required</span>
          <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
@@ -373,7 +373,6 @@
         <div class="list-group">
             <a class="list-group-item" href="../module/m_cli2.html#variable-cli_response_file">CLI_RESPONSE_FILE</a>
             <a class="list-group-item" href="../module/m_cli2.html#variable-args">args</a>
-            <a class="list-group-item" href="../module/m_cli2.html#variable-debug_m_cli2">debug_m_cli2</a>
             <a class="list-group-item" href="../module/m_cli2.html#variable-remaining">remaining</a>
             <a class="list-group-item" href="../module/m_cli2.html#variable-unnamed">unnamed</a>
         </div>
@@ -439,6 +438,7 @@
         <div class="list-group">
             <a class="list-group-item" href="../module/m_cli2.html#proc-print_dictionary">print_dictionary</a>
             <a class="list-group-item" href="../module/m_cli2.html#proc-set_args">set_args</a>
+            <a class="list-group-item" href="../module/m_cli2.html#proc-set_mode">set_mode</a>
         </div>
       </div>
     </div>
@@ -497,23 +497,6 @@
             <td><strong>args</strong>(:)</td>
                 <td></td>
                 <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-debug_m_cli2"></span>
-              logical,
-            </td>
-              <td>public,</td>
-            <td>
-              save
-            </td>
-            <td>::</td>
-            <td><strong>debug_m_cli2</strong></td>
-<td> =</td>
-                <td>.false.</td>
             <td>
                 
             </td>
@@ -868,9 +851,9 @@
 
     </h3>
   <h2 id="name">NAME</h2>
-<div class="codehilite"><pre><span></span><code> <span class="nv">get_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">ARGUMENTS</span>:<span class="nv">M_CLI2</span>] <span class="k">return</span> <span class="nv">keyword</span> <span class="nv">values</span> <span class="nv">when</span> <span class="nv">parsing</span>
- <span class="nv">command</span> <span class="nv">line</span> <span class="nv">arguments</span>
- <span class="ss">(</span><span class="nv">LICENSE</span>:<span class="nv">PD</span><span class="ss">)</span>
+<div class="codehilite"><pre><span></span><code><span class="nv">get_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">ARGUMENTS</span>:<span class="nv">M_CLI2</span>] <span class="k">return</span> <span class="nv">keyword</span> <span class="nv">values</span> <span class="nv">when</span> <span class="nv">parsing</span>
+<span class="nv">command</span> <span class="nv">line</span> <span class="nv">arguments</span>
+<span class="ss">(</span><span class="nv">LICENSE</span>:<span class="nv">PD</span><span class="ss">)</span>
 </code></pre></div>
 
 <h2 id="synopsis">SYNOPSIS</h2>
@@ -947,9 +930,9 @@
  <span class="o">!</span>   <span class="nv">o</span> <span class="nv">only</span> <span class="nv">quote</span> <span class="nv">strings</span> <span class="nv">and</span> <span class="nv">use</span> <span class="nv">double</span><span class="o">-</span><span class="nv">quotes</span>
  <span class="o">!</span>   <span class="nv">o</span> <span class="nv">set</span> <span class="nv">all</span> <span class="nv">logical</span> <span class="nv">values</span> <span class="nv">to</span> <span class="nv">F</span> <span class="nv">or</span> <span class="nv">T</span>.
  <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> &amp;</span>
-    <span class="o">&amp;-</span><span class="nv">x</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">2</span> <span class="o">-</span><span class="nv">z</span> <span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">2</span> <span class="o">-</span><span class="nv">z</span> <span class="mi">3</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">F</span>  <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">--</span><span class="nv">label</span> <span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
@@ -1020,7 +1003,7 @@
  <span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">ARGS</span>
  <span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span><span class="mi">80</span><span class="ss">)</span>   :: <span class="nv">title</span>
  <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> &amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
  <span class="o">!</span> <span class="nv">ASSIGN</span> <span class="nv">VALUES</span> <span class="nv">TO</span> <span class="nv">ELEMENTS</span>
     <span class="k">call</span> <span class="nl">get_args_fixed_length</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>,<span class="nv">title</span><span class="ss">)</span>
@@ -1093,7 +1076,7 @@
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">10</span>.<span class="mi">0</span>,<span class="mi">20</span>.<span class="mi">0</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">11</span>.<span class="mi">0</span>,<span class="mi">22</span>.<span class="mi">0</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span>,<span class="nv">T</span>,<span class="nv">F</span>,<span class="nv">T</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">T</span>,<span class="nv">F</span>,<span class="nv">T</span>,<span class="nv">F</span>  <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">--</span><span class="nv">cmp</span> <span class="mi">111</span>,<span class="mi">222</span>.<span class="mi">0</span>,<span class="mi">333</span>.<span class="mi">0</span><span class="nv">e0</span>,<span class="mi">4444</span> <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
@@ -2010,6 +1993,61 @@
     </div>
   </div>
 
+      <div class="panel panel-default">
+    <div class="panel-heading codesum"><span class="anchor" id="proc-set_mode"></span><h3>public impure elemental subroutine <a href='../proc/set_mode.html'>set_mode</a>(key, mode)  
+</h3></div>
+    <div class="panel-body">
+          
+  <p>Sample program:</p><a href="../proc/set_mode.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" ></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>mode</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
     </section>
     <br>
 
@@ -2030,7 +2068,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-01-21 18:24            </p>
+ on 2023-02-03 21:53            </p>
         </div>
       </div>
       <br>
