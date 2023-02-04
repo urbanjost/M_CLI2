@@ -56,7 +56,8 @@ requiring lists of a specified size. Passing in some character arrays
 allows you to automatically have a --help and --version switch as well,
 as explained using the examples below.
 
-## Demo Programs![demos](docs/images/demo.gif)
+![demos](docs/images/demo.gif)
+## Demo Programs
 These demo programs provide templates for the most common usage:
 
 * [demo1](example/demo1.f90)   Using the convenience functions
@@ -79,7 +80,8 @@ These demo programs provide templates for the most common usage:
 * [demo14](example/demo14.f90) Case-insensitive long keys
 * [demo15](example/demo15.f90) bundling short Boolean keys using "strict" mode
 
-## Download and Build with Make(1)![gmake](docs/images/gnu.gif)
+![gmake](docs/images/gnu.gif)
+## Download and Build with Make(1)
    Compile the M_CLI2 module and build all the example programs.
 ```bash
        git clone https://github.com/urbanjost/M_CLI2.git
@@ -125,7 +127,7 @@ These demo programs provide templates for the most common usage:
 ```bash
      make clean gfortran gfortran_install
 ```
-   and everything needed by gfortran will be placed in libgfortran/ that
+   and everything needed by gfortran will be placed in lib/gfortran/ that
    you may add to an appropriate area, such as $HOME/.local/lib/gfortran/.
 ```bash
      make clean ifort ifort_install # same for ifort
@@ -142,7 +144,8 @@ These demo programs provide templates for the most common usage:
    make sure you know what your system requires and change the Makefile
    as appropriate.
 
-## Supports FPM ![parse](docs/images/fpm_logo.gif) 
+![parse](docs/images/fpm_logo.gif) 
+## Supports FPM
    Alternatively, fpm(1) users may download the github repository and build it with
    fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
 ```bash
@@ -197,7 +200,8 @@ complex commands. This option is generally not needed by programs with
 just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.
 
-## Documentation   ![docs](docs/images/docs.gif)
+![docs](docs/images/docs.gif)
+## Documentation
 ### man-pages as HTML
 - [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) -- man-pages index of individual procedures
 - [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
@@ -218,7 +222,8 @@ dozens of options where various values are frequently reused.
    + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
      query whether an option was used on the commandline
 -->
-### real man-pages ![gmake](docs/images/manpages.gif)
+![manpages](docs/images/manpages.gif)
+### real man-pages
    + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
    + [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
 
@@ -244,5 +249,6 @@ commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
 ---
 <!--
 Last updated:   Wed Sep 29 17:34:52 2021 -0400
--->
 Last update: Sat 21 Jan 2023 11:10:53 PM EST
+-->
+Last update: Saturday, February 4th, 2023 1:12:54 AM UTC-05:00
