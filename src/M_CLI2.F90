@@ -483,6 +483,7 @@ end subroutine check_commandline
 !!
 !!##DEFINING THE PROTOTYPE
 !!
+<<<<<<< HEAD
 !!    o all keywords on the prototype MUST get a value.
 !!
 !!       + logicals must be set to F or T.
@@ -493,24 +494,55 @@ end subroutine check_commandline
 !!
 !!    o numeric keywords are not allowed; but this allows
 !!      negative numbers to be used as values.
+=======
+!!            + logicals must be set to F or T.
+!!
+!!            + strings must be delimited with double-quotes and
+!!              must be at least one space. Internal double-quotes
+!!              are represented with two double-quotes.
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!    o lists of values should be comma-delimited unless a
 !!      user-specified delimiter is used. The prototype
 !!      must use the same array delimiters as the call to
 !!      get the value.
 !!
+<<<<<<< HEAD
 !!    o to define a zero-length allocatable array make the
 !!      value a delimiter (usually a comma).
 !!
 !!    o all unused values go into the character array UNNAMED
 !!
 !!    LONG AND SHORT NAMES
+=======
+!!         o lists of values should be comma-delimited unless a
+!!           user-specified delimiter is used. The prototype
+!!           must use the same array delimiters as the call to
+!!           get the value.
+!!
+!!         o Long names should always be more than one character.
+!!
+!!         o It is recommended long names (--keyword) should be all lowercase
+!!           but are case-sensitive.
+!!
+!!         o The recommended way to have short names is to suffix the long
+!!           name with :LETTER If this syntax is used then logical shorts
+!!           may be combined on the command line and -- and - prefixes are
+!!           strictly enforced.
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!    o It is recommended long names (--keyword) should be all lowercase
 !!      but are case-sensitive by default, unless set_mode('ignorecase')
 !!      is in effect.
 !!
+<<<<<<< HEAD
 !!    o Long names should always be more than one character.
+=======
+!!         o A very special behavior occurs if the keyword name ends in ::.
+!!           The next parameter is taken as a value even if it starts with -.
+!!           This is not generally recommended but is useful in rare cases
+!!           where non-numeric values starting with a dash are desired.
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!    o The recommended way to have short names is to suffix the long
 !!      name with :LETTER in the definition. If this syntax is used
@@ -537,8 +569,15 @@ end subroutine check_commandline
 !!      When invoking the program line note that (subject to change) the
 !!      following variations from other common command-line parsers:
 !!
+<<<<<<< HEAD
 !!      o values for duplicate keywords are appended together with a space
 !!        separator when a command line is executed.
+=======
+!!         o Long names should always be more than one character.
+!!
+!!         o values for duplicate keywords are appended together with a space
+!!           separator when a command line is executed.
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!      o Although not generally recommended you can equivalence
 !!        keywords (usually for multi-lingual support). Be aware that
@@ -550,7 +589,12 @@ end subroutine check_commandline
 !!        The second of the names should only be queried if the
 !!        SPECIFIED(3f) function is .TRUE. for that name.
 !!
+<<<<<<< HEAD
 !!        Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
+=======
+!!           The second of the names should only be queried if the
+!!           SPECIFIED(3f) function is .TRUE. for that name.
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!      o short Boolean keywords cannot be combined reliably unless
 !!        "set_mode('strict')" is in effect. Short names that require
@@ -560,15 +604,29 @@ end subroutine check_commandline
 !!      o shuffling is not supported. Values immediately follow their
 !!        keywords.
 !!
+<<<<<<< HEAD
 !!      o if a parameter value of just "-" is supplied it is
 !!        converted to the string "stdin".
+=======
+!!         o shuffling is not supported. Values immediately follow their
+!!           keywords.
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!      o values not matching a keyword go into the character
 !!        array "UNUSED".
 !!
+<<<<<<< HEAD
 !!      o if the keyword "--" is encountered on the command line the
 !!        rest of the command arguments go into the character array
 !!        "UNUSED".
+=======
+!!         o values not matching a keyword go into the character
+!!           array "UNUSED".
+!!
+!!         o if the keyword "--" is encountered on the commadn line the
+!!           rest of the command arguments go into the character array
+!!           "UNUSED".
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!##EXAMPLE
 !!
 !!

@@ -1,5 +1,9 @@
 program demo9
+<<<<<<< HEAD
 !> @(#) long and short names using --LONGNAME:SHORTNAME
+=======
+!> long and short names using --LONGNAME:SHORTNAME
+>>>>>>> 7b8a920e6275c54c3f6920c90db4dd7d7cf0a8e9
 !!
 !!  When all keys have a long and short name "strict mode" is invoked where
 !!  "-" is required for short names; and Boolean values may be bundled
