@@ -2272,7 +2272,7 @@ logical                      :: next_mandatory
             call ifnull()
          endif
          call locate_key(current_argument_padded(2:),pointer)
-         if(pointer <= 0)then
+         if(pointer <= 0)then            ! name not found
             jj=len(current_argument)
             if(G_STRICT.and.jj > 2)then  ! in strict mode this might be multiple single-character values
               do kk=2,jj

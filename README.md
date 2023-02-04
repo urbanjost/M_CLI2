@@ -58,9 +58,7 @@ as explained using the examples below.
 
 ## Demo Programs![demos](docs/images/demo.gif)
 These demo programs provide templates for the most common usage:
-<!--
-* [demo1B](example/demo1.f90)  basic with help and version, using the convenience functions
--->
+
 * [demo1](example/demo1.f90)   Using the convenience functions
 * [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
 * [demo3](example/demo3.f90)   Example of **basic** use
