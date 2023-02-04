@@ -418,7 +418,7 @@ integer :: ilength
    allocate(character(len=ilength) :: cmd_name)
    call get_command_argument(number=0,value=cmd_name)
    G_passed_in=G_passed_in//repeat(' ',len(G_passed_in))
-   call substitute(G_passed_in,' --',NEW_LINE('A')//' --')
+   G_passed_in=replace_str(G_passed_in, ' --', NEW_LINE('A')//' --')
    if(.not.G_QUIET)then
       call journal('sc',cmd_name,G_passed_in) ! no help text, echo command and default options
    endif
@@ -1144,6 +1144,36 @@ end function get_subcommand
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+!>
+!!##NAME
+!!    set_usage(3f) - [ARGUMENTS:M_CLI2] allow setting a short description
+!!    for keywords for the --usage switch
+!!    (LICENSE:PD)
+!!
+!!##SYNOPSIS
+!!
+!!     subroutine set_usage(keyword,description)
+!!
+!!      character(len=*),intent(in)     ::  keyword
+!!      character(len=*),intent(in)     ::  description
+!!
+!!##DESCRIPTION
+!!
+!!##OPTIONS
+!!     KEYWORD      the name of a command keyword
+!!     DESCRIPTION  a brief one-line description of the keyword
+!!
+!!
+!!##EXAMPLE
+!!
+!! sample program:
+!!
+!!     Results:
+!!
+!!##AUTHOR
+!!      John S. Urban, 2019
+!!##LICENSE
+!!      Public Domain
 !===================================================================================================================================
 subroutine set_usage(keyword,description,value)
 character(len=*),intent(in) :: keyword
@@ -1670,7 +1700,7 @@ end function get
 !!      complex            :: c
 !!      doubleprecision    :: x,y,z
 !!
-!!      ! uppercase keywords get an underscore to make it easier o remember
+!!      ! uppercase keywords get an underscore to make it easier to remember
 !!      logical            :: l_,h_,v_
 !!      ! character variables must be long enough to hold returned value
 !!      character(len=256) :: a_,b_
@@ -2052,7 +2082,7 @@ function join_path(a1,a2,a3,a4,a5) result(path)
    if (present(a4)) path = path // filesep // trim(a4)
    if (present(a5)) path = path // filesep // trim(a5)
    path=adjustl(path//'  ')
-   call substitute(path,filesep//filesep,'',start=2) ! some systems allow names starting with '//' or '\\'
+   path=path(1:1)//replace_str(path,filesep//filesep,'') ! some systems allow names starting with '//' or '\\'
    path=trim(path)
 end function join_path
 !===================================================================================================================================
@@ -3721,7 +3751,7 @@ character(len=3),save        :: nan_string='NaN'
    local_chars=unquote(chars)
    msg=''
    if(len(local_chars) == 0)local_chars=' '
-   call substitute(local_chars,',','')                          ! remove any comma characters
+   local_chars=replace_str(local_chars,',','')                  ! remove any comma characters
    pnd=scan(local_chars,'#:')
    if(pnd /= 0)then
       write(frmt,fmt)pnd-1                                      ! build format of form '(BN,Gn.0)'
@@ -3735,15 +3765,15 @@ character(len=3),save        :: nan_string='NaN'
    else
       select case(local_chars(1:1))
       case('z','Z','h','H')                                     ! assume hexadecimal
-         frmt='(Z'//i2s(len(local_chars))//')'
+         write(frmt,"('(Z',i0,')')")len(local_chars)
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
       case('b','B')                                             ! assume binary (base 2)
-         frmt='(B'//i2s(len(local_chars))//')'
+         write(frmt,"('(B',i0,')')")len(local_chars)
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
       case('o','O')                                             ! assume octal
-         frmt='(O'//i2s(len(local_chars))//')'
+         write(frmt,"('(O',i0,')')")len(local_chars)
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
       case default
@@ -4392,18 +4422,25 @@ character(len=:),allocatable         :: quoted_str
 
 character(len=1),parameter           :: double_quote = '"'
 character(len=20)                    :: local_mode
-!-----------------------------------------------------------------------------------------------------------------------------------
-   local_mode=merge_str(mode,'DOUBLE',present(mode))
+
+   if(present(mode))then
+      local_mode=mode
+   else
+      local_mode='DOUBLE'
+   endif
+
    if(present(clip))then
       clip_local=clip
    else
       clip_local=.false.
    endif
+
    if(clip_local)then
       quoted_str=adjustl(str)
    else
       quoted_str=str
    endif
+
    select case(lower(local_mode))
    case('double')
       quoted_str=double_quote//trim(replace_str(quoted_str,'"','""'))//double_quote
@@ -4413,7 +4450,7 @@ character(len=20)                    :: local_mode
       call journal('sc','*quote* ERROR: unknown quote mode ',local_mode)
       quoted_str=str
    end select
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 end function quote
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
@@ -4561,112 +4598,6 @@ end function unquote
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
-function i2s(ivalue,fmt) result(outstr)
-
-! ident_22="@(#) M_CLI2 i2s(3fp) private function returns string given integer value"
-
-integer,intent(in)           :: ivalue                         ! input value to convert to a string
-character(len=*),intent(in),optional :: fmt
-character(len=:),allocatable :: outstr                         ! output string to generate
-character(len=80)            :: string
-   if(present(fmt))then
-      call value_to_string(ivalue,string,fmt=fmt)
-   else
-      call value_to_string(ivalue,string)
-   endif
-   outstr=trim(string)
-end function i2s
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!    merge_str(3f) - [M_CLI2:LENGTH] pads strings to same length and then
-!!                    calls MERGE(3f)
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!    function merge_str(str1,str2,expr) result(strout)
-!!
-!!     character(len=*),intent(in),optional :: str1
-!!     character(len=*),intent(in),optional :: str2
-!!     logical,intent(in)              :: expr
-!!     character(len=:),allocatable    :: strout
-!!##DESCRIPTION
-!!    merge_str(3f) pads the shorter of str1 and str2 to the longest length
-!!    of str1 and str2 and then calls MERGE(padded_str1,padded_str2,expr).
-!!    It trims trailing spaces off the result and returns the trimmed
-!!    string. This makes it easier to call MERGE(3f) with strings, as
-!!    MERGE(3f) requires the strings to be the same length.
-!!
-!!    NOTE: STR1 and STR2 are always required even though declared optional.
-!!          this is so the call "STR_MERGE(A,B,present(A))" is a valid call.
-!!          The parameters STR1 and STR2 when they are optional parameters
-!!          can be passed to a procedure if the options are optional on the
-!!          called procedure.
-!!
-!!##OPTIONS
-!!    STR1    string to return if the logical expression EXPR is true
-!!    STR2    string to return if the logical expression EXPR is false
-!!    EXPR    logical expression to evaluate to determine whether to return
-!!            STR1 when true, and STR2 when false.
-!!##RESULT
-!!     MERGE_STR  a trimmed string is returned that is otherwise the value
-!!                of STR1 or STR2, depending on the logical expression EXPR.
-!!
-!!##EXAMPLES
-!!
-!! Sample Program:
-!!
-!!     program demo_merge_str
-!!     use M_CLI2, only : merge_str
-!!     implicit none
-!!     character(len=:), allocatable :: answer
-!!        answer=merge_str('first string', 'second string is longer',10 == 10)
-!!        write(*,'("[",a,"]")') answer
-!!        answer=merge_str('first string', 'second string is longer',10 /= 10)
-!!        write(*,'("[",a,"]")') answer
-!!     end program demo_merge_str
-!!
-!!   Expected output
-!!
-!!     [first string]
-!!     [second string is longer]
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-function merge_str(str1,str2,expr) result(strout)
-! for some reason the MERGE(3f) intrinsic requires the strings it compares to be of equal length
-! make an alias for MERGE(3f) that makes the lengths the same before doing the comparison by padding the shorter one with spaces
-
-! ident_23="@(#) M_CLI2 merge_str(3f) pads first and second arguments to MERGE(3f) to same length"
-
-character(len=*),intent(in),optional :: str1
-character(len=*),intent(in),optional :: str2
-character(len=:),allocatable         :: str1_local
-character(len=:),allocatable         :: str2_local
-logical,intent(in)                   :: expr
-character(len=:),allocatable         :: strout
-integer                              :: big
-   if(present(str2))then
-      str2_local=str2
-   else
-      str2_local=''
-   endif
-   if(present(str1))then
-      str1_local=str1
-   else
-      str1_local=''
-   endif
-   big=max( len(str1_local), len(str2_local) )
-   ! note: perhaps it would be better to warn or fail if an optional value that is not present is returned, instead of returning ''
-   strout=trim(merge(lenset(str1_local,big),lenset(str2_local,big),expr))
-end function merge_str
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
 !>
 !!##NAME
 !!
@@ -4743,7 +4674,7 @@ end function merge_str
 !!    Public Domain
 logical function decodebase(string,basein,out_baseten)
 
-! ident_24="@(#) M_CLI2 decodebase(3f) convert whole number string in base [2-36] to base 10 number"
+! ident_22="@(#) M_CLI2 decodebase(3f) convert whole number string in base [2-36] to base 10 number"
 
 character(len=*),intent(in)  :: string
 integer,intent(in)           :: basein
@@ -4816,503 +4747,6 @@ integer           :: ierr
 end function decodebase
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!    lenset(3f) - [M_CLI2:LENGTH] return string trimmed or padded to
-!!                 specified length
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!    function lenset(str,length) result(strout)
-!!
-!!     character(len=*)                     :: str
-!!     character(len=length)                :: strout
-!!     integer,intent(in)                   :: length
-!!##DESCRIPTION
-!!    lenset(3f) truncates a string or pads it with spaces to the specified
-!!    length.
-!!##OPTIONS
-!!    str     input string
-!!    length  output string length
-!!##RESULTS
-!!    strout  output string
-!!##EXAMPLE
-!!
-!! Sample Program:
-!!
-!!     program demo_lenset
-!!      use M_CLI2, only : lenset
-!!      implicit none
-!!      character(len=10)            :: string='abcdefghij'
-!!      character(len=:),allocatable :: answer
-!!         answer=lenset(string,5)
-!!         write(*,'("[",a,"]")') answer
-!!         answer=lenset(string,20)
-!!         write(*,'("[",a,"]")') answer
-!!     end program demo_lenset
-!!
-!!    Expected output:
-!!
-!!     [abcde]
-!!     [abcdefghij          ]
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-function lenset(line,length) result(strout)
-
-! ident_25="@(#) M_CLI2 lenset(3f) return string trimmed or padded to specified length"
-
-character(len=*),intent(in)  ::  line
-integer,intent(in)           ::  length
-character(len=length)        ::  strout
-   strout=line
-end function lenset
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!    value_to_string(3f) - [M_CLI2:NUMERIC] return numeric string from
-!!                          a numeric value
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!    subroutine value_to_string(value,chars[,iilen,ierr,fmt,trimz])
-!!
-!!     character(len=*) :: chars  ! minimum of 23 characters required
-!!     !--------
-!!     ! VALUE may be any <em>one</em> of the following types:
-!!     doubleprecision,intent(in)               :: value
-!!     real,intent(in)                          :: value
-!!     integer,intent(in)                       :: value
-!!     logical,intent(in)                       :: value
-!!     !--------
-!!     character(len=*),intent(out)             :: chars
-!!     integer,intent(out),optional             :: iilen
-!!     integer,optional                         :: ierr
-!!     character(len=*),intent(in),optional     :: fmt
-!!     logical,intent(in)                       :: trimz
-!!
-!!##DESCRIPTION
-!!    value_to_string(3f) returns a numeric representation of a numeric
-!!    value in a string given a numeric value of type REAL, DOUBLEPRECISION,
-!!    INTEGER or LOGICAL. It creates the string using internal writes. It
-!!    then removes trailing zeros from non-zero values, and left-justifies
-!!    the string.
-!!
-!!##OPTIONS
-!!       VALUE   input value to be converted to a string
-!!       FMT     You may specify a specific format that produces a string
-!!               up to the length of CHARS; optional.
-!!       TRIMZ   If a format is supplied the default is not to try to trim
-!!               trailing zeros. Set TRIMZ to .true. to trim zeros from a
-!!               string assumed to represent a simple numeric value.
-!!
-!!##RETURNS
-!!       CHARS   returned string representing input value, must be at least
-!!               23 characters long; or what is required by optional FMT
-!!               if longer.
-!!       IILEN   position of last non-blank character in returned string;
-!!               optional.
-!!       IERR    If not zero, error occurred; optional.
-!!##EXAMPLE
-!!
-!! Sample program:
-!!
-!!      program demo_value_to_string
-!!      use M_CLI2, only: value_to_string
-!!      implicit none
-!!      character(len=80) :: string
-!!      integer           :: iilen
-!!         call value_to_string(3.0/4.0,string,iilen)
-!!         write(*,*) 'The value is [',string(:iilen),']'
-!!
-!!         call value_to_string(3.0/4.0,string,iilen,fmt='')
-!!         write(*,*) 'The value is [',string(:iilen),']'
-!!
-!!         call value_to_string(3.0/4.0,string,iilen,fmt='("THE VALUE IS ",g0)')
-!!         write(*,*) 'The value is [',string(:iilen),']'
-!!
-!!         call value_to_string(1234,string,iilen)
-!!         write(*,*) 'The value is [',string(:iilen),']'
-!!
-!!         call value_to_string(1.0d0/3.0d0,string,iilen)
-!!         write(*,*) 'The value is [',string(:iilen),']'
-!!
-!!      end program demo_value_to_string
-!!
-!!    Expected output
-!!
-!!     The value is [0.75]
-!!     The value is [      0.7500000000]
-!!     The value is [THE VALUE IS .750000000]
-!!     The value is [1234]
-!!     The value is [0.33333333333333331]
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-subroutine value_to_string(gval,chars,length,err,fmt,trimz)
-
-! ident_26="@(#) M_CLI2 value_to_string(3fp) subroutine returns a string from a value"
-
-class(*),intent(in)                      :: gval
-character(len=*),intent(out)             :: chars
-integer,intent(out),optional             :: length
-integer,optional                         :: err
-integer                                  :: err_local
-character(len=*),optional,intent(in)     :: fmt         ! format to write value with
-logical,intent(in),optional              :: trimz
-character(len=:),allocatable             :: fmt_local
-character(len=1024)                      :: msg
-
-!  Notice that the value GVAL can be any of several types ( INTEGER,REAL,DOUBLEPRECISION,LOGICAL)
-
-   if (present(fmt)) then
-      select type(gval)
-      type is (integer)
-         fmt_local='(i0)'
-         if(fmt /= '') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
-      type is (real)
-         fmt_local='(bz,g23.10e3)'
-         fmt_local='(bz,g0.8)'
-         if(fmt /= '') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
-      type is (doubleprecision)
-         fmt_local='(bz,g0)'
-         if(fmt /= '') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
-      type is (logical)
-         fmt_local='(l1)'
-         if(fmt /= '') fmt_local=fmt
-         write(chars,fmt_local,iostat=err_local,iomsg=msg)gval
-      class default
-         call journal('sc','*value_to_string* UNKNOWN TYPE')
-         chars=' '
-      end select
-      if(fmt == '') then
-         chars=adjustl(chars)
-         call trimzeros_(chars)
-      endif
-   else                                                  ! no explicit format option present
-      err_local=-1
-      select type(gval)
-      type is (integer)
-         write(chars,*,iostat=err_local,iomsg=msg)gval
-      type is (real)
-         write(chars,*,iostat=err_local,iomsg=msg)gval
-      type is (doubleprecision)
-         write(chars,*,iostat=err_local,iomsg=msg)gval
-      type is (logical)
-         write(chars,*,iostat=err_local,iomsg=msg)gval
-      class default
-         chars=''
-      end select
-      chars=adjustl(chars)
-      if(index(chars,'.') /= 0) call trimzeros_(chars)
-   endif
-   if(present(trimz))then
-      if(trimz)then
-         chars=adjustl(chars)
-         call trimzeros_(chars)
-      endif
-   endif
-
-   if(present(length)) then
-      length=len_trim(chars)
-   endif
-
-   if(present(err)) then
-      err=err_local
-   elseif(err_local /= 0)then
-      !-! cannot currently do I/O from a function being called from I/O
-      !-!write(ERROR_UNIT,'(a)')'*value_to_string* WARNING:['//trim(msg)//']'
-      chars=chars//' *value_to_string* WARNING:['//trim(msg)//']'
-   endif
-
-end subroutine value_to_string
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!    trimzeros_(3fp) - [M_CLI2:NUMERIC] Delete trailing zeros from numeric
-!!                      `decimal string
-!!    (LICENSE:PD)
-!!##SYNOPSIS
-!!
-!!    subroutine trimzeros_(str)
-!!
-!!     character(len=*)  :: str
-!!##DESCRIPTION
-!!    TRIMZEROS_(3f) deletes trailing zeros from a string representing a
-!!    number. If the resulting string would end in a decimal point, one
-!!    trailing zero is added.
-!!##OPTIONS
-!!    str   input string will be assumed to be a numeric value and have
-!!          trailing zeros removed
-!!##EXAMPLES
-!!
-!! Sample program:
-!!
-!!       program demo_trimzeros_
-!!       use M_CLI2, only : trimzeros_
-!!       character(len=:),allocatable :: string
-!!          write(*,*)trimzeros_('123.450000000000')
-!!          write(*,*)trimzeros_('12345')
-!!          write(*,*)trimzeros_('12345.')
-!!          write(*,*)trimzeros_('12345.00e3')
-!!       end program demo_trimzeros_
-!!
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-subroutine trimzeros_(string)
-
-! ident_27="@(#) M_CLI2 trimzeros_(3fp) Delete trailing zeros from numeric decimal string"
-
-! if zero needs added at end assumes input string has room
-character(len=*)             :: string
-character(len=len(string)+2) :: str
-character(len=len(string))   :: expo         ! the exponent string if present
-integer                      :: ipos         ! where exponent letter appears if present
-integer                      :: i, ii
-   str=string                                ! working copy of string
-   ipos=scan(str,'eEdD')                     ! find end of real number if string uses exponent notation
-   if(ipos>0) then                           ! letter was found
-      expo=str(ipos:)                        ! keep exponent string so it can be added back as a suffix
-      str=str(1:ipos-1)                      ! just the real part, exponent removed will not have trailing zeros removed
-   endif
-   if(index(str,'.') == 0)then               ! if no decimal character in original string add one to end of string
-      ii=len_trim(str)
-      str(ii+1:ii+1)='.'                     ! add decimal to end of string
-   endif
-   do i=len_trim(str),1,-1                   ! scanning from end find a non-zero character
-      select case(str(i:i))
-      case('0')                              ! found a trailing zero so keep trimming
-         cycle
-      case('.')                              ! found a decimal character at end of remaining string
-         if(i <= 1)then
-            str='0'
-         else
-            str=str(1:i-1)
-         endif
-         exit
-      case default
-         str=str(1:i)                        ! found a non-zero character so trim string and exit
-         exit
-      end select
-   end do
-   if(ipos>0)then                            ! if originally had an exponent place it back on
-      string=trim(str)//trim(expo)
-   else
-      string=str
-   endif
-end subroutine trimzeros_
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
-!===================================================================================================================================
-!>
-!!##NAME
-!!    substitute(3f) - [M_CLI2:EDITING] subroutine globally substitutes
-!!                     one substring for another in string
-!!    (LICENSE:PD)
-!!
-!!##SYNOPSIS
-!!
-!!    subroutine substitute(targetline,old,new,ierr,start,end)
-!!
-!!     character(len=*)              :: targetline
-!!     character(len=*),intent(in)   :: old
-!!     character(len=*),intent(in)   :: new
-!!     integer,intent(out),optional  :: ierr
-!!     integer,intent(in),optional   :: start
-!!     integer,intent(in),optional   :: end
-!!##DESCRIPTION
-!!    Globally substitute one substring for another in string.
-!!
-!!##OPTIONS
-!!     TARGETLINE  input line to be changed. Must be long enough to
-!!                 hold altered output.
-!!     OLD         substring to find and replace
-!!     NEW         replacement for OLD substring
-!!     IERR        error code. If IER = -1 bad directive, >= 0 then
-!!                 count of changes made.
-!!     START       sets the left margin to be scanned for OLD in
-!!                 TARGETLINE.
-!!     END         sets the right margin to be scanned for OLD in
-!!                 TARGETLINE.
-!!
-!!##EXAMPLES
-!!
-!! Sample Program:
-!!
-!!     program demo_substitute
-!!     use M_CLI2, only : substitute
-!!     implicit none
-!!     ! must be long enough to hold changed line
-!!     character(len=80) :: targetline
-!!
-!!     targetline='this is the input string'
-!!     write(*,*)'ORIGINAL    : '//trim(targetline)
-!!
-!!     ! changes the input to 'THis is THe input string'
-!!     call substitute(targetline,'th','TH')
-!!     write(*,*)'th => TH    : '//trim(targetline)
-!!
-!!     ! a null old substring means "at beginning of line"
-!!     ! changes the input to 'BEFORE:this is the input string'
-!!     call substitute(targetline,'','BEFORE:')
-!!     write(*,*)'"" => BEFORE: '//trim(targetline)
-!!
-!!     ! a null new string deletes occurrences of the old substring
-!!     ! changes the input to 'ths s the nput strng'
-!!     call substitute(targetline,'i','')
-!!     write(*,*)'i => ""     : '//trim(targetline)
-!!
-!!     end program demo_substitute
-!!
-!!   Expected output
-!!
-!!     ORIGINAL    : this is the input string
-!!     th => TH    : THis is THe input string
-!!     "" => BEFORE: BEFORE:THis is THe input string
-!!     i => ""     : BEFORE:THs s THe nput strng
-!!##AUTHOR
-!!    John S. Urban
-!!##LICENSE
-!!    Public Domain
-subroutine substitute(targetline,old,new,ierr,start,end)
-
-! ident_28="@(#) M_CLI2 substitute(3f) Globally substitute one substring for another in string"
-
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=*)               :: targetline         ! input line to be changed
-character(len=*),intent(in)    :: old                ! old substring to replace
-character(len=*),intent(in)    :: new                ! new substring
-integer,intent(out),optional   :: ierr               ! error code. If ierr = -1 bad directive, >=0 then ierr changes made
-integer,intent(in),optional    :: start              ! start sets the left margin
-integer,intent(in),optional    :: end                ! end sets the right margin
-!-----------------------------------------------------------------------------------------------------------------------------------
-character(len=len(targetline)) :: dum1               ! scratch string buffers
-integer                        :: ml, mr, ier1
-integer                        :: maxlengthout       ! MAXIMUM LENGTH ALLOWED FOR NEW STRING
-integer                        :: original_input_length
-integer                        :: len_old, len_new
-integer                        :: ladd
-integer                        :: ir
-integer                        :: ind
-integer                        :: il
-integer                        :: id
-integer                        :: ic
-integer                        :: iichar
-!-----------------------------------------------------------------------------------------------------------------------------------
-   if (present(start)) then                            ! optional starting column
-      ml=start
-   else
-      ml=1
-   endif
-   if (present(end)) then                              ! optional ending column
-      mr=end
-   else
-      mr=len(targetline)
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   ier1=0                                              ! initialize error flag/change count
-   maxlengthout=len(targetline)                        ! max length of output string
-   original_input_length=len_trim(targetline)          ! get non-blank length of input line
-   dum1(:)=' '                                         ! initialize string to build output in
-   id=mr-ml                                            ! check for window option !-! change to optional parameter(s)
-!-----------------------------------------------------------------------------------------------------------------------------------
-   len_old=len(old)                                    ! length of old substring to be replaced
-   len_new=len(new)                                    ! length of new substring to replace old substring
-   if(id <= 0)then                                     ! no window so change entire input string
-      il=1                                             ! il is left margin of window to change
-      ir=maxlengthout                                  ! ir is right margin of window to change
-      dum1(:)=' '                                      ! begin with a blank line
-   else                                                ! if window is set
-      il=ml                                            ! use left margin
-      ir=min0(mr,maxlengthout)                         ! use right margin or rightmost
-      dum1=targetline(:il-1)                           ! begin with what's below margin
-   endif                                               ! end of window settings
-!-----------------------------------------------------------------------------------------------------------------------------------
-   if(len_old == 0)then                                ! c//new/ means insert new at beginning of line (or left margin)
-      iichar=len_new + original_input_length
-      if(iichar > maxlengthout)then
-         call journal('sc','*substitute* new line will be too long')
-         ier1=-1
-         if (present(ierr))ierr=ier1
-         return
-      endif
-      if(len_new > 0)then
-         dum1(il:)=new(:len_new)//targetline(il:original_input_length)
-      else
-         dum1(il:)=targetline(il:original_input_length)
-      endif
-      targetline(1:maxlengthout)=dum1(:maxlengthout)
-      ier1=1                                           ! made one change. actually, c/// should maybe return 0
-      if(present(ierr))ierr=ier1
-      return
-   endif
-!-----------------------------------------------------------------------------------------------------------------------------------
-   iichar=il                                           ! place to put characters into output string
-   ic=il                                               ! place looking at in input string
-   loop: do
-      ind=index(targetline(ic:),old(:len_old))+ic-1    ! try to find start of old string in remaining part of input in change window
-      if(ind == ic-1.or.ind > ir)then                 ! did not find old string or found old string past edit window
-         exit loop                                     ! no more changes left to make
-      endif
-      ier1=ier1+1                                      ! found an old string to change, so increment count of changes
-      if(ind > ic)then                                ! if found old string past at current position in input string copy unchanged
-         ladd=ind-ic                                   ! find length of character range to copy as-is from input to output
-         if(iichar-1+ladd > maxlengthout)then
-            ier1=-1
-            exit loop
-         endif
-         dum1(iichar:)=targetline(ic:ind-1)
-         iichar=iichar+ladd
-      endif
-      if(iichar-1+len_new > maxlengthout)then
-         ier1=-2
-         exit loop
-      endif
-      if(len_new /= 0)then
-         dum1(iichar:)=new(:len_new)
-         iichar=iichar+len_new
-      endif
-      ic=ind+len_old
-   enddo loop
-!-----------------------------------------------------------------------------------------------------------------------------------
-   select case (ier1)
-   case (:-1)
-      call journal('sc','*substitute* new line will be too long')
-   case (0)                                                ! there were no changes made to the window
-   case default
-      ladd=original_input_length-ic
-      if(iichar+ladd > maxlengthout)then
-         call journal('sc','*substitute* new line will be too long')
-         ier1=-1
-         if(present(ierr))ierr=ier1
-         return
-      endif
-      if(ic < len(targetline))then
-         dum1(iichar:)=targetline(ic:max(ic,original_input_length))
-      endif
-      targetline=dum1(:maxlengthout)
-   end select
-   if(present(ierr))ierr=ier1
-!-----------------------------------------------------------------------------------------------------------------------------------
-end subroutine substitute
-!===================================================================================================================================
-!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
 !===================================================================================================================================
 !>
 !!##NAME
@@ -5437,7 +4871,7 @@ end subroutine substitute
 !!    Public Domain
 subroutine locate_c(list,value,place,ier,errmsg)
 
-! ident_29="@(#) M_CLI2 locate_c(3f) find PLACE in sorted character array LIST where VALUE can be found or should be placed"
+! ident_23="@(#) M_CLI2 locate_c(3f) find PLACE in sorted character array LIST where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place
@@ -5575,7 +5009,7 @@ end subroutine locate_c
 !!    Public Domain
 subroutine remove_c(list,place)
 
-! ident_30="@(#) M_CLI2 remove_c(3fp) remove string from allocatable string array at specified position"
+! ident_24="@(#) M_CLI2 remove_c(3fp) remove string from allocatable string array at specified position"
 
 character(len=:),allocatable :: list(:)
 integer,intent(in)           :: place
@@ -5594,7 +5028,7 @@ integer                      :: ii, end
 end subroutine remove_c
 subroutine remove_l(list,place)
 
-! ident_31="@(#) M_CLI2 remove_l(3fp) remove value from allocatable array at specified position"
+! ident_25="@(#) M_CLI2 remove_l(3fp) remove value from allocatable array at specified position"
 
 logical,allocatable    :: list(:)
 integer,intent(in)     :: place
@@ -5614,7 +5048,7 @@ integer                :: end
 end subroutine remove_l
 subroutine remove_i(list,place)
 
-! ident_32="@(#) M_CLI2 remove_i(3fp) remove value from allocatable array at specified position"
+! ident_26="@(#) M_CLI2 remove_i(3fp) remove value from allocatable array at specified position"
 integer,allocatable    :: list(:)
 integer,intent(in)     :: place
 integer                :: end
@@ -5729,7 +5163,7 @@ end subroutine remove_i
 !!    Public Domain
 subroutine replace_c(list,value,place)
 
-! ident_33="@(#) M_CLI2 replace_c(3fp) replace string in allocatable string array at specified position"
+! ident_27="@(#) M_CLI2 replace_c(3fp) replace string in allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -5756,7 +5190,7 @@ integer                      :: end
 end subroutine replace_c
 subroutine replace_l(list,value,place)
 
-! ident_34="@(#) M_CLI2 replace_l(3fp) place value into allocatable array at specified position"
+! ident_28="@(#) M_CLI2 replace_l(3fp) place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5776,7 +5210,7 @@ integer               :: end
 end subroutine replace_l
 subroutine replace_i(list,value,place)
 
-! ident_35="@(#) M_CLI2 replace_i(3fp) place value into allocatable array at specified position"
+! ident_29="@(#) M_CLI2 replace_i(3fp) place value into allocatable array at specified position"
 
 integer,intent(in)    :: value
 integer,allocatable   :: list(:)
@@ -5883,7 +5317,7 @@ end subroutine replace_i
 !!    Public Domain
 subroutine insert_c(list,value,place)
 
-! ident_36="@(#) M_CLI2 insert_c(3fp) place string into allocatable string array at specified position"
+! ident_30="@(#) M_CLI2 insert_c(3fp) place string into allocatable string array at specified position"
 
 character(len=*),intent(in)  :: value
 character(len=:),allocatable :: list(:)
@@ -5917,7 +5351,7 @@ integer                      :: end
 end subroutine insert_c
 subroutine insert_l(list,value,place)
 
-! ident_37="@(#) M_CLI2 insert_l(3fp) place value into allocatable array at specified position"
+! ident_31="@(#) M_CLI2 insert_l(3fp) place value into allocatable array at specified position"
 
 logical,allocatable   :: list(:)
 logical,intent(in)    :: value
@@ -5942,7 +5376,7 @@ integer               :: end
 end subroutine insert_l
 subroutine insert_i(list,value,place)
 
-! ident_38="@(#) M_CLI2 insert_i(3fp) place value into allocatable array at specified position"
+! ident_32="@(#) M_CLI2 insert_i(3fp) place value into allocatable array at specified position"
 
 integer,allocatable   :: list(:)
 integer,intent(in)    :: value
@@ -5971,7 +5405,7 @@ end subroutine insert_i
 subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,g8, n9,g9, &
                    & na,ga, nb,gb, nc,gc, nd,gd, ne,ge, nf,gf, ng,gg, nh,gh, ni,gi, nj,gj )
 
-! ident_39="@(#) M_CLI2 many_args(3fp) allow for multiple calls to get_args(3f)"
+! ident_33="@(#) M_CLI2 many_args(3fp) allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
 character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
@@ -6162,7 +5596,7 @@ end subroutine mystop
 !===================================================================================================================================
 function atleast(line,length,pattern) result(strout)
 
-! ident_40="@(#) M_strings atleast(3f) return string padded to at least specified length"
+! ident_34="@(#) M_strings atleast(3f) return string padded to at least specified length"
 
 character(len=*),intent(in)                :: line
 integer,intent(in)                         :: length
@@ -6179,7 +5613,7 @@ end function atleast
 !===================================================================================================================================
 subroutine locate_key(value,place)
 
-! ident_41="@(#) M_CLI2 locate_key(3f) find PLACE in sorted character array where VALUE can be found or should be placed"
+! ident_35="@(#) M_CLI2 locate_key(3f) find PLACE in sorted character array where VALUE can be found or should be placed"
 
 character(len=*),intent(in)             :: value
 integer,intent(out)                     :: place

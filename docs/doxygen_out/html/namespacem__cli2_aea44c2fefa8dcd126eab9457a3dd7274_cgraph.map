@@ -1,7 +1,9 @@
 <map id="m_cli2::join_path" name="m_cli2::join_path">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,139,57"/>
-<area shape="rect" id="node2" href="$namespacem__cli2.html#a9ff1d3c4863a0f365fdea81a887ce693" title=" " alt="" coords="189,5,323,32"/>
-<area shape="rect" id="node4" href="$namespacem__cli2.html#a76af7f7c39e6755e024890d85d488704" title=" " alt="" coords="187,56,325,83"/>
-<area shape="rect" id="node3" href="$namespacem__cli2.html#a1a3a7cb7ef271b1cfce52525860ac9d7" title=" " alt="" coords="373,5,499,32"/>
-<area shape="rect" id="node5" href="$namespacem__cli2.html#acec74cd643cd771260c60f18bb696f4b" title=" " alt="" coords="377,56,495,83"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,81,139,108"/>
+<area shape="rect" id="node2" href="$namespacem__cli2.html#a8f65cf1b227d837d89437368c660666f" title=" " alt="" coords="187,56,332,83"/>
+<area shape="rect" id="node6" href="$namespacem__cli2.html#a9ff1d3c4863a0f365fdea81a887ce693" title=" " alt="" coords="192,107,327,133"/>
+<area shape="rect" id="node3" href="$namespacem__cli2.html#a710b26995119aee101959555b1bac8e2" title=" " alt="" coords="380,56,523,83"/>
+<area shape="rect" id="node4" href="$namespacem__cli2.html#acec74cd643cd771260c60f18bb696f4b" title=" " alt="" coords="571,5,689,32"/>
+<area shape="rect" id="node5" href="$namespacem__cli2.html#a752fd074abce57e636e4572b3e55db3a" title=" " alt="" coords="575,56,685,83"/>
+<area shape="rect" id="node7" href="$namespacem__cli2.html#af04b825b9cef513ad6b4c155d06f9fde" title=" " alt="" coords="389,107,514,133"/>
 </map>

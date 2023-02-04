@@ -11,6 +11,9 @@ program demo13
 use M_CLI2,  only : set_args, lget, set_mode
 implicit none
 character(len=*),parameter :: all='(*(g0))'
+
+   print *,'demo13: underdash mode'
+
    call set_mode('underdash')
    call set_args(' --switch_X:X F --switch-Y:Y F ')
    print all,'--switch_X or -X ... ',lget('switch_X')

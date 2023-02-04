@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['i2_136',['I2',['../decodebase_83m__cli2_8man_8txt.html#af8f58c7469f9fb1cf7aa6686531b7b0e',1,'decodebase.3m_cli2.man.txt']]],
-  ['infinite_137',['INFINITE',['../decodebase_83m__cli2_8man_8txt.html#ab44c9310774dd2a6c95f40e09af3e73a',1,'decodebase.3m_cli2.man.txt']]],
-  ['integer_138',['INTEGER',['../get__args_83m__cli2_8man_8txt.html#a1b69ffc1673ecbe36c404fb6c651692b',1,'get_args.3m_cli2.man.txt']]]
+  ['length_300',['length',['../structm__cli2_1_1option.html#ac034140ca495c577b2b45a89c25ed16a',1,'m_cli2::option']]],
+  ['longname_301',['longname',['../structm__cli2_1_1option.html#ad06a078849a4fdfa9bb2cfae876631cd',1,'m_cli2::option']]]
 ];

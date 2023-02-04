@@ -22,59 +22,8 @@ character(len=\+:) function, allocatable \mbox{\hyperlink{interfacem__cli2_1_1st
 \doxysubsubsection{\texorpdfstring{msg\_scalar()}{msg\_scalar()}}
 {\footnotesize\ttfamily character(len=\+:) function, allocatable m\+\_\+cli2\+::str\+::msg\+\_\+scalar (\begin{DoxyParamCaption}\item[{class($\ast$), intent(in), optional}]{generic0,  }\item[{class($\ast$), intent(in), optional}]{generic1,  }\item[{class($\ast$), intent(in), optional}]{generic2,  }\item[{class($\ast$), intent(in), optional}]{generic3,  }\item[{class($\ast$), intent(in), optional}]{generic4,  }\item[{class($\ast$), intent(in), optional}]{generic5,  }\item[{class($\ast$), intent(in), optional}]{generic6,  }\item[{class($\ast$), intent(in), optional}]{generic7,  }\item[{class($\ast$), intent(in), optional}]{generic8,  }\item[{class($\ast$), intent(in), optional}]{generic9,  }\item[{class($\ast$), intent(in), optional}]{generica,  }\item[{class($\ast$), intent(in), optional}]{genericb,  }\item[{class($\ast$), intent(in), optional}]{genericc,  }\item[{class($\ast$), intent(in), optional}]{genericd,  }\item[{class($\ast$), intent(in), optional}]{generice,  }\item[{class($\ast$), intent(in), optional}]{genericf,  }\item[{class($\ast$), intent(in), optional}]{genericg,  }\item[{class($\ast$), intent(in), optional}]{generich,  }\item[{class($\ast$), intent(in), optional}]{generici,  }\item[{class($\ast$), intent(in), optional}]{genericj,  }\item[{character(len=$\ast$), intent(in), optional}]{sep }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
 
-\hypertarget{namespacem__cli2_autotoc_md115}{}\doxysubsubsection{N\+A\+ME}\label{namespacem__cli2_autotoc_md115}
-str(3f) -\/ \mbox{[}M\+\_\+\+C\+L\+I2\mbox{]} converts any standard scalar type to a string (L\+I\+C\+E\+N\+SE\+:PD) \hypertarget{namespacem__cli2_autotoc_md116}{}\doxysubsubsection{S\+Y\+N\+O\+P\+S\+IS}\label{namespacem__cli2_autotoc_md116}
-\begin{DoxyVerb}function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,sep)
 
- class(*),intent(in),optional  :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9
- class(*),intent(in),optional  :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj
- character(len=*),intent(in),optional :: sep
- character,len=(:),allocatable :: str
-\end{DoxyVerb}
-\hypertarget{namespacem__cli2_autotoc_md117}{}\doxysubsubsection{D\+E\+S\+C\+R\+I\+P\+T\+I\+ON}\label{namespacem__cli2_autotoc_md117}
-str(3f) builds a space-\/separated string from up to twenty scalar values.\hypertarget{namespacem__cli2_autotoc_md118}{}\doxysubsubsection{O\+P\+T\+I\+O\+NS}\label{namespacem__cli2_autotoc_md118}
-g\mbox{[}0-\/9a-\/j\mbox{]} optional value to print the value of after the message. May be of type I\+N\+T\+E\+G\+ER, L\+O\+G\+I\+C\+AL, R\+E\+AL, D\+O\+U\+B\+L\+E\+P\+R\+E\+C\+I\+S\+I\+ON, C\+O\+M\+P\+L\+EX, or C\+H\+A\+R\+A\+C\+T\+ER.
-
-Optionally, all the generic values can be single-\/dimensioned arrays. Currently, mixing scalar arguments and array arguments is not supported.
-
-sep separator to place between values. Defaults to a space. \hypertarget{namespacem__cli2_autotoc_md119}{}\doxysubsubsection{R\+E\+T\+U\+R\+NS}\label{namespacem__cli2_autotoc_md119}
-str description to print \hypertarget{namespacem__cli2_autotoc_md120}{}\doxysubsubsection{E\+X\+A\+M\+P\+L\+ES}\label{namespacem__cli2_autotoc_md120}
-Sample program\+: \begin{DoxyVerb}  program demo_msg
-  use M_CLI2, only : str
-  implicit none
-  character(len=:),allocatable :: pr
-  character(len=:),allocatable :: frmt
-  integer                      :: biggest
-
-  pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
-  write(*,'(a)')pr
-  pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
-  write(*,'(a)')pr
-  pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
-  write(*,'(a)')pr
-  pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
-  write(*,'(a)')pr
-
-  ! create a format on the fly
-  biggest=huge(0)
-  frmt=str('(*(i',int(log10(real(biggest))),':,1x))',sep=' ')
-  write(*,*)'format=',frmt
-
-  ! although it will often work, using str(3f) in an I/O statement is not recommended
-  ! because if an error occurs str(3f) will try to write while part of an I/O statement
-  ! which not all compilers can handle and is currently non-standard
-  write(*,*)str('program will now stop')
-
-  end program demo_msg
-\end{DoxyVerb}
-
-
-Output
-
-H\+U\+G\+E(3f) integers 2147483647 and real 3.\+40282347E+38 and double 1.\+7976931348623157E+308 real \+: 3.\+40282347E+38 0.\+00000000 12345.\+6787 1.\+17549435E-\/38 doubleprecision \+: 1.\+7976931348623157E+308 0.\+0000000000000000 12345.\+678900000001 2.\+2250738585072014E-\/308 complex \+: (3.\+40282347E+38,1.\+17549435E-\/38) format=($\ast$(i9\+:,1x)) program will now stop\hypertarget{namespacem__cli2_autotoc_md121}{}\doxysubsubsection{A\+U\+T\+H\+OR}\label{namespacem__cli2_autotoc_md121}
-John S. Urban \hypertarget{namespacem__cli2_autotoc_md122}{}\doxysubsubsection{L\+I\+C\+E\+N\+SE}\label{namespacem__cli2_autotoc_md122}
-Public Domain 
 
 The documentation for this interface was generated from the following file\+:\begin{DoxyCompactItemize}
 \item 
-/home/urbanjs/venus/\+V600/github/\+A\+R\+G\+S/\+M\+\_\+\+C\+L\+I2/src/\mbox{\hyperlink{M__CLI2_8f90}{M\+\_\+\+C\+L\+I2.\+f90}}\end{DoxyCompactItemize}
+/home/urbanjs/venus/\+V600/github/\+A\+R\+G\+S/\+M\+\_\+\+C\+L\+I2/src/\mbox{\hyperlink{xx_8f90}{xx.\+f90}}\end{DoxyCompactItemize}

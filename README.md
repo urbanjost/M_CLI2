@@ -127,7 +127,7 @@ These demo programs provide templates for the most common usage:
 ```bash
      make clean gfortran gfortran_install
 ```
-   and everything needed by gfortran will be placed in lib/gfortran/ that
+   and everything needed by gfortran will be placed in libgfortran/ that
    you may add to an appropriate area, such as $HOME/.local/lib/gfortran/.
 ```bash
      make clean ifort ifort_install # same for ifort

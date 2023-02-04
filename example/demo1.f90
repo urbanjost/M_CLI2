@@ -1,14 +1,16 @@
 program demo1
 !!  @(#) using the convenience functions
-   use M_CLI2, only : set_args, get_args_fixed_size, set_mode
-   use M_CLI2, only : dget,  iget,  lget,  rget,  sget,  cget ! for scalars
-   use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets ! for allocatable arrays
-   implicit none
+use M_CLI2, only : set_args, get_args_fixed_size, set_mode
+use M_CLI2, only : dget,  iget,  lget,  rget,  sget,  cget ! for scalars
+use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets ! for allocatable arrays
+implicit none
 
 !! DECLARE "ARGS"
-   real                           :: x,  y,  z,  point(3)
-   character(len=:), allocatable  :: title, anytitle
-   logical                        :: l,  lupper
+real                           :: x,  y,  z,  point(3)
+character(len=:), allocatable  :: title, anytitle
+logical                        :: l,  lupper
+
+   print *,'demo1: using the convenience functions'
 
    call set_mode('response_file')
 !! SET ALL ARGUMENTS TO DEFAULTS WITH SHORT NAMES FOR LONG NAMES AND THEN ADD COMMAND LINE VALUES

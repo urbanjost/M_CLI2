@@ -319,70 +319,11 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<h2><a class="anchor" id="autotoc_md115"></a>
-NAME</h2>
-<p>str(3f) - [M_CLI2] converts any standard scalar type to a string (LICENSE:PD) </p>
-<h2><a class="anchor" id="autotoc_md116"></a>
-SYNOPSIS</h2>
-<pre class="fragment">function str(g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,ga,gb,gc,gd,ge,gf,gg,gh,gi,gj,sep)
-
- class(*),intent(in),optional  :: g0,g1,g2,g3,g4,g5,g6,g7,g8,g9
- class(*),intent(in),optional  :: ga,gb,gc,gd,ge,gf,gg,gh,gi,gj
- character(len=*),intent(in),optional :: sep
- character,len=(:),allocatable :: str
-</pre><h2><a class="anchor" id="autotoc_md117"></a>
-DESCRIPTION</h2>
-<p>str(3f) builds a space-separated string from up to twenty scalar values.</p>
-<h2><a class="anchor" id="autotoc_md118"></a>
-OPTIONS</h2>
-<p>g[0-9a-j] optional value to print the value of after the message. May be of type INTEGER, LOGICAL, REAL, DOUBLEPRECISION, COMPLEX, or CHARACTER.</p>
-<p>Optionally, all the generic values can be single-dimensioned arrays. Currently, mixing scalar arguments and array arguments is not supported.</p>
-<p>sep separator to place between values. Defaults to a space. </p>
-<h2><a class="anchor" id="autotoc_md119"></a>
-RETURNS</h2>
-<p>str description to print </p>
-<h2><a class="anchor" id="autotoc_md120"></a>
-EXAMPLES</h2>
-<p>Sample program: </p><pre class="fragment">  program demo_msg
-  use M_CLI2, only : str
-  implicit none
-  character(len=:),allocatable :: pr
-  character(len=:),allocatable :: frmt
-  integer                      :: biggest
-
-  pr=str('HUGE(3f) integers',huge(0),'and real',huge(0.0),'and double',huge(0.0d0))
-  write(*,'(a)')pr
-  pr=str('real            :',huge(0.0),0.0,12345.6789,tiny(0.0) )
-  write(*,'(a)')pr
-  pr=str('doubleprecision :',huge(0.0d0),0.0d0,12345.6789d0,tiny(0.0d0) )
-  write(*,'(a)')pr
-  pr=str('complex         :',cmplx(huge(0.0),tiny(0.0)) )
-  write(*,'(a)')pr
-
-  ! create a format on the fly
-  biggest=huge(0)
-  frmt=str('(*(i',int(log10(real(biggest))),':,1x))',sep=' ')
-  write(*,*)'format=',frmt
-
-  ! although it will often work, using str(3f) in an I/O statement is not recommended
-  ! because if an error occurs str(3f) will try to write while part of an I/O statement
-  ! which not all compilers can handle and is currently non-standard
-  write(*,*)str('program will now stop')
-
-  end program demo_msg
-</pre><p>Output</p>
-<p>HUGE(3f) integers 2147483647 and real 3.40282347E+38 and double 1.7976931348623157E+308 real : 3.40282347E+38 0.00000000 12345.6787 1.17549435E-38 doubleprecision : 1.7976931348623157E+308 0.0000000000000000 12345.678900000001 2.2250738585072014E-308 complex : (3.40282347E+38,1.17549435E-38) format=(*(i9:,1x)) program will now stop</p>
-<h2><a class="anchor" id="autotoc_md121"></a>
-AUTHOR</h2>
-<p>John S. Urban </p>
-<h2><a class="anchor" id="autotoc_md122"></a>
-LICENSE</h2>
-<p>Public Domain </p>
 
 </div>
 </div>
 <hr/>The documentation for this interface was generated from the following file:<ul>
-<li>/home/urbanjs/venus/V600/github/ARGS/M_CLI2/src/<a class="el" href="M__CLI2_8f90.html">M_CLI2.f90</a></li>
+<li>/home/urbanjs/venus/V600/github/ARGS/M_CLI2/src/<a class="el" href="xx_8f90.html">xx.f90</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

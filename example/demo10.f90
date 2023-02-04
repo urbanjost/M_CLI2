@@ -13,6 +13,8 @@ character(len=80)  :: title
 logical            :: l, l_
 equivalence(point,p)
 
+   print *,'demo10: full usage and even equivalencing'
+
 !! WHEN DEFINING THE PROTOTYPE
    !  o All parameters must be listed with a default value
    !  o string values  must be double-quoted

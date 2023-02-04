@@ -2,7 +2,9 @@ program demo12
 !!  @(#) using the convenience functions
 use M_CLI2, only : set_args, set_mode, rget
 implicit none
-real  :: x,  y,  z
+real :: x,  y,  z
+
+   print *,'demo12: using the convenience functions'
 
 !! ENABLE USING RESPONSE FILES
    call set_mode('response file')

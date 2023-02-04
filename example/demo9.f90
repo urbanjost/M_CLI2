@@ -10,6 +10,9 @@ program demo9
 use M_CLI2,  only : set_args, sget, rget, lget
 implicit none
 character(len=*),parameter :: all='(*(g0))'
+
+   print *,'demo9: long and short names using --LONGNAME:SHORTNAME'
+
    call set_args('    &
    & --length:l 10    &
    & --height:h 12.45 &

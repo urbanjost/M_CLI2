@@ -15,6 +15,8 @@ character(len=:),allocatable :: string
 character(len=80)            :: readme !(3)
 integer                      :: i
 
+print *,'demo11: examples of validating values with ALL(3f) and ANY(3f)'
+
 ! M_CLI2 does not have validators except for SPECIFIED(3f) and
 ! a check whether the input conforms to the type with get_args(3f)
 ! and the convenience functions like inum(3f). But Fortran already

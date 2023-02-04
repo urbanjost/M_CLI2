@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['advance_127',['advance',['../decodebase_83m__cli2_8man_8txt.html#ae90d0e478d99bbad8c65d70a343bbc97',1,'decodebase.3m_cli2.man.txt']]]
+  ['args_276',['args',['../namespacem__cli2.html#a601970031be3351d1f14ce671934ffe7',1,'m_cli2']]]
 ];
