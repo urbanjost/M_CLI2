@@ -63,22 +63,23 @@ These demo programs provide templates for the most common usage:
 * [demo1](example/demo1.f90)   Using the convenience functions
 * [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
 * [demo3](example/demo3.f90)   Example of **basic** use
-* [demo4](example/demo4.f90)   _COMPLEX_ type values
-* [demo5](example/demo5.f90)   _CHARACTER_ type values
-* [demo6](example/demo6.f90)   How to create a command with subcommands
-* [demo7](example/demo7.f90)   Controlling array delimiter characters
-* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f) for limited cases
-* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME. When all keys have 
-                               a long and short name "strict mode" is invoked where "--" is required
-			       for long names and "-" for short names; and Boolean values may be 
-			       bundled together.
-* [demo10](example/demo10.f90) Full usage and even equivalencing
+* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME. 
+* [demo16](example/demo16.f90) Using unnamed values as numbers
+* [demo17](example/demo17.f90) Using unnamed options as filenames or strings
 
 ## Optional Modes
 * [demo12](example/demo12.f90) Enabling response files
 * [demo13](example/demo13.f90) Equivalencing dash to underscore in keynames
 * [demo14](example/demo14.f90) Case-insensitive long keys
 * [demo15](example/demo15.f90) bundling short Boolean keys using "strict" mode
+
+## Niche examples
+* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f) for limited cases
+* [demo4](example/demo4.f90)   _COMPLEX_ type values
+* [demo7](example/demo7.f90)   Controlling array delimiter characters
+* [demo6](example/demo6.f90)   How to create a command with subcommands
+* [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
+* [demo10](example/demo10.f90) Full usage and even equivalencing
 
 ![gmake](docs/images/gnu.gif)
 ## Download and Build with Make(1)

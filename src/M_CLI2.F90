@@ -1553,7 +1553,7 @@ logical                               :: set_mandatory
    if(G_UNDERDASH)then
       long=replace_str(long,'-','_')
    endif
-   if(G_IGNORECASE.and.len(long) > 1)long=lower(long)
+   if(G_IGNORECASE.and.len_trim(long) > 1)long=lower(long)
    if(present(val))then
       val_local=val
       iilen=len_trim(val_local)
@@ -2253,6 +2253,7 @@ logical                      :: next_mandatory
    lastkeyword=' '
    G_keyword_single_letter=.true.
    i=1
+   current_argument=''
    GET_ARGS: do while (get_next_argument()) ! insert and replace entries
 
       if( current_argument  ==  '-' .and. nomore .eqv. .true. )then   ! sort of
@@ -2302,36 +2303,31 @@ logical                      :: next_mandatory
             call ifnull()
          endif
          call locate_key(current_argument_padded(2:),pointer)
-         if(pointer <= 0)then            ! name not found
-            jj=len(current_argument)
-            if(G_STRICT.and.jj > 2)then  ! in strict mode this might be multiple single-character values
-              do kk=2,jj
-                 letter=current_argument_padded(kk:kk)
-                 call locate_key(letter,pointer)
-                 if(pointer > 0)then
-                    call update(keywords(pointer),'T')
-                 else
-                    call print_dictionary('UNKNOWN COMPOUND SHORT KEYWORD:'//letter//' in '//current_argument)
-                    if(G_QUIET)then
-                       lastkeyword="UNKNOWN"
-                       pointer=0
-                       cycle GET_ARGS
-                    endif
-                    call mystop(2)
-                    return
-                 endif
-                 current_argument='-'//current_argument_padded(jj:jj)
-              enddo
-            else
-               call print_dictionary('UNKNOWN SHORT KEYWORD: '//current_argument)
-               if(G_QUIET)then
-                  lastkeyword="UNKNOWN"
-                  pointer=0
-                  cycle GET_ARGS
+         jj=len(current_argument)
+         if(pointer <= 0.or.G_STRICT)then            ! name not found or in strict mode
+            ! in strict mode this might be multiple single-character values
+            do kk=2,jj
+               letter=current_argument_padded(kk:kk)
+               call locate_key(letter,pointer)
+               if(pointer > 0)then
+                  call update(keywords(pointer),'T')
+               else
+                  call print_dictionary('UNKNOWN SHORT KEYWORD:'//letter) ! //' in '//current_argument)
+                  if(G_QUIET)then
+                     lastkeyword="UNKNOWN"
+                     pointer=0
+                     cycle GET_ARGS
+                  endif
+                  call mystop(2)
+                  return
                endif
-               call mystop(2)
-               return
-            endif
+               current_argument='-'//current_argument_padded(jj:jj)
+            enddo
+            !--------------
+            lastkeyword=""
+            pointer=0
+            cycle GET_ARGS
+            !--------------
          endif
          lastkeyword=trim(current_argument_padded(2:))
          next_mandatory=mandatory(pointer)
@@ -5626,7 +5622,7 @@ character(len=:),allocatable            :: value_local
       value_local=trim(value)
    endif
 
-   if(G_IGNORECASE.and.len(value_local) > 1)value_local=lower(value_local)
+   if(G_IGNORECASE.and.len_trim(value_local) > 1)value_local=lower(value_local)
 
    if(len(value_local) == 1)then
       !x!ii=findloc(shorts,value_local,dim=1)

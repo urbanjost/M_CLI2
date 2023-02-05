@@ -12,6 +12,13 @@ PROGFILES = \
  ../example/demo8.f90 \
  ../example/demo9.f90 \
  ../example/demo10.f90 \
+ ../example/demo12.f90 \
+ ../example/demo13.f90 \
+ ../example/demo14.f90 \
+ ../example/demo15.f90 \
+ ../example/demo16.f90 \
+ ../example/demo17.f90 \
+ ../example/manually_test_bundling.f90 \
 $(NULL)
 TESTFILES = \
  ../test/test_suite_M_CLI2.f90 \
