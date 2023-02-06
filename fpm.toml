@@ -11,7 +11,12 @@ keywords = ["fortran", "parse", "commandline", "arguments"]
 homepage = "https://github.com/urbanjost/M_CLI2.git"
 
 # unit test program
-test = [ { name="runTests", source-dir="test", main="test_suite_M_CLI2.f90" } ]
+test = [ 
+   { name="test_ignorecase", source-dir="test", main="test_ignorecase.f90" },
+   { name="test_lastonly", source-dir="test", main="test_lastonly.f90" },
+   { name="test_strict", source-dir="test", main="test_strict.f90" },
+   { name="runTests", source-dir="test", main="test_suite_M_CLI2.f90" }
+   ]
 
 # demo programs
 executable = [
