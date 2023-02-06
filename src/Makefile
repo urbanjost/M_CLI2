@@ -11,7 +11,7 @@ PROGFILES = \
  ../example/demo7.f90 \
  ../example/demo8.f90 \
  ../example/demo9.f90 \
- ../example/demo10.f90 \
+  \
  ../example/demo12.f90 \
  ../example/demo13.f90 \
  ../example/demo14.f90 \

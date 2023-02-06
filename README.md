@@ -8,26 +8,20 @@
 ## Description
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
-   the program. A call to get_args(3f) or one of its variants is then
-   made for each parameter name to set the variables appropriately in
-   the program.
+   the program. calls are then made for each parameter name to set the
+   variables appropriately in the program.
 
 ## Example Program
 This short program defines a command that can be called like
 
 ```bash
    ./show -x 10 -y -20 -p 10,20,30 --title 'plot of stuff' -L
-   # these parameters are defined automatically 
-   ./show --usage 
-   ./show --help
-   ./show --version
-   # you must supply text for "help" and "version" if desired.
 ```
 ```fortran
    program show
    use M_CLI2, only : set_args, lget, rget, sget, igets
    implicit none
-   real                          :: sum
+   real                          :: x,y,z
    integer,allocatable           :: p(:)
    character(len=:),allocatable  :: title
    logical                       :: l, lbig
@@ -38,23 +32,172 @@ This short program defines a command that can be called like
       !
       ! Get values using convenience functions
       !
-      sum=rget('x') + rget('y') + rget('z')
-      title=sget('title')
+      x=rget('x')
+      y=rget('y')
+      z=rget('z')
       p=igets('p')
+      title=sget('title')
       l=lget('l')
       lbig=lget('L')
       !
       ! All ready to go
       !
-      write(*,*)sum,l,lbig,p,title
+      write(*,*)x,y,z,l,lbig,p,title
    end program show
 ```
 An arbitrary number of strings such as filenames may be passed in on
-the end of commands, you can query whether an option was supplied, and
+the end of commands; you can query whether an option was supplied; and
 get_args(3f)-related routines can be used for refining options such as
-requiring lists of a specified size. Passing in some character arrays
-allows you to automatically have a --help and --version switch as well,
-as explained using the examples below.
+requiring lists of a specified size. 
+
+These parameters are defined automatically 
+```bash
+    --help
+    --usage 
+    --version
+```
+You must supply text for optional "help" and "version". 
+
+![docs](docs/images/docs.gif)
+## Documentation
+
+### man-pages as HTML
+- [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) -- man-pages index of individual procedures
+- [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
+
+![manpages](docs/images/manpages.gif)
+### real man-pages
++ [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
++ [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
+
+### developer documentation  
+- [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
+- [ford(1) output](https://urbanjost.github.io/M_CLI2/fpm-ford/index.html).
+
+### logs
+- [CHANGELOG](docs/CHANGELOG.md)
+- [STATUS](docs/STATUS.md) of most recent CI/CD runs
+
+![gmake](docs/images/gnu.gif)
+## Download and Build with Make(1)
+   Compile the M_CLI2 module and build all the example programs.
+```bash
+   git clone https://github.com/urbanjost/M_CLI2.git
+   cd M_CLI2/src
+   # change Makefile if not using one of the listed compilers
+     
+   # for gfortran
+   make clean
+   make gfortran
+     
+   # for ifort
+   make clean
+   make ifort
+
+   # for nvfortran
+   make clean
+   make nvfortran
+
+   # display other options (test, run, doxygen, ford, ...)
+   make help 
+```
+   To install you then generally copy the *.mod file and *.a file to
+   an appropriate directory.  Unfortunately, the specifics vary but in
+   general if you have a directory $HOME/.local/lib and copy those files
+   there then you can generally enter something like
+```bash
+     gfortran -L$HOME/.local/lib -lM_CLI2  myprogram.f90 -o myprogram
+```
+   There are different methods for adding the directory to your default
+   load path, but frequently you can append the directory you have
+   placed the files in into the colon-separated list of directories
+   in the $LD_LIBRARY_PATH or $LIBRARY_PATH environment variable, and
+   then the -L option will not be required (or it's equivalent in your
+   programming environment).
+```bash
+       export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+```
+   **NOTE**: If you use multiple Fortran compilers you may need to create
+   a different directory for each compiler. I would recommend it, such
+   as $HOME/.local/lib/gfortran/.
+
+### Creating a shared library
+
+   If you desire a shared library as well, for gfortran you may enter
+```bash
+     make clean gfortran gfortran_install
+```
+   and everything needed by gfortran will be placed in libgfortran/ that
+   you may add to an appropriate area, such as $HOME/.local/lib/gfortran/.
+```bash
+     make clean ifort ifort_install # same for ifort
+```
+### Specifics may vary
+
+   NOTE: These instructions are specific to a ULS (Unix-Like System) and 
+   may differ, especially for those wishing to generate shared libraries
+   which varies significantly from compiler to compiler. For some builds
+   it is simpler to make a Makefile for each compiler, which might be
+   required for a more comprehensive build unless you are very familiar
+   with gmake(1).
+
+   If you always use one compiler it is relatively simple, otherwise
+   make sure you know what your system requires and change the Makefile
+   as appropriate.
+
+![parse](docs/images/fpm_logo.gif) 
+## Build with FPM
+   Alternatively, fpm(1) users may download the github repository and build it with
+   fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
+```bash
+        git clone https://github.com/urbanjost/M_CLI2.git
+        cd M_CLI2
+        fpm test   # build and test the module
+	fpm install # install the module (in the default location)
+```
+   or just list it as a dependency in your fpm.toml project file.
+```toml
+        [dependencies]
+        M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
+```
+
+## Supports Meson
+   Alternatively, meson(1) users may download the github repository and build it with
+   meson ( as described at [Meson Build System](https://mesonbuild.com/) )
+```bash
+        git clone https://github.com/urbanjost/M_CLI2.git
+        cd M_CLI2
+        meson setup _build
+        meson test -C _build  # build and test the module
+
+	# install the module (in the <DIR> location)
+	# --destdir is only on newer versions of meson
+        meson install -C _build --destdir <DIR> 
+	# older method if --destdir is not available
+	env DESTDIR=<DIR> meson install -C _build
+```
+   or just list it as a [subproject dependency](https://mesonbuild.com/Subprojects.html) in your meson.build project file.
+```meson
+        M_CLI2_dep = subproject('M_CLI2').get_variable('M_CLI2_dep')
+```
+
+## Functional Specification
+**This is how the interface works --**
+
+* Pass in a string to set_args(3f) that looks almost like the command
+  you would use to execute the program except with all keywords and
+  default values specified.
+
+* you add calls to the get_args(3f) procedure or one of its variants.
+  The alternative convenience procedures (rget(3f),sget(3f),iget(3f)
+  ...) allow you to use a simple function-based interface model. There
+  are special routines for when you want to use fixed length.  CHARACTER
+  variables or fixed-size arrays instead of the allocatable variables
+  best used with get_args(3f)).
+
+  Now when you call the program all the values in the prototype should
+  be updated using values from the command line and queried and ready
+  to use in your program.
 
 ![demos](docs/images/demo.gif)
 ## Demo Programs
@@ -79,119 +222,6 @@ These demo programs provide templates for the most common usage:
 * [demo7](example/demo7.f90)   Controlling array delimiter characters
 * [demo6](example/demo6.f90)   How to create a command with subcommands
 * [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
-* [demo10](example/demo10.f90) Full usage and even equivalencing
-
-![gmake](docs/images/gnu.gif)
-## Download and Build with Make(1)
-   Compile the M_CLI2 module and build all the example programs.
-```bash
-       git clone https://github.com/urbanjost/M_CLI2.git
-       cd M_CLI2/src
-       # change Makefile if not using one of the listed compilers
-     
-       # for gfortran
-       make clean
-       make gfortran
-     
-       # for ifort
-       make clean
-       make ifort
-
-       # for nvfortran
-       make clean
-       make nvfortran
-
-       # display other options (test, run, doxygen, ford, ...)
-       make help 
-```
-   To install you then generally copy the *.mod file and *.a file to
-   an appropriate directory.  Unfortunately, the specifics vary but in
-   general if you have a directory $HOME/.local/lib and copy those files
-   there then you can generally enter something like
-```bash
-     gfortran -L$HOME/.local/lib -lM_CLI2  myprogram.f90 -o myprogram
-```
-   There are different methods for adding the directory to your default
-   load path, but frequently you can append the directory you have
-   placed the files in into the colon-separated list of directories
-   in the $LD_LIBRARY_PATH or $LIBRARY_PATH environment variable, and
-   then the -L option will not be required (or it's equivalent in your
-   programming environment).
-```bash
-       export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
-```
-   **NOTE**: If you use multiple Fortran compilers you may need to create
-   a different directory for each compiler. I would recommend it, such
-   as $HOME/.local/lib/gfortran/.
-
-   If you desire a shared library as well, for gfortran you may enter
-```bash
-     make clean gfortran gfortran_install
-```
-   and everything needed by gfortran will be placed in libgfortran/ that
-   you may add to an appropriate area, such as $HOME/.local/lib/gfortran/.
-```bash
-     make clean ifort ifort_install # same for ifort
-```
-
-   NOTE: These instructions are specific to a ULS (Unix-Like System) and 
-   may differ, especially for those wishing to generate shared libraries
-   which varies significantly from compiler to compiler. For some builds
-   it is simpler to make a Makefile for each compiler, which might be
-   required for a more comprehensive build unless you are very familiar
-   with gmake(1).
-
-   If you always use one compiler it is relatively simple, otherwise
-   make sure you know what your system requires and change the Makefile
-   as appropriate.
-
-![parse](docs/images/fpm_logo.gif) 
-## Supports FPM
-   Alternatively, fpm(1) users may download the github repository and build it with
-   fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
-```bash
-        git clone https://github.com/urbanjost/M_CLI2.git
-        cd M_CLI2
-        fpm test   # build and test the module
-	fpm install # install the module (in the default location)
-```
-   or just list it as a dependency in your fpm.toml project file.
-```toml
-        [dependencies]
-        M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
-```
-
-## Supports Meson
-   Alternatively, meson(1) users may download the github repository and build it with
-   meson ( as described at [Meson Build System](https://mesonbuild.com/) )
-```bash
-        git clone https://github.com/urbanjost/M_CLI2.git
-        cd M_CLI2
-        meson setup _build
-        meson test -C _build  # build and test the module
-        meson install -C _build --destdir <DIR> # install the module (in the <DIR> location)
-```
-   or just list it as a [subproject dependency](https://mesonbuild.com/Subprojects.html) in your meson.build project file.
-```meson
-        M_CLI2_dep = subproject('M_CLI2').get_variable('M_CLI2_dep')
-```
-
-## Functional Specification
-**This is how the interface works --**
-
-* Pass in a string to set_args(3f) that looks almost like the command
-  you would use to execute the program except with all keywords and
-  default values specified.
-
-* you add calls to the get_args(3f) procedure or one of its variants (
-  The alternatives allow you to use a simple function-based interface
-  model. There are special routines for when you want to use fixed length.
-  CHARACTER variables or fixed-size arrays instead of the allocatable
-  variables best used with get_args(3f)).
-
-  Now when you call the program all the values in the prototype should
-  be updated using values from the command line and queried and ready
-  to use in your program.
 
 ## Response files
 [Response files](response.md) are supported as described in the documentation for
@@ -200,41 +230,6 @@ They are a system-independent way to create short abbreviations for long
 complex commands. This option is generally not needed by programs with
 just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.
-
-![docs](docs/images/docs.gif)
-## Documentation
-### man-pages as HTML
-- [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) -- man-pages index of individual procedures
-- [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
-<!--
-   + [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html) --
-     An overview of the M_CLI2 module
-   + [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html) --
-     parses the command line options
-   + [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html) --
-     obtain parameter values for allocatable arrays and scalars.
-     This also documents the functions iget,igets,rget,rgets,sget,sgets,lget,lgets, ... .
-
-     **less frequently used**
-   + [get_args_fixed_length](https://urbanjost.github.io/M_CLI2/get_args_fixed_length.3m_cli2.html) --
-     obtain parameter values for fixed-length character variable
-   + [get_args_fixed_size](https://urbanjost.github.io/M_CLI2/get_args_fixed_size.3m_cli2.html) --
-     obtain parameter values for fixed-size arrays
-   + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
-     query whether an option was used on the commandline
--->
-![manpages](docs/images/manpages.gif)
-### real man-pages
-   + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
-   + [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
-
-### developer documentation  
-- [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
-- [ford(1) output](https://urbanjost.github.io/M_CLI2/fpm-ford/index.html).
-
-### logs
-- [CHANGELOG](docs/CHANGELOG.md)
-- [STATUS](docs/STATUS.md) of most recent CI/CD runs
 
 ## Commit Tests ##
 

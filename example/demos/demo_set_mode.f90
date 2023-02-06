@@ -6,16 +6,16 @@
         ! enable use of response files
         call set_mode('response_file')
         !
-        ! Any dash in a keyname is treated as an underscore
+        ! Any dash in a keyword is treated as an underscore
         call set_mode('underdash')
         !
-        ! The case of long keynames are ignored.
+        ! The case of long keywords are ignored.
         ! Values and short names remain case-sensitive
         call set_mode('ignorecase')
         !
         ! short single-character boolean keys may be bundled
         ! but it is required that a single dash is used for
-        ! short keys and a double dash for long keynames.
+        ! short keys and a double dash for long keywords.
         call set_mode('strict')
         !
         call set_args(' --switch_X:X F --switch-Y:Y F --ox:O F -t F -x F -o F')

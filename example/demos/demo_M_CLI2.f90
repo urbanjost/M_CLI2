@@ -8,19 +8,21 @@
       !
       ! DEFINE ARGS
       real                         :: x, y, z
-      real(kind=dp),allocatable    :: point(:)
       logical                      :: l, lbig
+      character(len=40)            :: label    ! FIXED LENGTH
+      real(kind=dp),allocatable    :: point(:)
       logical,allocatable          :: logicals(:)
       character(len=:),allocatable :: title    ! VARIABLE LENGTH
-      character(len=40)            :: label    ! FIXED LENGTH
       real                         :: p(3)     ! FIXED SIZE
       logical                      :: logi(3)  ! FIXED SIZE
       !
       ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
       !   o set a value for all keywords.
-      !   o double-quote strings
+      !   o double-quote strings, strings must be at least one space
+      !     because adjacent double-quotes designate a double-quote
+      !     in the value.
       !   o set all logical values to F or T.
-      !   o value delimiter is comma, colon, or space
+      !   o value delimiter for lists is a comma, colon, or space
       call set_args('                         &
               & -x 1 -y 2 -z 3                &
               & -p -1 -2 -3                   &
@@ -32,11 +34,10 @@
               ! note space between quotes is required
               & ')
       ! ASSIGN VALUES TO ELEMENTS
-      call get_args('x',x)         ! SCALARS
-      call get_args('y',y)
-      call get_args('z',z)
-      call get_args('l',l)
-      call get_args('L',lbig)
+      ! non-allocatable scalars can be done up to twenty per call
+      call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L',lbig)
+      !
+      ! allocatables should be done one at a time
       call get_args('title',title) ! ALLOCATABLE STRING
       call get_args('point',point) ! ALLOCATABLE ARRAYS
       call get_args('logicals',logicals)

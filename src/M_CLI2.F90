@@ -28,22 +28,23 @@
 !!
 !!    Typically one call to SET_ARGS(3f) is made to define the command
 !!    arguments, set default values and parse the command line. Then a call
-!!    is made to the convenience commands based on GET_ARGS(3f) for each
+!!    is made to the convenience procedures or GET_ARGS(3f) itself for each
 !!    command keyword to obtain the argument values.
 !!
-!!    The documentation for SET_ARGS(3f) and GET_ARGS(3f) provides further
-!!    details.
+!!    The documentation for SET_ARGS(3f), GET_ARGS(3f) and SET_MODE(3f)
+!!    provides further details.
 !!
 !!##EXAMPLE
 !!
 !!
-!! Sample typical minimal usage
+!! Sample minimal usage
 !!
 !!     program minimal
-!!     use M_CLI2,  only : set_args, lget, rget, filenames=>unnamed
+!!     use M_CLI2,  only : set_args, lget, rget, sgets
 !!     implicit none
 !!     real    :: x, y
 !!     integer :: i
+!!     character(len=:),allocatable :: filenames
 !!        call set_args(' -y 0.0 -x 0.0 --debug F')
 !!        x=rget('x')
 !!        y=rget('y')
@@ -54,6 +55,7 @@
 !!        else
 !!           write(*,*)atan2(x=x,y=y)
 !!        endif
+!!        filenames=sgets() ! sget with no name gets "unnamed" values
 !!        if(size(filenames) > 0)then
 !!           write(*,'(g0)')'filenames:'
 !!           write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
@@ -72,19 +74,21 @@
 !!     !
 !!     ! DEFINE ARGS
 !!     real                         :: x, y, z
-!!     real(kind=dp),allocatable    :: point(:)
 !!     logical                      :: l, lbig
+!!     character(len=40)            :: label    ! FIXED LENGTH
+!!     real(kind=dp),allocatable    :: point(:)
 !!     logical,allocatable          :: logicals(:)
 !!     character(len=:),allocatable :: title    ! VARIABLE LENGTH
-!!     character(len=40)            :: label    ! FIXED LENGTH
 !!     real                         :: p(3)     ! FIXED SIZE
 !!     logical                      :: logi(3)  ! FIXED SIZE
 !!     !
 !!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
 !!     !   o set a value for all keywords.
-!!     !   o double-quote strings
+!!     !   o double-quote strings, strings must be at least one space
+!!     !     because adjacent double-quotes designate a double-quote
+!!     !     in the value.
 !!     !   o set all logical values to F or T.
-!!     !   o value delimiter is comma, colon, or space
+!!     !   o value delimiter for lists is a comma, colon, or space
 !!     call set_args('                         &
 !!             & -x 1 -y 2 -z 3                &
 !!             & -p -1 -2 -3                   &
@@ -96,11 +100,10 @@
 !!             ! note space between quotes is required
 !!             & ')
 !!     ! ASSIGN VALUES TO ELEMENTS
-!!     call get_args('x',x)         ! SCALARS
-!!     call get_args('y',y)
-!!     call get_args('z',z)
-!!     call get_args('l',l)
-!!     call get_args('L',lbig)
+!!     ! non-allocatable scalars can be done up to twenty per call
+!!     call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L',lbig)
+!!     !
+!!     ! allocatables should be done one at a time
 !!     call get_args('title',title) ! ALLOCATABLE STRING
 !!     call get_args('point',point) ! ALLOCATABLE ARRAYS
 !!     call get_args('logicals',logicals)
@@ -137,6 +140,17 @@
 !!     John S. Urban, 2019
 !!##LICENSE
 !!     Public Domain
+!!##SEE ALSO
+!!     + get_args(3f)
+!!     + specified(3f)
+!!     + set_mode(3f)
+!!
+!! Note the convenience routines are described under get_args(3f): dget(3f),
+!! iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f), igets(3f),
+!! lgets(3f), rgets(3f), sgets(3f), cgets(3f)
+!!
+!!     + get_subcommand(3f)
+!!     + get_args_fixed_size(3f), get_args_fixed_length(3f)
 !===================================================================================================================================
 module M_CLI2
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT, warn=>OUTPUT_UNIT
@@ -193,8 +207,9 @@ logical,allocatable,save          :: mandatory(:)
 
 logical,save                      :: G_DEBUG=.false.
 logical,save                      :: G_UNDERDASH=.false.
-logical,save                      :: G_IGNORECASE=.false.
+logical,save                      :: G_IGNORECASE=.false.      ! ignore case of long keywords
 logical,save                      :: G_STRICT=.false.          ! strict short and long rules or allow -longname and --shortname
+logical,save                      :: G_APPEND=.true.           ! whether to append or replace when duplicate keywords found
 
 logical,save                      :: G_keyword_single_letter=.true.
 character(len=:),allocatable,save :: G_passed_in
@@ -209,7 +224,6 @@ character(len=:),allocatable,save :: G_PREFIX
 ! try out response files
 ! CLI_RESPONSE_FILE is left public for backward compatibility, but should be set via "set_mode('response_file')
 logical,save,public               :: CLI_RESPONSE_FILE=.false. ! allow @name abbreviations
-logical,save                      :: G_APPEND                  ! whether to append or replace when duplicate keywords found
 logical,save                      :: G_OPTIONS_ONLY            ! process response file only looking for options for get_subcommand()
 logical,save                      :: G_RESPONSE                ! allow @name abbreviations
 character(len=:),allocatable,save :: G_RESPONSE_IGNORED
@@ -444,12 +458,12 @@ end subroutine check_commandline
 !!      character(len=:),intent(out),allocatable,optional :: errmsg
 !!##DESCRIPTION
 !!
-!!     SET_ARGS(3f) requires a unix-like command prototype for defining
-!!     arguments and default command-line options. Argument values are then
-!!     read using GET_ARGS(3f).
+!!    SET_ARGS(3f) requires a unix-like command prototype for defining
+!!    arguments and default command-line options. Argument values are then
+!!    read using GET_ARGS(3f).
 !!
-!!     The --help and --version options require the optional
-!!     help_text and version_text values to be provided.
+!!    The --help and --version options require the optional help_text and
+!!    version_text values to be provided.
 !!
 !!##OPTIONS
 !!
@@ -459,37 +473,32 @@ end subroutine check_commandline
 !!
 !!                 call set_args('-L F --ints 1,2,3 --title "my title" -R 10.3')
 !!
-!!                DEFINITION is pre-defined to act as if started with
-!!                the reserved options '--verbose F --usage F --help
-!!                F --version F'. The --usage option is processed when
-!!                the set_args(3f) routine is called. The same is true
-!!                for --help and --version if the optional help_text
-!!                and version_text options are provided.
+!!                The following options are predefined for all commands:
+!!                '--verbose F --usage F --help F --version F'.
 !!
 !!                see "DEFINING THE PROTOTYPE" in the next section for
 !!                further details.
 !!
-!!    HELP_TEXT   if present, will be displayed if program is called with
+!!    HELP_TEXT   if present, will be displayed when program is called with
 !!                --help switch, and then the program will terminate. If
 !!                not supplied, the command line initialization string
 !!                will be shown when --help is used on the commandline.
 !!
-!!      VERSION_TEXT  if present, will be displayed if program is called with
+!!      VERSION_TEXT  if present, will be displayed when program is called with
 !!                    --version switch, and then the program will terminate.
 !!      IERR          if present a non-zero option is returned when an
-!!                    error occurs instead of program execution being
-!!                    terminated
+!!                    error occurs instead of the program terminating
 !!      ERRMSG        a description of the error if ierr is present
 !!
 !!##DEFINING THE PROTOTYPE
 !!
 !!    o all keywords on the prototype MUST get a value.
 !!
-!!       + logicals must be set to F or T.
+!!       + logicals must be set to an unquoted F.
 !!
-!!       + strings must be delimited with double-quotes and
-!!         must be at least one space. Internal double-quotes
-!!         are represented with two double-quotes.
+!!       + strings must be delimited with double-quotes.
+!!         Since internal double-quotes are represented with two
+!!         double-quotes the string must be at least one space.
 !!
 !!    o numeric keywords are not allowed; but this allows
 !!      negative numbers to be used as values.
@@ -502,27 +511,30 @@ end subroutine check_commandline
 !!    o to define a zero-length allocatable array make the
 !!      value a delimiter (usually a comma).
 !!
-!!    o all unused values go into the character array UNNAMED
-!!
 !!    LONG AND SHORT NAMES
 !!
+!!    Long keywords start with two dashes followed by more than one letter.
+!!    Short keywords are a dash followed by a single letter.
+!!
 !!    o It is recommended long names (--keyword) should be all lowercase
-!!      but are case-sensitive by default, unless set_mode('ignorecase')
+!!      but are case-sensitive by default, unless "set_mode('ignorecase')"
 !!      is in effect.
 !!
 !!    o Long names should always be more than one character.
 !!
 !!    o The recommended way to have short names is to suffix the long
-!!      name with :LETTER in the definition. If this syntax is used
-!!      then logical shorts may be combined on the command line.
+!!      name with :LETTER in the definition.
 !!
-!!      Mapping of short names to long names __not__ using the
-!!      --LONGNAME:SHORTNAME syntax is demonstrated in the manpage
+!!      If this syntax is used then logical shorts may be combined on the
+!!      command line when "set_mode('strict')" is in effect.
+!!
+!!      Mapping of multiple names to the same program value __not__ using
+!!      the --LONGNAME:SHORTNAME syntax is demonstrated in the manpage
 !!      for SPECIFIED(3f).
 !!
 !!    SPECIAL BEHAVIORS
 !!
-!!    o A very special behavior occurs if the keyword name ends in ::.
+!!    o A special behavior occurs if a keyword name ends in ::.
 !!      When the program is called the next parameter is taken as
 !!      a value even if it starts with -. This is not generally
 !!      recommended but is useful in rare cases where non-numeric
@@ -533,42 +545,36 @@ end subroutine check_commandline
 !!      REMAINING and the array ARGS instead of becoming elements in
 !!      the UNNAMED array. This is not needed for normal processing.
 !!
-!!##USAGE
-!!      When invoking the program line note that (subject to change) the
-!!      following variations from other common command-line parsers:
+!!##USAGE NOTES
+!!      When invoking the program line note the (subject to change)
+!!      following restrictions (which often differ between various
+!!      command-line parsers):
 !!
 !!      o values for duplicate keywords are appended together with a space
-!!        separator when a command line is executed.
-!!
-!!      o Although not generally recommended you can equivalence
-!!        keywords (usually for multi-lingual support). Be aware that
-!!        specifying both names of an equivalenced keyword on a command
-!!        line will have undefined results (currently, their ASCII
-!!        alphabetical order will define what the Fortran variable
-!!        values become).
-!!
-!!        The second of the names should only be queried if the
-!!        SPECIFIED(3f) function is .TRUE. for that name.
-!!
-!!        Note that allocatable arrays cannot be EQUIVALENCEd in Fortran.
-!!
-!!      o short Boolean keywords cannot be combined reliably unless
-!!        "set_mode('strict')" is in effect. Short names that require
-!!        a value cannot be bundled together. Non-Boolean key names may
-!!        not be bundled.
+!!        separator when a command line is executed by default.
 !!
 !!      o shuffling is not supported. Values immediately follow their
 !!        keywords.
 !!
+!!      o Only short Boolean keywords can be bundled together.
+!!        If allowing bundling is desired call "set_mode('strict')".
+!!        This will require prefixing long names with "--" and short
+!!        names with "-". Otherwise M_CLI2 relaxes that requirement
+!!        and mostly does not care what prefix is used for a keyword.
+!!        But this would make it unclear what was meant by "-ox" if
+!!        allowed options were "-o F -x F --ox F " for example, so
+!!        "strict" mode is required to remove the ambiguity.
+!!
 !!      o if a parameter value of just "-" is supplied it is
 !!        converted to the string "stdin".
 !!
-!!      o values not matching a keyword go into the character
-!!        array "UNUSED".
+!!      o values not needed for a keyword value go into the character
+!!        array "UNNAMED".
 !!
-!!      o if the keyword "--" is encountered on the command line the
-!!        rest of the command arguments go into the character array
-!!        "UNUSED".
+!!        In addition if the keyword "--" is encountered on the command
+!!        line the rest of the command line goes into the character array
+!!        "UNNAMED".
+!!
 !!##EXAMPLE
 !!
 !!
@@ -597,7 +603,7 @@ end subroutine check_commandline
 !!        & --title "my title" &
 !!        ! string should be a single character at a minimum
 !!        & --label " ", &
-!!        ! set all logical values to F or T.
+!!        ! set all logical values to F
 !!        & -l F -L F &
 !!        ! set allocatable size to zero if you like by using a delimiter
 !!        & --ints , &
@@ -911,7 +917,6 @@ character(len=:),allocatable                      :: debug_mode
 
    G_response=CLI_RESPONSE_FILE
    G_options_only=.false.
-   G_append=.true.
    G_passed_in=''
    G_STOP=0
    G_STOP_MESSAGE=''
@@ -1515,7 +1520,7 @@ character(len=:),allocatable          :: long_short(:)
 integer                               :: isize
 logical                               :: set_mandatory
    set_mandatory=.false.
-   call split(trim(key),long_short,':',nulls='return') ! split long:short keyname or long:short:: or long:: or short::
+   call split(trim(key),long_short,':',nulls='return') ! split long:short keyword or long:short:: or long:: or short::
    ! check for :: on end
    isize=size(long_short)
 
@@ -2304,7 +2309,7 @@ logical                      :: next_mandatory
          endif
          call locate_key(current_argument_padded(2:),pointer)
          jj=len(current_argument)
-         if(pointer <= 0.or.G_STRICT)then            ! name not found or in strict mode
+         if( (pointer <= 0.or.jj.ge.3).and.(G_STRICT) )then  ! name not found
             ! in strict mode this might be multiple single-character values
             do kk=2,jj
                letter=current_argument_padded(kk:kk)
@@ -2581,7 +2586,7 @@ integer          :: i
       if(size(keywords) > 0)then
          write(warn,'(a,1x,a,1x,a,1x,a)')atleast('KEYWORD',max(len(keywords),8)),'SHORT','PRESENT','VALUE'
          write(warn,'(*(a,1x,a5,1x,l1,8x,"[",a,"]",/))') &
-         & (atleast(keywords(i),max(len(keywords),8)),shorts(i),present_in(i),values(i)(:counts(i)),i=1,size(keywords))
+         & (atleast(keywords(i),max(len(keywords),8)),shorts(i),present_in(i),values(i)(:counts(i)),i=size(keywords),1,-1)
       endif
    endif
    if(allocated(unnamed))then
@@ -3274,9 +3279,9 @@ integer                       :: ibug
       d=darray(1)
    else
       ibug=size(darray)
-      call journal('sc','*get_anyarray_d* incorrect number of values for keyword',keyword,'expected one found',ibug)
+      call journal('sc','*get_anyarray_d* incorrect number of values for keyword "',keyword,'" expected one found',ibug)
       call print_dictionary('USAGE:')
-      call mystop(31,'*get_anyarray_d* incorrect number of values for keyword'//keyword//'expected one')
+      call mystop(31,'*get_anyarray_d* incorrect number of values for keyword "'//keyword//'" expected one')
    endif
 end subroutine get_scalar_d
 !===================================================================================================================================
@@ -3358,13 +3363,13 @@ integer                       :: ibug
    call get_anyarray_l(keyword,larray)
    if(.not.allocated(larray) )then
       call journal('sc','*get_scalar_logical* expected one value found not allocated')
-      call mystop(37,'*get_scalar_logical* incorrect number of values for keyword '//keyword)
+      call mystop(37,'*get_scalar_logical* incorrect number of values for keyword "'//keyword//'"')
    elseif(size(larray) == 1)then
       l=larray(1)
    else
       ibug=size(larray)
       call journal('sc','*get_scalar_logical* expected one value found',ibug)
-      call mystop(21,'*get_scalar_logical* incorrect number of values for keyword '//keyword)
+      call mystop(21,'*get_scalar_logical* incorrect number of values for keyword "'//keyword//'"')
    endif
 end subroutine get_scalar_logical
 !===================================================================================================================================
@@ -4808,15 +4813,15 @@ end function decodebase
 !!     ! make sure sorted in descending order
 !!     call sort_shell(arr,order='d')
 !!
-!!     call update(arr,'b')
-!!     call update(arr,'[')
-!!     call update(arr,'c')
-!!     call update(arr,'ZZ')
-!!     call update(arr,'ZZZZ')
-!!     call update(arr,'z')
+!!     call update_dic(arr,'b')
+!!     call update_dic(arr,'[')
+!!     call update_dic(arr,'c')
+!!     call update_dic(arr,'ZZ')
+!!     call update_dic(arr,'ZZZZ')
+!!     call update_dic(arr,'z')
 !!
 !!     contains
-!!     subroutine update(arr,string)
+!!     subroutine update_dic(arr,string)
 !!     character(len=:),intent(in),allocatable :: arr(:)
 !!     character(len=*),intent(in)  :: string
 !!     integer                      :: place, plus, ii, end
@@ -4844,7 +4849,7 @@ end function decodebase
 !!        ! show array
 !!        write(*,'("SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
 !!     endif
-!!     end subroutine update
+!!     end subroutine update_dic
 !!     end program demo_locate
 !!
 !!   Results:
@@ -5111,12 +5116,12 @@ end subroutine remove_i
 !!     character(len=:),allocatable :: values(:)
 !!     integer                      :: i
 !!     integer                      :: place
-!!     call update('b','value of b')
-!!     call update('a','value of a')
-!!     call update('c','value of c')
-!!     call update('c','value of c again')
-!!     call update('d','value of d')
-!!     call update('a','value of a again')
+!!     call update_dic('b','value of b')
+!!     call update_dic('a','value of a')
+!!     call update_dic('c','value of c')
+!!     call update_dic('c','value of c again')
+!!     call update_dic('d','value of d')
+!!     call update_dic('a','value of a again')
 !!     ! show array
 !!     write(*,'(*(a,"==>",a,/))')(trim(keywords(i)),trim(values(i)),i=1,size(keywords))
 !!
@@ -5128,7 +5133,7 @@ end subroutine remove_i
 !!     endif
 !!
 !!     contains
-!!     subroutine update(key,val)
+!!     subroutine update_dic(key,val)
 !!     character(len=*),intent(in)  :: key
 !!     character(len=*),intent(in)  :: val
 !!     integer                      :: place
@@ -5143,8 +5148,8 @@ end subroutine remove_i
 !!        call replace_(values,val,place)
 !!     endif
 !!
-!!     end subroutine update
-!!    end program demo_replace_
+!!     end subroutine update_dic
+!!    end program demo_replace
 !!
 !!   Expected output
 !!
@@ -5269,17 +5274,17 @@ end subroutine replace_i
 !!     ! make sure sorted in descending order
 !!     call sort_shell(arr,order='d')
 !!     ! add or replace values
-!!     call update(arr,'b')
-!!     call update(arr,'[')
-!!     call update(arr,'c')
-!!     call update(arr,'ZZ')
-!!     call update(arr,'ZZZ')
-!!     call update(arr,'ZZZZ')
-!!     call update(arr,'')
-!!     call update(arr,'z')
+!!     call update_dic(arr,'b')
+!!     call update_dic(arr,'[')
+!!     call update_dic(arr,'c')
+!!     call update_dic(arr,'ZZ')
+!!     call update_dic(arr,'ZZZ')
+!!     call update_dic(arr,'ZZZZ')
+!!     call update_dic(arr,'')
+!!     call update_dic(arr,'z')
 !!
 !!     contains
-!!     subroutine update(arr,string)
+!!     subroutine update_dic(arr,string)
 !!     character(len=:),allocatable :: arr(:)
 !!     character(len=*)             :: string
 !!     integer                      :: place, end
@@ -5295,8 +5300,8 @@ end subroutine replace_i
 !!     end=size(arr)
 !!     write(*,'("array is now SIZE=",i0,1x,*(a,","))')end,(trim(arr(i)),i=1,end)
 !!
-!!     end subroutine update
-!!     end program demo_insert_
+!!     end subroutine update_dic
+!!     end program demo_insert
 !!
 !!   Results:
 !!
@@ -5656,12 +5661,24 @@ end subroutine locate_key
 !!
 !!##OPTIONS
 !!    KEY    name of option
+!!
+!!    The following values are allowed:
 !!      o  response_file - enable use of response file
-!!      o  ignorecase - ignore case in long key names
-!!      o  underdash  - treat dash in keyname as an underscore
-!!      o  strict - allow boolean keys to be bundled, but requires
+!!
+!!      o  ignorecase - ignore case in long key names. So the user
+!!         does not have to remember if the option is --IgnoreCase
+!!         or --ignorecase or --ignoreCase
+!!
+!!      o  underdash  - treat dash in keyword as an underscore.
+!!         So the user should not have to remember if the option is
+!!         --ignore_case or --ignore-case.
+!!
+!!      o  strict - allow Boolean keys to be bundled, but requires
 !!         a single dash prefix be used for short key names and
-!!         long names to be prefixed with two dashes.
+!!         long names must be prefixed with two dashes.
+!!
+!!      o  lastonly  - when multiple keywords occur keep the rightmost
+!!         value specified instead of appending the values together.
 !!
 !!    MODE   set to .true. to activate the optional mode.
 !!           Set to .false. to deactivate the mode.
@@ -5679,16 +5696,16 @@ end subroutine locate_key
 !!       ! enable use of response files
 !!       call set_mode('response_file')
 !!       !
-!!       ! Any dash in a keyname is treated as an underscore
+!!       ! Any dash in a keyword is treated as an underscore
 !!       call set_mode('underdash')
 !!       !
-!!       ! The case of long keynames are ignored.
+!!       ! The case of long keywords are ignored.
 !!       ! Values and short names remain case-sensitive
 !!       call set_mode('ignorecase')
 !!       !
 !!       ! short single-character boolean keys may be bundled
 !!       ! but it is required that a single dash is used for
-!!       ! short keys and a double dash for long keynames.
+!!       ! short keys and a double dash for long keywords.
 !!       call set_mode('strict')
 !!       !
 !!       call set_args(' --switch_X:X F --switch-Y:Y F --ox:O F -t F -x F -o F')
@@ -5710,20 +5727,26 @@ elemental impure subroutine set_mode(key,mode)
 character(len=*),intent(in) :: key
 logical,intent(in),optional :: mode
 logical :: local_mode
+
    if(present(mode))then
       local_mode=mode
    else
       local_mode=.true.
    endif
+
    select case(lower(key))
    case('response_file','response file'); CLI_RESPONSE_FILE=local_mode
    case('debug');                         G_DEBUG=local_mode
    case('ignorecase');                    G_IGNORECASE=local_mode
    case('underdash');                     G_UNDERDASH=local_mode
    case('strict');                        G_STRICT=local_mode
+   case('lastonly');                      G_APPEND=.not.local_mode
    case default
       call journal('sc','set_mode* unknown key name ',key)
    end select
+
+   if(G_DEBUG)write(*,gen)'<DEBUG>EXPAND_RESPONSE:END'
+
 end subroutine set_mode
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!

@@ -21,7 +21,7 @@
          & --title "my title" &
          ! string should be a single character at a minimum
          & --label " ", &
-         ! set all logical values to F or T.
+         ! set all logical values to F
          & -l F -L F &
          ! set allocatable size to zero if you like by using a delimiter
          & --ints , &
