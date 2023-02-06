@@ -48,15 +48,15 @@ This short program defines a command that can be called like
 An arbitrary number of strings such as filenames may be passed in on
 the end of commands; you can query whether an option was supplied; and
 get_args(3f)-related routines can be used for refining options such as
-requiring lists of a specified size. 
+requiring lists of a specified size.
 
-These parameters are defined automatically 
+These parameters are defined automatically
 ```bash
     --help
-    --usage 
+    --usage
     --version
 ```
-You must supply text for optional "help" and "version". 
+You must supply text for the optional "--help" and "--version" keywords.
 
 ![docs](docs/images/docs.gif)
 ## Documentation
@@ -70,7 +70,7 @@ You must supply text for optional "help" and "version".
 + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
 + [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
 
-### developer documentation  
+### developer documentation
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
 - [ford(1) output](https://urbanjost.github.io/M_CLI2/fpm-ford/index.html).
 
@@ -85,11 +85,11 @@ You must supply text for optional "help" and "version".
    git clone https://github.com/urbanjost/M_CLI2.git
    cd M_CLI2/src
    # change Makefile if not using one of the listed compilers
-     
+
    # for gfortran
    make clean
    make gfortran
-     
+
    # for ifort
    make clean
    make ifort
@@ -99,7 +99,7 @@ You must supply text for optional "help" and "version".
    make nvfortran
 
    # display other options (test, run, doxygen, ford, ...)
-   make help 
+   make help
 ```
    To install you then generally copy the *.mod file and *.a file to
    an appropriate directory.  Unfortunately, the specifics vary but in
@@ -132,20 +132,21 @@ You must supply text for optional "help" and "version".
 ```bash
      make clean ifort ifort_install # same for ifort
 ```
+   does the same for the ifort compiler and places the output in libifort/.
 ### Specifics may vary
 
-   NOTE: These instructions are specific to a ULS (Unix-Like System) and 
-   may differ, especially for those wishing to generate shared libraries
-   which varies significantly from compiler to compiler. For some builds
-   it is simpler to make a Makefile for each compiler, which might be
-   required for a more comprehensive build unless you are very familiar
-   with gmake(1).
+   NOTE: The build instructions above are specific to a ULS (Unix-Like
+   System) and may differ, especially for those wishing to generate shared
+   libraries (which varies significantly depending on the programming
+   environment). For some builds it is simpler to make a Makefile for
+   each compiler, which might be required for a more comprehensive build
+   unless you are very familiar with gmake(1).
 
    If you always use one compiler it is relatively simple, otherwise
    make sure you know what your system requires and change the Makefile
    as appropriate.
 
-![parse](docs/images/fpm_logo.gif) 
+![parse](docs/images/fpm_logo.gif)
 ## Build with FPM
    Alternatively, fpm(1) users may download the github repository and build it with
    fpm ( as described at [Fortran Package Manager](https://github.com/fortran-lang/fpm) )
@@ -153,7 +154,7 @@ You must supply text for optional "help" and "version".
         git clone https://github.com/urbanjost/M_CLI2.git
         cd M_CLI2
         fpm test   # build and test the module
-	fpm install # install the module (in the default location)
+        fpm install # install the module (in the default location)
 ```
    or just list it as a dependency in your fpm.toml project file.
 ```toml
@@ -170,11 +171,11 @@ You must supply text for optional "help" and "version".
         meson setup _build
         meson test -C _build  # build and test the module
 
-	# install the module (in the <DIR> location)
-	# --destdir is only on newer versions of meson
-        meson install -C _build --destdir <DIR> 
-	# older method if --destdir is not available
-	env DESTDIR=<DIR> meson install -C _build
+        # install the module (in the <DIR> location)
+        # --destdir is only on newer versions of meson
+        meson install -C _build --destdir <DIR>
+        # older method if --destdir is not available
+        env DESTDIR=<DIR> meson install -C _build
 ```
    or just list it as a [subproject dependency](https://mesonbuild.com/Subprojects.html) in your meson.build project file.
 ```meson
@@ -206,7 +207,7 @@ These demo programs provide templates for the most common usage:
 * [demo1](example/demo1.f90)   Using the convenience functions
 * [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
 * [demo3](example/demo3.f90)   Example of **basic** use
-* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME. 
+* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME.
 * [demo16](example/demo16.f90) Using unnamed values as numbers
 * [demo17](example/demo17.f90) Using unnamed options as filenames or strings
 
@@ -241,7 +242,7 @@ commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
 commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
  + GNU Fortran (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0
  + ifort (IFORT) 2021.3.0 20210609
- + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem 
+ + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem
 ---
 <!--
 Last updated:   Wed Sep 29 17:34:52 2021 -0400

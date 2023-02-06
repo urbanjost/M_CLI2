@@ -55,6 +55,12 @@ ifort_install: COMPILER=ifort
 ifort: all
 	@echo built with $(F90)
 
+ifx: F90=ifx
+ifx: FCFLAGS := -warn all -traceback -fpic
+ifx: COMPILER=ifx
+ifx: all
+	@echo built with $(F90)
+
 nagfor: F90=nagfor
 nagfor: FCFLAGS := -C all
 nagfor_install: COMPILER=nagfor
@@ -71,7 +77,7 @@ $(TPROG): $(LIBRARY)
 	-$(F90) $(LDFLAGS) $@.f90 -L. -l$(LIB) -o $@ 
 $(LIBRARY): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^
-gfortran_install ifort_install: $(OBJS)
+gfortran_install ifort_install ifx_install: $(OBJS)
 	# very Linux/Unix/BSD/.. specific and just for $(COMPILER)
 	mkdir -p lib$(COMPILER)/
 	# static library and modules
@@ -81,12 +87,14 @@ gfortran_install ifort_install: $(OBJS)
 	#
 	[ "$(COMPILER)" = 'gfortran' ] && $(COMPILER) -shared -Wl,-soname,lib$(LIB).so.1 -o lib$(COMPILER)/lib$(LIB).so.1 $(OBJS)|| echo G
 	[ "$(COMPILER)" = 'ifort' ]    && $(COMPILER) -shared                            -o lib$(COMPILER)/lib$(LIB).so.1 $(OBJS)|| echo I
+	[ "$(COMPILER)" = 'ifx' ]    && $(COMPILER) -shared                            -o lib$(COMPILER)/lib$(LIB).so.1 $(OBJS)|| echo I
 
 	cd lib$(COMPILER) && ln -sf lib$(LIB).so.1 lib$(LIB).so 
 	@echo example static build
 
 	[ "$(COMPILER)" = 'gfortran' ] && $(COMPILER) -static sample/hello.f90 -Llib$(COMPILER) -lM_CLI2 -o hello_static || echo G
 	[ "$(COMPILER)" = 'ifort' ]    && $(COMPILER) -static sample/hello.f90 -Llib$(COMPILER) -lM_CLI2 -o hello_static || echo I
+	[ "$(COMPILER)" = 'ifx' ]    && $(COMPILER) -static sample/hello.f90 -Llib$(COMPILER) -lM_CLI2 -o hello_static || echo I
 
 	./hello_static
 
@@ -104,29 +112,32 @@ gfortran_install ifort_install: $(OBJS)
 	$(F90) $(FCFLAGS) -c $<
 .PHONY: help
 help:
-	: ###############################################################################
-	: # make COMPILER [OPTION]  -- build M_CLI2 module. Default is gfortran         #
-	: # COMPILER may be gfortran | nvfortran | ifort | nagfor                       #
-	: # OPTIONS:                                                                    #
-	: # run               -- run manpage demo programs                              #
-	: # test              -- run test programs                                      #
-	: # gfortran_install  -- place static and shared library in ./libgfortran       #
-	: # ifort_install     -- place static and shared library in ./libifort          #
-	: ###############################################################################
-	: # man                     -- show all manpages as text                        #
-	: # ship                    -- rebuild archive files of manpages                #
-	: # clean                   -- clean directory of built files                   #
-	: # help                    -- display this text                                #
-	: # doxygen                 -- run doxygen(1) if you have it                    #
-	: # ford                    -- run ford(1) if you have it                       #
-	: ###############################################################################
-	: # Examples (do a "make clean" if change compilers):                           #
-	: # make gfortran                                                               #
-	: # make clean                                                                  #
-	: # make ifort run                                                              #
-	: # make clean gfortran gfortran_install # create libgfortran/                  #
-	: # make clean ifort ifort_install # create libifort/                           #
-	: ###############################################################################
+	: ##############################################################################
+	: # make COMPILER [OPTION]  -- build M_CLI2 module. Default is gfortran        #
+	: # COMPILER may be gfortran | nvfortran | ifort |ifx | nagfor                 #
+	: # OPTIONS:                                                                   #
+	: # run               -- run manpage demo programs                             #
+	: # test              -- run test programs                                     #
+	: # gfortran_install  -- place static and shared library in ./libgfortran      #
+	: # ifort_install     -- place static and shared library in ./libifort         #
+	: # ifx_install       -- place static and shared library in ./libifx           #
+	: ##############################################################################
+	: # man               -- show all manpages as text if infrastructure present   #
+	: # ship              -- rebuild archive files of manpages                     #
+	: # clean             -- clean directory of built files                        #
+	: # help              -- display this text                                     #
+	: # doxygen           -- run doxygen(1) if you have it                         #
+	: # ford              -- run ford(1) if you have it                            #
+	: ##############################################################################
+	: # Examples (do a "make clean" if change compilers):                          #
+	: #    make clean    # make sure previous artifacts are removed                #
+	: #    make gfortran # build using gfortran(1) compiler                        #
+	: #    make clean    # make sure previous artifacts are removed                #
+	: #    make ifx run  # build using ifx(1) compiler                             #
+	: # clean up and make shared libraries and install them in local subdirectories#
+	: #    make clean gfortran gfortran_install # create libgfortran/              #
+	: #    make clean ifx ifx_install # create libifx/                             #
+	: ##############################################################################
 
 .PHONY: clean
 clean:
@@ -168,4 +179,3 @@ ship:
 	   zip -r ../../docs/manpages.zip *gz;\
 	   tar cvfz ../../docs/manpages.tgz *gz;\
 	   gunzip *.3m_cli2.gz
-
