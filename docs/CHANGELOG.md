@@ -7,6 +7,12 @@ new features, changes, and relevant notifications.
 ---
 **2023-02-01**  ZUO Zhihua <https://github.com/zoziha>
 ### :green_circle: ADD:
+   + add SET_MODE(3f) and the initial modes to ignore keyword case, allow
+     bundling of short Boolean keywords when strict mode is activated,
+     and treat dash and underscore as equivalent characters in keywords
+---
+**2023-02-01**  ZUO Zhihua <https://github.com/zoziha>
+### :green_circle: ADD:
    + add-meson-support
 <!-- zuo.zhihua@qq.com -->
 ---
