@@ -22,6 +22,9 @@ PROGFILES = \
 $(NULL)
 TESTFILES = \
  ../test/test_suite_M_CLI2.f90 \
+ ../test/test_ignorecase.f90 \
+ ../test/test_lastonly.f90 \
+ ../test/test_strict.f90 \
 $(NULL)
 TPROG = ${TESTFILES:.f90=}
 PROG = ${PROGFILES:.f90=}
