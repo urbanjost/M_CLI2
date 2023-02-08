@@ -1,7 +1,5 @@
 # M_CLI2.f90 and associated files
-<!--
-![parse](docs/images/parse.png)
--->
+![M_CLI2](docs/images/M_CLI2.gif)
 ## Name
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
 
