@@ -158,18 +158,12 @@
 !===================================================================================================================================
 module M_CLI2
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT, warn=>OUTPUT_UNIT
-
-! copied to M_CLI2 for a stand-alone version
-!use M_strings,   only : upper, lower, quote, replace_str=>replace, unquote, split, string_to_value, atleast
-!use M_list,      only : insert, locate, remove, replace
-!use M_args,      only : longest_command_argument
-!use M_journal,   only : journal
-
 implicit none
+private
+
 integer,parameter,private :: dp=kind(0.0d0)
 integer,parameter,private :: sp=kind(0.0)
-private
-!===================================================================================================================================
+
 character(len=*),parameter          :: gen='(*(g0))'
 character(len=:),allocatable,public :: unnamed(:)
 character(len=:),allocatable,public :: args(:)
@@ -186,13 +180,6 @@ public                              :: print_dictionary
 public                              :: dget, iget, lget, rget, sget, cget
 public                              :: dgets, igets, lgets, rgets, sgets, cgets
 
-private :: check_commandline
-private :: wipe_dictionary
-private :: prototype_to_dictionary
-private :: update
-private :: prototype_and_cmd_args_to_nlist
-private :: get
-
 type option
    character(:),allocatable :: shortname
    character(:),allocatable :: longname
@@ -201,7 +188,7 @@ type option
    logical                  :: present_in
    logical                  :: mandatory
 end type option
-!===================================================================================================================================
+
 character(len=:),allocatable,save :: keywords(:)
 character(len=:),allocatable,save :: shorts(:)
 character(len=:),allocatable,save :: values(:)
@@ -225,15 +212,14 @@ character(len=:),allocatable,save :: G_STOP_MESSAGE
 integer,save                      :: G_STOP
 logical,save                      :: G_QUIET
 character(len=:),allocatable,save :: G_PREFIX
-!----------------------------------------------
+
 ! try out response files
 ! CLI_RESPONSE_FILE is left public for backward compatibility, but should be set via "set_mode('response_file')
 logical,save,public               :: CLI_RESPONSE_FILE=.false. ! allow @name abbreviations
 logical,save                      :: G_OPTIONS_ONLY            ! process response file only looking for options for get_subcommand()
 logical,save                      :: G_RESPONSE                ! allow @name abbreviations
 character(len=:),allocatable,save :: G_RESPONSE_IGNORED
-!----------------------------------------------
-!===================================================================================================================================
+
 ! return allocatable arrays
 interface  get_args;  module  procedure  get_anyarray_d;  end interface  ! any size array
 interface  get_args;  module  procedure  get_anyarray_i;  end interface  ! any size array
@@ -249,9 +235,10 @@ interface  get_args;  module  procedure  get_scalar_real;            end interfa
 interface  get_args;  module  procedure  get_scalar_complex;         end interface
 interface  get_args;  module  procedure  get_scalar_logical;         end interface
 interface  get_args;  module  procedure  get_scalar_anylength_c;     end interface  ! any length
+
 ! multiple scalars
 interface  get_args;  module  procedure  many_args;               end  interface
-!==================================================================================================================================
+
 ! return non-allocatable arrays
 ! said in conflict with get_args_*. Using class to get around that.
 ! that did not work either. Adding size parameter as optional parameter works; but using a different name
@@ -264,31 +251,21 @@ interface  get_args_fixed_size;  module procedure get_fixedarray_class;         
 
 interface   get_args_fixed_length;  module  procedure  get_args_fixed_length_a_array; end interface  ! fixed length any size array
 interface   get_args_fixed_length;  module  procedure  get_args_fixed_length_scalar_c;  end interface       ! fixed length
-!===================================================================================================================================
-!intrinsic findloc
-!===================================================================================================================================
-
-private locate_       ! [M_CLI2] find PLACE in sorted character array where value can be found or should be placed
-   private locate_c
-private insert_       ! [M_CLI2] insert entry into a sorted allocatable array at specified position
-   private insert_c
-   private insert_i
-   private insert_l
-private replace_      ! [M_CLI2] replace entry by index from a sorted allocatable array if it is present
-   private replace_c
-   private replace_i
-   private replace_l
-private remove_       ! [M_CLI2] delete entry by index from a sorted allocatable array if it is present
-   private remove_c
-   private remove_i
-   private remove_l
 
 ! Generic subroutine inserts element into allocatable array at specified position
+
+! find PLACE in sorted character array where value can be found or should be placed
 interface  locate_;  module procedure locate_c                            ; end interface
+
+! insert entry into a sorted allocatable array at specified position
 interface  insert_;  module procedure insert_c,      insert_i,  insert_l  ; end interface
+
+! replace entry by index from a sorted allocatable array if it is present
 interface  replace_; module procedure replace_c,     replace_i, replace_l ; end interface
+
+! delete entry by index from a sorted allocatable array if it is present
 interface  remove_;  module procedure remove_c,      remove_i,  remove_l  ; end interface
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 ! convenience functions
 interface cgets;module procedure cgs, cg;end interface
 interface dgets;module procedure dgs, dg;end interface
@@ -296,7 +273,7 @@ interface igets;module procedure igs, ig;end interface
 interface lgets;module procedure lgs, lg;end interface
 interface rgets;module procedure rgs, rg;end interface
 interface sgets;module procedure sgs, sg;end interface
-!-----------------------------------------------------------------------------------------------------------------------------------
+
 contains
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -375,7 +352,6 @@ integer                              :: istart
 integer                              :: iback
    if(get('usage') == 'T')then
       call print_dictionary('USAGE:')
-      !x!call default_help()
       call mystop(32)
       return
    endif
@@ -3895,7 +3871,7 @@ integer                       :: imax                   ! length of longest toke
       endif
    enddo
 !-----------------------------------------------------------------------------------------------------------------------------------
-   end subroutine split
+end subroutine split
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
