@@ -10,38 +10,50 @@
    variables appropriately in the program.
 
 ## Example Program
-This short program defines a command that can be called like
+This short program defines a command that can be called using
+conventional Unix-style synax for short and long parameters:
 
 ```bash
-   ./show -x 10 -y -20 -p 10,20,30 --title 'plot of stuff' -L
+   ./show -x 10 -y -20 -p 10,20,30 --title "plot of stuff" -L
+   ./show -lL
+   ./show  --title="my new title" 
+   ./show  -T "my new title" 
 ```
 ```fortran
    program show
-   use M_CLI2, only : set_args, lget, rget, sget, igets
+   use M_CLI2, only : set_args, get_args, sget, igets, set_mode
    implicit none
    real                          :: x,y,z
+   logical                       :: l, lbig
    integer,allocatable           :: p(:)
    character(len=:),allocatable  :: title
-   logical                       :: l, lbig
+   namelist /args/x,y,z,l,lbig,p,title ! just for printing
+      call set_mode('strict')
       !
       ! Define command and default values and parse supplied command line options
+      call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title:T "my title" -l F -L F')
       !
-      call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title "my title" -l F -L F')
+      ! Get scalar non-allocatable values
+      call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+      ! use convenience functions for allocatable arrays and strings
+      title=sget('title') ! string
+      p=igets('p') ! integer array
       !
-      ! Get values using convenience functions
-      !
-      x=rget('x')
-      y=rget('y')
-      z=rget('z')
-      p=igets('p')
-      title=sget('title')
-      l=lget('l')
-      lbig=lget('L')
-      !
-      ! All ready to go
-      !
-      write(*,*)x,y,z,l,lbig,p,title
+      ! All ready to go, print it as a namelist so everything is labeled
+      write(*,args)
    end program show
+```
+running with no options shows the defaults
+```text
+&ARGS
+ X=  1.00000000    ,
+ Y=  2.00000000    ,
+ Z=  3.50000000    ,
+ L=F,
+ LBIG=F,
+ P=11         ,-22        ,33         ,
+ TITLE="my title",
+ /
 ```
 An arbitrary number of strings such as filenames may be passed in on
 the end of commands; you can query whether an option was supplied; and
@@ -54,7 +66,8 @@ These parameters are defined automatically
     --usage
     --version
 ```
-You must supply text for the optional "--help" and "--version" keywords.
+You must supply text for the optional "--help" and "--version" keywords, as
+described under SET_ARGS(3f).
 
 ![docs](docs/images/docs.gif)
 ## Documentation
@@ -237,10 +250,14 @@ commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
  + ifort (IFORT) 19.1.3.304 20200925
  + nvfortran 20.7-0 LLVM 64-bit target on x86-64 Linux
 
+
 commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
  + GNU Fortran (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0
  + ifort (IFORT) 2021.3.0 20210609
  + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem
+
+commit `` was tested on 2023-02-10 with
+ + ifort (IFORT) 2021.8.0 20221119
 ---
 <!--
 Last updated:   Wed Sep 29 17:34:52 2021 -0400

@@ -78,6 +78,7 @@ parsing using a prototype command
 Available procedures and variables:
 <P>
 <PRE>
+     ! basic procedures
      use M_CLI2, only : set_args, get_args, specified, set_mode
      ! convenience functions
      use M_CLI2, only : dget, iget, lget, rget, sget, cget
@@ -86,6 +87,8 @@ Available procedures and variables:
      use M_CLI2, only : unnamed, remaining, args
      ! working with non-allocatable strings and arrays
      use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
+     ! special function for creating subcommands
+     use M_CLI2, only : get_subcommand(3f)
 <P>
 </PRE>
 </BLOCKQUOTE>
@@ -95,18 +98,15 @@ Available procedures and variables:
 
 </A>
 <BLOCKQUOTE>
-Define command for command line parsing and read values from
-command line into an internal table.
-<P>
-The input syntax is very like entering a standard Unix command line.
+The M_CLI2 module cracks a Unix-style command line.
 <P>
 Typically one call to SET_ARGS(3f) is made to define the command
 arguments, set default values and parse the command line. Then a call
-is made to the convenience procedures or GET_ARGS(3f) itself for each
+is made to the convenience procedures or GET_ARGS(3f) proper for each
 command keyword to obtain the argument values.
 <P>
-The documentation for SET_ARGS(3f), GET_ARGS(3f) and SET_MODE(3f)
-provides further details.
+Detailed descriptions of each procedure and example programs are
+included.
 </BLOCKQUOTE>
 <A name=3>
 
@@ -115,7 +115,16 @@ provides further details.
 </A>
 <BLOCKQUOTE>
 <P>
-Sample minimal usage
+Sample minimal program which may be called in various ways:
+<P>
+<PRE>
+    mimimal -x 100.3 -y 3.0e4
+    mimimal --xvalue=300 --debug
+    mimimal --yvalue 400
+    mimimal -x 10 file1 file2 file3
+<P>
+</PRE>
+Program example:
 <P>
 <PRE>
     program minimal
@@ -124,9 +133,11 @@ Sample minimal usage
     real    :: x, y
     integer :: i
     character(len=:),allocatable :: filenames
-       call set_args(&#146; -y 0.0 -x 0.0 --debug F&#146;)
-       x=rget(&#146;x&#146;)
-       y=rget(&#146;y&#146;)
+       ! define and crack command line
+       call set_args(&#146; --yvalue:y 0.0 --xvalue:x 0.0 --debug F&#146;)
+       ! get values
+       x=rget(&#146;xvalue&#146;)
+       y=rget(&#146;yvalue&#146;)
        if(lget(&#146;debug&#146;))then
           write(*,*)&#146;X=&#146;,x
           write(*,*)&#146;Y=&#146;,y
@@ -140,6 +151,7 @@ Sample minimal usage
           write(*,&#146;(i6.6,3a)&#146;)(i,&#146;[&#146;,filenames(i),&#146;]&#146;,i=1,size(filenames))
        endif
     end program minimal
+<P>
 <P>
 </PRE>
 Sample program using get_args() and variants
@@ -168,8 +180,9 @@ Sample program using get_args() and variants
     !   o double-quote strings, strings must be at least one space
     !     because adjacent double-quotes designate a double-quote
     !     in the value.
-    !   o set all logical values to F or T.
-    !   o value delimiter for lists is a comma, colon, or space
+    !   o set all logical values to F
+    !   o numeric values support an "e" or "E" exponent
+    !   o for lists delimit with a comma, colon, or space
     call set_args(&#146;                         &
             & -x 1 -y 2 -z 3                &
             & -p -1 -2 -3                   &
@@ -185,20 +198,20 @@ Sample program using get_args() and variants
     call get_args(&#146;x&#146;,x, &#146;y&#146;,y, &#146;z&#146;,z, &#146;l&#146;,l, &#146;L&#146;,lbig)
     !
     ! allocatables should be done one at a time
-    call get_args(&#146;title&#146;,title) ! ALLOCATABLE STRING
-    call get_args(&#146;point&#146;,point) ! ALLOCATABLE ARRAYS
+    call get_args(&#146;title&#146;,title) ! allocatable string
+    call get_args(&#146;point&#146;,point) ! allocatable arrays
     call get_args(&#146;logicals&#146;,logicals)
     !
-    ! for NON-ALLOCATABLE VARIABLES
+    ! less commonly &#46;&#46;&#46;
 <P>
-    ! for non-allocatable string
+    ! for fixed-length strings
     call get_args_fixed_length(&#146;label&#146;,label)
 <P>
     ! for non-allocatable arrays
     call get_args_fixed_size(&#146;p&#146;,p)
     call get_args_fixed_size(&#146;logi&#146;,logi)
     !
-    ! USE VALUES
+    ! all done parsing, use values
     write(*,*)&#146;x=&#146;,x, &#146;y=&#146;,y, &#146;z=&#146;,z, x+y+z
     write(*,*)&#146;p=&#146;,p
     write(*,*)&#146;point=&#146;,point
@@ -259,9 +272,9 @@ set_mode(3f)
 </TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P>
-Note the convenience routines are described under get_args(3f): dget(3f),
-iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f), igets(3f),
-lgets(3f), rgets(3f), sgets(3f), cgets(3f)
+Note that the convenience routines are described under get_args(3f):
+dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
+igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
 <P>
 <PRE>
     + get_subcommand(3f)
@@ -269,7 +282,7 @@ lgets(3f), rgets(3f), sgets(3f), cgets(3f)
 <P>
 </PRE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I>Nemo Release 3.1</I></TD> <TD width=33% align=center>M_CLI2 (3m_cli2)</TD> <TD align=right width=33%><I>February 09, 2023</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from b098a011-a5e7-4f37-b036-e4a596c4b0d0 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I>Nemo Release 3.1</I></TD> <TD width=33% align=center>M_CLI2 (3m_cli2)</TD> <TD align=right width=33%><I>February 10, 2023</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from ed04cb19-8458-4bfc-9182-d447a9c95330 using man macros.</FONT>
 <br><br><center><img src="images/M_CLI2.gif"></center>
 </div>
 </div>
