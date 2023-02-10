@@ -1,7 +1,15 @@
 program demo17
 !!  @(#) using the unnamed parameters as filenames
 !!  For example, this should list the files in the current directory
+!!
 !!     demo17 *
+!!
+!!  Also demonstrates setting --help and --version text.
+!!
+!!     demo17 --help
+!!     demo17 --version
+!!     demo17 --usage
+!!
 use M_CLI2,  only : get_args
 use M_CLI2,  only : sget, lget, iget, rget, dget, cget
 use M_CLI2,  only : sgets, lgets, igets, rgets, dgets, cgets
@@ -36,10 +44,15 @@ type(character(len=:)),allocatable  :: fnames(:)
    !! The optional unnamed values on the command line are
    !! accumulated in the character array "UNNAMED" which was 
    !! renamed to "FILENAMES" on the use statement
-   if(size(filenames) > 0)then
-      print all,'files:'
-      print '(i6.6,1x,3a)',(indx,'[',filenames(indx),']',indx=1,size(filenames))
+   if(allocated(filenames))then
+      if(size(filenames) > 0)then
+         print all,'files:'
+         print '(i6.6,1x,3a)',(indx,'[',filenames(indx),']',indx=1,size(filenames))
+      endif
    endif
+
+   ! alternate method, additionally can be used when desired result is numeric
+   ! by using igets(3f), rgets(3f), ... instead of sgets(3f).
 
    fnames=sgets() ! also gets all the unnamed arguments
    if(size(fnames) > 0)then
@@ -53,6 +66,8 @@ subroutine parse()
 !!
 use M_CLI2,  only : set_args, set_mode
 call set_mode([character(len=20) :: 'strict','ignorecase'])
+! a single call to set_args can define the options and their defaults, set help
+! text and version information, and crack command line.
 call set_args(&
 !! DEFINE COMMAND OPTIONS AND DEFAULT VALUES
 ' &

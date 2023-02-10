@@ -55,7 +55,7 @@
 !!     implicit none
 !!     real    :: x, y
 !!     integer :: i
-!!     character(len=:),allocatable :: filenames
+!!     character(len=:),allocatable :: filenames(:)
 !!        ! define and crack command line
 !!        call set_args(' --yvalue:y 0.0 --xvalue:x 0.0 --debug F')
 !!        ! get values
@@ -74,7 +74,6 @@
 !!           write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
 !!        endif
 !!     end program minimal
-!!
 !!
 !! Sample program using get_args() and variants
 !!
@@ -442,12 +441,14 @@ end subroutine check_commandline
 !!      character(len=:),intent(out),allocatable,optional :: errmsg
 !!##DESCRIPTION
 !!
-!!    SET_ARGS(3f) requires a unix-like command prototype for defining
-!!    arguments and default command-line options. Argument values are then
-!!    read using GET_ARGS(3f).
+!!    SET_ARGS(3f) requires a unix-like command prototype which defines
+!!    the command-line options and their default values. When the program
+!!    is executed this and the command-line options are applied and the
+!!    resulting values are placed in an internal table for retrieval via
+!!    GET_ARGS(3f).
 !!
-!!    The --help and --version options require the optional help_text and
-!!    version_text values to be provided.
+!!    The built-in --help and --version options require optional help_text
+!!    and version_text values to be provided to be particularly useful.
 !!
 !!##OPTIONS
 !!
@@ -463,18 +464,22 @@ end subroutine check_commandline
 !!                see "DEFINING THE PROTOTYPE" in the next section for
 !!                further details.
 !!
-!!    HELP_TEXT   if present, will be displayed when program is called with
-!!                --help switch, and then the program will terminate. If
-!!                not supplied, the command line initialization string
-!!                will be shown when --help is used on the commandline.
+!!    HELP_TEXT   if present, will be displayed when the program is called with
+!!                a --help switch, and then the program will terminate. If
+!!                help text is not supplied the command line initialization
+!!                string will be echoed.
 !!
-!!      VERSION_TEXT  if present, will be displayed when program is called with
-!!                    --version switch, and then the program will terminate.
+!!      VERSION_TEXT  if present, any version text defined will be displayed
+!!                    when the program is called with a --version switch,
+!!                    and then the program will terminate.
 !!      IERR          if present a non-zero option is returned when an
-!!                    error occurs instead of the program terminating
-!!      ERRMSG        a description of the error if ierr is present
+!!                    error occurs instead of the program terminating.
+!!      ERRMSG        a description of the error if ierr is present.
 !!
 !!##DEFINING THE PROTOTYPE
+!!
+!!    o Keywords start with a single dash for short single-character
+!!      keywords, and with two dashes for longer keywords.
 !!
 !!    o all keywords on the prototype MUST get a value.
 !!
@@ -493,7 +498,8 @@ end subroutine check_commandline
 !!      get the value.
 !!
 !!    o to define a zero-length allocatable array make the
-!!      value a delimiter (usually a comma).
+!!      value a delimiter (usually a comma) or an empty set
+!!      of braces ("[]").
 !!
 !!    LONG AND SHORT NAMES
 !!
@@ -1005,8 +1011,8 @@ end subroutine set_args
 !!    !x! You can call this program which has two subcommands (run, test),
 !!    !x! like this:
 !!    !x!    demo_get_subcommand --help
-!!    !x!    demo_get_subcommand run -x -y -z -title -l -L
-!!    !x!    demo_get_subcommand test -title -l -L -testname
+!!    !x!    demo_get_subcommand run -x -y -z --title -l -L
+!!    !x!    demo_get_subcommand test --title -l -L --testname
 !!    !x!    demo_get_subcommand run --help
 !!       implicit none
 !!    !x! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES
@@ -1043,8 +1049,8 @@ end subroutine set_args
 !!        ! general help for "demo_get_subcommand --help"
 !!        help_text=[character(len=80) :: &
 !!         ' allowed subcommands are          ', &
-!!         '   * run  -l -L -title -x -y -z   ', &
-!!         '   * test -l -L -title            ', &
+!!         '   * run  -l -L --title -x -y -z  ', &
+!!         '   * test -l -L --title           ', &
 !!         '' ]
 !!       ! find the subcommand name by looking for first word on command
 !!       ! not starting with dash
@@ -1322,8 +1328,10 @@ integer                           :: place
                endif
             enddo TESTIT
             if(keyword /= ' ')then
+               if(value=='[]')value=','
                call update(keyword,value)            ! store name and its value
             elseif( G_remaining_option_allowed)then  ! meaning "--" has been encountered
+               if(value=='[]')value=','
                call update('_args_',trim(value))
             else
                !x!write(warn,'(*(g0))')'*prototype_to_dictionary* warning: ignoring string [',trim(value),'] for ',trim(keyword)
@@ -1481,14 +1489,18 @@ end subroutine prototype_to_dictionary
 !!
 !!     ! For mutually exclusive
 !!     if (all(specified(['floats','ints  '])))then
-!!         write(*,*)'You specified both names -ints and -floats'
+!!         write(*,*)'You specified both names --ints and --floats'
 !!     endif
 !!
 !!     ! For required parameter
 !!     if (.not.any(specified(['floats','ints  '])))then
-!!         write(*,*)'You must specify -ints or -floats'
+!!         write(*,*)'You must specify --ints or --floats'
 !!     endif
 !!
+!!    ! check if all values are in range from 10 to 30 and even
+!!    write(*,*)'are all numbers good?',all([ints >= 10,ints <= 30,(ints/2)*2 == ints])
+!!
+!!    ! perhaps you want to check one value at a time
 !!    do i=1,size(ints)
 !!       write(*,*)ints(i),[ints(i) >= 10,ints(i) <= 30,(ints(i)/2)*2 == ints(i)]
 !!       if(all([ints(i) >= 10,ints(i) <= 30,(ints(i)/2)*2 == ints(i)]) )then
@@ -1515,23 +1527,23 @@ end subroutine prototype_to_dictionary
 !!
 !! Default output
 !!
-!!  color=red
-!!  flag= F
-!!  ints=           1          10          11
-!!  floats=   12.3000002       4.55999994
-!!  was -flag specified? F
-!!  F F
-!!  ANY: F
-!!  ALL: F
-!!  You must specify -ints or -floats
-!!            1 F T F
-!!            1  is not an even number from 10 to 30 inclusive
-!!           10 T T T
-!!           10  is an even number from 10 to 30 inclusive
-!!           11 T T F
-!!           11  is not an even number from 10 to 30 inclusive
-!!  red matches a value in the list
-!!  ints(:) has expected number of values
+!!  > color=red
+!!  > flag= F
+!!  > ints=           1          10          11
+!!  > floats=   12.3000002       4.55999994
+!!  > was -flag specified? F
+!!  > F F
+!!  > ANY: F
+!!  > ALL: F
+!!  > You must specify --ints or --floats
+!!  >           1 F T F
+!!  >           1  is not an even number from 10 to 30 inclusive
+!!  >          10 T T T
+!!  >          10  is an even number from 10 to 30 inclusive
+!!  >          11 T T F
+!!  >          11  is not an even number from 10 to 30 inclusive
+!!  > red matches a value in the list
+!!  > ints(:) has expected number of values
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
@@ -1753,7 +1765,7 @@ end function get
 !!
 !!     subroutine prototype_and_cmd_args_to_nlist(prototype)
 !!
-!!      character(len=*)             :: prototype
+!!      character(len=*) :: prototype
 !!##DESCRIPTION
 !!    create dictionary with character keywords, values, and value lengths
 !!    using the routines for maintaining a list from command line arguments.
@@ -2333,6 +2345,7 @@ logical                      :: next_mandatory
    i=1
    current_argument=''
    GET_ARGS: do while (get_next_argument()) ! insert and replace entries
+      if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:WHILE:CURRENT_ARGUMENT=',current_argument
 
       if( current_argument  ==  '-' .and. nomore .eqv. .true. )then   ! sort of
       elseif( current_argument  ==  '-')then                          ! sort of
@@ -2352,6 +2365,7 @@ logical                      :: next_mandatory
       current_argument_padded=current_argument//'   '
 
       if(.not.next_mandatory.and..not.nomore.and.current_argument_padded(1:2) == '--')then    ! beginning of long word
+         if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:START_LONG:'
          G_keyword_single_letter=.false.
          if(lastkeyword /= '')then
             call ifnull()
@@ -2374,6 +2388,7 @@ logical                      :: next_mandatory
       & .and.current_argument_padded(1:1) == '-' &
       & .and.index("0123456789.",dummy(2:2)) == 0)then
       ! short word
+         if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:START_SHORT'
          G_keyword_single_letter=.true.
          if(lastkeyword /= '')then
             call ifnull()
@@ -2381,13 +2396,16 @@ logical                      :: next_mandatory
          call locate_key(current_argument_padded(2:),pointer)
          jj=len(current_argument)
          if( (pointer <= 0.or.jj.ge.3).and.(G_STRICT) )then  ! name not found
+            if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:SHORT NOT FOUND:',current_argument_padded(2:)
             ! in strict mode this might be multiple single-character values
             do kk=2,jj
                letter=current_argument_padded(kk:kk)
                call locate_key(letter,pointer)
+               if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:LETTER:',letter,pointer
                if(pointer > 0)then
                   call update(keywords(pointer),'T')
                else
+                  if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:UNKNOWN SHORT:',letter
                   call print_dictionary('UNKNOWN SHORT KEYWORD:'//letter) ! //' in '//current_argument)
                   if(G_QUIET)then
                      lastkeyword="UNKNOWN"
@@ -2402,12 +2420,25 @@ logical                      :: next_mandatory
             !--------------
             lastkeyword=""
             pointer=0
+            if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:SHORT_END:2:'
             cycle GET_ARGS
             !--------------
+         elseif(pointer<0)then
+            if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:UNKNOWN SHORT_CONFIRMED:',letter
+            call print_dictionary('UNKNOWN SHORT KEYWORD:'//current_argument_padded(2:))
+            if(G_QUIET)then
+               lastkeyword="UNKNOWN"
+               pointer=0
+               cycle GET_ARGS
+            endif
+            call mystop(2)
+            return
          endif
+         if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:SHORT_END:1:'
          lastkeyword=trim(current_argument_padded(2:))
          next_mandatory=mandatory(pointer)
       elseif(pointer == 0)then                                       ! unnamed arguments
+         if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:UNNAMED ARGUMENT:',current_argument
          if(G_remaining_on)then
             if(len(current_argument) < 1)then
                G_remaining=G_remaining//'"" '
@@ -2429,6 +2460,7 @@ logical                      :: next_mandatory
             endif
          endif
       else
+         if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:FOUND:',current_argument
          oldvalue=get(keywords(pointer))//' '
          if(oldvalue(1:1) == '"')then
             current_argument=quote(current_argument(:ilength))
@@ -2449,10 +2481,10 @@ logical                      :: next_mandatory
                else
                   imax=max(len(unnamed),len(current_argument))
                   if(scan(current_argument//' ','@') == 1.and.G_response)then
-               if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:2:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
-                     call expand_response(current_argument)
+                    if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:2:CALL EXPAND_RESPONSE:CURRENT_ARGUMENT=',current_argument
+                    call expand_response(current_argument)
                   else
-                     unnamed=[character(len=imax) :: unnamed,current_argument]
+                    unnamed=[character(len=imax) :: unnamed,current_argument]
                   endif
                endif
             endif

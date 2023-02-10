@@ -254,8 +254,9 @@ commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
  + ifort (IFORT) 2021.3.0 20210609
  + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem
 
-commit `` was tested on 2023-02-10 with
+commit `732bcadf95e753ccdf025cec2c08d776ea2534c2` was tested on 2023-02-10 with
  + ifort (IFORT) 2021.8.0 20221119
+ + GNU Fortran (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0
 ---
 <!--
 Last updated:   Wed Sep 29 17:34:52 2021 -0400
