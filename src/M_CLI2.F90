@@ -1409,9 +1409,20 @@ end subroutine prototype_to_dictionary
 !!    specified(3f) returns .true. if the specified keyword was present on
 !!    the command line.
 !!
+!!    M_CLI2 intentionally does not have validators except for SPECIFIED(3f)
+!!    and of course a check whether the input conforms to the type when
+!!    requesting a value (with get_args(3f) or the convenience functions
+!!    like inum(3f)).
+!!
+!!    Fortran already has powerful validation capabilities.  Logical
+!!    expressions ANY(3f) and ALL(3f) are standard Fortran features which
+!!    easily allow performing the common validations for command line
+!!    arguments without having to learn any additional syntax or methods.
+!!
 !!##OPTIONS
 !!
-!!    NAME   name of commandline argument to query the presence of
+!!    NAME   name of commandline argument to query the presence of. Long
+!!           names should always be used.
 !!
 !!##RETURNS
 !!    SPECIFIED  returns .TRUE. if specified NAME was present on the command
@@ -1422,48 +1433,98 @@ end subroutine prototype_to_dictionary
 !! Sample program:
 !!
 !!    program demo_specified
-!!    use M_CLI2,  only : set_args, get_args, specified
+!!    use, intrinsic :: iso_fortran_env, only : &
+!!    & stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
+!!    use M_CLI2,  only : set_args, igets, rgets, specified, sget, lget
 !!    implicit none
-!!    ! DEFINE ARGS
-!!    integer                 :: flag
-!!    integer,allocatable     :: ints(:)
-!!    real,allocatable        :: two_names(:)
 !!
-!!    ! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED
-!!    ! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM
+!!    ! Define args
+!!    integer,allocatable  :: ints(:)
+!!    real,allocatable     :: floats(:)
+!!    logical              :: flag
+!!    character(len=:),allocatable :: color
+!!    character(len=:),allocatable :: list(:)
+!!    integer :: i
+!!
 !!     call set_args('&
-!!        & --flag 1 -f 1 &
-!!        & --ints 1,2,3 -i 1,2,3 &
-!!        & --two_names 11.3 -T 11.3')
+!!        & --color:c "red"       &
+!!        & --flag:f F            &
+!!        & --ints:i 1,10,11      &
+!!        & --floats:T 12.3, 4.56 &
+!!        & ')
+!!     ints=igets('ints')
+!!     floats=rgets('floats')
+!!     flag=lget('flag')
+!!     color=sget('color')
 !!
-!!    ! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME
-!!     call get_args('flag',flag)
-!!     if(specified('f'))call get_args('f',flag)
-!!     call get_args('ints',ints)
-!!     if(specified('i'))call get_args('i',ints)
-!!     call get_args('two_names',two_names)
-!!     if(specified('T'))call get_args('T',two_names)
+!!     write(*,*)'color=',color
+!!     write(*,*)'flag=',flag
+!!     write(*,*)'ints=',ints
+!!     write(*,*)'floats=',floats
 !!
-!!     ! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE
+!!     write(*,*)'was -flag specified?',specified('flag')
+!!
+!!     ! elemental
+!!     write(*,*)specified(['floats','ints  '])
+!!
+!!     ! If you want to know if groups of parameters were specified use
 !!     ! ANY(3f) and ALL(3f)
-!!     write(*,*)specified(['two_names','T        '])
-!!     write(*,*)'ANY:',any(specified(['two_names','T        ']))
-!!     write(*,*)'ALL:',all(specified(['two_names','T        ']))
+!!     write(*,*)'ANY:',any(specified(['floats','ints  ']))
+!!     write(*,*)'ALL:',all(specified(['floats','ints  ']))
 !!
-!!     ! FOR MUTUALLY EXCLUSIVE
-!!     if (all(specified(['two_names','T        '])))then
-!!         write(*,*)'You specified both names -T and -two_names'
+!!     ! For mutually exclusive
+!!     if (all(specified(['floats','ints  '])))then
+!!         write(*,*)'You specified both names -ints and -floats'
 !!     endif
 !!
-!!     ! FOR REQUIRED PARAMETER
-!!     if (.not.any(specified(['two_names','T        '])))then
-!!         write(*,*)'You must specify -T or -two_names'
+!!     ! For required parameter
+!!     if (.not.any(specified(['floats','ints  '])))then
+!!         write(*,*)'You must specify -ints or -floats'
 !!     endif
-!!     ! USE VALUES
-!!       write(*,*)'flag=',flag
-!!       write(*,*)'ints=',ints
-!!       write(*,*)'two_names=',two_names
-!!     end program demo_specified
+!!
+!!    do i=1,size(ints)
+!!       write(*,*)ints(i),[ints(i) >= 10,ints(i) <= 30,(ints(i)/2)*2 == ints(i)]
+!!       if(all([ints(i) >= 10,ints(i) <= 30,(ints(i)/2)*2 == ints(i)]) )then
+!!          write(*,*)ints(i),'is an even number from 10 to 30 inclusive'
+!!       else
+!!          write(*,*)ints(i),'is not an even number from 10 to 30 inclusive'
+!!       endif
+!!    enddo
+!!
+!!    list = [character(len=10) :: 'red','white','blue']
+!!    if( any(color == list) )then
+!!       write(*,*)color,'matches a value in the list'
+!!    else
+!!       write(*,*)color,'not in the list'
+!!    endif
+!!
+!!    if(size(ints).eq.3)then
+!!       write(*,*)'ints(:) has expected number of values'
+!!    else
+!!       write(*,*)'ints(:) does not have expected number of values'
+!!    endif
+!!
+!!    end program demo_specified
+!!
+!! Default output
+!!
+!!  color=red
+!!  flag= F
+!!  ints=           1          10          11
+!!  floats=   12.3000002       4.55999994
+!!  was -flag specified? F
+!!  F F
+!!  ANY: F
+!!  ALL: F
+!!  You must specify -ints or -floats
+!!            1 F T F
+!!            1  is not an even number from 10 to 30 inclusive
+!!           10 T T T
+!!           10  is an even number from 10 to 30 inclusive
+!!           11 T T F
+!!           11  is not an even number from 10 to 30 inclusive
+!!  red matches a value in the list
+!!  ints(:) has expected number of values
 !!
 !!##AUTHOR
 !!      John S. Urban, 2019
