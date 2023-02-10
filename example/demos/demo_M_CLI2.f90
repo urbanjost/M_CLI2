@@ -21,8 +21,9 @@
       !   o double-quote strings, strings must be at least one space
       !     because adjacent double-quotes designate a double-quote
       !     in the value.
-      !   o set all logical values to F or T.
-      !   o value delimiter for lists is a comma, colon, or space
+      !   o set all logical values to F
+      !   o numeric values support an "e" or "E" exponent
+      !   o for lists delimit with a comma, colon, or space
       call set_args('                         &
               & -x 1 -y 2 -z 3                &
               & -p -1 -2 -3                   &
@@ -38,20 +39,20 @@
       call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L',lbig)
       !
       ! allocatables should be done one at a time
-      call get_args('title',title) ! ALLOCATABLE STRING
-      call get_args('point',point) ! ALLOCATABLE ARRAYS
+      call get_args('title',title) ! allocatable string
+      call get_args('point',point) ! allocatable arrays
       call get_args('logicals',logicals)
       !
-      ! for NON-ALLOCATABLE VARIABLES
+      ! less commonly ...
 
-      ! for non-allocatable string
+      ! for fixed-length strings
       call get_args_fixed_length('label',label)
 
       ! for non-allocatable arrays
       call get_args_fixed_size('p',p)
       call get_args_fixed_size('logi',logi)
       !
-      ! USE VALUES
+      ! all done parsing, use values
       write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
       write(*,*)'p=',p
       write(*,*)'point=',point

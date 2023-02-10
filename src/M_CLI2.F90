@@ -15,6 +15,7 @@
 !!
 !!   Available procedures and variables:
 !!
+!!      ! basic procedures
 !!      use M_CLI2, only : set_args, get_args, specified, set_mode
 !!      ! convenience functions
 !!      use M_CLI2, only : dget, iget, lget, rget, sget, cget
@@ -23,25 +24,31 @@
 !!      use M_CLI2, only : unnamed, remaining, args
 !!      ! working with non-allocatable strings and arrays
 !!      use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
+!!      ! special function for creating subcommands
+!!      use M_CLI2, only : get_subcommand(3f)
 !!
 !!##DESCRIPTION
-!!    Define command for command line parsing and read values from
-!!    command line into an internal table.
-!!
-!!    The input syntax is very like entering a standard Unix command line.
+!!    The M_CLI2 module cracks a Unix-style command line.
 !!
 !!    Typically one call to SET_ARGS(3f) is made to define the command
 !!    arguments, set default values and parse the command line. Then a call
-!!    is made to the convenience procedures or GET_ARGS(3f) itself for each
+!!    is made to the convenience procedures or GET_ARGS(3f) proper for each
 !!    command keyword to obtain the argument values.
 !!
-!!    The documentation for SET_ARGS(3f), GET_ARGS(3f) and SET_MODE(3f)
-!!    provides further details.
+!!    Detailed descriptions of each procedure and example programs are
+!!    included.
 !!
 !!##EXAMPLE
 !!
 !!
-!! Sample minimal usage
+!! Sample minimal program which may be called in various ways:
+!!
+!!     mimimal -x 100.3 -y 3.0e4
+!!     mimimal --xvalue=300 --debug
+!!     mimimal --yvalue 400
+!!     mimimal -x 10 file1 file2 file3
+!!
+!! Program example:
 !!
 !!     program minimal
 !!     use M_CLI2,  only : set_args, lget, rget, sgets
@@ -49,9 +56,11 @@
 !!     real    :: x, y
 !!     integer :: i
 !!     character(len=:),allocatable :: filenames
-!!        call set_args(' -y 0.0 -x 0.0 --debug F')
-!!        x=rget('x')
-!!        y=rget('y')
+!!        ! define and crack command line
+!!        call set_args(' --yvalue:y 0.0 --xvalue:x 0.0 --debug F')
+!!        ! get values
+!!        x=rget('xvalue')
+!!        y=rget('yvalue')
 !!        if(lget('debug'))then
 !!           write(*,*)'X=',x
 !!           write(*,*)'Y=',y
@@ -65,6 +74,7 @@
 !!           write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
 !!        endif
 !!     end program minimal
+!!
 !!
 !! Sample program using get_args() and variants
 !!
@@ -91,8 +101,9 @@
 !!     !   o double-quote strings, strings must be at least one space
 !!     !     because adjacent double-quotes designate a double-quote
 !!     !     in the value.
-!!     !   o set all logical values to F or T.
-!!     !   o value delimiter for lists is a comma, colon, or space
+!!     !   o set all logical values to F
+!!     !   o numeric values support an "e" or "E" exponent
+!!     !   o for lists delimit with a comma, colon, or space
 !!     call set_args('                         &
 !!             & -x 1 -y 2 -z 3                &
 !!             & -p -1 -2 -3                   &
@@ -108,20 +119,20 @@
 !!     call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L',lbig)
 !!     !
 !!     ! allocatables should be done one at a time
-!!     call get_args('title',title) ! ALLOCATABLE STRING
-!!     call get_args('point',point) ! ALLOCATABLE ARRAYS
+!!     call get_args('title',title) ! allocatable string
+!!     call get_args('point',point) ! allocatable arrays
 !!     call get_args('logicals',logicals)
 !!     !
-!!     ! for NON-ALLOCATABLE VARIABLES
+!!     ! less commonly ...
 !!
-!!     ! for non-allocatable string
+!!     ! for fixed-length strings
 !!     call get_args_fixed_length('label',label)
 !!
 !!     ! for non-allocatable arrays
 !!     call get_args_fixed_size('p',p)
 !!     call get_args_fixed_size('logi',logi)
 !!     !
-!!     ! USE VALUES
+!!     ! all done parsing, use values
 !!     write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
 !!     write(*,*)'p=',p
 !!     write(*,*)'point=',point
@@ -149,9 +160,9 @@
 !!     + specified(3f)
 !!     + set_mode(3f)
 !!
-!! Note the convenience routines are described under get_args(3f): dget(3f),
-!! iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f), igets(3f),
-!! lgets(3f), rgets(3f), sgets(3f), cgets(3f)
+!! Note that the convenience routines are described under get_args(3f):
+!! dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
+!! igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
 !!
 !!     + get_subcommand(3f)
 !!     + get_args_fixed_size(3f), get_args_fixed_length(3f)
@@ -422,9 +433,9 @@ end subroutine check_commandline
 !!
 !!##SYNOPSIS
 !!
-!!     subroutine set_args(definition,help_text,version_text,ierr,errmsg)
+!!     subroutine set_args(prototype,help_text,version_text,ierr,errmsg)
 !!
-!!      character(len=*),intent(in),optional              :: definition
+!!      character(len=*),intent(in),optional              :: prototype
 !!      character(len=*),intent(in),optional              :: help_text(:)
 !!      character(len=*),intent(in),optional              :: version_text(:)
 !!      integer,intent(out),optional                      :: ierr
@@ -440,7 +451,7 @@ end subroutine check_commandline
 !!
 !!##OPTIONS
 !!
-!!    DEFINITION  composed of all command arguments concatenated
+!!    PROTOTYPE   composed of all command arguments concatenated
 !!                into a Unix-like command prototype string. For
 !!                example:
 !!
@@ -500,10 +511,6 @@ end subroutine check_commandline
 !!
 !!      If this syntax is used then logical shorts may be combined on the
 !!      command line when "set_mode('strict')" is in effect.
-!!
-!!      Mapping of multiple names to the same program value __not__ using
-!!      the --LONGNAME:SHORTNAME syntax is demonstrated in the manpage
-!!      for SPECIFIED(3f).
 !!
 !!    SPECIAL BEHAVIORS
 !!
@@ -4884,7 +4891,7 @@ end subroutine remove_i
 !!
 !!    character(len=*)|doubleprecision|real|integer,intent(in) :: value
 !!    character(len=:)|doubleprecision|real|integer,intent(in) :: list(:)
-!!    integer, intent(out)          :: PLACE
+!!    integer, intent(out) :: place
 !!
 !!##DESCRIPTION
 !!
@@ -5138,12 +5145,12 @@ integer                      :: end
    ii=max(len_trim(value),len(list),2)
    end=size(list)
 
-   if(end == 0)then                                          ! empty array
+   if(end == 0)then                                        ! empty array
       list=[character(len=ii) :: value ]
-   elseif(place == 1)then                                    ! put in front of array
+   elseif(place == 1)then                                  ! put in front of array
       kludge=[character(len=ii) :: value, list]
       list=kludge
-   elseif(place > end)then                                  ! put at end of array
+   elseif(place > end)then                                 ! put at end of array
       kludge=[character(len=ii) :: list, value ]
       list=kludge
    elseif(place >= 2.and.place <= end)then                 ! put in middle of array
@@ -5170,9 +5177,9 @@ integer               :: end
       list=[value]
    elseif(place == 1)then                                    ! put in front of array
       list=[value, list]
-   elseif(place > end)then                                  ! put at end of array
+   elseif(place > end)then                                   ! put at end of array
       list=[list, value ]
-   elseif(place >= 2.and.place <= end)then                 ! put in middle of array
+   elseif(place >= 2.and.place <= end)then                   ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
       write(warn,*)'*insert_l* error: index out of range. end=',end,' index=',place,' value=',value
@@ -5195,9 +5202,9 @@ integer               :: end
       list=[value]
    elseif(place == 1)then                                    ! put in front of array
       list=[value, list]
-   elseif(place > end)then                                  ! put at end of array
+   elseif(place > end)then                                   ! put at end of array
       list=[list, value ]
-   elseif(place >= 2.and.place <= end)then                 ! put in middle of array
+   elseif(place >= 2.and.place <= end)then                   ! put in middle of array
       list=[list(:place-1), value,list(place:) ]
    else                                                      ! index out of range
       write(warn,*)'*insert_i* error: index out of range. end=',end,' index=',place,' value=',value
@@ -5213,10 +5220,9 @@ subroutine many_args(n0,g0, n1,g1, n2,g2, n3,g3, n4,g4, n5,g5, n6,g6, n7,g7, n8,
 ! ident_29="@(#) M_CLI2 many_args(3fp) allow for multiple calls to get_args(3f)"
 
 character(len=*),intent(in)          :: n0, n1
-character(len=*),intent(in),optional ::         n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
+character(len=*),intent(in),optional :: n2, n3, n4, n5, n6, n7, n8, n9, na, nb, nc, nd, ne, nf, ng, nh, ni, nj
 class(*),intent(out)           :: g0, g1
-class(*),intent(out),optional  ::         g2, g3, g4, g5, g6, g7, g8, g9
-class(*),intent(out),optional  :: ga, gb, gc, gd, ge, gf, gg, gh, gi, gj
+class(*),intent(out),optional  :: g2, g3, g4, g5, g6, g7, g8, g9, ga, gb, gc, gd, ge, gf, gg, gh, gi, gj
    call get_generic(n0,g0)
    call get_generic(n1,g1)
    if( present(n2) .and. present(g2) )call get_generic(n2,g2)
@@ -5361,6 +5367,7 @@ end function cg
 !   sg=unnamed
 !end function sg
 
+!===================================================================================================================================
 function sg()
 character(len=:),allocatable :: sg(:)
    if(allocated(sg))deallocate(sg)
@@ -5468,22 +5475,23 @@ end subroutine locate_key
 !!    KEY    name of option
 !!
 !!    The following values are allowed:
-!!      o  response_file - enable use of response file
 !!
-!!      o  ignorecase - ignore case in long key names. So the user
-!!         does not have to remember if the option is --IgnoreCase
-!!         or --ignorecase or --ignoreCase
+!!    o  response_file - enable use of response file
 !!
-!!      o  underdash  - treat dash in keyword as an underscore.
-!!         So the user should not have to remember if the option is
-!!         --ignore_case or --ignore-case.
+!!    o  ignorecase - ignore case in long key names. So the user
+!!       does not have to remember if the option is --IgnoreCase
+!!       or --ignorecase or --ignoreCase
 !!
-!!      o  strict - allow Boolean keys to be bundled, but requires
-!!         a single dash prefix be used for short key names and
-!!         long names must be prefixed with two dashes.
+!!    o  underdash  - treat dash in keyword as an underscore.
+!!       So the user should not have to remember if the option is
+!!       --ignore_case or --ignore-case.
 !!
-!!      o  lastonly  - when multiple keywords occur keep the rightmost
-!!         value specified instead of appending the values together.
+!!    o  strict - allow Boolean keys to be bundled, but requires
+!!       a single dash prefix be used for short key names and
+!!       long names must be prefixed with two dashes.
+!!
+!!    o  lastonly  - when multiple keywords occur keep the rightmost
+!!       value specified instead of appending the values together.
 !!
 !!    MODE   set to .true. to activate the optional mode.
 !!           Set to .false. to deactivate the mode.
