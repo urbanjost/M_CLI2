@@ -36,7 +36,7 @@ conventional Unix-style syntax for short and long parameters:
       ! Get scalar non-allocatable values
       call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
       ! use convenience functions for allocatable arrays and strings
-      title=sget('title') ! string
+      title=sget('title') ! string 
       p=igets('p') ! integer array
       !
       ! All ready to go, print it as a namelist so everything is labeled
@@ -72,14 +72,12 @@ described under SET_ARGS(3f).
 ![docs](docs/images/docs.gif)
 ## Documentation
 
-### man-pages as HTML
-- [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) -- man-pages index of individual procedures
-- [BOOK_M_CLI2](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) -- All man-pages consolidated using JavaScript
-
 ![manpages](docs/images/manpages.gif)
-### real man-pages
-+ [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip)
-+ [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz)
+### man-pages 
+- HTML [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) index of individual procedures
+- HTML [book-form ](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) of pages consolidated using JavaScript
++ [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip) for installing wherever the man(1) command is available
++ [manpages.tgz](https://urbanjost.github.io/M_CLI2/manpages.tgz) is an alternative tar(1) format archive
 
 ### developer documentation
 - [doxygen(1) output](https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html).
@@ -215,21 +213,21 @@ described under SET_ARGS(3f).
 ## Demo Programs
 These demo programs provide templates for the most common usage:
 
-* [demo1](example/demo1.f90)   Using the convenience functions
-* [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
 * [demo3](example/demo3.f90)   Example of **basic** use
+* [demo1](example/demo1.f90)   Using the convenience functions
 * [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME.
-* [demo16](example/demo16.f90) Using unnamed values as numbers
+* [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
 * [demo17](example/demo17.f90) Using unnamed options as filenames or strings
+* [demo16](example/demo16.f90) Using unnamed values as numbers
 
 ## Optional Modes
+* [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
+* [demo14](example/demo14.f90) Case-insensitive long keys
 * [demo12](example/demo12.f90) Enabling response files
 * [demo13](example/demo13.f90) Equivalencing dash to underscore in keynames
-* [demo14](example/demo14.f90) Case-insensitive long keys
-* [demo15](example/demo15.f90) bundling short Boolean keys using "strict" mode
 
 ## Niche examples
-* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f) for limited cases
+* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f)
 * [demo4](example/demo4.f90)   _COMPLEX_ type values
 * [demo7](example/demo7.f90)   Controlling array delimiter characters
 * [demo6](example/demo6.f90)   How to create a command with subcommands
