@@ -5,7 +5,6 @@ use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT,
 use M_CLI2,  only : set_args, sget, sgets, iget, igets, rget, rgets, dget, dgets, lget, lgets
 implicit none
 character(len=*),parameter :: it='(1x,*(g0,1x))'
-logical,parameter :: T=.true., F=.false.
 character(len=:),allocatable :: whichone
 
    call set_args(' --type run -i 1 --ints:I 1,2,3 -s " " --strings " " -r 0.0 --reals:R 11.1,22.2,33.3')

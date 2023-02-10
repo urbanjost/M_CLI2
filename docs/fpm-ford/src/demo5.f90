@@ -7,8 +7,12 @@ use M_CLI2, only : sget, sgets
 implicit none
 
 character(len=*),parameter   :: fmt='(*("[",g0,"]":,1x))'
+
+   print *,'demo5: CHARACTER argument examples'
+
    call set_args(' &
-   & --alloc_len_scalar " " --fx_len_scalar " " &
+   & --alloc_len_scalar " " &
+   & --fx_len_scalar " " &
    & --alloc_array "A,B,C" &
    & --fx_size_fx_len "A,B,C" &
    & --fx_len_alloc_array "A,B,C" &

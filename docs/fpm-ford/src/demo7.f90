@@ -14,6 +14,8 @@ real(kind=dp),allocatable      :: normal(:)
 complex,allocatable            :: complexs(:)
 character(len=:),allocatable   :: characters(:)  ! allocatable array with allocatable length
 
+   print *,'demo7: controlling array delimiter characters'
+
    ! ARRAY DELIMITERS
    !
    ! NOTE SET_ARGS(3f) DELIMITERS MUST MATCH WHAT IS USED IN GET_ARGS*(3f)

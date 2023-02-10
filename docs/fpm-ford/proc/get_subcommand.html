@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="16.0% of total for procedures.">47 statements</a>
+               title="12.3% of total for procedures.">47 statements</a>
           </li>
 
             <li id="source-file">
@@ -190,8 +190,8 @@ command with subcommands.
 <span class="sx">!x! You can call this program which has two subcommands (run, test),</span><span class="w"></span>
 <span class="sx">!x! like this:</span><span class="w"></span>
 <span class="sx">!x!    demo_get_subcommand --help</span><span class="w"></span>
-<span class="sx">!x!    demo_get_subcommand run -x -y -z -title -l -L</span><span class="w"></span>
-<span class="sx">!x!    demo_get_subcommand test -title -l -L -testname</span><span class="w"></span>
+<span class="sx">!x!    demo_get_subcommand run -x -y -z --title -l -L</span><span class="w"></span>
+<span class="sx">!x!    demo_get_subcommand test --title -l -L --testname</span><span class="w"></span>
 <span class="sx">!x!    demo_get_subcommand run --help</span><span class="w"></span>
 <span class="w">   </span><span class="n">implicit</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
 <span class="sx">!x! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES</span><span class="w"></span>
@@ -228,8 +228,8 @@ command with subcommands.
 <span class="w">    </span>!<span class="w"> </span><span class="n">general</span><span class="w"> </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s">&quot;demo_get_subcommand --help&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="n">help_text</span><span class="p">=[</span><span class="n">character</span><span class="p">(</span><span class="n">len</span><span class="p">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="p">::</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
 <span class="w">     </span><span class="s">&#39; allowed subcommands are          &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="s">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
-<span class="w">     </span><span class="s">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="s">&#39;   * run  -l -L --title -x -y -z  &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="s">&#39;   * test -l -L --title           &#39;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="w"></span>
 <span class="w">     </span><span class="s">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
 <span class="w">   </span>!<span class="w"> </span><span class="nb">find</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">subcommand</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">looking</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">command</span><span class="w"></span>
 <span class="w">   </span>!<span class="w"> </span><span class="n">not</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">dash</span><span class="w"></span>
@@ -343,7 +343,7 @@ command with subcommands.
     <h2><span class="anchor" id="src"></span>Source Code</h2>
     <div class="highlight"><pre><span></span><span class="k">function </span><span class="n">get_subcommand</span><span class="p">()</span><span class="w"> </span><span class="k">result</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span><span class="w"></span>
 
-<span class="c">! ident_3=&quot;@(#) M_CLI2 get_subcommand(3f) parse prototype string to get subcommand allowing for response files&quot;</span>
+<span class="c">! ident_2=&quot;@(#) M_CLI2 get_subcommand(3f) parse prototype string to get subcommand allowing for response files&quot;</span>
 
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">sub</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">cmdarg</span><span class="w"></span>
@@ -416,7 +416,7 @@ command with subcommands.
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

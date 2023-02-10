@@ -12,35 +12,39 @@ type(point) :: dot; namelist /nml_dot/ dot
 
 character(len=:),allocatable :: name
 character(len=:),allocatable :: string
+character(len=:),allocatable :: list(:)
 character(len=80)            :: readme !(3)
 integer                      :: i
 
-! M_CLI2 does not have validators except for SPECIFIED(3f) and
+print *,'demo11: examples of validating values with ALL(3f) and ANY(3f)'
+
+! M_CLI2 intentionally does not have complex validators except for SPECIFIED(3f) and
 ! a check whether the input conforms to the type with get_args(3f)
-! and the convenience functions like inum(3f). But Fortran already
-! has powerful validation capabilities, especially with the use
-! of logical expressions, and ANY(3f) and ALL(3f). 
+! or the convenience functions like inum(3f). 
+!
+! Fortran already has powerful validation capabilities.  Logical
+! expressions ANY(3f) and ALL(3f) are standard Fortran features easily
+! allow performing the common validations for command line arguments
+! without having to learn any additional syntax or methods.
 
-! A somewhat contrived example of using ALL(3f):
-
-! even number from 10 to 30 inclusive
 do i=1,100
    if(all([i >= 10,i <= 30,(i/2)*2 == i]))then
-      write(*,*)'good',i
+      write(*,*)i,' is an even number from 10 to 30 inclusive'
    endif
 enddo
 
-! an example of using ANY(3f)
-
-! matched
 name='red'
-if(any(name == [character(len=10) :: 'red','white','blue']))then
-   write(*,*)'matches ', name
+list = [character(len=10) :: 'red','white','blue']
+if( any(name == list) )then
+   write(*,*)name,' matches a value in the list'
+else
+   write(*,*)name,' not in the list'
 endif
-! not matched
-name='teal'
-if(any(name == [character(len=10) :: 'red','white','blue']))then
-   write(*,*)'matches ', name
+
+if(size(list).eq.3)then
+   write(*,*)' list has expected number of values'
+else
+   write(*,*)' list does not have expected number of values'
 endif
 
 ! and even user-defined types can be processed by reading the input

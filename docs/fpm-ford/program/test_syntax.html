@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 6.3% of total for programs.">50 statements</a>
+               title=" 5.8% of total for programs.">49 statements</a>
           </li>
 
             <li id="source-file">
@@ -125,8 +125,6 @@
       </div>
       <div id="vars-0" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../program/test_syntax.html#variable-f">F</a>
-            <a class="list-group-item" href="../program/test_syntax.html#variable-t">T</a>
             <a class="list-group-item" href="../program/test_syntax.html#variable-it">it</a>
             <a class="list-group-item" href="../program/test_syntax.html#variable-whichone">whichone</a>
         </div>
@@ -183,8 +181,8 @@
       <ul class="list-group">
           <li class="list-group-item">
             <ul class="list-inline">
-                <li><a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a></li>
                 <li><a href='../module/m_cli2.html'>M_CLI2</a></li>
+                <li><a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a></li>
             </ul>
           </li>
       </ul>
@@ -204,8 +202,6 @@ The default for inums, rnums, &hellip; is to convert all unnamed argument values
       </div>
       <div id="vars-1" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../program/test_syntax.html#variable-f">F</a>
-            <a class="list-group-item" href="../program/test_syntax.html#variable-t">T</a>
             <a class="list-group-item" href="../program/test_syntax.html#variable-it">it</a>
             <a class="list-group-item" href="../program/test_syntax.html#variable-whichone">whichone</a>
         </div>
@@ -266,38 +262,6 @@ The default for inums, rnums, &hellip; is to convert all unnamed argument values
 <th></th><th>Initial</th>        <th></th>
     </thead>
     <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-f"></span>
-              logical,
-            </td>
-            <td>
-parameter               
-            </td>
-            <td>::</td>
-            <td><strong>F</strong></td>
-<td> =</td>
-                <td>.false.</td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-t"></span>
-              logical,
-            </td>
-            <td>
-parameter               
-            </td>
-            <td>::</td>
-            <td><strong>T</strong></td>
-<td> =</td>
-                <td>.true.</td>
-            <td>
-                
-            </td>
-        </tr>
         <tr>
             <td>
               <span class="anchor" id="variable-it"></span>
@@ -450,7 +414,6 @@ parameter
 <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">sgets</span><span class="p">,</span><span class="w"> </span><span class="n">iget</span><span class="p">,</span><span class="w"> </span><span class="n">igets</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="p">,</span><span class="w"> </span><span class="n">rgets</span><span class="p">,</span><span class="w"> </span><span class="n">dget</span><span class="p">,</span><span class="w"> </span><span class="n">dgets</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="p">,</span><span class="w"> </span><span class="n">lgets</span><span class="w"></span>
 <span class="k">implicit none</span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">it</span><span class="o">=</span><span class="s1">&#39;(1x,*(g0,1x))&#39;</span><span class="w"></span>
-<span class="kt">logical</span><span class="p">,</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">T</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.,</span><span class="w"> </span><span class="n">F</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">whichone</span><span class="w"></span>
 
 <span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; --type run -i 1 --ints:I 1,2,3 -s &quot; &quot; --strings &quot; &quot; -r 0.0 --reals:R 11.1,22.2,33.3&#39;</span><span class="p">)</span><span class="w"></span>
@@ -520,7 +483,7 @@ parameter
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-08 04:39            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

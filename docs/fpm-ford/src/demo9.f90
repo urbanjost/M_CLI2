@@ -1,15 +1,18 @@
 program demo9
 !> @(#) long and short names using --LONGNAME:SHORTNAME
 !!
-!!  When all keys have a long and short name "strict mode" is invoked where
-!!  "-" is required for short names; and Boolean values may be bundled
-!!  together. For example:
+!!  When all keys have a long and short name and "strict mode" is invoked
+!!  where "-" is required for short names and "--" for long names Boolean
+!!  values may be bundled together. For example:
 !!
 !!    demo9 -XYZ
 !!
-use M_CLI2,  only : set_args, sget, rget, lget
+use M_CLI2,  only : set_args, sget, rget, lget, set_mode
 implicit none
 character(len=*),parameter :: all='(*(g0))'
+
+   print *,'demo9: long and short names using --LONGNAME:SHORTNAME'
+   !call set_mode('strict')
    call set_args('    &
    & --length:l 10    &
    & --height:h 12.45 &

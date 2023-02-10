@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="<p> 1.0% of total for procedures.</p>Including implementation: 24 statements,  8.2% of total for procedures.">3 statements</a>
+               title="<p> 0.8% of total for procedures.</p>Including implementation: 24 statements,  6.3% of total for procedures.">3 statements</a>
           </li>
 
             <li id="source-file">
@@ -232,9 +232,9 @@
 </code></pre></div>
 
 <h2 id="description">DESCRIPTION</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">GET_ARGS</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">keywords</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">SET_ARGS</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
-<span class="n">has</span><span class="w"> </span><span class="n">been</span><span class="w"> </span><span class="n">called</span><span class="o">.</span><span class="w"> </span><span class="n">For</span><span class="w"> </span><span class="n">fixed</span><span class="o">-</span><span class="n">length</span><span class="w"> </span><span class="n">CHARACTER</span><span class="w"> </span><span class="n">variables</span><span class="w"></span>
-<span class="n">see</span><span class="w"> </span><span class="n">GET_ARGS_FIXED_LENGTH</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="w"> </span><span class="n">For</span><span class="w"> </span><span class="n">fixed</span><span class="o">-</span><span class="n">size</span><span class="w"> </span><span class="n">arrays</span><span class="w"> </span><span class="n">see</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">GET_ARGS</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">keywords</span><span class="w"> </span><span class="n">after</span><span class="w"> </span><span class="n">SET_ARGS</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">has</span><span class="w"></span>
+<span class="n">been</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">parse</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">line</span><span class="o">.</span><span class="w"> </span><span class="n">For</span><span class="w"> </span><span class="n">fixed</span><span class="o">-</span><span class="n">length</span><span class="w"> </span><span class="n">CHARACTER</span><span class="w"></span>
+<span class="n">variables</span><span class="w"> </span><span class="n">see</span><span class="w"> </span><span class="n">GET_ARGS_FIXED_LENGTH</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="w"> </span><span class="n">For</span><span class="w"> </span><span class="n">fixed</span><span class="o">-</span><span class="n">size</span><span class="w"> </span><span class="n">arrays</span><span class="w"> </span><span class="n">see</span><span class="w"></span>
 <span class="n">GET_ARGS_FIXED_SIZE</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="w"></span>
 
 <span class="n">As</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">convenience</span><span class="w"> </span><span class="n">multiple</span><span class="w"> </span><span class="n">pairs</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">keywords</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">be</span><span class="w"></span>
@@ -275,31 +275,29 @@
  <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">filenames</span><span class="o">=&gt;</span><span class="nv">unnamed</span>, <span class="nv">set_args</span>, <span class="nv">get_args</span>
  <span class="nv">implicit</span> <span class="nv">none</span>
  <span class="nv">integer</span>                      :: <span class="nv">i</span>
- <span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">ARGS</span>
+  <span class="o">!</span> <span class="nv">Define</span> <span class="nv">ARGS</span>
  <span class="nv">real</span>                         :: <span class="nv">x</span>, <span class="nv">y</span>, <span class="nv">z</span>
  <span class="nv">real</span>,<span class="nv">allocatable</span>             :: <span class="nv">p</span><span class="ss">(</span>:<span class="ss">)</span>
  <span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span>:<span class="ss">)</span>,<span class="nv">allocatable</span> :: <span class="nv">title</span>
  <span class="nv">logical</span>                      :: <span class="nv">l</span>, <span class="nv">lbig</span>
- <span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">AND</span> <span class="nv">PARSE</span> <span class="ss">(</span><span class="nv">TO</span> <span class="nv">SET</span> <span class="nv">INITIAL</span> <span class="nv">VALUES</span><span class="ss">)</span> <span class="nv">COMMAND</span> <span class="nv">LINE</span>
- <span class="o">!</span>   <span class="nv">o</span> <span class="nv">only</span> <span class="nv">quote</span> <span class="nv">strings</span> <span class="nv">and</span> <span class="nv">use</span> <span class="nv">double</span><span class="o">-</span><span class="nv">quotes</span>
- <span class="o">!</span>   <span class="nv">o</span> <span class="nv">set</span> <span class="nv">all</span> <span class="nv">logical</span> <span class="nv">values</span> <span class="nv">to</span> <span class="nv">F</span> <span class="nv">or</span> <span class="nv">T</span>.
- <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> &amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">2</span> <span class="o">-</span><span class="nv">z</span> <span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span> <span class="o">&amp;</span>
+  <span class="o">!</span> <span class="nv">Define</span> <span class="nv">and</span> <span class="nv">parse</span> <span class="ss">(</span><span class="nv">to</span> <span class="nv">set</span> <span class="nv">initial</span> <span class="nv">values</span><span class="ss">)</span> <span class="nv">command</span> <span class="nv">line</span>
+  <span class="o">!</span>   <span class="nv">o</span> <span class="nv">only</span> <span class="nv">quote</span> <span class="nv">strings</span> <span class="nv">and</span> <span class="nv">use</span> <span class="nv">double</span><span class="o">-</span><span class="nv">quotes</span>
+  <span class="o">!</span>   <span class="nv">o</span> <span class="nv">set</span> <span class="nv">all</span> <span class="nv">logical</span> <span class="nv">values</span> <span class="nv">to</span> <span class="nv">F</span> <span class="nv">or</span> <span class="nv">T</span>.
+ <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">         &amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">x</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">y</span> <span class="mi">2</span> <span class="o">-</span><span class="nv">z</span> <span class="mi">3</span>     <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">p</span> <span class="o">-</span><span class="mi">1</span>,<span class="o">-</span><span class="mi">2</span>,<span class="o">-</span><span class="mi">3</span>        <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">F</span>  <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">label</span> <span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">-</span><span class="nv">l</span> <span class="nv">F</span> <span class="o">-</span><span class="nv">L</span> <span class="nv">F</span>          <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">label</span> <span class="s2">&quot;</span><span class="s"> </span><span class="s2">&quot;</span>        <span class="o">&amp;</span>
     <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
- <span class="o">!</span> <span class="nv">ASSIGN</span> <span class="nv">VALUES</span> <span class="nv">TO</span> <span class="nv">ELEMENTS</span>
- <span class="o">!</span> <span class="nv">SCALARS</span>
- <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span>,<span class="nv">x</span>,<span class="s1">&#39;</span><span class="s">y</span><span class="s1">&#39;</span>,<span class="nv">y</span>,<span class="s1">&#39;</span><span class="s">z</span><span class="s1">&#39;</span>,<span class="nv">z</span><span class="ss">)</span>
- <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">l</span><span class="s1">&#39;</span>,<span class="nv">l</span><span class="ss">)</span>
- <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">L</span><span class="s1">&#39;</span>,<span class="nv">lbig</span><span class="ss">)</span>
- <span class="o">!</span> <span class="nv">ALLOCATABLE</span> <span class="nv">STRING</span>
+  <span class="o">!</span> <span class="nv">Assign</span> <span class="nv">values</span> <span class="nv">to</span> <span class="nv">elements</span>
+  <span class="o">!</span> <span class="nv">Scalars</span>
+ <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span>,<span class="nv">x</span>,<span class="s1">&#39;</span><span class="s">y</span><span class="s1">&#39;</span>,<span class="nv">y</span>,<span class="s1">&#39;</span><span class="s">z</span><span class="s1">&#39;</span>,<span class="nv">z</span>,<span class="s1">&#39;</span><span class="s">l</span><span class="s1">&#39;</span>,<span class="nv">l</span>,<span class="s1">&#39;</span><span class="s">L</span><span class="s1">&#39;</span>,<span class="nv">lbig</span><span class="ss">)</span>
+  <span class="o">!</span> <span class="nv">Allocatable</span> <span class="nv">string</span>
  <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>,<span class="nv">title</span><span class="ss">)</span>
- <span class="o">!</span> <span class="nv">NON</span><span class="o">-</span><span class="nv">ALLOCATABLE</span> <span class="nv">ARRAYS</span>
+  <span class="o">!</span> <span class="nv">Allocatable</span> <span class="nv">arrays</span>
  <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">p</span><span class="s1">&#39;</span>,<span class="nv">p</span><span class="ss">)</span>
- <span class="o">!</span> <span class="nv">USE</span> <span class="nv">VALUES</span>
+  <span class="o">!</span> <span class="nv">Use</span> <span class="nv">values</span>
  <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="s1">&#39;</span><span class="s">(1x,g0,&quot;=&quot;,g0)</span><span class="s1">&#39;</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span>,<span class="nv">x</span>, <span class="s1">&#39;</span><span class="s">y</span><span class="s1">&#39;</span>,<span class="nv">y</span>, <span class="s1">&#39;</span><span class="s">z</span><span class="s1">&#39;</span>,<span class="nv">z</span>
  <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">p=</span><span class="s1">&#39;</span>,<span class="nv">p</span>
  <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">title=</span><span class="s1">&#39;</span>,<span class="nv">title</span>
@@ -328,12 +326,13 @@
 <h2 id="synopsis_1">SYNOPSIS</h2>
 <div class="codehilite"><pre><span></span><code>subroutine get_args_fixed_length(name,value)
 
+ character(len=*),intent(in)  :: name
  character(len=:),allocatable :: value
  character(len=*),intent(in),optional :: delimiters
 </code></pre></div>
 
 <h2 id="description_1">DESCRIPTION</h2>
-<div class="codehilite"><pre><span></span><code><span class="n">GET_ARGS_fixed_length</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="mi">3</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
 <span class="n">keyword</span><span class="w"> </span><span class="n">when</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">fixed</span><span class="o">-</span><span class="n">length</span><span class="w"> </span><span class="n">CHARACTER</span><span class="w"></span>
 <span class="n">variable</span><span class="o">.</span><span class="w"></span>
 </code></pre></div>
@@ -351,19 +350,20 @@
 
 <h2 id="example_1">EXAMPLE</h2>
 <p>Sample program:</p>
-<div class="codehilite"><pre><span></span><code> <span class="nv">program</span> <span class="nv">demo_get_args_fixed_length</span>
- <span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">set_args</span>, <span class="nv">get_args_fixed_length</span>
- <span class="nv">implicit</span> <span class="nv">none</span>
- <span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">ARGS</span>
- <span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span><span class="mi">80</span><span class="ss">)</span>   :: <span class="nv">title</span>
- <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> &amp;</span>
-    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">title</span> <span class="s2">&quot;</span><span class="s">my title</span><span class="s2">&quot;</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
- <span class="o">!</span> <span class="nv">ASSIGN</span> <span class="nv">VALUES</span> <span class="nv">TO</span> <span class="nv">ELEMENTS</span>
-    <span class="k">call</span> <span class="nl">get_args_fixed_length</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">title</span><span class="s1">&#39;</span>,<span class="nv">title</span><span class="ss">)</span>
- <span class="o">!</span> <span class="nv">USE</span> <span class="nv">VALUES</span>
-    <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">title=</span><span class="s1">&#39;</span>,<span class="nv">title</span>
- <span class="k">end</span> <span class="nv">program</span> <span class="nv">demo_get_args_fixed_length</span>
+<div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="n">program</span><span class="w"> </span><span class="n">demo_get_args_fixed_length</span><span class="w"></span>
+<span class="w"> </span><span class="n">use</span><span class="w"> </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="n">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args_fixed_length</span><span class="w"></span>
+<span class="w"> </span><span class="n">implicit</span><span class="w"> </span><span class="n">none</span><span class="w"></span>
+
+<span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">Define</span><span class="w"> </span><span class="n">args</span><span class="w"></span>
+<span class="w"> </span><span class="n">character</span><span class="p">(</span><span class="n">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w">   </span><span class="p">::</span><span class="w"> </span><span class="n">title</span><span class="w"></span>
+<span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">Parse</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">line</span><span class="w"></span>
+<span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; --title &quot;my title&quot; &#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">Assign</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">variables</span><span class="w"></span>
+<span class="w"> </span><span class="n">call</span><span class="w"> </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="o">!</span><span class="w"> </span><span class="n">Use</span><span class="w"> </span><span class="n">values</span><span class="w"></span>
+<span class="w"> </span><span class="n">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;title=&#39;</span><span class="p">,</span><span class="n">title</span><span class="w"></span>
+
+<span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">program</span><span class="w"> </span><span class="n">demo_get_args_fixed_length</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="author_1">AUTHOR</h2>
@@ -383,6 +383,7 @@
 <h2 id="synopsis_2">SYNOPSIS</h2>
 <div class="codehilite"><pre><span></span><code>subroutine get_args_fixed_size(name,value)
 
+ character(len=*),intent(in) :: name
  [real|doubleprecision|integer|logical|complex] :: value(NNN)
     or
  character(len=MMM) :: value(NNN)
@@ -391,10 +392,9 @@
 </code></pre></div>
 
 <h2 id="description_2">DESCRIPTION</h2>
-<div class="codehilite"><pre><span></span><code><span class="nv">GET_ARGS_FIXED_SIZE</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">returns</span> <span class="nv">the</span> <span class="nv">value</span> <span class="nv">of</span> <span class="nv">keywords</span> <span class="k">for</span>
-<span class="nv">fixed</span><span class="o">-</span><span class="nv">size</span> <span class="nv">arrays</span> <span class="nv">after</span> <span class="nv">SET_ARGS</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">has</span> <span class="nv">been</span> <span class="nv">called</span>.
-<span class="nv">On</span> <span class="nv">input</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">command</span> <span class="nv">line</span> <span class="nv">all</span> <span class="nv">values</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">array</span> <span class="nv">must</span>
-<span class="nv">be</span> <span class="nv">specified</span>.
+<div class="codehilite"><pre><span></span><code><span class="nv">get_args_fixed_size</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">returns</span> <span class="nv">the</span> <span class="nv">value</span> <span class="nv">of</span> <span class="nv">keywords</span> <span class="k">for</span> <span class="nv">fixed</span><span class="o">-</span><span class="nv">size</span>
+<span class="nv">arrays</span> <span class="nv">after</span> <span class="nv">set_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">has</span> <span class="nv">been</span> <span class="nv">called</span>.  <span class="nv">On</span> <span class="nv">input</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">command</span>
+<span class="nv">line</span> <span class="nv">all</span> <span class="nv">values</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">array</span> <span class="nv">must</span> <span class="nv">be</span> <span class="nv">specified</span>.
 </code></pre></div>
 
 <h2 id="options_2">OPTIONS</h2>
@@ -540,7 +540,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

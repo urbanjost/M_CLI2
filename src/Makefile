@@ -11,6 +11,7 @@ PROGFILES = \
  ../example/demo7.f90 \
  ../example/demo8.f90 \
  ../example/demo9.f90 \
+ ../example/demo11.f90 \
   \
  ../example/demo12.f90 \
  ../example/demo13.f90 \
@@ -166,9 +167,9 @@ man:
 	: INDEX OF MANPAGES TOPICS
 	@env MANPATH=../man MANWIDTH=256 man -k .|col -b
 	: MANPAGES
-	@env MANPATH=../man MANWIDTH=80  man --regex '.*'|col -b
+	@env MANPATH=../man MANWIDTH=80  man -Tutf8 --regex '.*'|col -b
 	: SPELLING
-	@env MANPATH=../man MANWIDTH=80  man --regex '.*'|col -b|spell|xargs -n 5|column -t
+	@env MANPATH=../man MANWIDTH=80  man -Tutf8 --regex '.*'|col -b|spell|xargs -n 5|column -t
 
 .PHONY: ship
 ship:

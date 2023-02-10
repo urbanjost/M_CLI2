@@ -10,6 +10,8 @@ complex                      :: three(3)  ! fixed-size array
 character(len=*),parameter   :: form='("(",g0,",",g0,"i)":,1x)'
 character(len=*),parameter   :: forms='(*("(",g0,",",g0,"i)":,",",1x))'
 
+   print *,'demo4: COMPLEX argument example'
+
    ! COMPLEX VALUES
    !
    !  o parenthesis are optional and are ignored in complex values.

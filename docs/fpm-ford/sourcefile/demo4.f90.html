@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.5% of total for source files.">18 statements</a>
+               title=" 0.5% of total for source files.">19 statements</a>
           </li>
 
             <li id="source-file">
@@ -219,47 +219,49 @@
 <a id="ln-10" name="ln-10" href="#ln-10"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">form</span><span class="o">=</span><span class="s1">&#39;(&quot;(&quot;,g0,&quot;,&quot;,g0,&quot;i)&quot;:,1x)&#39;</span><span class="w"></span>
 <a id="ln-11" name="ln-11" href="#ln-11"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w">   </span><span class="kd">::</span><span class="w"> </span><span class="n">forms</span><span class="o">=</span><span class="s1">&#39;(*(&quot;(&quot;,g0,&quot;,&quot;,g0,&quot;i)&quot;:,&quot;,&quot;,1x))&#39;</span><span class="w"></span>
 <a id="ln-12" name="ln-12" href="#ln-12"></a>
-<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="c">! COMPLEX VALUES</span>
-<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="w">   </span><span class="c">!</span>
-<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="c">!  o parenthesis are optional and are ignored in complex values.</span>
+<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;demo4: COMPLEX argument example&#39;</span><span class="w"></span>
+<a id="ln-14" name="ln-14" href="#ln-14"></a>
+<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="c">! COMPLEX VALUES</span>
 <a id="ln-16" name="ln-16" href="#ln-16"></a><span class="w">   </span><span class="c">!</span>
-<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="c">!  o base#value is acceptable for base 2 to 32 for whole numbers,</span>
-<a id="ln-18" name="ln-18" href="#ln-18"></a><span class="w">   </span><span class="c">!    which is why &quot;i&quot; is not allowed as a suffix on imaginary values</span>
-<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="w">   </span><span class="c">!    (because some bases include &quot;i&quot; as a digit).</span>
-<a id="ln-20" name="ln-20" href="#ln-20"></a><span class="w">   </span><span class="c">!</span>
-<a id="ln-21" name="ln-21" href="#ln-21"></a><span class="w">   </span><span class="c">!  o normally arrays are allocatable. if a fixed size array is used</span>
-<a id="ln-22" name="ln-22" href="#ln-22"></a><span class="w">   </span><span class="c">!    call get_args_fixed_size(3f) and all the values must be</span>
-<a id="ln-23" name="ln-23" href="#ln-23"></a><span class="w">   </span><span class="c">!    specified. This is useful when you have something that requires</span>
-<a id="ln-24" name="ln-24" href="#ln-24"></a><span class="w">   </span><span class="c">!    a specific number of values. Perhaps a point in space must always</span>
-<a id="ln-25" name="ln-25" href="#ln-25"></a><span class="w">   </span><span class="c">!    have three values, for example.</span>
-<a id="ln-26" name="ln-26" href="#ln-26"></a><span class="w">   </span><span class="c">!</span>
-<a id="ln-27" name="ln-27" href="#ln-27"></a><span class="w">   </span><span class="c">!  o default delimiters are whitespace, comma and colon. Note that</span>
-<a id="ln-28" name="ln-28" href="#ln-28"></a><span class="w">   </span><span class="c">!    whitespace delimiters should not be used in the definition,</span>
-<a id="ln-29" name="ln-29" href="#ln-29"></a><span class="w">   </span><span class="c">!    but are OK on command input if the entire parameter value is</span>
-<a id="ln-30" name="ln-30" href="#ln-30"></a><span class="w">   </span><span class="c">!    quoted. Using space delimiters in the prototype definition is</span>
-<a id="ln-31" name="ln-31" href="#ln-31"></a><span class="w">   </span><span class="c">!    not supported (but works) and requires that the value be quoted</span>
-<a id="ln-32" name="ln-32" href="#ln-32"></a><span class="w">   </span><span class="c">!    on input in common shells. Adjacent delimiters are treated as</span>
-<a id="ln-33" name="ln-33" href="#ln-33"></a><span class="w">   </span><span class="c">!    a single delimiter.</span>
-<a id="ln-34" name="ln-34" href="#ln-34"></a><span class="w">   </span><span class="c">!</span>
-<a id="ln-35" name="ln-35" href="#ln-35"></a><span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x (1,2) -y 10,20 -z (2#111,16#-AB) -three 1,2,3,4,5,6 -aarr 111::222,333::444&#39;</span><span class="p">)</span><span class="w"></span>
-<a id="ln-36" name="ln-36" href="#ln-36"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
-<a id="ln-37" name="ln-37" href="#ln-37"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
-<a id="ln-38" name="ln-38" href="#ln-38"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="w"></span>
-<a id="ln-39" name="ln-39" href="#ln-39"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">,</span><span class="n">three</span><span class="p">)</span><span class="w"></span>
-<a id="ln-40" name="ln-40" href="#ln-40"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;aarr&#39;</span><span class="p">,</span><span class="n">aarr</span><span class="p">)</span><span class="w"></span>
-<a id="ln-41" name="ln-41" href="#ln-41"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">form</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="w"></span>
-<a id="ln-42" name="ln-42" href="#ln-42"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">three</span><span class="w"></span>
-<a id="ln-43" name="ln-43" href="#ln-43"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">aarr</span><span class="w"></span>
-<a id="ln-44" name="ln-44" href="#ln-44"></a><span class="k">end program </span><span class="n">demo4</span><span class="w"></span>
-<a id="ln-45" name="ln-45" href="#ln-45"></a><span class="c">!</span>
-<a id="ln-46" name="ln-46" href="#ln-46"></a><span class="c">! expected output:</span>
+<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="c">!  o parenthesis are optional and are ignored in complex values.</span>
+<a id="ln-18" name="ln-18" href="#ln-18"></a><span class="w">   </span><span class="c">!</span>
+<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="w">   </span><span class="c">!  o base#value is acceptable for base 2 to 32 for whole numbers,</span>
+<a id="ln-20" name="ln-20" href="#ln-20"></a><span class="w">   </span><span class="c">!    which is why &quot;i&quot; is not allowed as a suffix on imaginary values</span>
+<a id="ln-21" name="ln-21" href="#ln-21"></a><span class="w">   </span><span class="c">!    (because some bases include &quot;i&quot; as a digit).</span>
+<a id="ln-22" name="ln-22" href="#ln-22"></a><span class="w">   </span><span class="c">!</span>
+<a id="ln-23" name="ln-23" href="#ln-23"></a><span class="w">   </span><span class="c">!  o normally arrays are allocatable. if a fixed size array is used</span>
+<a id="ln-24" name="ln-24" href="#ln-24"></a><span class="w">   </span><span class="c">!    call get_args_fixed_size(3f) and all the values must be</span>
+<a id="ln-25" name="ln-25" href="#ln-25"></a><span class="w">   </span><span class="c">!    specified. This is useful when you have something that requires</span>
+<a id="ln-26" name="ln-26" href="#ln-26"></a><span class="w">   </span><span class="c">!    a specific number of values. Perhaps a point in space must always</span>
+<a id="ln-27" name="ln-27" href="#ln-27"></a><span class="w">   </span><span class="c">!    have three values, for example.</span>
+<a id="ln-28" name="ln-28" href="#ln-28"></a><span class="w">   </span><span class="c">!</span>
+<a id="ln-29" name="ln-29" href="#ln-29"></a><span class="w">   </span><span class="c">!  o default delimiters are whitespace, comma and colon. Note that</span>
+<a id="ln-30" name="ln-30" href="#ln-30"></a><span class="w">   </span><span class="c">!    whitespace delimiters should not be used in the definition,</span>
+<a id="ln-31" name="ln-31" href="#ln-31"></a><span class="w">   </span><span class="c">!    but are OK on command input if the entire parameter value is</span>
+<a id="ln-32" name="ln-32" href="#ln-32"></a><span class="w">   </span><span class="c">!    quoted. Using space delimiters in the prototype definition is</span>
+<a id="ln-33" name="ln-33" href="#ln-33"></a><span class="w">   </span><span class="c">!    not supported (but works) and requires that the value be quoted</span>
+<a id="ln-34" name="ln-34" href="#ln-34"></a><span class="w">   </span><span class="c">!    on input in common shells. Adjacent delimiters are treated as</span>
+<a id="ln-35" name="ln-35" href="#ln-35"></a><span class="w">   </span><span class="c">!    a single delimiter.</span>
+<a id="ln-36" name="ln-36" href="#ln-36"></a><span class="w">   </span><span class="c">!</span>
+<a id="ln-37" name="ln-37" href="#ln-37"></a><span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x (1,2) -y 10,20 -z (2#111,16#-AB) -three 1,2,3,4,5,6 -aarr 111::222,333::444&#39;</span><span class="p">)</span><span class="w"></span>
+<a id="ln-38" name="ln-38" href="#ln-38"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
+<a id="ln-39" name="ln-39" href="#ln-39"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
+<a id="ln-40" name="ln-40" href="#ln-40"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="w"></span>
+<a id="ln-41" name="ln-41" href="#ln-41"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args_fixed_size</span><span class="p">(</span><span class="s1">&#39;three&#39;</span><span class="p">,</span><span class="n">three</span><span class="p">)</span><span class="w"></span>
+<a id="ln-42" name="ln-42" href="#ln-42"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;aarr&#39;</span><span class="p">,</span><span class="n">aarr</span><span class="p">)</span><span class="w"></span>
+<a id="ln-43" name="ln-43" href="#ln-43"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">form</span><span class="p">)</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="w"></span>
+<a id="ln-44" name="ln-44" href="#ln-44"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">three</span><span class="w"></span>
+<a id="ln-45" name="ln-45" href="#ln-45"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">forms</span><span class="p">)</span><span class="n">aarr</span><span class="w"></span>
+<a id="ln-46" name="ln-46" href="#ln-46"></a><span class="k">end program </span><span class="n">demo4</span><span class="w"></span>
 <a id="ln-47" name="ln-47" href="#ln-47"></a><span class="c">!</span>
-<a id="ln-48" name="ln-48" href="#ln-48"></a><span class="c">! (1.00000000,2.00000000i)</span>
-<a id="ln-49" name="ln-49" href="#ln-49"></a><span class="c">! (10.0000000,20.0000000i)</span>
-<a id="ln-50" name="ln-50" href="#ln-50"></a><span class="c">! (7.00000000,-171.000000i)</span>
-<a id="ln-51" name="ln-51" href="#ln-51"></a><span class="c">! (18.0000000,-149.000000i)</span>
-<a id="ln-52" name="ln-52" href="#ln-52"></a><span class="c">! (1.00000000,2.00000000i), (3.00000000,4.00000000i), (5.00000000,6.00000000i)</span>
-<a id="ln-53" name="ln-53" href="#ln-53"></a><span class="c">! (111.000000,222.000000i), (333.000000,444.000000i)</span>
+<a id="ln-48" name="ln-48" href="#ln-48"></a><span class="c">! expected output:</span>
+<a id="ln-49" name="ln-49" href="#ln-49"></a><span class="c">!</span>
+<a id="ln-50" name="ln-50" href="#ln-50"></a><span class="c">! (1.00000000,2.00000000i)</span>
+<a id="ln-51" name="ln-51" href="#ln-51"></a><span class="c">! (10.0000000,20.0000000i)</span>
+<a id="ln-52" name="ln-52" href="#ln-52"></a><span class="c">! (7.00000000,-171.000000i)</span>
+<a id="ln-53" name="ln-53" href="#ln-53"></a><span class="c">! (18.0000000,-149.000000i)</span>
+<a id="ln-54" name="ln-54" href="#ln-54"></a><span class="c">! (1.00000000,2.00000000i), (3.00000000,4.00000000i), (5.00000000,6.00000000i)</span>
+<a id="ln-55" name="ln-55" href="#ln-55"></a><span class="c">! (111.000000,222.000000i), (333.000000,444.000000i)</span>
 </pre></div>
 
     </section>
@@ -278,7 +280,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

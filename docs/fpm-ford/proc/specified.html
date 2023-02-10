@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 3.8% of total for procedures.">11 statements</a>
+               title=" 2.9% of total for procedures.">11 statements</a>
           </li>
 
             <li id="source-file">
@@ -170,10 +170,21 @@
 <h2 id="description">DESCRIPTION</h2>
 <div class="codehilite"><pre><span></span><code><span class="nv">specified</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">returns</span> .<span class="nv">true</span>. <span class="k">if</span> <span class="nv">the</span> <span class="nv">specified</span> <span class="nv">keyword</span> <span class="nv">was</span> <span class="nv">present</span> <span class="nv">on</span>
 <span class="nv">the</span> <span class="nv">command</span> <span class="nv">line</span>.
+
+<span class="nv">M_CLI2</span> <span class="nv">intentionally</span> <span class="nv">does</span> <span class="nv">not</span> <span class="nv">have</span> <span class="nv">validators</span> <span class="nv">except</span> <span class="k">for</span> <span class="nv">SPECIFIED</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span>
+<span class="nv">and</span> <span class="nv">of</span> <span class="nv">course</span> <span class="nv">a</span> <span class="nv">check</span> <span class="nv">whether</span> <span class="nv">the</span> <span class="nv">input</span> <span class="nv">conforms</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">type</span> <span class="nv">when</span>
+<span class="nv">requesting</span> <span class="nv">a</span> <span class="nv">value</span> <span class="ss">(</span><span class="nv">with</span> <span class="nv">get_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">the</span> <span class="nv">convenience</span> <span class="nv">functions</span>
+<span class="nv">like</span> <span class="nv">inum</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">))</span>.
+
+<span class="nv">Fortran</span> <span class="nv">already</span> <span class="nv">has</span> <span class="nv">powerful</span> <span class="nv">validation</span> <span class="nv">capabilities</span>.  <span class="nv">Logical</span>
+<span class="nv">expressions</span> <span class="nv">ANY</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">and</span> <span class="nv">ALL</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">are</span> <span class="nv">standard</span> <span class="nv">Fortran</span> <span class="nv">features</span> <span class="nv">which</span>
+<span class="nv">easily</span> <span class="nv">allow</span> <span class="nv">performing</span> <span class="nv">the</span> <span class="nv">common</span> <span class="nv">validations</span> <span class="k">for</span> <span class="nv">command</span> <span class="nv">line</span>
+<span class="nv">arguments</span> <span class="nv">without</span> <span class="nv">having</span> <span class="nv">to</span> <span class="nv">learn</span> <span class="nv">any</span> <span class="nv">additional</span> <span class="nv">syntax</span> <span class="nv">or</span> <span class="nv">methods</span>.
 </code></pre></div>
 
 <h2 id="options">OPTIONS</h2>
-<div class="codehilite"><pre><span></span><code>NAME   name of commandline argument to query the presence of
+<div class="codehilite"><pre><span></span><code>NAME   name of commandline argument to query the presence of. Long
+       names should always be used.
 </code></pre></div>
 
 <h2 id="returns">RETURNS</h2>
@@ -184,50 +195,104 @@
 <h2 id="example">EXAMPLE</h2>
 <p>Sample program:</p>
 <div class="codehilite"><pre><span></span><code><span class="nv">program</span> <span class="nv">demo_specified</span>
-<span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">set_args</span>, <span class="nv">get_args</span>, <span class="nv">specified</span>
+<span class="nv">use</span>, <span class="nv">intrinsic</span> :: <span class="nv">iso_fortran_env</span>, <span class="nv">only</span> : <span class="o">&amp;</span>
+<span class="o">&amp;</span> <span class="nv">stderr</span><span class="o">=&gt;</span><span class="nv">ERROR_UNIT</span>, <span class="nv">stdin</span><span class="o">=&gt;</span><span class="nv">INPUT_UNIT</span>, <span class="nv">stdout</span><span class="o">=&gt;</span><span class="nv">OUTPUT_UNIT</span>
+<span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">set_args</span>, <span class="nv">igets</span>, <span class="nv">rgets</span>, <span class="nv">specified</span>, <span class="nv">sget</span>, <span class="nv">lget</span>
 <span class="nv">implicit</span> <span class="nv">none</span>
-<span class="o">!</span> <span class="nv">DEFINE</span> <span class="nv">ARGS</span>
-<span class="nv">integer</span>                 :: <span class="nv">flag</span>
-<span class="nv">integer</span>,<span class="nv">allocatable</span>     :: <span class="nv">ints</span><span class="ss">(</span>:<span class="ss">)</span>
-<span class="nv">real</span>,<span class="nv">allocatable</span>        :: <span class="nv">two_names</span><span class="ss">(</span>:<span class="ss">)</span>
 
-<span class="o">!</span> <span class="nv">IT</span> <span class="nv">IS</span> <span class="nv">A</span> <span class="nv">BAD</span> <span class="nv">IDEA</span> <span class="nv">TO</span> <span class="nv">NOT</span> <span class="nv">HAVE</span> <span class="nv">THE</span> <span class="nv">SAME</span> <span class="nv">DEFAULT</span> <span class="nv">VALUE</span> <span class="k">FOR</span> <span class="nv">ALIASED</span>
-<span class="o">!</span> <span class="nv">NAMES</span> <span class="nv">BUT</span> <span class="nv">CURRENTLY</span> <span class="nv">YOU</span> <span class="nv">STILL</span> <span class="nv">SPECIFY</span> <span class="nv">THEM</span>
+<span class="o">!</span> <span class="nv">Define</span> <span class="nv">args</span>
+<span class="nv">integer</span>,<span class="nv">allocatable</span>  :: <span class="nv">ints</span><span class="ss">(</span>:<span class="ss">)</span>
+<span class="nv">real</span>,<span class="nv">allocatable</span>     :: <span class="nv">floats</span><span class="ss">(</span>:<span class="ss">)</span>
+<span class="nv">logical</span>              :: <span class="nv">flag</span>
+<span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span>:<span class="ss">)</span>,<span class="nv">allocatable</span> :: <span class="nv">color</span>
+<span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span>:<span class="ss">)</span>,<span class="nv">allocatable</span> :: <span class="nv">list</span><span class="ss">(</span>:<span class="ss">)</span>
+<span class="nv">integer</span> :: <span class="nv">i</span>
+
  <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">flag</span> <span class="mi">1</span> <span class="o">-</span><span class="nv">f</span> <span class="mi">1</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">ints</span> <span class="mi">1</span>,<span class="mi">2</span>,<span class="mi">3</span> <span class="o">-</span><span class="nv">i</span> <span class="mi">1</span>,<span class="mi">2</span>,<span class="mi">3</span> <span class="o">&amp;</span>
-    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">two_names</span> <span class="mi">11</span>.<span class="mi">3</span> <span class="o">-</span><span class="nv">T</span> <span class="mi">11</span>.<span class="mi">3</span><span class="s1">&#39;</span><span class="s">)</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">color</span>:<span class="nv">c</span> <span class="s2">&quot;</span><span class="s">red</span><span class="s2">&quot;</span>       <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">flag</span>:<span class="nv">f</span> <span class="nv">F</span>            <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">ints</span>:<span class="nv">i</span> <span class="mi">1</span>,<span class="mi">10</span>,<span class="mi">11</span>      <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">floats</span>:<span class="nv">T</span> <span class="mi">12</span>.<span class="mi">3</span>, <span class="mi">4</span>.<span class="mi">56</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
+ <span class="nv">ints</span><span class="o">=</span><span class="nv">igets</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">ints</span><span class="s1">&#39;</span><span class="ss">)</span>
+ <span class="nv">floats</span><span class="o">=</span><span class="nv">rgets</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span><span class="ss">)</span>
+ <span class="nv">flag</span><span class="o">=</span><span class="nv">lget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">flag</span><span class="s1">&#39;</span><span class="ss">)</span>
+ <span class="nv">color</span><span class="o">=</span><span class="nv">sget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">color</span><span class="s1">&#39;</span><span class="ss">)</span>
 
-<span class="o">!</span> <span class="nv">ASSIGN</span> <span class="nv">VALUES</span> <span class="nv">TO</span> <span class="nv">ELEMENTS</span> <span class="nv">CONDITIONALLY</span> <span class="nv">CALLING</span> <span class="nv">WITH</span> <span class="nv">SHORT</span> <span class="nv">NAME</span>
- <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">flag</span><span class="s1">&#39;</span>,<span class="nv">flag</span><span class="ss">)</span>
- <span class="k">if</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">f</span><span class="s1">&#39;</span><span class="ss">))</span><span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">f</span><span class="s1">&#39;</span>,<span class="nv">flag</span><span class="ss">)</span>
- <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">ints</span><span class="s1">&#39;</span>,<span class="nv">ints</span><span class="ss">)</span>
- <span class="k">if</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">i</span><span class="s1">&#39;</span><span class="ss">))</span><span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">i</span><span class="s1">&#39;</span>,<span class="nv">ints</span><span class="ss">)</span>
- <span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">two_names</span><span class="s1">&#39;</span>,<span class="nv">two_names</span><span class="ss">)</span>
- <span class="k">if</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">T</span><span class="s1">&#39;</span><span class="ss">))</span><span class="k">call</span> <span class="nl">get_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">T</span><span class="s1">&#39;</span>,<span class="nv">two_names</span><span class="ss">)</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">color=</span><span class="s1">&#39;</span>,<span class="nv">color</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">flag=</span><span class="s1">&#39;</span>,<span class="nv">flag</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints=</span><span class="s1">&#39;</span>,<span class="nv">ints</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">floats=</span><span class="s1">&#39;</span>,<span class="nv">floats</span>
 
- <span class="o">!</span> <span class="k">IF</span> <span class="nv">YOU</span> <span class="nv">WANT</span> <span class="nv">TO</span> <span class="nv">KNOW</span> <span class="k">IF</span> <span class="nv">GROUPS</span> <span class="nv">OF</span> <span class="nv">PARAMETERS</span> <span class="nv">WERE</span> <span class="nv">SPECIFIED</span> <span class="nv">USE</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">was -flag specified?</span><span class="s1">&#39;</span>,<span class="nv">specified</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">flag</span><span class="s1">&#39;</span><span class="ss">)</span>
+
+ <span class="o">!</span> <span class="nv">elemental</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">)</span>
+
+ <span class="o">!</span> <span class="k">If</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">know</span> <span class="k">if</span> <span class="nv">groups</span> <span class="nv">of</span> <span class="nv">parameters</span> <span class="nv">were</span> <span class="nv">specified</span> <span class="nv">use</span>
  <span class="o">!</span> <span class="nv">ANY</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">and</span> <span class="nv">ALL</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span>
- <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">two_names</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">T        </span><span class="s1">&#39;</span>]<span class="ss">)</span>
- <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ANY:</span><span class="s1">&#39;</span>,<span class="nv">any</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">two_names</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">T        </span><span class="s1">&#39;</span>]<span class="ss">))</span>
- <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ALL:</span><span class="s1">&#39;</span>,<span class="nv">all</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">two_names</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">T        </span><span class="s1">&#39;</span>]<span class="ss">))</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ANY:</span><span class="s1">&#39;</span>,<span class="nv">any</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">))</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ALL:</span><span class="s1">&#39;</span>,<span class="nv">all</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">))</span>
 
- <span class="o">!</span> <span class="k">FOR</span> <span class="nv">MUTUALLY</span> <span class="nv">EXCLUSIVE</span>
- <span class="k">if</span> <span class="ss">(</span><span class="nv">all</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">two_names</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">T        </span><span class="s1">&#39;</span>]<span class="ss">)))</span><span class="k">then</span>
-     <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">You specified both names -T and -two_names</span><span class="s1">&#39;</span>
+ <span class="o">!</span> <span class="k">For</span> <span class="nv">mutually</span> <span class="nv">exclusive</span>
+ <span class="k">if</span> <span class="ss">(</span><span class="nv">all</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">)))</span><span class="k">then</span>
+     <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">You specified both names --ints and --floats</span><span class="s1">&#39;</span>
  <span class="k">endif</span>
 
- <span class="o">!</span> <span class="k">FOR</span> <span class="nv">REQUIRED</span> <span class="nv">PARAMETER</span>
- <span class="k">if</span> <span class="ss">(</span>.<span class="nv">not</span>.<span class="nv">any</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">two_names</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">T        </span><span class="s1">&#39;</span>]<span class="ss">)))</span><span class="k">then</span>
-     <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">You must specify -T or -two_names</span><span class="s1">&#39;</span>
+ <span class="o">!</span> <span class="k">For</span> <span class="nv">required</span> <span class="nv">parameter</span>
+ <span class="k">if</span> <span class="ss">(</span>.<span class="nv">not</span>.<span class="nv">any</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">)))</span><span class="k">then</span>
+     <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">You must specify --ints or --floats</span><span class="s1">&#39;</span>
  <span class="k">endif</span>
- <span class="o">!</span> <span class="nv">USE</span> <span class="nv">VALUES</span>
-   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">flag=</span><span class="s1">&#39;</span>,<span class="nv">flag</span>
-   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints=</span><span class="s1">&#39;</span>,<span class="nv">ints</span>
-   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">two_names=</span><span class="s1">&#39;</span>,<span class="nv">two_names</span>
- <span class="k">end</span> <span class="nv">program</span> <span class="nv">demo_specified</span>
+
+<span class="o">!</span> <span class="nv">check</span> <span class="k">if</span> <span class="nv">all</span> <span class="nv">values</span> <span class="nv">are</span> <span class="nv">in</span> <span class="nv">range</span> <span class="nv">from</span> <span class="mi">10</span> <span class="nv">to</span> <span class="mi">30</span> <span class="nv">and</span> <span class="nv">even</span>
+<span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">are all numbers good?</span><span class="s1">&#39;</span>,<span class="nv">all</span><span class="ss">(</span>[<span class="nv">ints</span> <span class="o">&gt;=</span> <span class="mi">10</span>,<span class="nv">ints</span> <span class="o">&lt;=</span> <span class="mi">30</span>,<span class="ss">(</span><span class="nv">ints</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">==</span> <span class="nv">ints</span>]<span class="ss">)</span>
+
+<span class="o">!</span> <span class="nv">perhaps</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">check</span> <span class="nv">one</span> <span class="nv">value</span> <span class="nv">at</span> <span class="nv">a</span> <span class="nv">time</span>
+<span class="k">do</span> <span class="nv">i</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">size</span><span class="ss">(</span><span class="nv">ints</span><span class="ss">)</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>,[<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&gt;=</span> <span class="mi">10</span>,<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&lt;=</span> <span class="mi">30</span>,<span class="ss">(</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">==</span> <span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>]
+   <span class="k">if</span><span class="ss">(</span><span class="nv">all</span><span class="ss">(</span>[<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&gt;=</span> <span class="mi">10</span>,<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&lt;=</span> <span class="mi">30</span>,<span class="ss">(</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">==</span> <span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>]<span class="ss">)</span> <span class="ss">)</span><span class="k">then</span>
+      <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>,<span class="s1">&#39;</span><span class="s">is an even number from 10 to 30 inclusive</span><span class="s1">&#39;</span>
+   <span class="k">else</span>
+      <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>,<span class="s1">&#39;</span><span class="s">is not an even number from 10 to 30 inclusive</span><span class="s1">&#39;</span>
+   <span class="k">endif</span>
+<span class="nv">enddo</span>
+
+<span class="nv">list</span> <span class="o">=</span> [<span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span><span class="mi">10</span><span class="ss">)</span> :: <span class="s1">&#39;</span><span class="s">red</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">white</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">blue</span><span class="s1">&#39;</span>]
+<span class="k">if</span><span class="ss">(</span> <span class="nv">any</span><span class="ss">(</span><span class="nv">color</span> <span class="o">==</span> <span class="nv">list</span><span class="ss">)</span> <span class="ss">)</span><span class="k">then</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">color</span>,<span class="s1">&#39;</span><span class="s">matches a value in the list</span><span class="s1">&#39;</span>
+<span class="k">else</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">color</span>,<span class="s1">&#39;</span><span class="s">not in the list</span><span class="s1">&#39;</span>
+<span class="k">endif</span>
+
+<span class="k">if</span><span class="ss">(</span><span class="nv">size</span><span class="ss">(</span><span class="nv">ints</span><span class="ss">)</span>.<span class="nv">eq</span>.<span class="mi">3</span><span class="ss">)</span><span class="k">then</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints(:) has expected number of values</span><span class="s1">&#39;</span>
+<span class="k">else</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints(:) does not have expected number of values</span><span class="s1">&#39;</span>
+<span class="k">endif</span>
+
+<span class="k">end</span> <span class="nv">program</span> <span class="nv">demo_specified</span>
 </code></pre></div>
 
+<p>Default output</p>
+<blockquote>
+<p>color=red
+flag= F
+ints=           1          10          11
+floats=   12.3000002       4.55999994
+was -flag specified? F
+F F
+ANY: F
+ALL: F
+You must specify &ndash;ints or &ndash;floats
+          1 F T F
+          1  is not an even number from 10 to 30 inclusive
+         10 T T T
+         10  is an even number from 10 to 30 inclusive
+         11 T T F
+         11  is not an even number from 10 to 30 inclusive
+red matches a value in the list
+ints(:) has expected number of values</p>
+</blockquote>
 <h2 id="author">AUTHOR</h2>
 <div class="codehilite"><pre><span></span><code>  John S. Urban, 2019
 </code></pre></div>
@@ -348,7 +413,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

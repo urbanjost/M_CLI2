@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 2.5% of total for programs.">12 statements</a>
+               title=" 1.5% of total for programs.">13 statements</a>
           </li>
 
             <li id="source-file">
@@ -125,7 +125,7 @@
       </div>
       <div id="vars-0" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../program/demo9.html#variable-all~4">all</a>
+            <a class="list-group-item" href="../program/demo9.html#variable-all~2">all</a>
         </div>
       </div>
     </div>
@@ -174,9 +174,9 @@
     </div>
 
     <p>@(#) long and short names using &ndash;LONGNAME:SHORTNAME</p>
-<p>When all keys have a long and short name &ldquo;strict mode&rdquo; is invoked where
- &ldquo;-&rdquo; is required for short names; and Boolean values may be bundled
- together. For example:</p>
+<p>When all keys have a long and short name and &ldquo;strict mode&rdquo; is invoked
+ where &ldquo;-&rdquo; is required for short names and &ldquo;&ndash;&rdquo; for long names Boolean
+ values may be bundled together. For example:</p>
 <p>demo9 -XYZ</p>
 <br>
      <section class="visible-xs visible-sm hidden-md">
@@ -190,7 +190,7 @@
       </div>
       <div id="vars-1" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../program/demo9.html#variable-all~4">all</a>
+            <a class="list-group-item" href="../program/demo9.html#variable-all~2">all</a>
         </div>
       </div>
     </div>
@@ -238,7 +238,7 @@
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-all~4"></span>
+              <span class="anchor" id="variable-all~2"></span>
               character(len=*),
             </td>
             <td>
@@ -270,15 +270,18 @@ parameter
     <div class="highlight"><pre><span></span><span class="k">program </span><span class="n">demo9</span><span class="w"></span>
 <span class="c">!&gt; @(#) long and short names using --LONGNAME:SHORTNAME</span>
 <span class="c">!!</span>
-<span class="c">!!  When all keys have a long and short name &quot;strict mode&quot; is invoked where</span>
-<span class="c">!!  &quot;-&quot; is required for short names; and Boolean values may be bundled</span>
-<span class="c">!!  together. For example:</span>
+<span class="c">!!  When all keys have a long and short name and &quot;strict mode&quot; is invoked</span>
+<span class="c">!!  where &quot;-&quot; is required for short names and &quot;--&quot; for long names Boolean</span>
+<span class="c">!!  values may be bundled together. For example:</span>
 <span class="c">!!</span>
 <span class="c">!!    demo9 -XYZ</span>
 <span class="c">!!</span>
-<span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="w"></span>
+<span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="p">,</span><span class="w"> </span><span class="n">set_mode</span><span class="w"></span>
 <span class="k">implicit none</span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="k">all</span><span class="o">=</span><span class="s1">&#39;(*(g0))&#39;</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;demo9: long and short names using --LONGNAME:SHORTNAME&#39;</span><span class="w"></span>
+<span class="w">   </span><span class="c">!call set_mode(&#39;strict&#39;)</span>
 <span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;    &amp;</span>
 <span class="s1">   &amp; --length:l 10    &amp;</span>
 <span class="s1">   &amp; --height:h 12.45 &amp;</span>
@@ -312,7 +315,7 @@ parameter
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

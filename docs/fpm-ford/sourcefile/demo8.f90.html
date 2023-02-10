@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.3% of total for source files.">12 statements</a>
+               title=" 0.4% of total for source files.">13 statements</a>
           </li>
 
             <li id="source-file">
@@ -216,16 +216,22 @@
 <a id="ln-7" name="ln-7" href="#ln-7"></a><span class="kt">real</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">size</span><span class="w"></span>
 <a id="ln-8" name="ln-8" href="#ln-8"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">title</span><span class="w"></span>
 <a id="ln-9" name="ln-9" href="#ln-9"></a><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">parameter</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">pairs</span><span class="o">=</span><span class="s1">&#39;(1(&quot;[&quot;,g0,&quot;=&quot;,g0,&quot;]&quot;:,1x))&#39;</span><span class="w"></span>
-<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="w">   </span><span class="c">! DEFINE COMMAND AND PARSE COMMAND LINE</span>
-<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="w">   </span><span class="c">! set all values, double-quote strings</span>
-<a id="ln-12" name="ln-12" href="#ln-12"></a><span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 10 --size 12.34567 -l F --title &quot;my title&quot;&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
-<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="c">! GET THE VALUES</span>
-<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="w">   </span><span class="c">! only fixed scalar values (including only character variables that</span>
-<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="c">! are fixed length) may be combined in one GET_ARGS(3f) call</span>
-<a id="ln-16" name="ln-16" href="#ln-16"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span><span class="w"></span>
-<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="c">! USE THE VALUES</span>
-<a id="ln-18" name="ln-18" href="#ln-18"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="n">pairs</span><span class="p">)</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="s1">&#39;TITLE&#39;</span><span class="p">,</span><span class="n">title</span><span class="w"></span>
-<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="k">end program </span><span class="n">demo8</span><span class="w"></span>
+<a id="ln-10" name="ln-10" href="#ln-10"></a>
+<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;demo8: Sometimes you can put multiple values on getargs(3f)&#39;</span><span class="w"></span>
+<a id="ln-12" name="ln-12" href="#ln-12"></a>
+<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="c">! DEFINE COMMAND AND PARSE COMMAND LINE</span>
+<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="w">   </span><span class="c">! set all values, double-quote strings</span>
+<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 10 --size 12.34567 -l F --title &quot;my title&quot;&#39;</span><span class="w"> </span><span class="p">)</span><span class="w"></span>
+<a id="ln-16" name="ln-16" href="#ln-16"></a>
+<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="c">! GET THE VALUES</span>
+<a id="ln-18" name="ln-18" href="#ln-18"></a><span class="w">   </span><span class="c">! only fixed scalar values (including only character variables that</span>
+<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="w">   </span><span class="c">! are fixed length) may be combined in one GET_ARGS(3f) call</span>
+<a id="ln-20" name="ln-20" href="#ln-20"></a><span class="w">   </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span><span class="w"></span>
+<a id="ln-21" name="ln-21" href="#ln-21"></a>
+<a id="ln-22" name="ln-22" href="#ln-22"></a><span class="w">   </span><span class="c">! USE THE VALUES</span>
+<a id="ln-23" name="ln-23" href="#ln-23"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="n">pairs</span><span class="p">)</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;size&#39;</span><span class="p">,</span><span class="n">size</span><span class="p">,</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="s1">&#39;TITLE&#39;</span><span class="p">,</span><span class="n">title</span><span class="w"></span>
+<a id="ln-24" name="ln-24" href="#ln-24"></a>
+<a id="ln-25" name="ln-25" href="#ln-25"></a><span class="k">end program </span><span class="n">demo8</span><span class="w"></span>
 </pre></div>
 
     </section>
@@ -244,7 +250,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

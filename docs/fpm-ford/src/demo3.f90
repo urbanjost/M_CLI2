@@ -6,9 +6,17 @@ integer                      :: x, y
 logical                      :: l
 real                         :: size
 character(len=:),allocatable :: title
+
+   print *,'demo3: just the bare essentials'
+
+   ! define the command, set default values and read the command line
    call set_args('-x 1 -y 10 --size 12.34567  -l F --title "my title"')
+
+   ! get the values
    call get_args('x',x, 'y',y,'l',l, 'size',size) ! all the non-allocatables
-   call get_args('title',title)
-   ! Done. all variables set and of the right type
+   call get_args('title',title) ! do allocatables one at a time
+
+   ! Done. All variables set and of the requested type
    write(*,'(*("[",g0,"]":,1x))')x,y,size,l,title
+
 end program demo3

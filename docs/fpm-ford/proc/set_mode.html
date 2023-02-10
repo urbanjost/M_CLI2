@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 8.2% of total for procedures.">24 statements</a>
+               title=" 7.6% of total for procedures.">29 statements</a>
           </li>
 
             <li id="source-file">
@@ -172,12 +172,25 @@
 
 <h2 id="options">OPTIONS</h2>
 <div class="codehilite"><pre><span></span><code><span class="nv">KEY</span>    <span class="nv">name</span> <span class="nv">of</span> <span class="nv">option</span>
-  <span class="nv">o</span>  <span class="nv">response_file</span> <span class="o">-</span> <span class="nv">enable</span> <span class="nv">use</span> <span class="nv">of</span> <span class="nv">response</span> <span class="nv">file</span>
-  <span class="nv">o</span>  <span class="nv">ignorecase</span> <span class="o">-</span> <span class="nv">ignore</span> <span class="nv">case</span> <span class="nv">in</span> <span class="nv">long</span> <span class="nv">key</span> <span class="nv">names</span>
-  <span class="nv">o</span>  <span class="nv">underdash</span>  <span class="o">-</span> <span class="nv">treat</span> <span class="nv">dash</span> <span class="nv">in</span> <span class="nv">keyname</span> <span class="nv">as</span> <span class="nv">an</span> <span class="nv">underscore</span>
-  <span class="nv">o</span>  <span class="nv">strict</span> <span class="o">-</span> <span class="nv">allow</span> <span class="nv">boolean</span> <span class="nv">keys</span> <span class="nv">to</span> <span class="nv">be</span> <span class="nv">bundled</span>, <span class="nv">but</span> <span class="nv">requires</span>
-     <span class="nv">a</span> <span class="nv">single</span> <span class="nv">dash</span> <span class="nv">prefix</span> <span class="nv">be</span> <span class="nv">used</span> <span class="k">for</span> <span class="nv">short</span> <span class="nv">key</span> <span class="nv">names</span> <span class="nv">and</span>
-     <span class="nv">long</span> <span class="nv">names</span> <span class="nv">to</span> <span class="nv">be</span> <span class="nv">prefixed</span> <span class="nv">with</span> <span class="nv">two</span> <span class="nv">dashes</span>.
+
+<span class="nv">The</span> <span class="nv">following</span> <span class="nv">values</span> <span class="nv">are</span> <span class="nv">allowed</span>:
+
+<span class="nv">o</span>  <span class="nv">response_file</span> <span class="o">-</span> <span class="nv">enable</span> <span class="nv">use</span> <span class="nv">of</span> <span class="nv">response</span> <span class="nv">file</span>
+
+<span class="nv">o</span>  <span class="nv">ignorecase</span> <span class="o">-</span> <span class="nv">ignore</span> <span class="nv">case</span> <span class="nv">in</span> <span class="nv">long</span> <span class="nv">key</span> <span class="nv">names</span>. <span class="nv">So</span> <span class="nv">the</span> <span class="nv">user</span>
+   <span class="nv">does</span> <span class="nv">not</span> <span class="nv">have</span> <span class="nv">to</span> <span class="nv">remember</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">option</span> <span class="nv">is</span> <span class="o">--</span><span class="nv">IgnoreCase</span>
+   <span class="nv">or</span> <span class="o">--</span><span class="nv">ignorecase</span> <span class="nv">or</span> <span class="o">--</span><span class="nv">ignoreCase</span>
+
+<span class="nv">o</span>  <span class="nv">underdash</span>  <span class="o">-</span> <span class="nv">treat</span> <span class="nv">dash</span> <span class="nv">in</span> <span class="nv">keyword</span> <span class="nv">as</span> <span class="nv">an</span> <span class="nv">underscore</span>.
+   <span class="nv">So</span> <span class="nv">the</span> <span class="nv">user</span> <span class="nv">should</span> <span class="nv">not</span> <span class="nv">have</span> <span class="nv">to</span> <span class="nv">remember</span> <span class="k">if</span> <span class="nv">the</span> <span class="nv">option</span> <span class="nv">is</span>
+   <span class="o">--</span><span class="nv">ignore_case</span> <span class="nv">or</span> <span class="o">--</span><span class="nv">ignore</span><span class="o">-</span><span class="nv">case</span>.
+
+<span class="nv">o</span>  <span class="nv">strict</span> <span class="o">-</span> <span class="nv">allow</span> <span class="nv">Boolean</span> <span class="nv">keys</span> <span class="nv">to</span> <span class="nv">be</span> <span class="nv">bundled</span>, <span class="nv">but</span> <span class="nv">requires</span>
+   <span class="nv">a</span> <span class="nv">single</span> <span class="nv">dash</span> <span class="nv">prefix</span> <span class="nv">be</span> <span class="nv">used</span> <span class="k">for</span> <span class="nv">short</span> <span class="nv">key</span> <span class="nv">names</span> <span class="nv">and</span>
+   <span class="nv">long</span> <span class="nv">names</span> <span class="nv">must</span> <span class="nv">be</span> <span class="nv">prefixed</span> <span class="nv">with</span> <span class="nv">two</span> <span class="nv">dashes</span>.
+
+<span class="nv">o</span>  <span class="nv">lastonly</span>  <span class="o">-</span> <span class="nv">when</span> <span class="nv">multiple</span> <span class="nv">keywords</span> <span class="nv">occur</span> <span class="nv">keep</span> <span class="nv">the</span> <span class="nv">rightmost</span>
+   <span class="nv">value</span> <span class="nv">specified</span> <span class="nv">instead</span> <span class="nv">of</span> <span class="nv">appending</span> <span class="nv">the</span> <span class="nv">values</span> <span class="nv">together</span>.
 
 <span class="nv">MODE</span>   <span class="nv">set</span> <span class="nv">to</span> .<span class="nv">true</span>. <span class="nv">to</span> <span class="nv">activate</span> <span class="nv">the</span> <span class="nv">optional</span> <span class="nv">mode</span>.
        <span class="nv">Set</span> <span class="nv">to</span> .<span class="nv">false</span>. <span class="nv">to</span> <span class="nv">deactivate</span> <span class="nv">the</span> <span class="nv">mode</span>.
@@ -194,16 +207,16 @@
    <span class="o">!</span> <span class="nv">enable</span> <span class="nv">use</span> <span class="nv">of</span> <span class="nv">response</span> <span class="nv">files</span>
    <span class="k">call</span> <span class="nl">set_mode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">response_file</span><span class="s1">&#39;</span><span class="ss">)</span>
    <span class="o">!</span>
-   <span class="o">!</span> <span class="nv">Any</span> <span class="nv">dash</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">keyname</span> <span class="nv">is</span> <span class="nv">treated</span> <span class="nv">as</span> <span class="nv">an</span> <span class="nv">underscore</span>
+   <span class="o">!</span> <span class="nv">Any</span> <span class="nv">dash</span> <span class="nv">in</span> <span class="nv">a</span> <span class="nv">keyword</span> <span class="nv">is</span> <span class="nv">treated</span> <span class="nv">as</span> <span class="nv">an</span> <span class="nv">underscore</span>
    <span class="k">call</span> <span class="nl">set_mode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">underdash</span><span class="s1">&#39;</span><span class="ss">)</span>
    <span class="o">!</span>
-   <span class="o">!</span> <span class="nv">The</span> <span class="nv">case</span> <span class="nv">of</span> <span class="nv">long</span> <span class="nv">keynames</span> <span class="nv">are</span> <span class="nv">ignored</span>.
+   <span class="o">!</span> <span class="nv">The</span> <span class="nv">case</span> <span class="nv">of</span> <span class="nv">long</span> <span class="nv">keywords</span> <span class="nv">are</span> <span class="nv">ignored</span>.
    <span class="o">!</span> <span class="nv">Values</span> <span class="nv">and</span> <span class="nv">short</span> <span class="nv">names</span> <span class="nv">remain</span> <span class="nv">case</span><span class="o">-</span><span class="nv">sensitive</span>
    <span class="k">call</span> <span class="nl">set_mode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">ignorecase</span><span class="s1">&#39;</span><span class="ss">)</span>
    <span class="o">!</span>
    <span class="o">!</span> <span class="nv">short</span> <span class="nv">single</span><span class="o">-</span><span class="nv">character</span> <span class="nv">boolean</span> <span class="nv">keys</span> <span class="nv">may</span> <span class="nv">be</span> <span class="nv">bundled</span>
    <span class="o">!</span> <span class="nv">but</span> <span class="nv">it</span> <span class="nv">is</span> <span class="nv">required</span> <span class="nv">that</span> <span class="nv">a</span> <span class="nv">single</span> <span class="nv">dash</span> <span class="nv">is</span> <span class="nv">used</span> <span class="k">for</span>
-   <span class="o">!</span> <span class="nv">short</span> <span class="nv">keys</span> <span class="nv">and</span> <span class="nv">a</span> <span class="nv">double</span> <span class="nv">dash</span> <span class="k">for</span> <span class="nv">long</span> <span class="nv">keynames</span>.
+   <span class="o">!</span> <span class="nv">short</span> <span class="nv">keys</span> <span class="nv">and</span> <span class="nv">a</span> <span class="nv">double</span> <span class="nv">dash</span> <span class="k">for</span> <span class="nv">long</span> <span class="nv">keywords</span>.
    <span class="k">call</span> <span class="nl">set_mode</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">strict</span><span class="s1">&#39;</span><span class="ss">)</span>
    <span class="o">!</span>
    <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s"> --switch_X:X F --switch-Y:Y F --ox:O F -t F -x F -o F</span><span class="s1">&#39;</span><span class="ss">)</span>
@@ -318,20 +331,27 @@
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">key</span><span class="w"></span>
 <span class="kt">logical</span><span class="p">,</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span><span class="k">optional</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">mode</span><span class="w"></span>
 <span class="kt">logical</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">local_mode</span><span class="w"></span>
+
 <span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span><span class="k">then</span>
 <span class="k">      </span><span class="n">local_mode</span><span class="o">=</span><span class="n">mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">else</span>
 <span class="k">      </span><span class="n">local_mode</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.</span><span class="w"></span>
 <span class="w">   </span><span class="k">endif</span>
+
 <span class="k">   select case</span><span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="n">key</span><span class="p">))</span><span class="w"></span>
 <span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;response_file&#39;</span><span class="p">,</span><span class="s1">&#39;response file&#39;</span><span class="p">);</span><span class="w"> </span><span class="n">CLI_RESPONSE_FILE</span><span class="o">=</span><span class="n">local_mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;debug&#39;</span><span class="p">);</span><span class="w">                         </span><span class="n">G_DEBUG</span><span class="o">=</span><span class="n">local_mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;ignorecase&#39;</span><span class="p">);</span><span class="w">                    </span><span class="n">G_IGNORECASE</span><span class="o">=</span><span class="n">local_mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;underdash&#39;</span><span class="p">);</span><span class="w">                     </span><span class="n">G_UNDERDASH</span><span class="o">=</span><span class="n">local_mode</span><span class="w"></span>
+<span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;noseparator&#39;</span><span class="p">);</span><span class="w">                   </span><span class="n">G_NOSEPARATOR</span><span class="o">=</span><span class="n">local_mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;strict&#39;</span><span class="p">);</span><span class="w">                        </span><span class="n">G_STRICT</span><span class="o">=</span><span class="n">local_mode</span><span class="w"></span>
+<span class="w">   </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;lastonly&#39;</span><span class="p">);</span><span class="w">                      </span><span class="n">G_APPEND</span><span class="o">=</span><span class="p">.</span><span class="nb">not</span><span class="p">.</span><span class="n">local_mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">case </span><span class="n">default</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">journal</span><span class="p">(</span><span class="s1">&#39;sc&#39;</span><span class="p">,</span><span class="s1">&#39;set_mode* unknown key name &#39;</span><span class="p">,</span><span class="n">key</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">call </span><span class="n">journal</span><span class="p">(</span><span class="s1">&#39;*set_mode* unknown key name &#39;</span><span class="p">,</span><span class="n">key</span><span class="p">)</span><span class="w"></span>
 <span class="w">   </span><span class="k">end select</span>
+
+<span class="k">   if</span><span class="p">(</span><span class="n">G_DEBUG</span><span class="p">)</span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">gen</span><span class="p">)</span><span class="s1">&#39;&lt;DEBUG&gt;EXPAND_RESPONSE:END&#39;</span><span class="w"></span>
+
 <span class="k">end subroutine </span><span class="n">set_mode</span><span class="w"></span>
 </pre></div>
 
@@ -353,7 +373,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

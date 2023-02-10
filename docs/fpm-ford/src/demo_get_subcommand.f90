@@ -5,8 +5,8 @@
      !x! You can call this program which has two subcommands (run, test),
      !x! like this:
      !x!    demo_get_subcommand --help
-     !x!    demo_get_subcommand run -x -y -z -title -l -L
-     !x!    demo_get_subcommand test -title -l -L -testname
+     !x!    demo_get_subcommand run -x -y -z --title -l -L
+     !x!    demo_get_subcommand test --title -l -L --testname
      !x!    demo_get_subcommand run --help
         implicit none
      !x! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES
@@ -43,8 +43,8 @@
          ! general help for "demo_get_subcommand --help"
          help_text=[character(len=80) :: &
           ' allowed subcommands are          ', &
-          '   * run  -l -L -title -x -y -z   ', &
-          '   * test -l -L -title            ', &
+          '   * run  -l -L --title -x -y -z  ', &
+          '   * test -l -L --title           ', &
           '' ]
         ! find the subcommand name by looking for first word on command
         ! not starting with dash

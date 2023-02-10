@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 2.2% of total for programs.">11 statements</a>
+               title=" 1.4% of total for programs.">12 statements</a>
           </li>
 
             <li id="source-file">
@@ -125,9 +125,9 @@
       </div>
       <div id="vars-0" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../program/demo12.html#variable-x">x</a>
-            <a class="list-group-item" href="../program/demo12.html#variable-y">y</a>
-            <a class="list-group-item" href="../program/demo12.html#variable-z">z</a>
+            <a class="list-group-item" href="../program/demo12.html#variable-x~6">x</a>
+            <a class="list-group-item" href="../program/demo12.html#variable-y~6">y</a>
+            <a class="list-group-item" href="../program/demo12.html#variable-z~3">z</a>
         </div>
       </div>
     </div>
@@ -176,6 +176,7 @@
     </div>
 
     <p>@(#) using the convenience functions
+ENABLE USING RESPONSE FILES
 USE THE VALUES IN YOUR PROGRAM.</p>
 <br>
      <section class="visible-xs visible-sm hidden-md">
@@ -189,9 +190,9 @@ USE THE VALUES IN YOUR PROGRAM.</p>
       </div>
       <div id="vars-1" class="panel-collapse collapse">
         <div class="list-group">
-            <a class="list-group-item" href="../program/demo12.html#variable-x">x</a>
-            <a class="list-group-item" href="../program/demo12.html#variable-y">y</a>
-            <a class="list-group-item" href="../program/demo12.html#variable-z">z</a>
+            <a class="list-group-item" href="../program/demo12.html#variable-x~6">x</a>
+            <a class="list-group-item" href="../program/demo12.html#variable-y~6">y</a>
+            <a class="list-group-item" href="../program/demo12.html#variable-z~3">z</a>
         </div>
       </div>
     </div>
@@ -239,7 +240,7 @@ USE THE VALUES IN YOUR PROGRAM.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-x"></span>
+              <span class="anchor" id="variable-x~6"></span>
               real
             </td>
             <td>
@@ -250,12 +251,12 @@ USE THE VALUES IN YOUR PROGRAM.</p>
                 <td></td>
                 <td></td>
             <td>
-                <p>ENABLE USING RESPONSE FILES</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-y"></span>
+              <span class="anchor" id="variable-y~6"></span>
               real
             </td>
             <td>
@@ -266,12 +267,12 @@ USE THE VALUES IN YOUR PROGRAM.</p>
                 <td></td>
                 <td></td>
             <td>
-                <p>ENABLE USING RESPONSE FILES</p>
+                
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-z"></span>
+              <span class="anchor" id="variable-z~3"></span>
               real
             </td>
             <td>
@@ -282,7 +283,7 @@ USE THE VALUES IN YOUR PROGRAM.</p>
                 <td></td>
                 <td></td>
             <td>
-                <p>ENABLE USING RESPONSE FILES</p>
+                
             </td>
         </tr>
     </tbody>
@@ -304,7 +305,9 @@ USE THE VALUES IN YOUR PROGRAM.</p>
 <span class="c">!!  @(#) using the convenience functions</span>
 <span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">set_mode</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="w"></span>
 <span class="k">implicit none</span>
-<span class="kt">real</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w">  </span><span class="n">y</span><span class="p">,</span><span class="w">  </span><span class="n">z</span><span class="w"></span>
+<span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w">  </span><span class="n">y</span><span class="p">,</span><span class="w">  </span><span class="n">z</span><span class="w"></span>
+
+<span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;demo12: using the convenience functions&#39;</span><span class="w"></span>
 
 <span class="c">!! ENABLE USING RESPONSE FILES</span>
 <span class="w">   </span><span class="k">call </span><span class="n">set_mode</span><span class="p">(</span><span class="s1">&#39;response file&#39;</span><span class="p">)</span><span class="w"></span>
@@ -336,7 +339,7 @@ USE THE VALUES IN YOUR PROGRAM.</p>
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

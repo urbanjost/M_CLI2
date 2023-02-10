@@ -90,17 +90,17 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title="11.3% of total for procedures.">33 statements</a>
+               title=" 1.8% of total for procedures.">7 statements</a>
           </li>
 
             <li id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/demo_get_subcommand.f90"> Source File</a>
+              <a href="../src/demo17.f90"> Source File</a>
             </li>
         </ul>
         <ol class="breadcrumb in-well text-right">
-              <li><a href='../sourcefile/demo_get_subcommand.f90.html'>demo_get_subcommand.f90</a></li>
-              <li><a href='../program/demo_get_subcommand.html'>demo_get_subcommand</a></li>
+              <li><a href='../sourcefile/demo17.f90.html'>demo17.f90</a></li>
+              <li><a href='../program/demo17.html'>demo17</a></li>
           <li class="active">parse</li>
         </ol>
       </div>
@@ -119,20 +119,7 @@
       <div id="sidebar">
       <h3>Contents</h3>
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#vars-0">Variables</a>
-        </h3>
-      </div>
-      <div id="vars-0" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../proc/parse~2.html#variable-help_text~3">help_text</a>
-            <a class="list-group-item" href="../proc/parse~2.html#variable-version_text~3">version_text</a>
-        </div>
-      </div>
-    </div>
-
+  
   
   
   
@@ -163,7 +150,7 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2> subroutine parse(name)  
+    <h2> subroutine parse()  
 </h2>
         <div class="panel panel-default">
       <div class="panel-heading">
@@ -179,55 +166,19 @@
     </div>
 
 
+    <p>Put everything to do with command parsing here </p>
+<p>DEFINE COMMAND OPTIONS AND DEFAULT VALUES</p>
+<h2 id="version-text-with-optional-prefix-for-what1-command">VERSION TEXT (with optional @(#) prefix for what(1) command)</h2>
 
     <h3>Arguments</h3>
-        <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Intent</th><th>Optional</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-name"></span>
-              character(len=*)
-            </td>
-<td></td>
-              <td></td>            <td>
-              
-            </td>
-            <td>::</td>
-            <td><strong>name</strong></td>
-            <td>
-                
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
+    <em>None</em>
+    <br>
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
         <h3>Contents</h3>
   
-      <div class="panel panel-primary">
-      <div class="panel-heading text-left">
-        <h3 class="panel-title">
-          <a data-toggle="collapse" href="#vars-1">Variables</a>
-        </h3>
-      </div>
-      <div id="vars-1" class="panel-collapse collapse">
-        <div class="list-group">
-            <a class="list-group-item" href="../proc/parse~2.html#variable-help_text~3">help_text</a>
-            <a class="list-group-item" href="../proc/parse~2.html#variable-version_text~3">version_text</a>
-        </div>
-      </div>
-    </div>
-
+  
   
   
   
@@ -257,57 +208,6 @@
     <br class="visible-xs visible-sm hidden-md">
 
 
-    <section>    
-      <h2>Variables</h2>
-      <table class="table table-striped varlist">
-    <thead>
-      <tr>
-        <th>Type</th>
-<th>Visibility</th>        <th>Attributes</th>
-        <th></th>
-        <th>Name</th>
-<th></th><th>Initial</th>        <th></th>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-help_text~3"></span>
-              character(len=:),
-            </td>
-              <td>public,</td>
-            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>help_text</strong>(:)</td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-version_text~3"></span>
-              character(len=:),
-            </td>
-              <td>public,</td>
-            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>version_text</strong>(:)</td>
-                <td></td>
-                <td></td>
-            <td>
-                
-            </td>
-        </tr>
-    </tbody>
-  </table>
-
-    </section>
-    <br>
     
     
 
@@ -318,71 +218,52 @@
     
     <section>
     <h2><span class="anchor" id="src"></span>Source Code</h2>
-    <div class="highlight"><pre><span></span><span class="w">     </span><span class="k">subroutine </span><span class="n">parse</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="c">!x! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY</span>
-<span class="w">     </span><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args_fixed_length</span><span class="w"></span>
-<span class="w">     </span><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">get_subcommand</span><span class="p">,</span><span class="w"> </span><span class="n">set_mode</span><span class="w"></span>
-<span class="w">     </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">)</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">name</span><span class="w">    </span><span class="c">! the subcommand name</span>
-<span class="w">     </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">help_text</span><span class="p">(:),</span><span class="w"> </span><span class="n">version_text</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">        </span><span class="k">call </span><span class="n">set_mode</span><span class="p">(</span><span class="s1">&#39;response_file&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">     </span><span class="c">! define version text</span>
-<span class="w">        </span><span class="n">version_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="s1">&#39;@(#)PROGRAM:     demo_get_subcommand            &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="s1">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="s1">&#39;@(#)VERSION:     1.0 20200715     &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="s1">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="s1">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">           </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="w">         </span><span class="c">! general help for &quot;demo_get_subcommand --help&quot;</span>
-<span class="w">         </span><span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39; allowed subcommands are          &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="c">! find the subcommand name by looking for first word on command</span>
-<span class="w">        </span><span class="c">! not starting with dash</span>
-<span class="w">        </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">get_subcommand</span><span class="p">()</span><span class="w"></span>
-<span class="w">        </span><span class="k">select case</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;run&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;                                  &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39; Help for subcommand &quot;run&quot;        &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;                                  &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="p">&amp;</span><span class="w"> </span><span class="s1">&#39;-x 1 -y 2 -z 3 --title &quot;my title&quot; -l F -L F&#39;</span><span class="p">,&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="p">&amp;</span><span class="w"> </span><span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">case</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="n">help_text</span><span class="o">=</span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;                                  &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39; Help for subcommand &quot;test&quot;       &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;                                  &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">          </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">set_args</span><span class="p">(&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="p">&amp;</span><span class="w"> </span><span class="s1">&#39;--title &quot;my title&quot; -l F -L F --testname &quot;Test&quot;&#39;</span><span class="p">,&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="p">&amp;</span><span class="w"> </span><span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="n">title</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">l_</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">call </span><span class="n">get_args_fixed_length</span><span class="p">(</span><span class="s1">&#39;testname&#39;</span><span class="p">,</span><span class="n">testname</span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="k">case </span><span class="n">default</span><span class="w"></span>
-<span class="w">         </span><span class="c">! process help and version</span>
-<span class="w">         </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span><span class="n">help_text</span><span class="p">,</span><span class="n">version_text</span><span class="p">)</span><span class="w"></span>
-<span class="w">         </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(*(a))&#39;</span><span class="p">)</span><span class="s1">&#39;unknown or missing subcommand [&#39;</span><span class="p">,</span><span class="nb">trim</span><span class="p">(</span><span class="n">name</span><span class="p">),</span><span class="s1">&#39;]&#39;</span><span class="w"></span>
-<span class="w">         </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;(a)&#39;</span><span class="p">)[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w">  </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="s1">&#39; allowed subcommands are          &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="s1">&#39;   * run  -l -L -title -x -y -z   &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="s1">&#39;   * test -l -L -title            &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
-<span class="w">         </span><span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">]</span><span class="w"></span>
-<span class="w">         </span><span class="k">stop</span>
-<span class="k">        end select</span>
-<span class="k">     end subroutine </span><span class="n">parse</span><span class="w"></span>
+    <div class="highlight"><pre><span></span><span class="k">subroutine </span><span class="n">parse</span><span class="p">()</span><span class="w"></span>
+<span class="c">!! Put everything to do with command parsing here </span>
+<span class="c">!!</span>
+<span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">set_mode</span><span class="w"></span>
+<span class="k">call </span><span class="n">set_mode</span><span class="p">([</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="s1">&#39;strict&#39;</span><span class="p">,</span><span class="s1">&#39;ignorecase&#39;</span><span class="p">])</span><span class="w"></span>
+<span class="c">! a single call to set_args can define the options and their defaults, set help</span>
+<span class="c">! text and version information, and crack command line.</span>
+<span class="k">call </span><span class="n">set_args</span><span class="p">(&amp;</span><span class="w"></span>
+<span class="c">!! DEFINE COMMAND OPTIONS AND DEFAULT VALUES</span>
+<span class="s1">&#39; &amp;</span>
+<span class="s1"> -i 1 -j 2 -k 3     &amp;</span>
+<span class="s1"> -l F -m F -n F     &amp;</span>
+<span class="s1"> -x 1 -y 2 -z 3     &amp;</span>
+<span class="s1"> --title &quot;my title&quot; &amp;</span>
+<span class="s1">!! ## HELP TEXT ##</span>
+<span class="s1">&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="c">!12345678901234567890123456789012345678901234567890123456789012345678901234567890</span>
+<span class="s1">&#39;NAME                                                                            &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   myprogram(1) - make all things possible                                      &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;SYNOPSIS                                                                        &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   myprogram [-i NNN] [-j NNN] [-k NNN] [-l] [-m] [-n] ]                        &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;             [-x NNN.mm] [-y NNN.mm] [-z NNN.mm] [FILENAMES]                    &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;DESCRIPTION                                                                     &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   myprogram(1) makes all things possible given stuff.                          &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;OPTIONS                                                                         &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   -i,-j,-k   some integer values                                               &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   -l,-m,-n   some logical values                                               &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   -x,-y,-z   some real values                                                  &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   --title    a string argument                                                 &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   FILENAMES  any additional strings                                            &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;EXAMPLE                                                                         &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;   Typical usage:                                                               &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;                                                                                &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;     demo17 *.*                                                                 &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;                                                                                &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;                                                                                &#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="c">!! ## VERSION TEXT (with optional @(#) prefix for what(1) command) ##</span>
+<span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;@(#)PROGRAM:     demo17           &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;@(#)DESCRIPTION: My demo program  &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;@(#)VERSION:     1.0 20200115     &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;@(#)AUTHOR:      me, myself, and I&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;@(#)LICENSE:     Public Domain    &gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="s1">&#39;&#39;</span><span class="w"> </span><span class="p">])</span><span class="w"></span>
+
+<span class="k">end subroutine </span><span class="n">parse</span><span class="w"></span>
 </pre></div>
 
     </section>
@@ -403,7 +284,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

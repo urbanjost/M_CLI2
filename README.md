@@ -33,9 +33,12 @@ conventional Unix-style syntax for short and long parameters:
       ! Define command and default values and parse supplied command line options
       call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title:T "my title" -l F -L F')
       !
-      ! Get scalar non-allocatable values
+      ! multiple scalar non-allocatable values can be done in one call if desired
       call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
-      ! use convenience functions for allocatable arrays and strings
+
+      ! you can use convenience functions for allocatable arrays and strings.
+      ! The functions are particularly useful in expressions and as arguments on
+      ! procedure calls
       title=sget('title') ! string 
       p=igets('p') ! integer array
       !

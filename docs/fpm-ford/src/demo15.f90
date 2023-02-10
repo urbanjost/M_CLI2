@@ -14,6 +14,9 @@ program demo15
 use M_CLI2,  only : set_args, lget, set_mode
 implicit none
 character(len=*),parameter :: all='(*(g0))'
+
+   print *,'demo15: strict mode'
+
    call set_mode('strict')
    call set_args(' -o F -t F -x F --ox F')
    print all,'o=',lget('o'),' t=',lget('t'),' x=',lget('x'),' ox=',lget('ox')

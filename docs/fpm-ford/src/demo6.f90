@@ -19,6 +19,8 @@ character(len=:),allocatable   :: version_text(:), help_text(:)
 character(len=80)  :: title, testname
 logical            :: l, l_
 
+   print *,'demo6: creating subcommands'
+
    version_text=[character(len=80) :: &
    '@(#)PROGRAM:     demo6            >', &
    '@(#)DESCRIPTION: My demo program  >', &

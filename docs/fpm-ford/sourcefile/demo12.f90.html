@@ -90,7 +90,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 0.3% of total for source files.">11 statements</a>
+               title=" 0.3% of total for source files.">12 statements</a>
           </li>
 
             <li id="source-file">
@@ -211,19 +211,21 @@
 <a id="ln-2" name="ln-2" href="#ln-2"></a><span class="c">!!  @(#) using the convenience functions</span>
 <a id="ln-3" name="ln-3" href="#ln-3"></a><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">set_mode</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="w"></span>
 <a id="ln-4" name="ln-4" href="#ln-4"></a><span class="k">implicit none</span>
-<a id="ln-5" name="ln-5" href="#ln-5"></a><span class="kt">real</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w">  </span><span class="n">y</span><span class="p">,</span><span class="w">  </span><span class="n">z</span><span class="w"></span>
+<a id="ln-5" name="ln-5" href="#ln-5"></a><span class="kt">real</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w">  </span><span class="n">y</span><span class="p">,</span><span class="w">  </span><span class="n">z</span><span class="w"></span>
 <a id="ln-6" name="ln-6" href="#ln-6"></a>
-<a id="ln-7" name="ln-7" href="#ln-7"></a><span class="c">!! ENABLE USING RESPONSE FILES</span>
-<a id="ln-8" name="ln-8" href="#ln-8"></a><span class="w">   </span><span class="k">call </span><span class="n">set_mode</span><span class="p">(</span><span class="s1">&#39;response file&#39;</span><span class="p">)</span><span class="w"></span>
-<a id="ln-9" name="ln-9" href="#ln-9"></a>
-<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1.1 -y 2e3 -z -3.9 &#39;</span><span class="p">)</span><span class="w"></span>
-<a id="ln-11" name="ln-11" href="#ln-11"></a><span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span><span class="w"></span>
-<a id="ln-12" name="ln-12" href="#ln-12"></a><span class="w">   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span><span class="w"></span>
-<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span><span class="w"></span>
-<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="c">!! USE THE VALUES IN YOUR PROGRAM.</span>
-<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;SUM=&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="w"></span>
-<a id="ln-16" name="ln-16" href="#ln-16"></a>
-<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="k">end program </span><span class="n">demo12</span><span class="w"></span>
+<a id="ln-7" name="ln-7" href="#ln-7"></a><span class="w">   </span><span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;demo12: using the convenience functions&#39;</span><span class="w"></span>
+<a id="ln-8" name="ln-8" href="#ln-8"></a>
+<a id="ln-9" name="ln-9" href="#ln-9"></a><span class="c">!! ENABLE USING RESPONSE FILES</span>
+<a id="ln-10" name="ln-10" href="#ln-10"></a><span class="w">   </span><span class="k">call </span><span class="n">set_mode</span><span class="p">(</span><span class="s1">&#39;response file&#39;</span><span class="p">)</span><span class="w"></span>
+<a id="ln-11" name="ln-11" href="#ln-11"></a>
+<a id="ln-12" name="ln-12" href="#ln-12"></a><span class="w">   </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1.1 -y 2e3 -z -3.9 &#39;</span><span class="p">)</span><span class="w"></span>
+<a id="ln-13" name="ln-13" href="#ln-13"></a><span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span><span class="w"></span>
+<a id="ln-14" name="ln-14" href="#ln-14"></a><span class="w">   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span><span class="w"></span>
+<a id="ln-15" name="ln-15" href="#ln-15"></a><span class="w">   </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span><span class="w"></span>
+<a id="ln-16" name="ln-16" href="#ln-16"></a><span class="c">!! USE THE VALUES IN YOUR PROGRAM.</span>
+<a id="ln-17" name="ln-17" href="#ln-17"></a><span class="w">   </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;(*(g0:,1x))&#39;</span><span class="p">)</span><span class="s1">&#39;x=&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;y=&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;z=&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;SUM=&#39;</span><span class="p">,</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="o">+</span><span class="n">z</span><span class="w"></span>
+<a id="ln-18" name="ln-18" href="#ln-18"></a>
+<a id="ln-19" name="ln-19" href="#ln-19"></a><span class="k">end program </span><span class="n">demo12</span><span class="w"></span>
 </pre></div>
 
     </section>
@@ -242,7 +244,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

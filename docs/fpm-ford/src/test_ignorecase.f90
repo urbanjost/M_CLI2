@@ -5,20 +5,19 @@ use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT,
 use M_CLI2,  only : set_args, sget, igets, rgets, dgets, lget, set_mode
 implicit none
 character(len=*),parameter :: it='(1x,*(g0,1x))'
-logical,parameter :: T=.true., F=.false.
 character(len=:),allocatable :: whichone
 character(len=:),allocatable :: arr(:)
    call set_mode('ignorecase')
 
    call set_args(' --type run -a "a AA a" -b "B bb B"  -A AAA -B BBB --longa:O " OoO " --longb:X "xXx"')
    whichone=sget('type')
-   arr=[character(len=10) :: sget('a'),sget('b'),sget('A'),sget('B'),sget('longa'),sget('longb'),sget('O'),sget('X') ]
+   arr=[character(len=17) :: sget('a'),sget('b'),sget('A'),sget('B'),sget('longa'),sget('longb'),sget('O'),sget('X') ]
    select case(whichone)
-   case('one')   ; call testit(whichone,all([character(len=10)::'a AA a','B bb B','AAA','BBB',' OoO','xXx',' OoO','xXx']==arr))
-   case('two')   ; call testit(whichone,all([character(len=10)::'a','b','A','B','longa O','longb X','longa O','longb X']==arr))
-   case('three') ; call testit(whichone,all([character(len=10)::'a','b','A','B','longa O','longb X','longa O','longb X']==arr))
-   case('four')  ; call testit(whichone,all([character(len=10)::'a A','b B','SET A','SET B',' OoO','xXx',' OoO','xXx']==arr))
-   case('five')  ; call testit(whichone,all([character(len=10)::'a AA a','B bb B','AAA','BBB', &
+   case('one')   ; call testit(whichone,all([character(len=17)::'a AA a','B bb B','AAA','BBB',' OoO','xXx',' OoO','xXx']==arr))
+   case('two')   ; call testit(whichone,all([character(len=17)::'a','b','A','B','longa O','longb X','longa O','longb X']==arr))
+   case('three') ; call testit(whichone,all([character(len=17)::'a','b','A','B','longa O','longb X','longa O','longb X']==arr))
+   case('four')  ; call testit(whichone,all([character(len=17)::'a A','b B','SET A','SET B',' OoO','xXx',' OoO','xXx']==arr))
+   case('five')  ; call testit(whichone,all([character(len=17)::'a AA a','B bb B','AAA','BBB', &
                    & 'a b c d e f g h i','xXx','a b c d e f g h i','xXx']==arr))
    case('six')   ; !call testit(whichone,  all(arr))
    case('run')

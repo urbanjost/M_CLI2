@@ -84,8 +84,8 @@
 !!     implicit none
 !!     integer                      :: i
 !!     integer,parameter            :: dp=kind(0.0d0)
-!!     !
-!!     ! DEFINE ARGS
+!!      !
+!!      ! Define ARGS
 !!     real                         :: x, y, z
 !!     logical                      :: l, lbig
 !!     character(len=40)            :: label    ! FIXED LENGTH
@@ -94,15 +94,15 @@
 !!     character(len=:),allocatable :: title    ! VARIABLE LENGTH
 !!     real                         :: p(3)     ! FIXED SIZE
 !!     logical                      :: logi(3)  ! FIXED SIZE
-!!     !
-!!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!!     !   o set a value for all keywords.
-!!     !   o double-quote strings, strings must be at least one space
-!!     !     because adjacent double-quotes designate a double-quote
-!!     !     in the value.
-!!     !   o set all logical values to F
-!!     !   o numeric values support an "e" or "E" exponent
-!!     !   o for lists delimit with a comma, colon, or space
+!!      !
+!!      ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+!!      !   o set a value for all keywords.
+!!      !   o double-quote strings, strings must be at least one space
+!!      !     because adjacent double-quotes designate a double-quote
+!!      !     in the value.
+!!      !   o set all logical values to F
+!!      !   o numeric values support an "e" or "E" exponent
+!!      !   o for lists delimit with a comma, colon, or space
 !!     call set_args('                         &
 !!             & -x 1 -y 2 -z 3                &
 !!             & -p -1 -2 -3                   &
@@ -113,25 +113,34 @@
 !!             & --label " " &
 !!             ! note space between quotes is required
 !!             & ')
-!!     ! ASSIGN VALUES TO ELEMENTS
-!!     ! non-allocatable scalars can be done up to twenty per call
+!!      ! Assign values to elements using G_ARGS(3f).
+!!      ! non-allocatable scalars can be done up to twenty per call
 !!     call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L',lbig)
-!!     !
-!!     ! allocatables should be done one at a time
+!!      ! As a convenience multiple pairs of keywords and variables may be
+!!      ! specified if and only if all the values are scalars and the CHARACTER
+!!      ! variables are fixed-length or pre-allocated.
+!!      !
+!!      ! After SET_ARGS(3f) has parsed the command line
+!!      ! GET_ARGS(3f) retrieves the value of keywords accept for
+!!      ! two special cases. For fixed-length CHARACTER variables
+!!      ! see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
+!!      ! GET_ARGS_FIXED_SIZE(3f).
+!!      !
+!!      ! allocatables should be done one at a time
 !!     call get_args('title',title) ! allocatable string
 !!     call get_args('point',point) ! allocatable arrays
 !!     call get_args('logicals',logicals)
-!!     !
-!!     ! less commonly ...
+!!      !
+!!      ! less commonly ...
 !!
-!!     ! for fixed-length strings
+!!      ! for fixed-length strings
 !!     call get_args_fixed_length('label',label)
 !!
-!!     ! for non-allocatable arrays
+!!      ! for non-allocatable arrays
 !!     call get_args_fixed_size('p',p)
 !!     call get_args_fixed_size('logi',logi)
-!!     !
-!!     ! all done parsing, use values
+!!      !
+!!      ! all done parsing, use values
 !!     write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
 !!     write(*,*)'p=',p
 !!     write(*,*)'point=',point
@@ -141,13 +150,13 @@
 !!     write(*,*)'L=',lbig
 !!     write(*,*)'logicals=',logicals
 !!     write(*,*)'logi=',logi
-!!     !
-!!     ! unnamed strings
-!!     !
+!!      !
+!!      ! unnamed strings
+!!      !
 !!     if(size(filenames) > 0)then
 !!        write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
 !!     endif
-!!     !
+!!      !
 !!     end program demo_M_CLI2
 !!
 !!##AUTHOR
@@ -156,15 +165,15 @@
 !!     Public Domain
 !!##SEE ALSO
 !!     + get_args(3f)
-!!     + specified(3f)
+!!     + get_args_fixed_size(3f)
+!!     + get_args_fixed_length(3f)
+!!     + get_subcommand(3f)
 !!     + set_mode(3f)
+!!     + specified(3f)
 !!
 !! Note that the convenience routines are described under get_args(3f):
 !! dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
 !! igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
-!!
-!!     + get_subcommand(3f)
-!!     + get_args_fixed_size(3f), get_args_fixed_length(3f)
 !===================================================================================================================================
 module M_CLI2
 use, intrinsic :: iso_fortran_env, only : stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT, warn=>OUTPUT_UNIT
@@ -469,12 +478,12 @@ end subroutine check_commandline
 !!                help text is not supplied the command line initialization
 !!                string will be echoed.
 !!
-!!      VERSION_TEXT  if present, any version text defined will be displayed
-!!                    when the program is called with a --version switch,
-!!                    and then the program will terminate.
-!!      IERR          if present a non-zero option is returned when an
-!!                    error occurs instead of the program terminating.
-!!      ERRMSG        a description of the error if ierr is present.
+!!    VERSION_TEXT  if present, any version text defined will be displayed
+!!                  when the program is called with a --version switch,
+!!                  and then the program will terminate.
+!!    IERR          if present a non-zero option is returned when an
+!!                  error occurs instead of the program terminating.
+!!    ERRMSG        a description of the error if ierr is present.
 !!
 !!##DEFINING THE PROTOTYPE
 !!
@@ -483,9 +492,9 @@ end subroutine check_commandline
 !!
 !!    o all keywords on the prototype MUST get a value.
 !!
-!!       + logicals must be set to an unquoted F.
+!!       * logicals must be set to an unquoted F.
 !!
-!!       + strings must be delimited with double-quotes.
+!!       * strings must be delimited with double-quotes.
 !!         Since internal double-quotes are represented with two
 !!         double-quotes the string must be at least one space.
 !!
@@ -2710,9 +2719,9 @@ end subroutine print_dictionary
 !!              {real,doubleprecision,integer,logical,complex,character(len=:)}
 !!##DESCRIPTION
 !!
-!!    GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f)
-!!    has been called. For fixed-length CHARACTER variables
-!!    see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
+!!    GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f) has
+!!    been called to parse the command line. For fixed-length CHARACTER
+!!    variables see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
 !!    GET_ARGS_FIXED_SIZE(3f).
 !!
 !!    As a convenience multiple pairs of keywords and variables may be
@@ -2731,7 +2740,6 @@ end subroutine print_dictionary
 !!                 list of delimiter characters may be supplied.
 !!
 !!##CONVENIENCE FUNCTIONS
-!!
 !!    There are convenience functions that are replacements for calls to
 !!    get_args(3f) for each supported default intrinsic type
 !!
@@ -2755,31 +2763,29 @@ end subroutine print_dictionary
 !!     use M_CLI2,  only : filenames=>unnamed, set_args, get_args
 !!     implicit none
 !!     integer                      :: i
-!!     ! DEFINE ARGS
+!!      ! Define ARGS
 !!     real                         :: x, y, z
 !!     real,allocatable             :: p(:)
 !!     character(len=:),allocatable :: title
 !!     logical                      :: l, lbig
-!!     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-!!     !   o only quote strings and use double-quotes
-!!     !   o set all logical values to F or T.
-!!     call set_args(' &
-!!        & -x 1 -y 2 -z 3 &
-!!        & -p -1,-2,-3 &
+!!      ! Define and parse (to set initial values) command line
+!!      !   o only quote strings and use double-quotes
+!!      !   o set all logical values to F or T.
+!!     call set_args('         &
+!!        & -x 1 -y 2 -z 3     &
+!!        & -p -1,-2,-3        &
 !!        & --title "my title" &
-!!        & -l F -L F  &
-!!        & --label " " &
+!!        & -l F -L F          &
+!!        & --label " "        &
 !!        & ')
-!!     ! ASSIGN VALUES TO ELEMENTS
-!!     ! SCALARS
-!!     call get_args('x',x,'y',y,'z',z)
-!!     call get_args('l',l)
-!!     call get_args('L',lbig)
-!!     ! ALLOCATABLE STRING
+!!      ! Assign values to elements
+!!      ! Scalars
+!!     call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+!!      ! Allocatable string
 !!     call get_args('title',title)
-!!     ! NON-ALLOCATABLE ARRAYS
+!!      ! Allocatable arrays
 !!     call get_args('p',p)
-!!     ! USE VALUES
+!!      ! Use values
 !!     write(*,'(1x,g0,"=",g0)')'x',x, 'y',y, 'z',z
 !!     write(*,*)'p=',p
 !!     write(*,*)'title=',title
@@ -2804,12 +2810,13 @@ end subroutine print_dictionary
 !!
 !!    subroutine get_args_fixed_length(name,value)
 !!
+!!     character(len=*),intent(in)  :: name
 !!     character(len=:),allocatable :: value
 !!     character(len=*),intent(in),optional :: delimiters
 !!
 !!##DESCRIPTION
 !!
-!!    GET_ARGS_fixed_length(3f) returns the value of a string
+!!    get_args_fixed_length(3f) returns the value of a string
 !!    keyword when the string value is a fixed-length CHARACTER
 !!    variable.
 !!
@@ -2831,15 +2838,16 @@ end subroutine print_dictionary
 !!     program demo_get_args_fixed_length
 !!     use M_CLI2,  only : set_args, get_args_fixed_length
 !!     implicit none
-!!     ! DEFINE ARGS
+!!
+!!      ! Define args
 !!     character(len=80)   :: title
-!!     call set_args(' &
-!!        & --title "my title" &
-!!        & ')
-!!     ! ASSIGN VALUES TO ELEMENTS
-!!        call get_args_fixed_length('title',title)
-!!     ! USE VALUES
-!!        write(*,*)'title=',title
+!!      ! Parse command line
+!!     call set_args(' --title "my title" ')
+!!      ! Assign values to variables
+!!     call get_args_fixed_length('title',title)
+!!      ! Use values
+!!     write(*,*)'title=',title
+!!
 !!     end program demo_get_args_fixed_length
 !!
 !!##AUTHOR
@@ -2857,6 +2865,7 @@ end subroutine print_dictionary
 !!
 !!    subroutine get_args_fixed_size(name,value)
 !!
+!!     character(len=*),intent(in) :: name
 !!     [real|doubleprecision|integer|logical|complex] :: value(NNN)
 !!        or
 !!     character(len=MMM) :: value(NNN)
@@ -2865,10 +2874,9 @@ end subroutine print_dictionary
 !!
 !!##DESCRIPTION
 !!
-!!    GET_ARGS_FIXED_SIZE(3f) returns the value of keywords for
-!!    fixed-size arrays after SET_ARGS(3f) has been called.
-!!    On input on the command line all values of the array must
-!!    be specified.
+!!    get_args_fixed_size(3f) returns the value of keywords for fixed-size
+!!    arrays after set_args(3f) has been called.  On input on the command
+!!    line all values of the array must be specified.
 !!
 !!##OPTIONS
 !!    NAME        name of commandline argument to obtain the value of

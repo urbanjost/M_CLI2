@@ -163,8 +163,8 @@ Sample program using get_args() and variants
     implicit none
     integer                      :: i
     integer,parameter            :: dp=kind(0.0d0)
-    !
-    ! DEFINE ARGS
+     !
+     ! Define ARGS
     real                         :: x, y, z
     logical                      :: l, lbig
     character(len=40)            :: label    ! FIXED LENGTH
@@ -173,15 +173,15 @@ Sample program using get_args() and variants
     character(len=:),allocatable :: title    ! VARIABLE LENGTH
     real                         :: p(3)     ! FIXED SIZE
     logical                      :: logi(3)  ! FIXED SIZE
-    !
-    ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
-    !   o set a value for all keywords.
-    !   o double-quote strings, strings must be at least one space
-    !     because adjacent double-quotes designate a double-quote
-    !     in the value.
-    !   o set all logical values to F
-    !   o numeric values support an "e" or "E" exponent
-    !   o for lists delimit with a comma, colon, or space
+     !
+     ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+     !   o set a value for all keywords.
+     !   o double-quote strings, strings must be at least one space
+     !     because adjacent double-quotes designate a double-quote
+     !     in the value.
+     !   o set all logical values to F
+     !   o numeric values support an "e" or "E" exponent
+     !   o for lists delimit with a comma, colon, or space
     call set_args(&#146;                         &
             & -x 1 -y 2 -z 3                &
             & -p -1 -2 -3                   &
@@ -192,25 +192,34 @@ Sample program using get_args() and variants
             & --label " " &
             ! note space between quotes is required
             & &#146;)
-    ! ASSIGN VALUES TO ELEMENTS
-    ! non-allocatable scalars can be done up to twenty per call
+     ! Assign values to elements using G_ARGS(3f).
+     ! non-allocatable scalars can be done up to twenty per call
     call get_args(&#146;x&#146;,x, &#146;y&#146;,y, &#146;z&#146;,z, &#146;l&#146;,l, &#146;L&#146;,lbig)
-    !
-    ! allocatables should be done one at a time
+     ! As a convenience multiple pairs of keywords and variables may be
+     ! specified if and only if all the values are scalars and the CHARACTER
+     ! variables are fixed-length or pre-allocated.
+     !
+     ! After SET_ARGS(3f) has parsed the command line
+     ! GET_ARGS(3f) retrieves the value of keywords accept for
+     ! two special cases. For fixed-length CHARACTER variables
+     ! see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
+     ! GET_ARGS_FIXED_SIZE(3f).
+     !
+     ! allocatables should be done one at a time
     call get_args(&#146;title&#146;,title) ! allocatable string
     call get_args(&#146;point&#146;,point) ! allocatable arrays
     call get_args(&#146;logicals&#146;,logicals)
-    !
-    ! less commonly &#46;&#46;&#46;
+     !
+     ! less commonly &#46;&#46;&#46;
 <P>
-    ! for fixed-length strings
+     ! for fixed-length strings
     call get_args_fixed_length(&#146;label&#146;,label)
 <P>
-    ! for non-allocatable arrays
+     ! for non-allocatable arrays
     call get_args_fixed_size(&#146;p&#146;,p)
     call get_args_fixed_size(&#146;logi&#146;,logi)
-    !
-    ! all done parsing, use values
+     !
+     ! all done parsing, use values
     write(*,*)&#146;x=&#146;,x, &#146;y=&#146;,y, &#146;z=&#146;,z, x+y+z
     write(*,*)&#146;p=&#146;,p
     write(*,*)&#146;point=&#146;,point
@@ -220,13 +229,13 @@ Sample program using get_args() and variants
     write(*,*)&#146;L=&#146;,lbig
     write(*,*)&#146;logicals=&#146;,logicals
     write(*,*)&#146;logi=&#146;,logi
-    !
-    ! unnamed strings
-    !
+     !
+     ! unnamed strings
+     !
     if(size(filenames) &gt; 0)then
        write(*,&#146;(i6.6,3a)&#146;)(i,&#146;[&#146;,filenames(i),&#146;]&#146;,i=1,size(filenames))
     endif
-    !
+     !
     end program demo_M_CLI2
 <P>
 </PRE>
@@ -262,26 +271,35 @@ get_args(3f)
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
-specified(3f)
+get_args_fixed_size(3f)
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+get_args_fixed_length(3f)
+</TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+get_subcommand(3f)
 </TD></TR>
 <TR valign=top><TD width=3%>
 o
 </TD><TD>
 set_mode(3f)
 </TD></TR>
+<TR valign=top><TD width=3%>
+o
+</TD><TD>
+specified(3f)
+</TD></TR>
 <TR></TR></TABLE></BLOCKQUOTE>
 <P>
 Note that the convenience routines are described under get_args(3f):
 dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
 igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
-<P>
-<PRE>
-    + get_subcommand(3f)
-    + get_args_fixed_size(3f), get_args_fixed_length(3f)
-<P>
-</PRE>
 <P><HR>
-<TABLE width=100%><TR> <TD width=33%><I>Nemo Release 3.1</I></TD> <TD width=33% align=center>M_CLI2 (3m_cli2)</TD> <TD align=right width=33%><I>February 10, 2023</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 610c917e-5c7b-43ca-89b6-727e793e8254 using man macros.</FONT>
+<TABLE width=100%><TR> <TD width=33%><I>Nemo Release 3.1</I></TD> <TD width=33% align=center>M_CLI2 (3m_cli2)</TD> <TD align=right width=33%><I>February 10, 2023</I></TD> </TR></TABLE><FONT SIZE=-1>Generated by <A HREF="http://www.squarebox.co.uk/download/manServer.shtml">manServer 1.08</A> from 5107b51e-b291-45d2-8e1f-efef0bf396dc using man macros.</FONT>
 <br><br><center><img src="images/M_CLI2.gif"></center>
 </div>
 </div>

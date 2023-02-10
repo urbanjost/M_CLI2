@@ -90,103 +90,115 @@
         <div class="col-md-8">
           <h1>M_CLI2</h1>
           <h1 id="m_cli2f90-and-associated-files">M_CLI2.f90 and associated files</h1>
-<!--
-![parse](docs/images/parse.png)
--->
+<p><img alt="M_CLI2" src="docs/images/M_CLI2.gif"></p>
 <h2 id="name">Name</h2>
 <h3 id="m_cli2-parse-unix-like-command-line-arguments-from-fortran">M_CLI2 - parse Unix-like command line arguments from Fortran</h3>
 <h2 id="description">Description</h2>
 <p>M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
-   the program. A call to get_args(3f) or one of its variants is then
-   made for each parameter name to set the variables appropriately in
-   the program.</p>
+   the program. calls are then made for each parameter name to set the
+   variables appropriately in the program.</p>
 <h2 id="example-program">Example Program</h2>
-<p>This short program defines a command that can be called like</p>
-<div class="codehilite"><pre><span></span><code>   ./show -x <span class="m">10</span> -y -20 -p <span class="m">10</span>,20,30 --title <span class="s1">&#39;plot of stuff&#39;</span> -L
-   <span class="c1"># these parameters are defined automatically </span>
-   ./show --usage 
-   ./show --help
-   ./show --version
-   <span class="c1"># you must supply text for &quot;help&quot; and &quot;version&quot; if desired.</span>
+<p>This short program defines a command that can be called using
+conventional Unix-style syntax for short and long parameters:</p>
+<div class="codehilite"><pre><span></span><code>   ./show -x <span class="m">10</span> -y -20 -p <span class="m">10</span>,20,30 --title <span class="s2">&quot;plot of stuff&quot;</span> -L
+   ./show -lL
+   ./show  --title<span class="o">=</span><span class="s2">&quot;my new title&quot;</span> 
+   ./show  -T <span class="s2">&quot;my new title&quot;</span> 
 </code></pre></div>
 
 <div class="codehilite"><pre><span></span><code><span class="w">   </span><span class="k">program </span><span class="n">show</span><span class="w"></span>
-<span class="w">   </span><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="p">,</span><span class="w"> </span><span class="n">rget</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">igets</span><span class="w"></span>
+<span class="w">   </span><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">igets</span><span class="p">,</span><span class="w"> </span><span class="n">set_mode</span><span class="w"></span>
 <span class="w">   </span><span class="k">implicit none</span>
-<span class="k">   </span><span class="kt">real</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="nb">sum</span>
-<span class="nb">   </span><span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">p</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">   </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">title</span><span class="w"></span>
+<span class="k">   </span><span class="kt">real</span><span class="w">                          </span><span class="kd">::</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="w"></span>
 <span class="w">   </span><span class="kt">logical</span><span class="w">                       </span><span class="kd">::</span><span class="w"> </span><span class="n">l</span><span class="p">,</span><span class="w"> </span><span class="n">lbig</span><span class="w"></span>
+<span class="w">   </span><span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">           </span><span class="kd">::</span><span class="w"> </span><span class="n">p</span><span class="p">(:)</span><span class="w"></span>
+<span class="w">   </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">title</span><span class="w"></span>
+<span class="w">   </span><span class="k">namelist</span><span class="w"> </span><span class="o">/</span><span class="n">args</span><span class="o">/</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">lbig</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">title</span><span class="w"> </span><span class="c">! just for printing</span>
+<span class="w">      </span><span class="k">call </span><span class="n">set_mode</span><span class="p">(</span><span class="s1">&#39;strict&#39;</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="c">!</span>
 <span class="w">      </span><span class="c">! Define command and default values and parse supplied command line options</span>
+<span class="w">      </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title:T &quot;my title&quot; -l F -L F&#39;</span><span class="p">)</span><span class="w"></span>
 <span class="w">      </span><span class="c">!</span>
-<span class="w">      </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title &quot;my title&quot; -l F -L F&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="c">! multiple scalar non-allocatable values can be done in one call if desired</span>
+<span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s1">&#39;y&#39;</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;z&#39;</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="n">lbig</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="c">! you can use convenience functions for allocatable arrays and strings.</span>
+<span class="w">      </span><span class="c">! The functions are particularly useful in expressions and as arguments on</span>
+<span class="w">      </span><span class="c">! procedure calls</span>
+<span class="w">      </span><span class="n">title</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span><span class="w"> </span><span class="c">! string </span>
+<span class="w">      </span><span class="n">p</span><span class="o">=</span><span class="n">igets</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span><span class="w"> </span><span class="c">! integer array</span>
 <span class="w">      </span><span class="c">!</span>
-<span class="w">      </span><span class="c">! Get values using convenience functions</span>
-<span class="w">      </span><span class="c">!</span>
-<span class="w">      </span><span class="nb">sum</span><span class="o">=</span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">rget</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">title</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">p</span><span class="o">=</span><span class="n">igets</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">l</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;l&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="n">lbig</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;L&#39;</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="c">!</span>
-<span class="w">      </span><span class="c">! All ready to go</span>
-<span class="w">      </span><span class="c">!</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="nb">sum</span><span class="p">,</span><span class="n">l</span><span class="p">,</span><span class="n">lbig</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">title</span><span class="w"></span>
+<span class="w">      </span><span class="c">! All ready to go, print it as a namelist so everything is labeled</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="n">args</span><span class="p">)</span><span class="w"></span>
 <span class="w">   </span><span class="k">end program </span><span class="n">show</span><span class="w"></span>
 </code></pre></div>
 
+<p>running with no options shows the defaults</p>
+<div class="codehilite"><pre><span></span><code>&amp;ARGS
+ X=  1.00000000    ,
+ Y=  2.00000000    ,
+ Z=  3.50000000    ,
+ L=F,
+ LBIG=F,
+ P=11         ,-22        ,33         ,
+ TITLE=&quot;my title&quot;,
+ /
+</code></pre></div>
+
 <p>An arbitrary number of strings such as filenames may be passed in on
-the end of commands, you can query whether an option was supplied, and
+the end of commands; you can query whether an option was supplied; and
 get_args(3f)-related routines can be used for refining options such as
-requiring lists of a specified size. Passing in some character arrays
-allows you to automatically have a &ndash;help and &ndash;version switch as well,
-as explained using the examples below.</p>
-<h2 id="demo-programs">Demo Programs<img alt="demos" src="docs/images/demo.gif"></h2>
-<p>These demo programs provide templates for the most common usage:</p>
+requiring lists of a specified size.</p>
+<p>These parameters are defined automatically</p>
+<div class="codehilite"><pre><span></span><code>    --help
+    --usage
+    --version
+</code></pre></div>
+
+<p>You must supply text for the optional &ldquo;&ndash;help&rdquo; and &ldquo;&ndash;version&rdquo; keywords, as
+described under SET_ARGS(3f).</p>
+<p><img alt="docs" src="docs/images/docs.gif"></p>
+<h2 id="documentation">Documentation</h2>
+<p><img alt="manpages" src="docs/images/manpages.gif"></p>
+<h3 id="man-pages">man-pages</h3>
 <ul>
-<li><a href="example/demo1.f90">demo1</a>   Using the convenience functions</li>
-<li><a href="example/demo2.f90">demo2</a>   Putting everything including <strong>help</strong> and <strong>version</strong> information into a contained procedure.</li>
-<li><a href="example/demo3.f90">demo3</a>   Example of <strong>basic</strong> use</li>
-<li><a href="example/demo4.f90">demo4</a>   <em>COMPLEX</em> type values</li>
-<li><a href="example/demo5.f90">demo5</a>   <em>CHARACTER</em> type values</li>
-<li><a href="example/demo6.f90">demo6</a>   How to create a command with subcommands</li>
-<li><a href="example/demo7.f90">demo7</a>   Controlling array delimiter characters</li>
-<li><a href="example/demo8.f90">demo8</a>   Parsing multiple keywords in a single call to get_args(3f) for limited cases</li>
-<li><a href="example/demo9.f90">demo9</a>   Long and short names using &ndash;LONGNAME:SHORTNAME. When all keys have 
-                               a long and short name &ldquo;strict mode&rdquo; is invoked where &ldquo;&ndash;&rdquo; is required
-                   for long names and &ldquo;-&rdquo; for short names; and Boolean values may be 
-                   bundled together.</li>
-<li><a href="example/demo10.f90">demo10</a> Full usage and even equivalencing</li>
+<li>HTML <a href="https://urbanjost.github.io/M_CLI2/man3.html">man-pages</a> index of individual procedures</li>
+<li>HTML <a href="https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html">book-form </a> of pages consolidated using JavaScript</li>
+<li><a href="https://urbanjost.github.io/M_CLI2/manpages.zip">manpages.zip</a> for installing wherever the man(1) command is available</li>
+<li><a href="https://urbanjost.github.io/M_CLI2/manpages.tgz">manpages.tgz</a> is an alternative tar(1) format archive</li>
 </ul>
-<h2 id="optional-modes">Optional Modes</h2>
+<h3 id="developer-documentation">developer documentation</h3>
 <ul>
-<li><a href="example/demo12.f90">demo12</a> Enabling response files</li>
-<li><a href="example/demo13.f90">demo13</a> Equivalencing dash to underscore in keynames</li>
-<li><a href="example/demo14.f90">demo14</a> Case-insensitive long keys</li>
-<li><a href="example/demo15.f90">demo15</a> bundling short Boolean keys using &ldquo;strict&rdquo; mode</li>
+<li><a href="https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html">doxygen(1) output</a>.</li>
+<li><a href="https://urbanjost.github.io/M_CLI2/fpm-ford/index.html">ford(1) output</a>.</li>
 </ul>
-<h2 id="download-and-build-with-make1">Download and Build with Make(1)<img alt="gmake" src="docs/images/gnu.gif"></h2>
+<h3 id="logs">logs</h3>
+<ul>
+<li><a href="docs/CHANGELOG.md">CHANGELOG</a></li>
+<li><a href="docs/STATUS.md">STATUS</a> of most recent CI/CD runs</li>
+</ul>
+<p><img alt="gmake" src="docs/images/gnu.gif"></p>
+<h2 id="download-and-build-with-make1">Download and Build with Make(1)</h2>
 <p>Compile the M_CLI2 module and build all the example programs.</p>
-<div class="codehilite"><pre><span></span><code>       git clone https://github.com/urbanjost/M_CLI2.git
-       <span class="nb">cd</span> M_CLI2/src
-       <span class="c1"># change Makefile if not using one of the listed compilers</span>
+<div class="codehilite"><pre><span></span><code>   git clone https://github.com/urbanjost/M_CLI2.git
+   <span class="nb">cd</span> M_CLI2/src
+   <span class="c1"># change Makefile if not using one of the listed compilers</span>
 
-       <span class="c1"># for gfortran</span>
-       make clean
-       make gfortran
+   <span class="c1"># for gfortran</span>
+   make clean
+   make gfortran
 
-       <span class="c1"># for ifort</span>
-       make clean
-       make ifort
+   <span class="c1"># for ifort</span>
+   make clean
+   make ifort
 
-       <span class="c1"># for nvfortran</span>
-       make clean
-       make nvfortran
+   <span class="c1"># for nvfortran</span>
+   make clean
+   make nvfortran
 
-       <span class="c1"># display other options (test, run, doxygen, ford, ...)</span>
-       make <span class="nb">help</span> 
+   <span class="c1"># display other options (test, run, doxygen, ford, ...)</span>
+   make <span class="nb">help</span>
 </code></pre></div>
 
 <p>To install you then generally copy the <em>.mod file and </em>.a file to
@@ -208,6 +220,7 @@ as explained using the examples below.</p>
 <p><strong>NOTE</strong>: If you use multiple Fortran compilers you may need to create
    a different directory for each compiler. I would recommend it, such
    as $HOME/.local/lib/gfortran/.</p>
+<h3 id="creating-a-shared-library">Creating a shared library</h3>
 <p>If you desire a shared library as well, for gfortran you may enter</p>
 <div class="codehilite"><pre><span></span><code>     make clean gfortran gfortran_install
 </code></pre></div>
@@ -217,22 +230,25 @@ as explained using the examples below.</p>
 <div class="codehilite"><pre><span></span><code>     make clean ifort ifort_install <span class="c1"># same for ifort</span>
 </code></pre></div>
 
-<p>NOTE: These instructions are specific to a ULS (Unix-Like System) and 
-   may differ, especially for those wishing to generate shared libraries
-   which varies significantly from compiler to compiler. For some builds
-   it is simpler to make a Makefile for each compiler, which might be
-   required for a more comprehensive build unless you are very familiar
-   with gmake(1).</p>
+<p>does the same for the ifort compiler and places the output in libifort/.</p>
+<h3 id="specifics-may-vary">Specifics may vary</h3>
+<p>NOTE: The build instructions above are specific to a ULS (Unix-Like
+   System) and may differ, especially for those wishing to generate shared
+   libraries (which varies significantly depending on the programming
+   environment). For some builds it is simpler to make a Makefile for
+   each compiler, which might be required for a more comprehensive build
+   unless you are very familiar with gmake(1).</p>
 <p>If you always use one compiler it is relatively simple, otherwise
    make sure you know what your system requires and change the Makefile
    as appropriate.</p>
-<h2 id="supports-fpm">Supports FPM <img alt="parse" src="docs/images/fpm_logo.gif"></h2>
+<p><img alt="parse" src="docs/images/fpm_logo.gif"></p>
+<h2 id="build-with-fpm">Build with FPM</h2>
 <p>Alternatively, fpm(1) users may download the github repository and build it with
    fpm ( as described at <a href="https://github.com/fortran-lang/fpm">Fortran Package Manager</a> )</p>
 <div class="codehilite"><pre><span></span><code>        git clone https://github.com/urbanjost/M_CLI2.git
         <span class="nb">cd</span> M_CLI2
         fpm <span class="nb">test</span>   <span class="c1"># build and test the module</span>
-    fpm install <span class="c1"># install the module (in the default location)</span>
+        fpm install <span class="c1"># install the module (in the default location)</span>
 </code></pre></div>
 
 <p>or just list it as a dependency in your fpm.toml project file.</p>
@@ -247,7 +263,12 @@ as explained using the examples below.</p>
         <span class="nb">cd</span> M_CLI2
         meson setup _build
         meson <span class="nb">test</span> -C _build  <span class="c1"># build and test the module</span>
-        meson install -C _build --destdir &lt;DIR&gt; <span class="c1"># install the module (in the &lt;DIR&gt; location)</span>
+
+        <span class="c1"># install the module (in the &lt;DIR&gt; location)</span>
+        <span class="c1"># --destdir is only on newer versions of meson</span>
+        meson install -C _build --destdir &lt;DIR&gt;
+        <span class="c1"># older method if --destdir is not available</span>
+        env <span class="nv">DESTDIR</span><span class="o">=</span>&lt;DIR&gt; meson install -C _build
 </code></pre></div>
 
 <p>or just list it as a <a href="https://mesonbuild.com/Subprojects.html">subproject dependency</a> in your meson.build project file.</p>
@@ -263,16 +284,43 @@ as explained using the examples below.</p>
   default values specified.</p>
 </li>
 <li>
-<p>you add calls to the get_args(3f) procedure or one of its variants (
-  The alternatives allow you to use a simple function-based interface
-  model. There are special routines for when you want to use fixed length.
-  CHARACTER variables or fixed-size arrays instead of the allocatable
-  variables best used with get_args(3f)).</p>
+<p>you add calls to the get_args(3f) procedure or one of its variants.
+  The alternative convenience procedures (rget(3f),sget(3f),iget(3f)
+  &hellip;) allow you to use a simple function-based interface model. There
+  are special routines for when you want to use fixed length.  CHARACTER
+  variables or fixed-size arrays instead of the allocatable variables
+  best used with get_args(3f)).</p>
 </li>
 </ul>
 <p>Now when you call the program all the values in the prototype should
   be updated using values from the command line and queried and ready
   to use in your program.</p>
+<p><img alt="demos" src="docs/images/demo.gif"></p>
+<h2 id="demo-programs">Demo Programs</h2>
+<p>These demo programs provide templates for the most common usage:</p>
+<ul>
+<li><a href="example/demo3.f90">demo3</a>   Example of <strong>basic</strong> use</li>
+<li><a href="example/demo1.f90">demo1</a>   Using the convenience functions</li>
+<li><a href="example/demo9.f90">demo9</a>   Long and short names using &ndash;LONGNAME:SHORTNAME.</li>
+<li><a href="example/demo2.f90">demo2</a>   Putting everything including <strong>help</strong> and <strong>version</strong> information into a contained procedure.</li>
+<li><a href="example/demo17.f90">demo17</a> Using unnamed options as filenames or strings</li>
+<li><a href="example/demo16.f90">demo16</a> Using unnamed values as numbers</li>
+</ul>
+<h2 id="optional-modes">Optional Modes</h2>
+<ul>
+<li><a href="example/demo15.f90">demo15</a> Allowing bundling short Boolean keys using &ldquo;strict&rdquo; mode</li>
+<li><a href="example/demo14.f90">demo14</a> Case-insensitive long keys</li>
+<li><a href="example/demo12.f90">demo12</a> Enabling response files</li>
+<li><a href="example/demo13.f90">demo13</a> Equivalencing dash to underscore in keynames</li>
+</ul>
+<h2 id="niche-examples">Niche examples</h2>
+<ul>
+<li><a href="example/demo8.f90">demo8</a>   Parsing multiple keywords in a single call to get_args(3f)</li>
+<li><a href="example/demo4.f90">demo4</a>   <em>COMPLEX</em> type values</li>
+<li><a href="example/demo7.f90">demo7</a>   Controlling array delimiter characters</li>
+<li><a href="example/demo6.f90">demo6</a>   How to create a command with subcommands</li>
+<li><a href="example/demo5.f90">demo5</a>   extended description of using <em>CHARACTER</em> type values</li>
+</ul>
 <h2 id="response-files">Response files</h2>
 <p><a href="response.md">Response files</a> are supported as described in the documentation for
 <a href="https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html">set_args</a>.
@@ -280,44 +328,6 @@ They are a system-independent way to create short abbreviations for long
 complex commands. This option is generally not needed by programs with
 just a few options, but can be particularly useful for programs with
 dozens of options where various values are frequently reused.</p>
-<h2 id="documentation">Documentation   <img alt="docs" src="docs/images/docs.gif"></h2>
-<h3 id="man-pages-as-html">man-pages as HTML</h3>
-<ul>
-<li><a href="https://urbanjost.github.io/M_CLI2/man3.html">man-pages</a> &ndash; man-pages index of individual procedures</li>
-<li><a href="https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html">BOOK_M_CLI2</a> &ndash; All man-pages consolidated using JavaScript</li>
-</ul>
-<!--
-   + [M_CLI2](https://urbanjost.github.io/M_CLI2/M_CLI2.3m_cli2.html) --
-     An overview of the M_CLI2 module
-   + [set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html) --
-     parses the command line options
-   + [get_args](https://urbanjost.github.io/M_CLI2/get_args.3m_cli2.html) --
-     obtain parameter values for allocatable arrays and scalars.
-     This also documents the functions iget,igets,rget,rgets,sget,sgets,lget,lgets, ... .
-
-     **less frequently used**
-   + [get_args_fixed_length](https://urbanjost.github.io/M_CLI2/get_args_fixed_length.3m_cli2.html) --
-     obtain parameter values for fixed-length character variable
-   + [get_args_fixed_size](https://urbanjost.github.io/M_CLI2/get_args_fixed_size.3m_cli2.html) --
-     obtain parameter values for fixed-size arrays
-   + [specified](https://urbanjost.github.io/M_CLI2/specified.3m_cli2.html) --
-     query whether an option was used on the commandline
--->
-<h3 id="real-man-pages">real man-pages <img alt="gmake" src="docs/images/manpages.gif"></h3>
-<ul>
-<li><a href="https://urbanjost.github.io/M_CLI2/manpages.zip">manpages.zip</a></li>
-<li><a href="https://urbanjost.github.io/M_CLI2/manpages.tgz">manpages.tgz</a></li>
-</ul>
-<h3 id="developer-documentation">developer documentation</h3>
-<ul>
-<li><a href="https://urbanjost.github.io/M_CLI2/doxygen_out/html/index.html">doxygen(1) output</a>.</li>
-<li><a href="https://urbanjost.github.io/M_CLI2/fpm-ford/index.html">ford(1) output</a>.</li>
-</ul>
-<h3 id="logs">logs</h3>
-<ul>
-<li><a href="docs/CHANGELOG.md">CHANGELOG</a></li>
-<li><a href="docs/STATUS.md">STATUS</a> of most recent CI/CD runs</li>
-</ul>
 <h2 id="commit-tests">Commit Tests</h2>
 <p>commit <code>598e44164eee383b8a0775aa75b7d1bb100481c3</code> was tested on 2020-11-22 with
  + GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)
@@ -326,12 +336,16 @@ dozens of options where various values are frequently reused.</p>
 <p>commit <code>8fe841d8c0c1867f88847e24009a76a98484b31a</code> was tested on 2021-09-29 with
  + GNU Fortran (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0
  + ifort (IFORT) 2021.3.0 20210609
- + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem </p>
+ + nvfortran 21.5-0 LLVM 64-bit target on x86-64 Linux -tp nehalem</p>
+<p>commit <code>732bcadf95e753ccdf025cec2c08d776ea2534c2</code> was tested on 2023-02-10 with
+ + ifort (IFORT) 2021.8.0 20221119
+ + GNU Fortran (Ubuntu 11.1.0-1ubuntu1~20.04) 11.1.0</p>
 <hr>
 <!--
 Last updated:   Wed Sep 29 17:34:52 2021 -0400
+Last update: Sat 21 Jan 2023 11:10:53 PM EST
 -->
-<h2 id="last-update-sat-21-jan-2023-111053-pm-est">Last update: Sat 21 Jan 2023 11:10:53 PM EST</h2>
+<h2 id="last-update-saturday-february-4th-2023-11254-am-utc-0500">Last update: Saturday, February 4th, 2023 1:12:54 AM UTC-05:00</h2>
         </div>
         <div class="col-md-4">
 	  <div class="well">
@@ -348,15 +362,15 @@ Last updated:   Wed Sep 29 17:34:52 2021 -0400
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
               <ul>                    <li><a href='./sourcefile/demo1.f90.html'>demo1.f90</a></li>
-                    <li><a href='./sourcefile/demo10.f90.html'>demo10.f90</a></li>
                     <li><a href='./sourcefile/demo11.f90.html'>demo11.f90</a></li>
                     <li><a href='./sourcefile/demo12.f90.html'>demo12.f90</a></li>
                     <li><a href='./sourcefile/demo13.f90.html'>demo13.f90</a></li>
                     <li><a href='./sourcefile/demo14.f90.html'>demo14.f90</a></li>
                     <li><a href='./sourcefile/demo15.f90.html'>demo15.f90</a></li>
+                    <li><a href='./sourcefile/demo16.f90.html'>demo16.f90</a></li>
+                    <li><a href='./sourcefile/demo17.f90.html'>demo17.f90</a></li>
                     <li><a href='./sourcefile/demo2.f90.html'>demo2.f90</a></li>
                     <li><a href='./sourcefile/demo3.f90.html'>demo3.f90</a></li>
-                    <li><a href='./sourcefile/demo4.f90.html'>demo4.f90</a></li>
 </ul>
           </div>
 		  <div class="col-xs-6 col-sm-3">
@@ -396,7 +410,7 @@ Last updated:   Wed Sep 29 17:34:52 2021 -0400
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

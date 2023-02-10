@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 5.3% of total for programs.">26 statements</a>
+               title=" 5.9% of total for programs.">50 statements</a>
           </li>
 
             <li id="source-file">
@@ -125,9 +125,12 @@
       </div>
       <div id="vars-0" class="panel-collapse collapse">
         <div class="list-group">
+            <a class="list-group-item" href="../program/demo_specified.html#variable-color~2">color</a>
             <a class="list-group-item" href="../program/demo_specified.html#variable-flag">flag</a>
-            <a class="list-group-item" href="../program/demo_specified.html#variable-ints">ints</a>
-            <a class="list-group-item" href="../program/demo_specified.html#variable-two_names">two_names</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-floats">floats</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-i~5">i</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-ints~2">ints</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-list~2">list</a>
         </div>
       </div>
     </div>
@@ -170,6 +173,7 @@
           <li class="list-group-item">
             <ul class="list-inline">
                 <li><a href='../module/m_cli2.html'>M_CLI2</a></li>
+                <li><a href="https://gcc.gnu.org/onlinedocs/gfortran/ISO_005fFORTRAN_005fENV.html">iso_fortran_env</a></li>
             </ul>
           </li>
       </ul>
@@ -188,9 +192,12 @@
       </div>
       <div id="vars-1" class="panel-collapse collapse">
         <div class="list-group">
+            <a class="list-group-item" href="../program/demo_specified.html#variable-color~2">color</a>
             <a class="list-group-item" href="../program/demo_specified.html#variable-flag">flag</a>
-            <a class="list-group-item" href="../program/demo_specified.html#variable-ints">ints</a>
-            <a class="list-group-item" href="../program/demo_specified.html#variable-two_names">two_names</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-floats">floats</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-i~5">i</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-ints~2">ints</a>
+            <a class="list-group-item" href="../program/demo_specified.html#variable-list~2">list</a>
         </div>
       </div>
     </div>
@@ -238,8 +245,24 @@
     <tbody>
         <tr>
             <td>
+              <span class="anchor" id="variable-color~2"></span>
+              character(len=:),
+            </td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>color</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
               <span class="anchor" id="variable-flag"></span>
-              integer
+              logical
             </td>
             <td>
               
@@ -254,7 +277,39 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-ints"></span>
+              <span class="anchor" id="variable-floats"></span>
+              real,
+            </td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>floats</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-i~5"></span>
+              integer
+            </td>
+            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>i</strong></td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-ints~2"></span>
               integer,
             </td>
             <td>
@@ -270,14 +325,14 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-two_names"></span>
-              real,
+              <span class="anchor" id="variable-list~2"></span>
+              character(len=:),
             </td>
             <td>
               allocatable
             </td>
             <td>::</td>
-            <td><strong>two_names</strong>(:)</td>
+            <td><strong>list</strong>(:)</td>
                 <td></td>
                 <td></td>
             <td>
@@ -300,48 +355,82 @@
     <section>
     <h2 id="src">Source Code</h2>
     <div class="highlight"><pre><span></span><span class="w">     </span><span class="k">program </span><span class="n">demo_specified</span><span class="w"></span>
-<span class="w">     </span><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">get_args</span><span class="p">,</span><span class="w"> </span><span class="n">specified</span><span class="w"></span>
+<span class="w">     </span><span class="k">use</span><span class="p">,</span><span class="w"> </span><span class="k">intrinsic</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">iso_fortran_env</span><span class="p">,</span><span class="w"> </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">&amp;</span><span class="w"></span>
+<span class="w">     </span><span class="p">&amp;</span><span class="w"> </span><span class="n">stderr</span><span class="o">=&gt;</span><span class="n">ERROR_UNIT</span><span class="p">,</span><span class="w"> </span><span class="n">stdin</span><span class="o">=&gt;</span><span class="n">INPUT_UNIT</span><span class="p">,</span><span class="w"> </span><span class="n">stdout</span><span class="o">=&gt;</span><span class="n">OUTPUT_UNIT</span><span class="w"></span>
+<span class="w">     </span><span class="k">use </span><span class="n">M_CLI2</span><span class="p">,</span><span class="w">  </span><span class="k">only</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set_args</span><span class="p">,</span><span class="w"> </span><span class="n">igets</span><span class="p">,</span><span class="w"> </span><span class="n">rgets</span><span class="p">,</span><span class="w"> </span><span class="n">specified</span><span class="p">,</span><span class="w"> </span><span class="n">sget</span><span class="p">,</span><span class="w"> </span><span class="n">lget</span><span class="w"></span>
 <span class="w">     </span><span class="k">implicit none</span><span class="w"></span>
-<span class="w">     </span><span class="c">! DEFINE ARGS</span>
-<span class="w">     </span><span class="kt">integer</span><span class="w">                 </span><span class="kd">::</span><span class="w"> </span><span class="n">flag</span><span class="w"></span>
-<span class="w">     </span><span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">ints</span><span class="p">(:)</span><span class="w"></span>
-<span class="w">     </span><span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span><span class="w">        </span><span class="kd">::</span><span class="w"> </span><span class="n">two_names</span><span class="p">(:)</span><span class="w"></span>
 
-<span class="w">     </span><span class="c">! IT IS A BAD IDEA TO NOT HAVE THE SAME DEFAULT VALUE FOR ALIASED</span>
-<span class="w">     </span><span class="c">! NAMES BUT CURRENTLY YOU STILL SPECIFY THEM</span>
+<span class="w">     </span><span class="c">! Define args</span>
+<span class="w">     </span><span class="kt">integer</span><span class="p">,</span><span class="k">allocatable</span><span class="w">  </span><span class="kd">::</span><span class="w"> </span><span class="n">ints</span><span class="p">(:)</span><span class="w"></span>
+<span class="w">     </span><span class="kt">real</span><span class="p">,</span><span class="k">allocatable</span><span class="w">     </span><span class="kd">::</span><span class="w"> </span><span class="n">floats</span><span class="p">(:)</span><span class="w"></span>
+<span class="w">     </span><span class="kt">logical</span><span class="w">              </span><span class="kd">::</span><span class="w"> </span><span class="n">flag</span><span class="w"></span>
+<span class="w">     </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">color</span><span class="w"></span>
+<span class="w">     </span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">list</span><span class="p">(:)</span><span class="w"></span>
+<span class="w">     </span><span class="kt">integer</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
+
 <span class="w">      </span><span class="k">call </span><span class="n">set_args</span><span class="p">(</span><span class="s1">&#39;&amp;</span>
-<span class="s1">         &amp; --flag 1 -f 1 &amp;</span>
-<span class="s1">         &amp; --ints 1,2,3 -i 1,2,3 &amp;</span>
-<span class="s1">         &amp; --two_names 11.3 -T 11.3&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="s1">         &amp; --color:c &quot;red&quot;       &amp;</span>
+<span class="s1">         &amp; --flag:f F            &amp;</span>
+<span class="s1">         &amp; --ints:i 1,10,11      &amp;</span>
+<span class="s1">         &amp; --floats:T 12.3, 4.56 &amp;</span>
+<span class="s1">         &amp; &#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">ints</span><span class="o">=</span><span class="n">igets</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">floats</span><span class="o">=</span><span class="n">rgets</span><span class="p">(</span><span class="s1">&#39;floats&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">flag</span><span class="o">=</span><span class="n">lget</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">color</span><span class="o">=</span><span class="n">sget</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">)</span><span class="w"></span>
 
-<span class="w">     </span><span class="c">! ASSIGN VALUES TO ELEMENTS CONDITIONALLY CALLING WITH SHORT NAME</span>
-<span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span><span class="n">flag</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;ints&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;i&#39;</span><span class="p">,</span><span class="n">ints</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="n">two_names</span><span class="p">)</span><span class="w"></span>
-<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">))</span><span class="k">call </span><span class="n">get_args</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">,</span><span class="n">two_names</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;color=&#39;</span><span class="p">,</span><span class="n">color</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;flag=&#39;</span><span class="p">,</span><span class="n">flag</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;floats=&#39;</span><span class="p">,</span><span class="n">floats</span><span class="w"></span>
 
-<span class="w">      </span><span class="c">! IF YOU WANT TO KNOW IF GROUPS OF PARAMETERS WERE SPECIFIED USE</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;was -flag specified?&#39;</span><span class="p">,</span><span class="n">specified</span><span class="p">(</span><span class="s1">&#39;flag&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="c">! elemental</span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;floats&#39;</span><span class="p">,</span><span class="s1">&#39;ints  &#39;</span><span class="p">])</span><span class="w"></span>
+
+<span class="w">      </span><span class="c">! If you want to know if groups of parameters were specified use</span>
 <span class="w">      </span><span class="c">! ANY(3f) and ALL(3f)</span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">])</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ANY:&#39;</span><span class="p">,</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">]))</span><span class="w"></span>
-<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ALL:&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">]))</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ANY:&#39;</span><span class="p">,</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;floats&#39;</span><span class="p">,</span><span class="s1">&#39;ints  &#39;</span><span class="p">]))</span><span class="w"></span>
+<span class="w">      </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ALL:&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;floats&#39;</span><span class="p">,</span><span class="s1">&#39;ints  &#39;</span><span class="p">]))</span><span class="w"></span>
 
-<span class="w">      </span><span class="c">! FOR MUTUALLY EXCLUSIVE</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">])))</span><span class="k">then</span>
-<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You specified both names -T and -two_names&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="c">! For mutually exclusive</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">all</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;floats&#39;</span><span class="p">,</span><span class="s1">&#39;ints  &#39;</span><span class="p">])))</span><span class="k">then</span>
+<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You specified both names --ints and --floats&#39;</span><span class="w"></span>
 <span class="w">      </span><span class="k">endif</span><span class="w"></span>
 
-<span class="w">      </span><span class="c">! FOR REQUIRED PARAMETER</span>
-<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;two_names&#39;</span><span class="p">,</span><span class="s1">&#39;T        &#39;</span><span class="p">])))</span><span class="k">then</span>
-<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You must specify -T or -two_names&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="c">! For required parameter</span>
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(.</span><span class="nb">not</span><span class="p">.</span><span class="nb">any</span><span class="p">(</span><span class="n">specified</span><span class="p">([</span><span class="s1">&#39;floats&#39;</span><span class="p">,</span><span class="s1">&#39;ints  &#39;</span><span class="p">])))</span><span class="k">then</span>
+<span class="k">          write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;You must specify --ints or --floats&#39;</span><span class="w"></span>
 <span class="w">      </span><span class="k">endif</span><span class="w"></span>
-<span class="w">      </span><span class="c">! USE VALUES</span>
-<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;flag=&#39;</span><span class="p">,</span><span class="n">flag</span><span class="w"></span>
-<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints=&#39;</span><span class="p">,</span><span class="n">ints</span><span class="w"></span>
-<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;two_names=&#39;</span><span class="p">,</span><span class="n">two_names</span><span class="w"></span>
-<span class="w">      </span><span class="k">end program </span><span class="n">demo_specified</span><span class="w"></span>
+
+<span class="w">     </span><span class="c">! check if all values are in range from 10 to 30 and even</span>
+<span class="w">     </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;are all numbers good?&#39;</span><span class="p">,</span><span class="k">all</span><span class="p">([</span><span class="n">ints</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="n">ints</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">,(</span><span class="n">ints</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ints</span><span class="p">])</span><span class="w"></span>
+
+<span class="w">     </span><span class="c">! perhaps you want to check one value at a time</span>
+<span class="w">     </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">ints</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">),[</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">,(</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="w"></span>
+<span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="k">all</span><span class="p">([</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">,(</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span><span class="w"> </span><span class="p">)</span><span class="k">then</span>
+<span class="k">           write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="s1">&#39;is an even number from 10 to 30 inclusive&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="k">else</span>
+<span class="k">           write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">ints</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="s1">&#39;is not an even number from 10 to 30 inclusive&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="k">endif</span>
+<span class="k">     enddo</span>
+
+<span class="k">     </span><span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">]</span><span class="w"></span>
+<span class="w">     </span><span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="k">then</span>
+<span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">color</span><span class="p">,</span><span class="s1">&#39;matches a value in the list&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">else</span>
+<span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">color</span><span class="p">,</span><span class="s1">&#39;not in the list&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">endif</span>
+
+<span class="k">     if</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">ints</span><span class="p">).</span><span class="n">eq</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="k">then</span>
+<span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints(:) has expected number of values&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">else</span>
+<span class="k">        write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;ints(:) does not have expected number of values&#39;</span><span class="w"></span>
+<span class="w">     </span><span class="k">endif</span>
+
+<span class="k">     end program </span><span class="n">demo_specified</span><span class="w"></span>
 </pre></div>
 
     </section>
@@ -361,7 +450,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>

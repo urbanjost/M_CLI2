@@ -89,7 +89,7 @@
           <li id="statements"><i class="fa fa-list-ol"></i>
             <a data-toggle="tooltip"
                data-placement="bottom" data-html="true"
-               title=" 6.7% of total for programs.">33 statements</a>
+               title=" 4.6% of total for programs.">39 statements</a>
           </li>
 
             <li id="source-file">
@@ -126,10 +126,11 @@
       <div id="vars-0" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../program/demo11.html#variable-dot">dot</a>
-            <a class="list-group-item" href="../program/demo11.html#variable-i~3">i</a>
-            <a class="list-group-item" href="../program/demo11.html#variable-name~2">name</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-i~4">i</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-list">list</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-name~3">name</a>
             <a class="list-group-item" href="../program/demo11.html#variable-readme">readme</a>
-            <a class="list-group-item" href="../program/demo11.html#variable-string~2">string</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-string~11">string</a>
         </div>
       </div>
     </div>
@@ -203,10 +204,11 @@
       <div id="vars-1" class="panel-collapse collapse">
         <div class="list-group">
             <a class="list-group-item" href="../program/demo11.html#variable-dot">dot</a>
-            <a class="list-group-item" href="../program/demo11.html#variable-i~3">i</a>
-            <a class="list-group-item" href="../program/demo11.html#variable-name~2">name</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-i~4">i</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-list">list</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-name~3">name</a>
             <a class="list-group-item" href="../program/demo11.html#variable-readme">readme</a>
-            <a class="list-group-item" href="../program/demo11.html#variable-string~2">string</a>
+            <a class="list-group-item" href="../program/demo11.html#variable-string~11">string</a>
         </div>
       </div>
     </div>
@@ -282,7 +284,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-i~3"></span>
+              <span class="anchor" id="variable-i~4"></span>
               integer
             </td>
             <td>
@@ -298,7 +300,23 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-name~2"></span>
+              <span class="anchor" id="variable-list"></span>
+              character(len=:),
+            </td>
+            <td>
+              allocatable
+            </td>
+            <td>::</td>
+            <td><strong>list</strong>(:)</td>
+                <td></td>
+                <td></td>
+            <td>
+                
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-name~3"></span>
               character(len=:),
             </td>
             <td>
@@ -330,7 +348,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-string~2"></span>
+              <span class="anchor" id="variable-string~11"></span>
               character(len=:),
             </td>
             <td>
@@ -397,7 +415,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-x~2"></span>
+              <span class="anchor" id="variable-x"></span>
               integer,
             </td>
               <td>public</td>
@@ -414,7 +432,7 @@
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-y~2"></span>
+              <span class="anchor" id="variable-y"></span>
               integer,
             </td>
               <td>public</td>
@@ -460,35 +478,39 @@
 
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">name</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="p">:),</span><span class="k">allocatable</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">list</span><span class="p">(:)</span><span class="w"></span>
 <span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span><span class="w">            </span><span class="kd">::</span><span class="w"> </span><span class="n">readme</span><span class="w"> </span><span class="c">!(3)</span>
 <span class="kt">integer</span><span class="w">                      </span><span class="kd">::</span><span class="w"> </span><span class="n">i</span><span class="w"></span>
 
-<span class="c">! M_CLI2 does not have validators except for SPECIFIED(3f) and</span>
+<span class="k">print</span><span class="w"> </span><span class="o">*</span><span class="p">,</span><span class="s1">&#39;demo11: examples of validating values with ALL(3f) and ANY(3f)&#39;</span><span class="w"></span>
+
+<span class="c">! M_CLI2 intentionally does not have complex validators except for SPECIFIED(3f) and</span>
 <span class="c">! a check whether the input conforms to the type with get_args(3f)</span>
-<span class="c">! and the convenience functions like inum(3f). But Fortran already</span>
-<span class="c">! has powerful validation capabilities, especially with the use</span>
-<span class="c">! of logical expressions, and ANY(3f) and ALL(3f). </span>
+<span class="c">! or the convenience functions like inum(3f). </span>
+<span class="c">!</span>
+<span class="c">! Fortran already has powerful validation capabilities.  Logical</span>
+<span class="c">! expressions ANY(3f) and ALL(3f) are standard Fortran features easily</span>
+<span class="c">! allow performing the common validations for command line arguments</span>
+<span class="c">! without having to learn any additional syntax or methods.</span>
 
-<span class="c">! A somewhat contrived example of using ALL(3f):</span>
-
-<span class="c">! even number from 10 to 30 inclusive</span>
 <span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">100</span><span class="w"></span>
 <span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="k">all</span><span class="p">([</span><span class="n">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">30</span><span class="p">,(</span><span class="n">i</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">i</span><span class="p">]))</span><span class="k">then</span>
-<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;good&#39;</span><span class="p">,</span><span class="n">i</span><span class="w"></span>
+<span class="k">      write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">i</span><span class="p">,</span><span class="s1">&#39; is an even number from 10 to 30 inclusive&#39;</span><span class="w"></span>
 <span class="w">   </span><span class="k">endif</span>
-<span class="k">enddo</span><span class="w"></span>
+<span class="k">enddo</span>
 
-<span class="c">! an example of using ANY(3f)</span>
-
-<span class="c">! matched</span>
 <span class="n">name</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="w"></span>
-<span class="k">if</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">]))</span><span class="k">then</span>
-<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;matches &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="w"></span>
-<span class="k">endif</span><span class="w"></span>
-<span class="c">! not matched</span>
-<span class="n">name</span><span class="o">=</span><span class="s1">&#39;teal&#39;</span><span class="w"></span>
-<span class="k">if</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">]))</span><span class="k">then</span>
-<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39;matches &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="w"></span>
+<span class="n">list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="s1">&#39;white&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">]</span><span class="w"></span>
+<span class="k">if</span><span class="p">(</span><span class="w"> </span><span class="nb">any</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">list</span><span class="p">)</span><span class="w"> </span><span class="p">)</span><span class="k">then</span>
+<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39; matches a value in the list&#39;</span><span class="w"></span>
+<span class="k">else</span>
+<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="n">name</span><span class="p">,</span><span class="s1">&#39; not in the list&#39;</span><span class="w"></span>
+<span class="k">endif</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">list</span><span class="p">).</span><span class="n">eq</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="k">then</span>
+<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39; list has expected number of values&#39;</span><span class="w"></span>
+<span class="k">else</span>
+<span class="k">   write</span><span class="p">(</span><span class="o">*</span><span class="p">,</span><span class="o">*</span><span class="p">)</span><span class="s1">&#39; list does not have expected number of values&#39;</span><span class="w"></span>
 <span class="k">endif</span><span class="w"></span>
 
 <span class="c">! and even user-defined types can be processed by reading the input</span>
@@ -544,7 +566,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-02-04 03:16            </p>
+ on 2023-02-10 18:53            </p>
         </div>
       </div>
       <br>
