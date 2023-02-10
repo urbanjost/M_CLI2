@@ -11,7 +11,7 @@
 
 ## Example Program
 This short program defines a command that can be called using
-conventional Unix-style synax for short and long parameters:
+conventional Unix-style syntax for short and long parameters:
 
 ```bash
    ./show -x 10 -y -20 -p 10,20,30 --title "plot of stuff" -L
