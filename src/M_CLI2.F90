@@ -1438,7 +1438,7 @@ end subroutine prototype_to_dictionary
 !!    requesting a value (with get_args(3f) or the convenience functions
 !!    like inum(3f)).
 !!
-!!    Fortran already has powerful validation capabilities.  Logical
+!!    Fortran already has powerful validation capabilities. Logical
 !!    expressions ANY(3f) and ALL(3f) are standard Fortran features which
 !!    easily allow performing the common validations for command line
 !!    arguments without having to learn any additional syntax or methods.
@@ -2875,7 +2875,7 @@ end subroutine print_dictionary
 !!##DESCRIPTION
 !!
 !!    get_args_fixed_size(3f) returns the value of keywords for fixed-size
-!!    arrays after set_args(3f) has been called.  On input on the command
+!!    arrays after set_args(3f) has been called. On input on the command
 !!    line all values of the array must be specified.
 !!
 !!##OPTIONS
