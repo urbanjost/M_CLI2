@@ -90,6 +90,35 @@ described under SET_ARGS(3f).
 - [CHANGELOG](docs/CHANGELOG.md)
 - [STATUS](docs/STATUS.md) of most recent CI/CD runs
 
+### standalone command-line documentation program
+The
+[3.2.0 release](https://github.com/urbanjost/M_CLI2/releases/tag/V3.2.0)
+of the command-line parser module
+[M_CLI2](https://github.com/urbanjost/M_CLI2)
+has a [standalone program](https://raw.githubusercontent.com/urbanjost/index/main/bootstrap/fpm-m_cli2.f90)
+available that will display the help text for the procedures as a
+substitute for the man(1) pages.
+
+If the program is placed in your search path you can enter
+```text
+fpm-m_cli2 --help
+# if an fpm user
+fpm m_cli2 --help
+```
+for a description of usage.
+An example to build it on a typical Linux platform would be
+```bash
+# create a scratch directory for the build
+mkdir temp
+cd temp
+# get the documentation program
+curl https://raw.githubusercontent.com/urbanjost/index/main/bootstrap/fpm-m_cli2.f90
+# compile the program
+gfortran fpm-m_cli2.f90 -o fpm-m_cli2
+# copy it to somewhere in your path
+mv fpm-m_cli2 $HOME/.local/bin/
+```
+
 ![gmake](docs/images/gnu.gif)
 ## Download and Build with Make(1)
    Compile the M_CLI2 module and build all the example programs.
