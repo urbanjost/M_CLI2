@@ -6,7 +6,7 @@
 ## Description
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
-   the program. calls are then made for each parameter name to set the
+   the program. Calls are then made for each parameter name to set the
    variables appropriately in the program.
 
 ## Example Program
@@ -35,8 +35,11 @@ conventional Unix-style syntax for short and long parameters:
       !
       ! multiple scalar non-allocatable values can be done in one call if desired
       call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+      ! allocatable arrays and allocatable string lengths need called by themselves
+      call get_args('title',title)
+      call get_args('p',p)
 
-      ! you can use convenience functions for allocatable arrays and strings.
+      ! you can alternatively use convenience functions for allocatable arrays and strings.
       ! The functions are particularly useful in expressions and as arguments on
       ! procedure calls
       title=sget('title') ! string 

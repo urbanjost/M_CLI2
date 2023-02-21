@@ -49,7 +49,7 @@
       endif
 
      ! check if all values are in range from 10 to 30 and even
-     write(*,*)'are all numbers good?',all([ints >= 10,ints <= 30,(ints/2)*2 == ints])
+     write(*,*)'are all numbers good?',all([ints>=10,ints<= 30,(ints/2)*2==ints])
 
      ! perhaps you want to check one value at a time
      do i=1,size(ints)

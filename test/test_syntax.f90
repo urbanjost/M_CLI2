@@ -22,12 +22,15 @@ character(len=:),allocatable :: whichone
    case('three')   
     write(*,it)'three:size=',size(sgets('strings'))
     write(*,'(*("[",a,"]":,1x))')sgets('strings')
+   case('four')   
+    call testit(whichone//' v',size(lgets('verbose'))==5)
    case('run')
       print *,'test_syntax: syntax mode'
       call runit('--type one -u')
       call runit('--type one ')
       call runit('--type two -I 0,1,2 --ints=20:30:40 --ints 300,400 -I=1000,2000')
       call runit('--type three')
+      call runit('--type four -V -V -V -V -V')
    case default
       print it,'unknown type'
    end select
