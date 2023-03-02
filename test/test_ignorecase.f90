@@ -36,12 +36,14 @@ contains
 subroutine testit(string,test)
 character(len=*),intent(in) :: string
 logical,intent(in) :: test
+integer :: i
 
-   write(*,it,advance='no')arr
    if(test)then
-      print it,':ignorecase:',string,'passed'
+      write(*,it,advance='no')':ignorecase:',string,'passed'
+      write(*,it)(trim(arr(i)),i=1,size(arr))
    else
-      print it,':ignorecase:',string,'failed'
+      write(*,it,advance='no')':ignorecase:',string,'failed'
+      write(*,it)(trim(arr(i)),i=1,size(arr))
       stop 1
    endif
 
@@ -51,7 +53,8 @@ subroutine runit(string)
 character(len=*),intent(in) :: string
 character(len=4096) :: cmd
    call get_command_argument(0,cmd)
-   write(stdout,*)'RUN:',trim(cmd)//' '//string
+   !write(stdout,*)'RUN:',trim(cmd)//' '//string
+   write(stdout,it,advance='yes')'RUN:',string
    call execute_command_line(trim(cmd)//' '//string)
 end subroutine runit
 

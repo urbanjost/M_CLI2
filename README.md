@@ -70,6 +70,7 @@ These parameters are defined automatically
 ```bash
     --help
     --usage
+    --verbose
     --version
 ```
 You must supply text for the optional "--help" and "--version" keywords, as

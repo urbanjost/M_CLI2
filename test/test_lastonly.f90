@@ -57,7 +57,7 @@ subroutine runit(string)
 character(len=*),intent(in) :: string
 character(len=4096) :: cmd
    call get_command_argument(0,cmd)
-   write(stdout,*)'RUN:',trim(cmd)//' '//string
+   write(stdout,it)'RUN:',string
    call execute_command_line(trim(cmd)//' '//string)
 end subroutine runit
 
