@@ -11,7 +11,7 @@ jobs:
         os: [ubuntu-latest ]
         include:
         - os: ubuntu-latest
-          gcc_v: 10
+          gcc_v: 12
 
     env:
       FC: gfortran
@@ -54,6 +54,7 @@ jobs:
            git branch
            git log --decorate=short -n 1
            find src -type f|xargs sum
+           find build -name libM_CLI2.a|xargs nm
            fpm test --profile debug --verbose
 
     - name: ubuntu with gfortran (release)
