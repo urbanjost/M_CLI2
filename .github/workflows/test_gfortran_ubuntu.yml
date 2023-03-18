@@ -51,12 +51,15 @@ jobs:
     - name: ubuntu with gfortran (debug)
       run: |
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
+           git branch
+           git log --decorate=short -n 1
+           find src -type f|xargs sum
            fpm test --profile debug --verbose
 
     - name: ubuntu with gfortran (release)
       run: |
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           fpm test --profile release 
+           fpm test --profile release
 
 #    - name: Run demo programs (fpm run)
 #      run: fpm run --profile release
