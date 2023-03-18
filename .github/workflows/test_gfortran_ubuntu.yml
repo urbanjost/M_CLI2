@@ -36,20 +36,18 @@ jobs:
            wget https://raw.githubusercontent.com/urbanjost/index/main/bootstrap/fpm.F90
            mkdir -p /home/runner/.local/bin tmp
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           gfortran fpm.F90 -Jtmp -Itmp -static -o /home/runner/.local/bin/fpm
+           gfortran fpm.F90 -Itmp -Jtmp -static -o /home/runner/.local/bin/fpm
            rm -f tmp/*.mod
            ls -l
 
     - name: Display environment
       run: |
-           #make -k -p -fNOTTHERE
-           echo "end" > foo.f90
-           ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           gfortran -cpp -E -dM foo.f90
-           gfortran --version
-           fpm --version
-           git branch
-           git log --decorate=short -n 1
+        #make -k -p -fNOTTHERE
+        echo "end" > foo.f90
+        ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
+        gfortran -cpp -E -dM foo.f90
+        gfortran --version
+        fpm --version
 
     - name: ubuntu with gfortran (debug)
       run: |
@@ -59,7 +57,7 @@ jobs:
     - name: ubuntu with gfortran (release)
       run: |
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           fpm test --profile release
+           fpm test --profile release 
 
 #    - name: Run demo programs (fpm run)
 #      run: fpm run --profile release
