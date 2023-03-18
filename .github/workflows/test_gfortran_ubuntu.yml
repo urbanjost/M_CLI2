@@ -34,30 +34,27 @@ jobs:
            pwd
            uname -a
            wget https://raw.githubusercontent.com/urbanjost/index/main/bootstrap/fpm.F90
-           mkdir -p /home/runner/.local/bin
+           mkdir -p /home/runner/.local/bin tmp
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           gfortran fpm.F90 -static -o /home/runner/.local/bin/fpm
+           gfortran fpm.F90 -Jtmp -Itmp -static -o /home/runner/.local/bin/fpm
+           rm -f tmp/*.mod
            ls -l
 
     - name: Display environment
       run: |
-        #make -k -p -fNOTTHERE
-        echo "end" > foo.f90
-        ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-        gfortran -cpp -E -dM foo.f90
-        gfortran --version
-        fpm --version
+           #make -k -p -fNOTTHERE
+           echo "end" > foo.f90
+           ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
+           gfortran -cpp -E -dM foo.f90
+           gfortran --version
+           fpm --version
+           git branch
+           git log --decorate=short -n 1
 
     - name: ubuntu with gfortran (debug)
       run: |
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           git branch
-           git log --decorate=short -n 1
-           find src -type f|xargs sum
-           grep set_mode src/M*|grep -v ':!'
-           fpm build --profile debug --verbose||echo ouch
-           find build -name libM_CLI2.a|xargs nm||echo ouch
-           fpm test --profile debug --verbose||echo ouch
+           fpm test --profile debug --verbose
 
     - name: ubuntu with gfortran (release)
       run: |
