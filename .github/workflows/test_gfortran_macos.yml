@@ -34,9 +34,9 @@ jobs:
            pwd
            uname -a
            wget https://raw.githubusercontent.com/urbanjost/index/main/bootstrap/fpm.F90
-           mkdir -p /home/runner/.local/bin tmp
+           mkdir -p /Users/runner/bin tmp
            ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
-           gfortran fpm.F90 -Jtmp -Itmp -static -o /home/runner/.local/bin/fpm
+           gfortran fpm.F90 -Jtmp -Itmp -static -o /Users/runner/bin/fpm
            rm -f tmp/*.mod
            ls -l
 
