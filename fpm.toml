@@ -46,6 +46,11 @@ executable = [
    { name="demo_specified",             source-dir="example/demos", main="demo_specified.f90" },
    { name="demo_M_CLI2",                source-dir="example/demos", main="demo_M_CLI2.f90" }
 ]
+[build]
+#auto-executables = true
+#auto-examples = false
+#auto-tests = false
+#PASSES#module-naming = true          # Use default naming convention
 
 [install]
 library=true

@@ -1,7 +1,7 @@
 project(
     'M_CLI2',
     'fortran',
-    version : '1.0.0',
+    version : '3.2.0',
     license : 'UNLICENSE',
     default_options : [
         'buildtype=debugoptimized',
