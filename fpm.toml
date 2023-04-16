@@ -1,4 +1,4 @@
-# TOML file for fpm as described at https://github.com/fortran-lang/fpm/blob/master/manifest-reference.md
+# TOML file for fpm as described at https://fpm.fortran-lang.org/en/spec/manifest.html
 name = "M_CLI2"
 version = "3.2.0"
 license = "Public Domain"
@@ -11,7 +11,7 @@ keywords = ["fortran", "parse", "commandline", "arguments"]
 homepage = "https://github.com/urbanjost/M_CLI2.git"
 
 # unit test program
-test = [ 
+test = [
    { name="test_ignorecase", source-dir="test", main="test_ignorecase.f90" },
    { name="test_lastonly", source-dir="test", main="test_lastonly.f90" },
    { name="test_strict", source-dir="test", main="test_strict.f90" },
