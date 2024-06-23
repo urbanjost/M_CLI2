@@ -7,21 +7,49 @@
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
    the program. Calls are then made for each parameter name to set the
-   variables appropriately in the program.
-
+   variables appropriately in the program. One approach is isolate all
+   the parsing to the beginning of the program, which is generally just
+   a few lines:
+```fortran
+   program compartmentalized
+   use M_CLI2, only : set_args, get_args, s=>sget, r=>rget, i=>iget, l=>lget 
+   implicit none
+   !
+   ! define command options and default values and parse command line
+     call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
+   ! just like calling the command accept --title:T means to give it the long
+   ! name "title" and the short name "T" and that to define a boolean you give
+   ! it the unquoted value of F.
+   !
+   ! convert arguments to the desired types and call main program
+     call main( x=r('x'), y=r('y'), title=s('title'), i=i('i'), l=l('l'), lbig=l('L'))
+   contains 
+   subroutine main(x,y,title,i,l,lbig)
+   ! do something with the values, all the parsing is done
+   real                          :: x,y     ;namelist /args/x,y
+   logical                       :: l,lbig  ;namelist /args/l,lbig
+   integer                       :: i       ;namelist /args/i
+   character(len=:),allocatable  :: title   ;namelist /args/title
+   write(*,nml=args)
+   end subroutine main
+   end program compartmentalized
+```
 ## Example Program
 This short program defines a command that can be called using
 conventional Unix-style syntax for short and long parameters:
 
 ```bash
+   # arrays can be allowed like for "-p":
    ./show -x 10 -y -20 -p 10,20,30 --title "plot of stuff" -L
-   ./show -lL
-   ./show  --title="my new title" 
-   ./show  -T "my new title" 
+   ./show -lL # in strict mode booleans may be concatenated
+   ./show  --title="my new title" # --name=value or --name value is OK
+   ./show  -T "my new title" # a short name for "title"
 ```
 ```fortran
    program show
-   use M_CLI2, only : set_args, get_args, sget, igets, set_mode
+   use M_CLI2, only : set_args, get_args, set_mode
+   use M_CLI2, only : sget, rget, iget, lget 
+   use M_CLI2, only : sgets, rgets, igets, lgets 
    implicit none
    real                          :: x,y,z
    logical                       :: l, lbig
@@ -32,18 +60,27 @@ conventional Unix-style syntax for short and long parameters:
       !
       ! Define command and default values and parse supplied command line options
       call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title:T "my title" -l F -L F')
+      ! use convenience functions for scalar values or allocatable arrays. 
+      ! The functions are particularly useful in expressions and as arguments on
+      ! procedure calls:
+      x=rget('x')         ! float 
+      y=rget('y') 
+      z=rget('z') 
+      title=sget('title') ! string 
+      p=igets('p')        ! integer array
+      l=lget('l')         ! logical
+      lbig=lget('L')
+      ! All ready to go, print it as a namelist so everything is labeled
+      write(*,args)
+      !
+      ! Alternatively: use get_args directly instead of via the convenience routines:
       !
       ! multiple scalar non-allocatable values can be done in one call if desired
       call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+      !
       ! allocatable arrays and allocatable string lengths need called by themselves
       call get_args('title',title)
       call get_args('p',p)
-
-      ! you can alternatively use convenience functions for allocatable arrays and strings.
-      ! The functions are particularly useful in expressions and as arguments on
-      ! procedure calls
-      title=sget('title') ! string 
-      p=igets('p') ! integer array
       !
       ! All ready to go, print it as a namelist so everything is labeled
       write(*,args)

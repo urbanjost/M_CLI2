@@ -1,0 +1,1340 @@
+get_args (3m_cli2)   - [ARGUMENTS:M_CLI2] return keyword values when parsing command line arguments (LICENSE:PD)
+get_args_fixed_length (3m_cli2) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line (LICENSE:PD)
+get_args_fixed_size (3m_cli2) - [ARGUMENTS:M_CLI2] return keyword values for fixed-size array when parsing command line arguments (LICENSE:PD)
+get_subcommand (3m_cli2) - [ARGUMENTS:M_CLI2] special-case routine for handling subcommands on a command line (LICENSE:PD)
+M_CLI2 (3m_cli2)     - [ARGUMENTS::M_CLI2::INTRO] command line argument parsing using a prototype command (LICENSE:PD)
+set_args (3m_cli2)   - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)
+set_mode (3m_cli2)   - [ARGUMENTS:M_CLI2] turn on optional modes (LICENSE:PD)
+specified (3m_cli2)  - [ARGUMENTS:M_CLI2] return true if keyword was present on command line (LICENSE:PD)
+get_args_fixed_length(3m_cli2)			get_args_fixed_length(3m_cli2)
+
+
+
+NAME
+  get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for
+  fixed-length string when parsing command line (LICENSE:PD)
+
+
+SYNOPSIS
+  subroutine get_args_fixed_length(name,value)
+
+      character(len=*),intent(in)  :: name
+      character(len=:),allocatable :: value
+      character(len=*),intent(in),optional :: delimiters
+
+
+DESCRIPTION
+  get_args_fixed_length(3f) returns the value of a string keyword when the
+  string value is a fixed-length CHARACTER variable.
+
+OPTIONS
+  NAME
+    name of commandline argument to obtain the value of
+
+  VALUE
+    variable to hold returned value.  Must be a fixed-length CHARACTER
+    variable.
+
+  DELIMITERS
+    By default the delimiter for array values are comma, colon, and
+    whitespace. A string containing an alternate list of delimiter characters
+    may be supplied.
+
+EXAMPLE
+  Sample program:
+
+      program demo_get_args_fixed_length
+      use M_CLI2,  only : set_args, get_args_fixed_length
+      implicit none
+
+       ! Define args
+      character(len=80)   :: title
+       ! Parse command line
+      call set_args(' --title "my title" ')
+       ! Assign values to variables
+      call get_args_fixed_length('title',title)
+       ! Use values
+      write(*,*)'title=',title
+
+      end program demo_get_args_fixed_length
+
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024	get_args_fixed_length(3m_cli2)
+get_subcommand(3m_cli2) 			       get_subcommand(3m_cli2)
+
+
+
+NAME
+  get_subcommand(3f) - [ARGUMENTS:M_CLI2] special-case routine for handling
+  subcommands on a command line (LICENSE:PD)
+
+
+SYNOPSIS
+  function get_subcommand()
+
+      character(len=:),allocatable :: get_subcommand
+
+
+DESCRIPTION
+  In the special case when creating a program with subcommands it is assumed
+  the first word on the command line is the subcommand. A routine is required
+  to handle response file processing, therefore this routine (optionally
+  processing response files) returns that first word as the subcommand name.
+
+  It should not be used by programs not building a more elaborate command with
+  subcommands.
+
+RETURNS
+  NAME
+    name of subcommand
+
+EXAMPLE
+  Sample program:
+
+     program demo_get_subcommand
+     !x! SUBCOMMANDS
+     !x! For a command with subcommands like git(1)
+     !x! you can make separate namelists for each subcommand.
+     !x! You can call this program which has two subcommands (run, test),
+     !x! like this:
+     !x!    demo_get_subcommand --help
+     !x!    demo_get_subcommand run -x -y -z --title -l -L
+     !x!    demo_get_subcommand test --title -l -L --testname
+     !x!    demo_get_subcommand run --help
+	implicit none
+     !x! DEFINE VALUES TO USE AS ARGUMENTS WITH INITIAL VALUES
+	real		   :: x=-999.0,y=-999.0,z=-999.0
+	character(len=80)  :: title="not set"
+	logical 	   :: l=.false.
+	logical 	   :: l_=.false.
+	character(len=80)  :: testname="not set"
+	character(len=20)  :: name
+	call parse(name) !x! DEFINE AND PARSE COMMAND LINE
+	!x! ALL DONE CRACKING THE COMMAND LINE.
+	!x! USE THE VALUES IN YOUR PROGRAM.
+	write(*,*)'command was ',name
+	write(*,*)'x,y,z .... ',x,y,z
+	write(*,*)'title .... ',title
+	write(*,*)'l,l_ ..... ',l,l_
+	write(*,*)'testname . ',testname
+     contains
+     subroutine parse(name)
+     !x! PUT EVERYTHING TO DO WITH COMMAND PARSING HERE FOR CLARITY
+     use M_CLI2, only : set_args, get_args, get_args_fixed_length
+     use M_CLI2, only : get_subcommand, set_mode
+     character(len=*)		   :: name    ! the subcommand name
+     character(len=:),allocatable  :: help_text(:), version_text(:)
+	call set_mode('response_file')
+     ! define version text
+	version_text=[character(len=80) :: &
+	   '@(#)PROGRAM:     demo_get_subcommand	    >', &
+	   '@(#)DESCRIPTION: My demo program  >', &
+	   '@(#)VERSION:     1.0 20200715     >', &
+	   '@(#)AUTHOR:      me, myself, and I>', &
+	   '@(#)LICENSE:     Public Domain    >', &
+	   '' ]
+	 ! general help for "demo_get_subcommand --help"
+	 help_text=[character(len=80) :: &
+	  ' allowed subcommands are	     ', &
+	  '   * run  -l -L --title -x -y -z  ', &
+	  '   * test -l -L --title	     ', &
+	  '' ]
+	! find the subcommand name by looking for first word on command
+	! not starting with dash
+	name = get_subcommand()
+	select case(name)
+	case('run')
+	 help_text=[character(len=80) :: &
+	  '				     ', &
+	  ' Help for subcommand "run"	     ', &
+	  '				     ', &
+	  '' ]
+	 call set_args( &
+	 & '-x 1 -y 2 -z 3 --title "my title" -l F -L F',&
+	 & help_text,version_text)
+	 call get_args('x',x)
+	 call get_args('y',y)
+	 call get_args('z',z)
+	 call get_args_fixed_length('title',title)
+	 call get_args('l',l)
+	 call get_args('L',l_)
+	case('test')
+	 help_text=[character(len=80) :: &
+	  '				     ', &
+	  ' Help for subcommand "test"	     ', &
+	  '				     ', &
+	  '' ]
+	 call set_args(&
+	 & '--title "my title" -l F -L F --testname "Test"',&
+	 & help_text,version_text)
+	 call get_args_fixed_length('title',title)
+	 call get_args('l',l)
+	 call get_args('L',l_)
+	 call get_args_fixed_length('testname',testname)
+	case default
+	 ! process help and version
+	 call set_args(' ',help_text,version_text)
+	 write(*,'(*(a))')'unknown or missing subcommand [',trim(name),']'
+	 write(*,'(a)')[character(len=80) ::  &
+	 ' allowed subcommands are	    ', &
+	 '   * run  -l -L -title -x -y -z   ', &
+	 '   * test -l -L -title	    ', &
+	 '' ]
+	 stop
+	end select
+     end subroutine parse
+     end program demo_get_subcommand
+
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024	       get_subcommand(3m_cli2)
+M_CLI2(3m_cli2) 					       M_CLI2(3m_cli2)
+
+
+
+NAME
+  M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] command line argument parsing using
+  a prototype command (LICENSE:PD)
+
+SYNOPSIS
+  Available procedures and variables:
+
+       ! basic procedures
+       use M_CLI2, only : set_args, get_args, specified, set_mode
+       ! convenience functions
+       use M_CLI2, only : dget, iget, lget, rget, sget, cget
+       use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets
+       ! variables
+       use M_CLI2, only : unnamed, remaining, args
+       ! working with non-allocatable strings and arrays
+       use M_CLI2, only : get_args_fixed_length, get_args_fixed_size
+       ! special function for creating subcommands
+       use M_CLI2, only : get_subcommand(3f)
+
+
+DESCRIPTION
+  The M_CLI2 module cracks a Unix-style command line.
+
+  Typically one call to SET_ARGS(3f) is made to define the command arguments,
+  set default values and parse the command line. Then a call is made to the
+  convenience procedures or GET_ARGS(3f) proper for each command keyword to
+  obtain the argument values.
+
+  Detailed descriptions of each procedure and example programs are included.
+
+EXAMPLE
+  Sample minimal program:
+
+      program minimal
+      use M_CLI2,  only : set_args, lget, rget, sgets
+      implicit none
+      real    :: x, y
+      integer :: i
+      character(len=:),allocatable :: version_text(:), help_text(:)
+      character(len=:),allocatable :: filenames(:)
+	 ! define and crack command line.
+	 ! creates argument --yvalue with short name y with default value 0
+	 ! creates argument --xvalue with short name x with default value 0
+	 ! creates boolean argument
+	 call setup() ! define help text and version text
+	 call set_args(' --yvalue:y 0.0 --xvalue:x 0.0 --debug F',&
+	      & help_text=help_text,&
+	      & version_text=version_text)
+	 ! get values
+	 x=rget('xvalue')
+	 y=rget('yvalue')
+	 if(lget('debug'))then
+	    write(*,*)'X=',x
+	    write(*,*)'Y=',y
+	    write(*,*)'ATAN2(Y,X)=',atan2(x=x,y=y)
+	 else
+	    write(*,*)atan2(x=x,y=y)
+	 endif
+	 filenames=sgets() ! sgets(3f) with no name gets "unnamed" values
+	 if(size(filenames) > 0)then
+	    write(*,'(g0)')'filenames:'
+	    write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+	 endif
+      contains
+      subroutine setup()
+
+      help_text=[character(len=80) :: &
+		  & "wish I put instructions", &
+		  & "here I suppose.	    ", &
+		  & " "]
+
+      version_text=[character(len=80) :: "version 1.0","author: me"]
+
+      end subroutine setup
+      end program minimal
+
+  which may be called in various ways:
+
+      mimimal -x 100.3 -y 3.0e4
+      mimimal --xvalue=300 --debug
+      mimimal --yvalue 400
+      mimimal -x 10 file1 file2 file3
+
+  Sample program using get_args() and variants
+
+      program demo_M_CLI2
+      use M_CLI2,  only : set_args, get_args
+      use M_CLI2,  only : filenames=>unnamed
+      use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
+      implicit none
+      integer			   :: i
+      integer,parameter 	   :: dp=kind(0.0d0)
+       !
+       ! Define ARGS
+      real			   :: x, y, z
+      logical			   :: l, lbig
+      character(len=40) 	   :: label    ! FIXED LENGTH
+      real(kind=dp),allocatable    :: point(:)
+      logical,allocatable	   :: logicals(:)
+      character(len=:),allocatable :: title    ! VARIABLE LENGTH
+      real			   :: p(3)     ! FIXED SIZE
+      logical			   :: logi(3)  ! FIXED SIZE
+       !
+      use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
+      implicit none
+      integer			   :: i
+      integer,parameter 	   :: dp=kind(0.0d0)
+       !
+       ! Define ARGS
+      real			   :: x, y, z
+      logical			   :: l, lbig
+      character(len=40) 	   :: label    ! FIXED LENGTH
+      real(kind=dp),allocatable    :: point(:)
+      logical,allocatable	   :: logicals(:)
+      character(len=:),allocatable :: title    ! VARIABLE LENGTH
+      real			   :: p(3)     ! FIXED SIZE
+      logical			   :: logi(3)  ! FIXED SIZE
+       !
+       ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+       !   o set a value for all keywords.
+       !   o double-quote strings, strings must be at least one space
+       !     because adjacent double-quotes designate a double-quote
+       !     in the value.
+       !   o set all logical values to F
+       !   o numeric values support an "e" or "E" exponent
+       !   o for lists delimit with a comma, colon, or space
+      call set_args('			      &
+	      & -x 1 -y 2 -z 3		      &
+	      & -p -1 -2 -3		      &
+	      & --point 11.11, 22.22, 33.33e0 &
+	      & --title "my title" -l F -L F  &
+	      & --logicals  F F F F F	      &
+	      & --logi F T F		      &
+	      & --label " " &
+	      ! note space between quotes is required
+	      & ')
+       ! Assign values to elements using G_ARGS(3f).
+       ! non-allocatable scalars can be done up to twenty per call
+      call get_args('x',x, 'y',y, 'z',z, 'l',l, 'L',lbig)
+       ! As a convenience multiple pairs of keywords and variables may be
+       ! specified if and only if all the values are scalars and the CHARACTER
+       ! variables are fixed-length or pre-allocated.
+       !
+       ! After SET_ARGS(3f) has parsed the command line
+       ! GET_ARGS(3f) retrieves the value of keywords accept for
+       ! two special cases. For fixed-length CHARACTER variables
+       ! see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
+       ! GET_ARGS_FIXED_SIZE(3f).
+       !
+       ! allocatables should be done one at a time
+      call get_args('title',title) ! allocatable string
+      call get_args('point',point) ! allocatable arrays
+      call get_args('logicals',logicals)
+       !
+       ! less commonly ...
+
+       ! for fixed-length strings
+      call get_args_fixed_length('label',label)
+
+       ! for non-allocatable arrays
+      call get_args_fixed_size('p',p)
+      call get_args_fixed_size('logi',logi)
+       !
+       ! all done parsing, use values
+      write(*,*)'x=',x, 'y=',y, 'z=',z, x+y+z
+      write(*,*)'p=',p
+      write(*,*)'point=',point
+      write(*,*)'title=',title
+      write(*,*)'label=',label
+      write(*,*)'l=',l
+      write(*,*)'L=',lbig
+      write(*,*)'logicals=',logicals
+      write(*,*)'logi=',logi
+       !
+       ! unnamed strings
+       !
+      if(size(filenames) > 0)then
+	 write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+      endif
+       !
+      end program demo_M_CLI2
+
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+SEE ALSO
+  •  get_args(3f)
+
+  •  get_args_fixed_size(3f)
+
+  •  get_args_fixed_length(3f)
+
+  •  get_subcommand(3f)
+
+  •  set_mode(3f)
+
+  •  specified(3f)
+
+  Note that the convenience routines are described under get_args(3f):
+  dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
+  igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
+
+
+
+				 June 22, 2024		       M_CLI2(3m_cli2)
+set_args(3m_cli2)					     set_args(3m_cli2)
+
+
+
+NAME
+  set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)
+
+
+SYNOPSIS
+  subroutine set_args(prototype,help_text,version_text,ierr,errmsg)
+
+       character(len=*),intent(in),optional		 :: prototype
+       character(len=*),intent(in),optional		 :: help_text(:)
+       character(len=*),intent(in),optional		 :: version_text(:)
+       integer,intent(out),optional			 :: ierr
+       character(len=:),intent(out),allocatable,optional :: errmsg
+
+DESCRIPTION
+  SET_ARGS(3f) requires a unix-like command prototype which defines the
+  command-line options and their default values. When the program is executed
+  this and the command-line options are applied and the resulting values are
+  placed in an internal table for retrieval via GET_ARGS(3f).
+
+  The built-in --help and --version options require optional help_text and
+  version_text values to be provided to be particularly useful.
+
+OPTIONS
+  PROTOTYPE
+    composed of all command arguments concatenated into a Unix-like command
+    prototype string. For example:
+
+		  call set_args('-L F --ints 1,2,3 --title "my title" -R 10.3')
+
+  Note that the following options are predefined for all commands:
+
+		     --verbose F --usage F --help F --version F
+
+  see "DEFINING THE PROTOTYPE" in the next section for further details.
+
+  HELP_TEXT
+    if present, will be displayed when the program is called with a --help
+    switch, and then the program will terminate. If help text is not supplied
+    the command line initialization string will be echoed.
+
+  VERSION_TEXT
+    if present, any version text defined will be displayed when the program is
+    called with a --version switch, and then the program will terminate.
+
+  IERR
+    if present a non-zero option is returned when an error occurs instead of
+    the program terminating.
+
+  ERRMSG
+    a description of the error if ierr is present.
+
+DEFINING THE PROTOTYPE
+  •  Keywords start with a single dash for short single-character keywords,
+     and with two dashes for longer keywords.
+
+  •  all keywords on the prototype MUST get a value.
+
+     •	logicals must be set to an unquoted F.
+
+     •	strings must be delimited with double-quotes.  Since internal double-
+	quotes are represented with two double-quotes the string must be at
+	least one space.
+
+  •  numeric keywords are not allowed; but this allows negative numbers to be
+     used as values.
+
+  •  lists of values should be comma-delimited unless a user-specified
+     delimiter is used. The prototype must use the same array delimiters as
+     the call to get the value.
+
+  •  to define a zero-length allocatable array make the value a delimiter
+     (usually a comma) or an empty set of braces ("[]").
+
+   LONG AND SHORT NAMES
+  Long keywords start with two dashes followed by more than one letter.  Short
+  keywords are a dash followed by a single letter.
+
+  •  It is recommended long names (--keyword) should be all lowercase but are
+     case-sensitive by default, unless "set_mode('ignorelongcase')" or
+     "set_mode('ignoreallcase')" is in effect.
+
+  •  Long names should always be more than one character.
+
+  •  The recommended way to have short names is to suffix the long name with
+     :LETTER in the definition.
+
+     If this syntax is used then logical shorts may be combined on the command
+     line when "set_mode('strict')" is in effect.
+
+   SPECIAL BEHAVIORS
+  •  A special behavior occurs if a keyword name ends in ::.  When the program
+     is called the next parameter is taken as a value even if it starts with
+     -. This is not generally needed but is useful in rare cases where non-
+     numeric values starting with a dash are desired.
+
+  •  If the prototype ends with "--" a special mode is turned on where
+     anything after "--" on input goes into the variable REMAINING with values
+     double-quoted and also into the array ARGS instead of becoming elements
+     in the UNNAMED array. This is not needed for normal processing, but was
+     needed for a program that needed this behavior for its subcommands.
+
+     That is, for a normal call all unnamed values go into UNNAMED and ARGS
+     and REMAINING are ignored. So for
+
+	      call set_args('-x 10 -y 20 ')
+
+     A program invocation such as
+
+	      xx a b c -- A B C " dd "
+
+     results in
+
+	   UNNAMED= ['a','b','c','A','B','C',' dd']
+	   REMAINING= ''
+	   ARGS= [character(len=0) :: ] ! ie, an empty character array
+
+     Whereas
+
+	   call set_args('-x 10 -y 20 --')
+
+     generates the following output from the same program execution:
+
+	   UNNAMED= ['a','b','c']
+	   REMAINING= '"A" "B" "C" " dd "'
+	   ARGS= ['A','B','C,' dd']
+
+
+USAGE NOTES
+  When invoking the program line note the following restrictions (which often
+  differ between various command-line parsers and are subject to change):
+
+  •  By defaul tvalues for duplicate keywords are appended together with a
+     space separator.
+
+  •  shuffling is not supported. Values immediately follow their keywords.
+
+  •  Only short Boolean keywords can be bundled together.  If allowing
+     bundling is desired call "set_mode('strict')".  This will require
+     prefixing long names with "--" and short names with "-". Otherwise M_CLI2
+     relaxes that requirement and mostly does not care what prefix is used for
+     a keyword.  But this would make it unclear what was meant by "-ox" if
+     allowed options were "-o F -x F --ox F " for example, so "strict" mode is
+     required to remove the ambiguity.
+
+  •  if a parameter value of just "-" is supplied it is converted to the
+     string "stdin".
+
+  •  values not needed for a keyword value go into the character array
+     "UNNAMED".
+
+     In addition if the keyword "--" is encountered on the command line the
+     rest of the command line goes into the character array "UNNAMED".
+
+EXAMPLE
+  Sample program:
+
+      program demo_set_args
+      use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+      use M_CLI2,  only : get_args_fixed_size
+      implicit none
+      integer			   :: i
+      ! DEFINE ARGS
+      real			   :: x, y, z
+      real			   :: p(3)
+      character(len=:),allocatable :: title
+      logical			   :: l, lbig
+      integer,allocatable	   :: ints(:)
+      !
+      !  DEFINE COMMAND (TO SET INITIAL VALUES AND ALLOWED KEYWORDS)
+      !  AND READ COMMAND LINE
+      call set_args(' &
+	 ! reals
+	 & -x 1 -y 2.3 -z 3.4e2 &
+	 ! integer array
+	 & -p -1,-2,-3 &
+	 ! always double-quote strings
+	 & --title "my title" &
+	 ! string should be a single character at a minimum
+	 & --label " ", &
+	 ! set all logical values to F
+	 & -l F -L F &
+	 ! set allocatable size to zero if you like by using a delimiter
+	 & --ints , &
+	 & ')
+      ! ASSIGN VALUES TO ELEMENTS
+      !     SCALARS
+      call get_args('x',x)
+      call get_args('y',y)
+      call get_args('z',z)
+      call get_args('l',l)
+      call get_args('L',lbig)
+      call get_args('ints',ints)      ! ALLOCATABLE ARRAY
+      call get_args('title',title)    ! ALLOCATABLE STRING
+      call get_args_fixed_size('p',p) ! NON-ALLOCATABLE ARRAY
+      ! USE VALUES
+      write(*,*)'x=',x
+      write(*,*)'y=',y
+      write(*,*)'z=',z
+      write(*,*)'p=',p
+      write(*,*)'title=',title
+      write(*,*)'ints=',ints
+      write(*,*)'l=',l
+      write(*,*)'L=',lbig
+      ! UNNAMED VALUES
+      if(size(filenames) > 0)then
+	 write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+      endif
+      end program demo_set_args
+
+
+RESPONSE FILES
+  If you have no interest in using external files as abbreviations you can
+  ignore this section. Otherwise, before calling set_args(3f) add:
+
+      use M_CLI2, only : set_mode
+      call set_mode('response_file')
+
+  M_CLI2 Response files are small files containing CLI (Command Line
+  Interface) arguments that end with ".rsp" that can be used when command
+  lines are so long that they would exceed line length limits or so complex
+  that it is useful to have a platform-independent method of creating an
+  abbreviation.
+
+  Shell aliases and scripts are often used for similar purposes (and allow for
+  much more complex conditional execution, of course), but they generally
+  cannot be used to overcome line length limits and are typically platform-
+  specific.
+
+  Examples of commands that support similar response files are the Clang and
+  Intel compilers, although there is no standard format for the files.
+
+  They are read if you add options of the syntax "@NAME" as the FIRST
+  parameters on your program command line calls. They are not recursive --
+  that is, an option in a response file cannot be given the value "@NAME2" to
+  call another response file.
+
+  More than one response name may appear on a command line.
+
+  They are case-sensitive names.
+
+  Note "@" s a special character in Powershell, and requires being escaped
+  with a grave character or placed in double-quotes.
+
+  It is not recommended in general but the response name prefix may be changed
+  via the environment variable CLI_RESPONSE_PREFIX if in an environment
+  preventing the use of the "@" character. Typically "^" or "%" or "_" are
+  unused characters. In the very worst case an arbitrary string is allowed
+  such as "rsp_".
+
+   LOCATING RESPONSE FILES
+  A search for the response file always starts with the current directory.
+  The search then proceeds to look in any additional directories specified
+  with the colon-delimited environment variable CLI_RESPONSE_PATH.
+
+  The first resource file found that results in lines being processed will be
+  used and processing stops after that first match is found. If no match is
+  found an error occurs and the program is stopped.
+
+   RESPONSE FILE SECTIONS
+  A simple response file just has options for calling the program in it
+  prefixed with the word "options".  But they can also contain section headers
+  to denote selections that are only executed when a specific OS is being
+  used, print messages, and execute system commands.
+
+   SEARCHING FOR OSTYPE IN REGULAR FILES
+  So assuming the name @NAME was specified on the command line a file named
+  NAME.rsp will be searched for in all the search directories and then in that
+  file a string that starts with the string @OSTYPE (if the environment
+  variables $OS and $OSTYPE are not blank. $OSTYPE takes precedence over $OS).
+
+   SEARCHING FOR UNLABELED DIRECTIVES IN REGULAR FILES
+  Then, the same files will be searched for lines above any line starting with
+  "@". That is, if there is no special section for the current OS it just
+  looks at the top of the file for unlabeled options.
+
+   SEARCHING FOR OSTYPE AND NAME IN THE COMPOUND FILE
+  In addition or instead of files with the same name as the @NAME option on
+  the command line, you can have one file named after the executable name that
+  contains multiple abbreviation names.
+
+  So if your program executable is named EXEC you create a single file called
+  EXEC.rsp and can append all the simple files described above separating them
+  with lines of the form @OSTYPE@NAME or just @NAME.
+
+  So if no specific file for the abbreviation is found a file called
+  "EXEC.rsp" is searched for where "EXEC" is the name of the executable.  This
+  file is always a "compound" response file that uses the following format:
+
+  Any compound EXEC.rsp file found in the current or searched directories will
+  be searched for the string @OSTYPE@NAME first.
+
+  Then if nothing is found, the less specific line @NAME is searched for.
+
+   THE SEARCH IS OVER
+  Sounds complicated but actually works quite intuitively. Make a file in the
+  current directory and put options in it and it will be used. If that file
+  ends up needing different cases for different platforms add a line like
+  "@Linux" to the file and some more lines and that will only be executed if
+  the environment variable OSTYPE or OS is "Linux". If no match is found for
+  named sections the lines at the top before any "@" lines will be used as a
+  default if no match is found.
+
+  If you end up using a lot of files like this you can combine them all
+  together and put them into a file called "program_name".rsp and just put
+  lines like @NAME or @OSTYPE@NAME at that top of each selection.
+
+  Now, back to the details on just what you can put in the files.
+
+SPECIFICATION FOR RESPONSE FILES
+   SIMPLE RESPONSE FILES
+  The first word of a line is special and has the following meanings:
+
+     options|-	Command options following the rules of the SET_ARGS(3f)
+		prototype. So
+		 o It is preferred to specify a value for all options.
+		 o double-quote strings.
+		 o give a blank string value as " ".
+		 o use F|T for lists of logicals,
+		 o lists of numbers should be comma-delimited.
+		 o --usage, --help, --version, --verbose, and unknown
+		   options are ignored.
+
+     comment|#	Line is a comment line
+     system|!	System command.
+		System commands are executed as a simple call to
+		system (so a cd(1) or setting a shell variable
+		would not effect subsequent lines, for example)
+		BEFORE the command being processed.
+     print|>	Message to screen
+     stop	display message and stop program.
+
+  NOTE: system commands are executed when encountered, but options are
+  gathered from multiple option lines and passed together at the end of
+  processing of the block; so all commands will be executed BEFORE the command
+  for which options are being supplied no matter where they occur.
+
+  So if a program that does nothing but echos its parameters
+
+     program testit
+     use M_CLI2, only : set_args, rget, sget, lget, set_mode
+     implicit none
+	real :: x,y			      ; namelist/args/ x,y
+	character(len=:),allocatable :: title ; namelist/args/ title
+	logical :: big			      ; namelist/args/ big
+	call set_mode('response_file')
+	call set_args('-x 10.0 -y 20.0 --title "my title" --big F')
+	x=rget('x')
+	y=rget('y')
+	title=sget('title')
+	big=lget('big')
+	write(*,nml=args)
+     end program testit
+
+  And a file in the current directory called "a.rsp" contains
+
+      # defaults for project A
+      options -x 1000 -y 9999
+      options --title " "
+      options --big T
+
+  The program could be called with
+
+      $myprog	  # normal call
+       X=10.0 Y=20.0 TITLE="my title"
+
+      $myprog @a  # change defaults as specified in "a.rsp"
+      X=1000.0 Y=9999.0 TITLE=" "
+
+      # change defaults but use any option as normal to override defaults
+      $myprog @a -y 1234
+       X=1000.0 Y=1234.0 TITLE=" "
+
+
+   COMPOUND RESPONSE FILES
+  A compound response file has the same basename as the executable with a
+  ".rsp" suffix added. So if your program is named "myprg" the filename must
+  be "myprg.rsp".
+
+     Note that here `basename` means the last leaf of the
+     name of the program as returned by the Fortran intrinsic
+     GET_COMMAND_ARGUMENT(0,...) trimmed of anything after a period ("."),
+     so it is a good idea not to use hidden files.
+
+  Unlike simple response files compound response files can contain multiple
+  setting names.
+
+  Specifically in a compound file if the environment variable $OSTYPE (first)
+  or $OS is set the first search will be for a line of the form (no leading
+  spaces should be used):
+
+     @OSTYPE@alias_name
+
+  If no match or if the environment variables $OSTYPE and $OS were not set or
+  a match is not found then a line of the form
+
+     @alias_name
+
+  is searched for in simple or compound files. If found subsequent lines will
+  be ignored that start with "@" until a line not starting with "@" is
+  encountered. Lines will then be processed until another line starting with
+  "@" is found or end-of-file is encountered.
+
+   COMPOUND RESPONSE FILE EXAMPLE
+  An example compound file
+
+     #################
+     @if
+     > RUNNING TESTS USING RELEASE VERSION AND ifort
+     options test --release --compiler ifort
+     #################
+     @gf
+     > RUNNING TESTS USING RELEASE VERSION AND gfortran
+     options test --release --compiler gfortran
+     #################
+     @nv
+     > RUNNING TESTS USING RELEASE VERSION AND nvfortran
+     options test --release --compiler nvfortran
+     #################
+     @nag
+     > RUNNING TESTS USING RELEASE VERSION AND nagfor
+     options test --release --compiler nagfor
+     #
+     #################
+     # OS-specific example:
+     @Linux@install
+     #
+     # install executables in directory (assuming install(1) exists)
+     #
+     system mkdir -p ~/.local/bin
+     options run --release T --runner "install -vbp -m 0711 -t ~/.local/bin"
+     @install
+     STOP INSTALL NOT SUPPORTED ON THIS PLATFORM OR $OSTYPE NOT SET
+     #
+     #################
+     @fpm@testall
+     #
+     !fpm test --compiler nvfortran
+     !fpm test --compiler ifort
+     !fpm test --compiler gfortran
+     !fpm test --compiler nagfor
+     STOP tests complete. Any additional parameters were ignored
+     #################
+
+  Would be used like
+
+     fpm @install
+     fpm @nag --
+     fpm @testall
+
+
+   NOTES
+  The intel Fortran compiler now calls the response files "indirect files" and
+  does not add the implied suffix ".rsp" to the files anymore. It also allows
+  the @NAME syntax anywhere on the command line, not just at the beginning. --
+  20201212
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024		     set_args(3m_cli2)
+set_mode(3m_cli2)					     set_mode(3m_cli2)
+
+
+
+NAME
+  set_mode(3f) - [ARGUMENTS:M_CLI2] turn on optional modes (LICENSE:PD)
+
+
+SYNOPSIS
+  subroutine set_mode(key,mode)
+
+      character(len=*),intent(in) :: key
+      logical,intent(in),optional :: mode
+
+
+DESCRIPTION
+  Allow optional behaviors.
+
+OPTIONS
+  KEY
+    name of option
+
+  The following values are allowed:
+
+  •  response_file - enable use of response file
+
+  •  ignorelongcase - ignore case in long key names. So the user does not have
+     to remember if the option is --CurtMode or --curtmode or --curtMode .
+
+  •  ignoreallcase - ignore case in long and short key names.  This is similar
+     to Powershell, which is case-insensitive.
+
+  •  dashunder - treat dash in keyword as an underscore.  So the user should
+     not have to remember if the option is --ignore_case or --ignore-case.
+
+  •  nodashunder - ignore dash and underscore in keywords.
+
+  •  strict - allow Boolean keys to be bundled, but requires a single dash
+     prefix be used for short key names and long names must be prefixed with
+     two dashes.
+
+  •  lastonly - when multiple keywords occur keep the rightmost value
+     specified instead of appending the values together.
+
+  MODE
+     set to .true. to activate the optional mode.  Set to .false. to
+     deactivate the mode.  It is .true. by default.
+
+EXAMPLE
+  Sample program:
+
+     program demo_set_mode
+     use M_CLI2,  only : set_args, lget, set_mode
+     implicit none
+     character(len=*),parameter :: all='(*(g0))'
+	!
+	! enable use of response files
+	call set_mode('response_file')
+	!
+	! Any dash in a keyword is treated as an underscore
+	call set_mode('underdash')
+	!
+	! The case of long keywords are ignored.
+	! Values and short names remain case-sensitive
+	call set_mode('ignorelongcase')
+	! The case of short and long keywords are ignored
+	call set_mode('ignoreallcase')
+	!
+	! short single-character boolean keys may be bundled
+	! but it is required that a single dash is used for
+	! short keys and a double dash for long keywords.
+	call set_mode('strict')
+	!
+	call set_args(' --switch_X:X F --switch-Y:Y F --ox:O F -t F -x F -o F')
+	!
+	! show the results
+	print all,'--switch_X or -X ... ',lget('switch_X')
+	print all,'--switch_Y or -Y ... ',lget('switch_Y')
+	print all,'--ox or -O	    ... ',lget('ox')
+	print all,'-o		    ... ',lget('o')
+	print all,'-x		    ... ',lget('x')
+	print all,'-t		    ... ',lget('t')
+     end program demo_set_mode
+
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024		     set_mode(3m_cli2)
+specified(3m_cli2)					    specified(3m_cli2)
+
+
+
+NAME
+  specified(3f) - [ARGUMENTS:M_CLI2] return true if keyword was present on
+  command line (LICENSE:PD)
+
+
+SYNOPSIS
+  elemental impure function specified(name)
+
+      character(len=*),intent(in) :: name
+      logical :: specified
+
+
+DESCRIPTION
+  specified(3f) returns .true. if the specified keyword was present on the
+  command line.
+
+  M_CLI2 intentionally does not have validators except for SPECIFIED(3f) and
+  of course a check whether the input conforms to the type when requesting a
+  value (with get_args(3f) or the convenience functions like inum(3f)).
+
+  Fortran already has powerful validation capabilities. Logical expressions
+  ANY(3f) and ALL(3f) are standard Fortran features which easily allow
+  performing the common validations for command line arguments without having
+  to learn any additional syntax or methods.
+
+OPTIONS
+  NAME
+    name of commandline argument to query the presence of. Long names should
+    always be used.
+
+RETURNS
+  SPECIFIED
+    returns .TRUE. if specified NAME was present on the command line when the
+    program was invoked.
+
+EXAMPLE
+  Sample program:
+
+     program demo_specified
+     use, intrinsic :: iso_fortran_env, only : &
+     & stderr=>ERROR_UNIT, stdin=>INPUT_UNIT, stdout=>OUTPUT_UNIT
+     use M_CLI2,  only : set_args, igets, rgets, specified, sget, lget
+     implicit none
+
+     ! Define args
+     integer,allocatable  :: ints(:)
+     real,allocatable	  :: floats(:)
+     logical		  :: flag
+     character(len=:),allocatable :: color
+     character(len=:),allocatable :: list(:)
+     integer :: i
+
+      call set_args('&
+	 & --color:c "red"	 &
+	 & --flag:f F		 &
+	 & --ints:i 1,10,11	 &
+	 & --floats:T 12.3, 4.56 &
+	 & ')
+      ints=igets('ints')
+      floats=rgets('floats')
+      flag=lget('flag')
+      color=sget('color')
+
+      write(*,*)'color=',color
+      write(*,*)'flag=',flag
+      write(*,*)'ints=',ints
+      write(*,*)'floats=',floats
+
+      write(*,*)'was -flag specified?',specified('flag')
+
+      ! elemental
+      write(*,*)specified(['floats','ints  '])
+
+      ! If you want to know if groups of parameters were specified use
+      ! ANY(3f) and ALL(3f)
+      write(*,*)'ANY:',any(specified(['floats','ints  ']))
+      write(*,*)'ALL:',all(specified(['floats','ints  ']))
+
+      ! For mutually exclusive
+      if (all(specified(['floats','ints  '])))then
+	  write(*,*)'You specified both names --ints and --floats'
+      endif
+
+      ! For required parameter
+      if (.not.any(specified(['floats','ints  '])))then
+	  write(*,*)'You must specify --ints or --floats'
+      endif
+
+     ! check if all values are in range from 10 to 30 and even
+     write(*,*)'are all numbers good?',all([ints>=10,ints<= 30,(ints/2)*2==ints])
+
+     ! perhaps you want to check one value at a time
+     do i=1,size(ints)
+	write(*,*)ints(i),[ints(i) >= 10,ints(i) <= 30,(ints(i)/2)*2 == ints(i)]
+	if(all([ints(i) >= 10,ints(i) <= 30,(ints(i)/2)*2 == ints(i)]) )then
+	   write(*,*)ints(i),'is an even number from 10 to 30 inclusive'
+	else
+	   write(*,*)ints(i),'is not an even number from 10 to 30 inclusive'
+	endif
+     enddo
+
+     list = [character(len=10) :: 'red','white','blue']
+     if( any(color == list) )then
+	write(*,*)color,'matches a value in the list'
+     else
+	write(*,*)color,'not in the list'
+     endif
+
+     if(size(ints).eq.3)then
+	write(*,*)'ints(:) has expected number of values'
+     else
+	write(*,*)'ints(:) does not have expected number of values'
+     endif
+
+     end program demo_specified
+
+  Default output
+
+   > color=red
+   > flag= F
+   > ints=	     1		10	    11
+   > floats=   12.3000002	4.55999994
+   > was -flag specified? F
+   > F F
+   > ANY: F
+   > ALL: F
+   > You must specify --ints or --floats
+   >	       1 F T F
+   >	       1  is not an even number from 10 to 30 inclusive
+   >	      10 T T T
+   >	      10  is an even number from 10 to 30 inclusive
+   >	      11 T T F
+   >	      11  is not an even number from 10 to 30 inclusive
+   > red matches a value in the list
+   > ints(:) has expected number of values
+
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024		    specified(3m_cli2)
+get_args_fixed_size(3m_cli2)			  get_args_fixed_size(3m_cli2)
+
+
+
+NAME
+  get_args_fixed_size(3f) - [ARGUMENTS:M_CLI2] return keyword values for
+  fixed-size array when parsing command line arguments (LICENSE:PD)
+
+
+SYNOPSIS
+  subroutine get_args_fixed_size(name,value)
+
+      character(len=*),intent(in) :: name
+      [real|doubleprecision|integer|logical|complex] :: value(NNN)
+	 or
+      character(len=MMM) :: value(NNN)
+
+      character(len=*),intent(in),optional :: delimiters
+
+
+DESCRIPTION
+  get_args_fixed_size(3f) returns the value of keywords for fixed-size arrays
+  after set_args(3f) has been called. On input on the command line all values
+  of the array must be specified.
+
+OPTIONS
+  NAME
+    name of commandline argument to obtain the value of
+
+  VALUE
+    variable to hold returned values. The kind of the value is used to
+    determine the type of returned value. Must be a fixed-size array. If type
+    is CHARACTER the length must also be fixed.
+
+  DELIMITERS
+    By default the delimiter for array values are comma, colon, and
+    whitespace. A string containing an alternate list of delimiter characters
+    may be supplied.
+
+EXAMPLE
+  Sample program:
+
+      program demo_get_args_fixed_size
+      use M_CLI2,  only : set_args, get_args_fixed_size
+      implicit none
+      integer,parameter   :: dp=kind(0.0d0)
+      ! DEFINE ARGS
+      real		  :: x(2)
+      real(kind=dp)	  :: y(2)
+      integer		  :: p(3)
+      character(len=80)   :: title(1)
+      logical		  :: l(4), lbig(4)
+      complex		  :: cmp(2)
+      ! DEFINE AND PARSE (TO SET INITIAL VALUES) COMMAND LINE
+      !   o only quote strings
+      !   o set all logical values to F or T.
+      call set_args(' &
+	 & -x 10.0,20.0 &
+	 & -y 11.0,22.0 &
+	 & -p -1,-2,-3 &
+	 & --title "my title" &
+	 & -l F,T,F,T -L T,F,T,F  &
+	 & --cmp 111,222.0,333.0e0,4444 &
+	 & ')
+      ! ASSIGN VALUES TO ELEMENTS
+	 call get_args_fixed_size('x',x)
+	 call get_args_fixed_size('y',y)
+	 call get_args_fixed_size('p',p)
+	 call get_args_fixed_size('title',title)
+	 call get_args_fixed_size('l',l)
+	 call get_args_fixed_size('L',lbig)
+	 call get_args_fixed_size('cmp',cmp)
+      ! USE VALUES
+	 write(*,*)'x=',x
+	 write(*,*)'p=',p
+	 write(*,*)'title=',title
+	 write(*,*)'l=',l
+	 write(*,*)'L=',lbig
+	 write(*,*)'cmp=',cmp
+      end program demo_get_args_fixed_size
+  Results:
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024	  get_args_fixed_size(3m_cli2)
+get_args(3m_cli2)					     get_args(3m_cli2)
+
+
+
+NAME
+  get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command
+  line arguments (LICENSE:PD)
+
+
+SYNOPSIS
+  get_args(3f) and its convenience functions:
+
+      use M_CLI2, only : get_args
+      ! convenience functions
+      use M_CLI2, only : dget, iget, lget, rget, sget, cget
+      use M_CLI2, only : dgets, igets, lgets, rgets, sgets, cgets
+
+      subroutine get_args(name,value,delimiters)
+
+       character(len=*),intent(in) :: name
+
+       type(${TYPE}),allocatable,intent(out) :: value(:)
+       ! or
+       type(${TYPE}),allocatable,intent(out) :: value
+
+       character(len=*),intent(in),optional :: delimiters
+
+       where ${TYPE} may be from the set
+	       {real,doubleprecision,integer,logical,complex,character(len=:)}
+
+DESCRIPTION
+  GET_ARGS(3f) returns the value of keywords after SET_ARGS(3f) has been
+  called to parse the command line. For fixed-length CHARACTER variables see
+  GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
+  GET_ARGS_FIXED_SIZE(3f).
+
+  As a convenience multiple pairs of keywords and variables may be specified
+  if and only if all the values are scalars and the CHARACTER variables are
+  fixed-length or pre-allocated.
+
+OPTIONS
+  NAME
+    name of commandline argument to obtain the value of
+
+  VALUE
+    variable to hold returned value. The kind of the value is used to
+    determine the type of returned value. May be a scalar or allocatable
+    array. If type is CHARACTER the scalar must have an allocatable length.
+
+  DELIMITERS
+    By default the delimiter for array values are comma, colon, and
+    whitespace. A string containing an alternate list of delimiter characters
+    may be supplied.
+
+CONVENIENCE FUNCTIONS
+  There are convenience functions that are replacements for calls to
+  get_args(3f) for each supported default intrinsic type
+
+    •  scalars -- dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f)
+
+    •  vectors -- dgets(3f), igets(3f), lgets(3f), rgets(3f), sgets(3f),
+       cgets(3f)
+
+  D is for DOUBLEPRECISION, I for INTEGER, L for LOGICAL, R for REAL, S for
+  string (CHARACTER), and C for COMPLEX.
+
+  If the functions are called with no argument they will return the UNNAMED
+  array converted to the specified type.
+
+EXAMPLE
+  Sample program:
+
+      program demo_get_args
+      use M_CLI2,  only : filenames=>unnamed, set_args, get_args
+      implicit none
+      integer			   :: i
+       ! Define ARGS
+      real			   :: x, y, z
+      real,allocatable		   :: p(:)
+      character(len=:),allocatable :: title
+      logical			   :: l, lbig
+       ! Define and parse (to set initial values) command line
+       !   o only quote strings and use double-quotes
+       !   o set all logical values to F or T.
+      call set_args('	      &
+	 & -x 1 -y 2 -z 3     &
+	 & -p -1,-2,-3	      &
+	 & --title "my title" &
+	 & -l F -L F	      &
+	 & --label " "	      &
+	 & ')
+       ! Assign values to elements
+       ! Scalars
+      call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+       ! Allocatable string
+      call get_args('title',title)
+       ! Allocatable arrays
+      call get_args('p',p)
+       ! Use values
+      write(*,'(1x,g0,"=",g0)')'x',x, 'y',y, 'z',z
+      write(*,*)'p=',p
+      write(*,*)'title=',title
+      write(*,*)'l=',l
+      write(*,*)'L=',lbig
+      if(size(filenames) > 0)then
+	 write(*,'(i6.6,3a)')(i,'[',filenames(i),']',i=1,size(filenames))
+      endif
+      end program demo_get_args
+
+AUTHOR
+  John S. Urban, 2019
+
+LICENSE
+  Public Domain
+
+
+
+				 June 22, 2024		     get_args(3m_cli2)
