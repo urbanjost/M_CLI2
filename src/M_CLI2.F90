@@ -100,23 +100,8 @@
 !!     use M_CLI2,  only : filenames=>unnamed
 !!     use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
 !!     implicit none
-!!     integer                      :: i
 !!     integer,parameter            :: dp=kind(0.0d0)
-!!      !
-!!      ! Define ARGS
-!!     real                         :: x, y, z
-!!     logical                      :: l, lbig
-!!     character(len=40)            :: label    ! FIXED LENGTH
-!!     real(kind=dp),allocatable    :: point(:)
-!!     logical,allocatable          :: logicals(:)
-!!     character(len=:),allocatable :: title    ! VARIABLE LENGTH
-!!     real                         :: p(3)     ! FIXED SIZE
-!!     logical                      :: logi(3)  ! FIXED SIZE
-!!      !
-!!     use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
-!!     implicit none
 !!     integer                      :: i
-!!     integer,parameter            :: dp=kind(0.0d0)
 !!      !
 !!      ! Define ARGS
 !!     real                         :: x, y, z
@@ -191,6 +176,18 @@
 !!     endif
 !!      !
 !!     end program demo_M_CLI2
+!!
+!! Results:
+!!
+!!  >  x=1.00000000     y=2.00000000     z=3.00000000       6.00000000
+!!  >  p=  -1.00000000      -2.00000000      -3.00000000
+!!  >  point=   11.109999999999999 22.219999999999999 33.329999999999998
+!!  >  title=my title
+!!  >  label=
+!!  >  l= F
+!!  >  L= F
+!!  >  logicals= F F F F F
+!!  >  logi= F T F
 !!
 !!##AUTHOR
 !!     John S. Urban, 2019
@@ -404,7 +401,15 @@ character(len=:),allocatable         :: line
 integer                              :: i
 integer                              :: istart
 integer                              :: iback
+character(len=255)                   :: string
    if(get('usage') == 'T')then
+      ! kludge to test interactive mode concept
+      !   do
+      !      call print_dictionary_usage()
+      !      read(*,'(a)')string
+      !      if(string.eq.'.')exit
+      !      call prototype_to_dictionary(string)
+      !   enddo
       call print_dictionary_usage()
       call mystop(32)
       return

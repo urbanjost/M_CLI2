@@ -3,23 +3,8 @@
       use M_CLI2,  only : filenames=>unnamed
       use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
       implicit none
-      integer                      :: i
       integer,parameter            :: dp=kind(0.0d0)
-       !
-       ! Define ARGS
-      real                         :: x, y, z
-      logical                      :: l, lbig
-      character(len=40)            :: label    ! FIXED LENGTH
-      real(kind=dp),allocatable    :: point(:)
-      logical,allocatable          :: logicals(:)
-      character(len=:),allocatable :: title    ! VARIABLE LENGTH
-      real                         :: p(3)     ! FIXED SIZE
-      logical                      :: logi(3)  ! FIXED SIZE
-       !
-      use M_CLI2,  only : get_args_fixed_length, get_args_fixed_size
-      implicit none
       integer                      :: i
-      integer,parameter            :: dp=kind(0.0d0)
        !
        ! Define ARGS
       real                         :: x, y, z
