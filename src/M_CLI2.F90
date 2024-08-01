@@ -729,8 +729,13 @@ end subroutine check_commandline
 !!
 !!  They are case-sensitive names.
 !!
-!!  Note "@" s a special character in Powershell, and requires being escaped
-!!  with a grave character or placed in double-quotes.
+!!  Note "@" is a special character in Powershell, and there requires being
+!!  escaped with a grave character or placed in double-quotes if the name
+!!  is alphanumeric (using names like "a-b" or other non-alphanumeric
+!!  characters also prevents the "@" from being treated specially). To
+!!  accomodate this the "@" character may alternatively appear on the end
+!!  of the name instead of the beginning. It will be internally moved to
+!!  the beginning before processing commences.
 !!
 !!  It is not recommended in general but the response name prefix may
 !!  be changed via the environment variable CLI_RESPONSE_PREFIX if in an
@@ -1172,6 +1177,7 @@ character(len=:),allocatable  :: prototype
 integer                       :: ilongest
 integer                       :: i
 integer                       :: j
+integer                       :: iend
    G_RESPONSE_PREFIX=get_env('CLI_RESPONSE_PREFIX','@')
    G_subcommand=''
    G_options_only=.true.
@@ -1187,6 +1193,7 @@ integer                       :: j
    ! look for @NAME if CLI_RESPONSE_FILE=.TRUE. AND LOAD THEM
    do i = 1, command_argument_count()
       call get_command_argument(i, cmdarg)
+      call move_from_end(cmdarg)
       if(scan(adjustl(cmdarg(1:len(G_RESPONSE_PREFIX))),G_RESPONSE_PREFIX)  ==  1)then
          call get_prototype(cmdarg,prototype)
          call split(prototype,array)
@@ -1217,6 +1224,18 @@ integer                       :: j
    endif
    G_options_only=.false.
 end function get_subcommand
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
+subroutine move_from_end(string)
+character(len=*) :: string
+integer          :: iend
+! @ is treated as a special character in powershell so allow the prefix to be a suffix and move it to beginning of line
+   iend=len_trim(string)
+   if(string(iend-len(G_RESPONSE_PREFIX)+1:iend)== G_RESPONSE_PREFIX)then
+      string(:)= G_RESPONSE_PREFIX//string(1:iend-len(G_RESPONSE_PREFIX))
+   endif
+end subroutine move_from_end
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -2029,13 +2048,13 @@ integer                                  :: lines_processed
    ! look for ARG0.rsp  with @OS@NAME  section in it and position to it
    if(os /= G_RESPONSE_PREFIX)then
       search_for=os//name
-      call find_and_read_response_file(basename(get_name(),suffix=.false.))
+      call find_and_read_response_file(basename(get_name(),keep_suffix=.false.))
       if(lines_processed /= 0)return
    endif
 
    ! look for ARG0.rsp  with a section called @NAME in it and position to it
    search_for=name
-   call find_and_read_response_file(basename(get_name(),suffix=.false.))
+   call find_and_read_response_file(basename(get_name(),keep_suffix=.false.))
    if(lines_processed /= 0)return
 
    write(*,gen)'<ERROR> response name ['//trim(name)//'] not found'
@@ -2067,7 +2086,7 @@ integer                      :: ios
    if(G_DEBUG)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:FILENAME=',filename
 
    ! look for name.rsp in directories from environment variable assumed to be a colon-separated list of directories
-   call split(get_env('CLI_RESPONSE_PATH','~/.local/share/rsp'),paths)
+   call split(get_env('CLI_RESPONSE_PATH',join_path(get_env('HOME'),'/.local/share/rsp')),paths)
    paths=[character(len=len(paths)) :: ' ',paths]
    if(G_DEBUG)write(*,gen)'<DEBUG>FIND_AND_READ_RESPONSE_FILE:PATHS=',paths
 
@@ -2250,8 +2269,9 @@ function join_path(a1,a2,a3,a4,a5) result(path)
    if (present(a3)) path = path // filesep // trim(a3)
    if (present(a4)) path = path // filesep // trim(a4)
    if (present(a5)) path = path // filesep // trim(a5)
-   path=adjustl(path//'  ')
-   path=path(1:1)//replace_str(path,filesep//filesep,'') ! some systems allow names starting with '//' or '\\'
+   path=adjustl(path//'   ')
+   ! clean up duplicate adjacent separators
+   path=path(1:2)//replace_str(path(3:),filesep//filesep,filesep) ! some systems allow filepath starting with // or \\
    path=trim(path)
 end function join_path
 !===================================================================================================================================
@@ -2279,37 +2299,33 @@ character(len=:),allocatable :: name
    endif
 end function get_name
 !===================================================================================================================================
-function basename(path,suffix) result (base)
-    ! Extract filename from path with/without suffix
+function basename(path,keep_suffix) result (base)
+    ! Extract filename from path with/without keep_suffix
     !
 character(*), intent(In) :: path
-logical, intent(in), optional :: suffix
+logical, intent(in), optional :: keep_suffix
 character(:), allocatable :: base
 
 character(:), allocatable :: file_parts(:)
-logical :: with_suffix
+logical :: return_with_suffix
+integer :: iend
 
-   if (.not.present(suffix)) then
-      with_suffix = .true.
+   if (.not.present(keep_suffix)) then
+      return_with_suffix = .true.
    else
-      with_suffix = suffix
+      return_with_suffix = keep_suffix
    endif
 
-   if (with_suffix) then
-      call split(path,file_parts,delimiters='\/')
-      if(size(file_parts) > 0)then
-         base = trim(file_parts(size(file_parts)))
-      else
-         base = ''
-      endif
+   call split(path,file_parts,delimiters='\/')
+   if(size(file_parts) > 0)then
+      base = trim(file_parts(size(file_parts)))
    else
-      call split(path,file_parts,delimiters='\/.')
-      if(size(file_parts) >= 2)then
-         base = trim(file_parts(size(file_parts)-1))
-      elseif(size(file_parts) == 1)then
-         base = trim(file_parts(1))
-      else
-         base = ''
+      base = ''
+   endif
+   if(.not.return_with_suffix)then
+      iend=index(base,'.',back=.true.)
+      if(iend.gt.1)then
+         base=base(:iend-1)
       endif
    endif
 end function basename
@@ -2858,7 +2874,7 @@ end subroutine print_dictionary
 !!        & ')
 !!      ! Assign values to elements
 !!      ! Scalars
-!!     call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+!!     call get_args( 'x',x, 'y',y, 'z',z, 'l',l, 'L',lbig )
 !!      ! Allocatable string
 !!     call get_args('title',title)
 !!      ! Allocatable arrays
@@ -5723,9 +5739,16 @@ end subroutine locate_key
 !!      Public Domain
 !===================================================================================================================================
 elemental impure subroutine set_mode(key,mode)
-character(len=*),intent(in) :: key
-logical,intent(in),optional :: mode
-logical :: local_mode
+character(len=*),intent(in)   :: key
+logical,intent(in),optional   :: mode
+logical                       :: local_mode
+character(len=:),allocatable  :: debug_mode
+
+   debug_mode= upper(get_env('CLI_DEBUG_MODE','FALSE'))//' '
+   select case(debug_mode(1:1))
+   case('Y','T')
+      G_DEBUG=.true.
+   end select
 
    if(present(mode))then
       local_mode=mode
