@@ -67,7 +67,7 @@ LICENSE
 
 
 
-				 June 23, 2024	get_args_fixed_length(3m_cli2)
+				August 01, 2024 get_args_fixed_length(3m_cli2)
 get_subcommand(3m_cli2) 			       get_subcommand(3m_cli2)
 
 
@@ -202,7 +202,7 @@ LICENSE
 
 
 
-				 June 23, 2024	       get_subcommand(3m_cli2)
+				August 01, 2024        get_subcommand(3m_cli2)
 M_CLI2(3m_cli2) 					       M_CLI2(3m_cli2)
 
 
@@ -412,7 +412,7 @@ SEE ALSO
 
 
 
-				 June 23, 2024		       M_CLI2(3m_cli2)
+				August 01, 2024 	       M_CLI2(3m_cli2)
 set_args(3m_cli2)					     set_args(3m_cli2)
 
 
@@ -657,8 +657,13 @@ RESPONSE FILES
 
   They are case-sensitive names.
 
-  Note "@" s a special character in Powershell, and requires being escaped
-  with a grave character or placed in double-quotes.
+  Note "@" is a special character in Powershell, and there requires being
+  escaped with a grave character or placed in double-quotes if the name is
+  alphanumeric (using names like "a-b" or other non-alphanumeric characters
+  also prevents the "@" from being treated specially). To accomodate this the
+  "@" character may alternatively appear on the end of the name instead of the
+  beginning. It will be internally moved to the beginning before processing
+  commences.
 
   It is not recommended in general but the response name prefix may be changed
   via the environment variable CLI_RESPONSE_PREFIX if in an environment
@@ -881,7 +886,7 @@ LICENSE
 
 
 
-				 June 23, 2024		     set_args(3m_cli2)
+				August 01, 2024 	     set_args(3m_cli2)
 set_mode(3m_cli2)					     set_mode(3m_cli2)
 
 
@@ -975,7 +980,7 @@ LICENSE
 
 
 
-				 June 23, 2024		     set_mode(3m_cli2)
+				August 01, 2024 	     set_mode(3m_cli2)
 specified(3m_cli2)					    specified(3m_cli2)
 
 
@@ -1125,7 +1130,7 @@ LICENSE
 
 
 
-				 June 23, 2024		    specified(3m_cli2)
+				August 01, 2024 	    specified(3m_cli2)
 get_args_fixed_size(3m_cli2)			  get_args_fixed_size(3m_cli2)
 
 
@@ -1216,7 +1221,7 @@ LICENSE
 
 
 
-				 June 23, 2024	  get_args_fixed_size(3m_cli2)
+				August 01, 2024   get_args_fixed_size(3m_cli2)
 get_args(3m_cli2)					     get_args(3m_cli2)
 
 
@@ -1310,7 +1315,7 @@ EXAMPLE
 	 & ')
        ! Assign values to elements
        ! Scalars
-      call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
+      call get_args( 'x',x, 'y',y, 'z',z, 'l',l, 'L',lbig )
        ! Allocatable string
       call get_args('title',title)
        ! Allocatable arrays
@@ -1334,4 +1339,4 @@ LICENSE
 
 
 
-				 June 23, 2024		     get_args(3m_cli2)
+				August 01, 2024 	     get_args(3m_cli2)
