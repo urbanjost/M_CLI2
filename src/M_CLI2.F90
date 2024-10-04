@@ -3590,7 +3590,7 @@ class(*),intent(in) :: generic
       type is (logical)
          write(line(istart:),'(l1)') generic
       type is (character(len=*))
-         write(line(istart:),'(a)') trim(generic)
+         write(line(istart:),'(a)') generic
       type is (complex);                write(line(istart:),'("(",1pg0,",",1pg0,")")') generic
    end select
    istart=len_trim(line)+increment
@@ -3653,7 +3653,7 @@ integer :: i
       !x! DOES NOT WORK WITH ifort:     type is (real(kind=real256));     write(error_unit,'(1pg0)',advance='no') generic
       type is (logical);                write(line(istart:),'("[",*(l1,1x))') generic
       type is (character(len=*))
-         write(line(istart:),'("[",:*("""",a,"""",1x))') (trim(generic(i)),i=1,size(generic))
+         write(line(istart:),'("[",:*("""",a,"""",1x))') (generic(i),i=1,size(generic))
       type is (complex);                write(line(istart:),'("[",*("(",1pg0,",",1pg0,")",1x))') generic
       class default
          call mystop(-22,'unknown type in *print_generic*')
@@ -6037,7 +6037,7 @@ function c(generic)
 class(*),intent(in) :: generic
 character(len=:),allocatable :: c
    select type(generic)
-      type is (character(len=*)); c=trim(generic)
+      type is (character(len=*)); c=generic
       class default
          c='unknown'
          stop 'get_many:: parameter name is not character'
