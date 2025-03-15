@@ -2,18 +2,15 @@ get_args (3m_cli2)   - [ARGUMENTS:M_CLI2] return keyword values when parsing com
 get_args_fixed_length (3m_cli2) - [ARGUMENTS:M_CLI2] return keyword values for fixed-length string when parsing command line (LICENSE:PD)
 get_args_fixed_size (3m_cli2) - [ARGUMENTS:M_CLI2] return keyword values for fixed-size array when parsing command line arguments (LICENSE:PD)
 get_subcommand (3m_cli2) - [ARGUMENTS:M_CLI2] special-case routine for handling subcommands on a command line (LICENSE:PD)
-M_CLI2 (3m_cli2)     - [ARGUMENTS::M_CLI2::INTRO] command line argument parsing using a prototype command (LICENSE:PD)
+M_CLI2 (3m_cli2)     - [ARGUMENTS:M_CLI2::INTRO] command line argument parsing using a prototype command (LICENSE:PD)
 set_args (3m_cli2)   - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)
-set_mode (3m_cli2)   - [ARGUMENTS:M_CLI2] turn on optional modes (LICENSE:PD)
+set_mode (3m_cli2)   - [ARGUMENTS:M_CLI2] turn on optional modes+ (LICENSE:PD)
 specified (3m_cli2)  - [ARGUMENTS:M_CLI2] return true if keyword was present on command line (LICENSE:PD)
 get_args_fixed_length(3m_cli2)			get_args_fixed_length(3m_cli2)
-
-
 
 NAME
   get_args_fixed_length(3f) - [ARGUMENTS:M_CLI2] return keyword values for
   fixed-length string when parsing command line (LICENSE:PD)
-
 
 SYNOPSIS
   subroutine get_args_fixed_length(name,value)
@@ -21,7 +18,6 @@ SYNOPSIS
       character(len=*),intent(in)  :: name
       character(len=:),allocatable :: value
       character(len=*),intent(in),optional :: delimiters
-
 
 DESCRIPTION
   get_args_fixed_length(3f) returns the value of a string keyword when the
@@ -40,7 +36,7 @@ OPTIONS
     whitespace. A string containing an alternate list of delimiter characters
     may be supplied.
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
       program demo_get_args_fixed_length
@@ -58,30 +54,23 @@ EXAMPLE
 
       end program demo_get_args_fixed_length
 
-
 AUTHOR
   John S. Urban, 2019
 
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024 get_args_fixed_length(3m_cli2)
+				March 14, 2025	get_args_fixed_length(3m_cli2)
 get_subcommand(3m_cli2) 			       get_subcommand(3m_cli2)
-
-
 
 NAME
   get_subcommand(3f) - [ARGUMENTS:M_CLI2] special-case routine for handling
   subcommands on a command line (LICENSE:PD)
 
-
 SYNOPSIS
   function get_subcommand()
 
       character(len=:),allocatable :: get_subcommand
-
 
 DESCRIPTION
   In the special case when creating a program with subcommands it is assumed
@@ -96,7 +85,7 @@ RETURNS
   NAME
     name of subcommand
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
      program demo_get_subcommand
@@ -193,22 +182,17 @@ EXAMPLE
      end subroutine parse
      end program demo_get_subcommand
 
-
 AUTHOR
   John S. Urban, 2019
 
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024        get_subcommand(3m_cli2)
+				March 14, 2025	       get_subcommand(3m_cli2)
 M_CLI2(3m_cli2) 					       M_CLI2(3m_cli2)
 
-
-
 NAME
-  M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] command line argument parsing using
+  M_CLI2(3fm) - [ARGUMENTS:M_CLI2::INTRO] command line argument parsing using
   a prototype command (LICENSE:PD)
 
 SYNOPSIS
@@ -226,7 +210,6 @@ SYNOPSIS
        ! special function for creating subcommands
        use M_CLI2, only : get_subcommand(3f)
 
-
 DESCRIPTION
   The M_CLI2 module cracks a Unix-style command line.
 
@@ -237,7 +220,7 @@ DESCRIPTION
 
   Detailed descriptions of each procedure and example programs are included.
 
-EXAMPLE
+EXAMPLES
   Sample minimal program:
 
       program minimal
@@ -386,7 +369,6 @@ EXAMPLE
    >  logicals= F F F F F
    >  logi= F T F
 
-
 AUTHOR
   John S. Urban, 2019
 
@@ -410,16 +392,11 @@ SEE ALSO
   dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
   igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
 
-
-
-				August 01, 2024 	       M_CLI2(3m_cli2)
+				March 14, 2025		       M_CLI2(3m_cli2)
 set_args(3m_cli2)					     set_args(3m_cli2)
-
-
 
 NAME
   set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing (LICENSE:PD)
-
 
 SYNOPSIS
   subroutine set_args(prototype,help_text,version_text,ierr,errmsg)
@@ -543,7 +520,6 @@ DEFINING THE PROTOTYPE
 	   REMAINING= '"A" "B" "C" " dd "'
 	   ARGS= ['A','B','C,' dd']
 
-
 USAGE NOTES
   When invoking the program line note the following restrictions (which often
   differ between various command-line parsers and are subject to change):
@@ -570,7 +546,7 @@ USAGE NOTES
      In addition if the keyword "--" is encountered on the command line the
      rest of the command line goes into the character array "UNNAMED".
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
       program demo_set_args
@@ -626,7 +602,6 @@ EXAMPLE
       endif
       end program demo_set_args
 
-
 RESPONSE FILES
   If you have no interest in using external files as abbreviations you can
   ignore this section. Otherwise, before calling set_args(3f) add:
@@ -657,19 +632,31 @@ RESPONSE FILES
 
   They are case-sensitive names.
 
-  Note "@" is a special character in Powershell, and there requires being
+  Note "@" is a special character in Powershell, and therefore requires being
   escaped with a grave character or placed in double-quotes if the name is
   alphanumeric (using names like "a-b" or other non-alphanumeric characters
-  also prevents the "@" from being treated specially). To accomodate this the
+  also prevents the "@" from being treated specially).
+
+   LEADING UNDERSCORE IS EQUIVALENT TO AT
+  Therefore, a leading underscore on a word is converted to an at ("@") when
+  response file mode is enabled. It will be converted to an "@" before
+  processing continues.
+
+   TRAILING AT IS EQUIVALENT TO LEADING AT
+  Alternatively To accommodate special handling of leading "@" characters the
   "@" character may alternatively appear on the end of the name instead of the
   beginning. It will be internally moved to the beginning before processing
   commences.
 
+   CHANGING THE PREFIX IDENTIFIER
   It is not recommended in general but the response name prefix may be changed
   via the environment variable CLI_RESPONSE_PREFIX if in an environment
   preventing the use of the "@" character. Typically "^" or "%" or "_" are
   unused characters. In the very worst case an arbitrary string is allowed
   such as "rsp_".
+
+  Currently this also means changing the prefix in the response files as well.
+  This may be changed so the @ character usage remains unchanged in the file.
 
    LOCATING RESPONSE FILES
   A search for the response file always starts with the current directory.
@@ -794,7 +781,6 @@ SPECIFICATION FOR RESPONSE FILES
       $myprog @a -y 1234
        X=1000.0 Y=1234.0 TITLE=" "
 
-
    COMPOUND RESPONSE FILES
   A compound response file has the same basename as the executable with a
   ".rsp" suffix added. So if your program is named "myprg" the filename must
@@ -871,7 +857,6 @@ SPECIFICATION FOR RESPONSE FILES
      fpm @nag --
      fpm @testall
 
-
    NOTES
   The intel Fortran compiler now calls the response files "indirect files" and
   does not add the implied suffix ".rsp" to the files anymore. It also allows
@@ -884,23 +869,17 @@ AUTHOR
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024 	     set_args(3m_cli2)
+				March 14, 2025		     set_args(3m_cli2)
 set_mode(3m_cli2)					     set_mode(3m_cli2)
 
-
-
 NAME
-  set_mode(3f) - [ARGUMENTS:M_CLI2] turn on optional modes (LICENSE:PD)
-
+  set_mode(3f) - [ARGUMENTS:M_CLI2] turn on optional modes+ (LICENSE:PD)
 
 SYNOPSIS
   subroutine set_mode(key,mode)
 
       character(len=*),intent(in) :: key
       logical,intent(in),optional :: mode
-
 
 DESCRIPTION
   Allow optional behaviors.
@@ -912,6 +891,10 @@ OPTIONS
   The following values are allowed:
 
   •  response_file - enable use of response file
+
+  •  auto_response_file - enable use of response file but also act as if @$0
+     was entered on the command line where $0 is the basename of the file
+     being executed
 
   •  ignorelongcase - ignore case in long key names. So the user does not have
      to remember if the option is --CurtMode or --curtmode or --curtMode .
@@ -935,7 +918,7 @@ OPTIONS
      set to .true. to activate the optional mode.  Set to .false. to
      deactivate the mode.  It is .true. by default.
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
      program demo_set_mode
@@ -971,31 +954,24 @@ EXAMPLE
 	print all,'-t		    ... ',lget('t')
      end program demo_set_mode
 
-
 AUTHOR
   John S. Urban, 2019
 
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024 	     set_mode(3m_cli2)
+				March 14, 2025		     set_mode(3m_cli2)
 specified(3m_cli2)					    specified(3m_cli2)
-
-
 
 NAME
   specified(3f) - [ARGUMENTS:M_CLI2] return true if keyword was present on
   command line (LICENSE:PD)
-
 
 SYNOPSIS
   elemental impure function specified(name)
 
       character(len=*),intent(in) :: name
       logical :: specified
-
 
 DESCRIPTION
   specified(3f) returns .true. if the specified keyword was present on the
@@ -1020,7 +996,7 @@ RETURNS
     returns .TRUE. if specified NAME was present on the command line when the
     program was invoked.
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
      program demo_specified
@@ -1121,24 +1097,18 @@ EXAMPLE
    > red matches a value in the list
    > ints(:) has expected number of values
 
-
 AUTHOR
   John S. Urban, 2019
 
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024 	    specified(3m_cli2)
+				March 14, 2025		    specified(3m_cli2)
 get_args_fixed_size(3m_cli2)			  get_args_fixed_size(3m_cli2)
-
-
 
 NAME
   get_args_fixed_size(3f) - [ARGUMENTS:M_CLI2] return keyword values for
   fixed-size array when parsing command line arguments (LICENSE:PD)
-
 
 SYNOPSIS
   subroutine get_args_fixed_size(name,value)
@@ -1149,7 +1119,6 @@ SYNOPSIS
       character(len=MMM) :: value(NNN)
 
       character(len=*),intent(in),optional :: delimiters
-
 
 DESCRIPTION
   get_args_fixed_size(3f) returns the value of keywords for fixed-size arrays
@@ -1170,7 +1139,7 @@ OPTIONS
     whitespace. A string containing an alternate list of delimiter characters
     may be supplied.
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
       program demo_get_args_fixed_size
@@ -1219,17 +1188,12 @@ AUTHOR
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024   get_args_fixed_size(3m_cli2)
+				March 14, 2025	  get_args_fixed_size(3m_cli2)
 get_args(3m_cli2)					     get_args(3m_cli2)
-
-
 
 NAME
   get_args(3f) - [ARGUMENTS:M_CLI2] return keyword values when parsing command
   line arguments (LICENSE:PD)
-
 
 SYNOPSIS
   get_args(3f) and its convenience functions:
@@ -1291,7 +1255,7 @@ CONVENIENCE FUNCTIONS
   If the functions are called with no argument they will return the UNNAMED
   array converted to the specified type.
 
-EXAMPLE
+EXAMPLES
   Sample program:
 
       program demo_get_args
@@ -1337,6 +1301,4 @@ AUTHOR
 LICENSE
   Public Domain
 
-
-
-				August 01, 2024 	     get_args(3m_cli2)
+				March 14, 2025		     get_args(3m_cli2)

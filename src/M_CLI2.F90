@@ -1,14 +1,15 @@
-!VERSION 1.0 20200115
-!VERSION 2.0 20200802
-!VERSION 3.0 20201021  LONG:SHORT syntax
-!VERSION 3.1 20201115  LONG:SHORT:: syntax
-!VERSION 3.2 20230205  set_mode()
+!VERSION 1.0 2020-01-15
+!VERSION 2.0 2020-08-02
+!VERSION 3.0 2020-10-21  LONG:SHORT syntax
+!VERSION 3.1 2020-11-15  LONG:SHORT:: syntax
+!VERSION 3.2 2023-02-05  set_mode()
+!VERSION 3.3 2024-08-18  autoresponse
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 !>
 !!##NAME
-!!    M_CLI2(3fm) - [ARGUMENTS::M_CLI2::INTRO] command line argument
+!!    M_CLI2(3fm) - [ARGUMENTS:M_CLI2::INTRO] command line argument
 !!    parsing using a prototype command
 !!    (LICENSE:PD)
 !!##SYNOPSIS
@@ -38,7 +39,7 @@
 !!    Detailed descriptions of each procedure and example programs are
 !!    included.
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !! Sample minimal program:
@@ -266,6 +267,8 @@ character(len=:),allocatable,save :: G_PREFIX
 ! try out response files
 ! CLI_RESPONSE_FILE is left public for backward compatibility, but should be set via "set_mode('response_file')
 logical,save,public               :: CLI_RESPONSE_FILE=.false. ! allow @name abbreviations
+logical,save,public               :: CLI_AUTO_RESPONSE_FILE=.false. ! allow @name abbreviations but call @$0 automatically
+logical,save,public               :: CLI_AUTO_QUIET=.false.
 logical,save                      :: G_OPTIONS_ONLY            ! process response file only looking for options for get_subcommand()
 logical,save                      :: G_RESPONSE                ! allow @name abbreviations
 character(len=:),allocatable,save :: G_RESPONSE_IGNORED
@@ -367,7 +370,7 @@ contains
 !!
 !!         strings demo_commandline|grep '@(#)'|tr '>' '\n'|sed -e 's/  */ /g'
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !! Typical usage:
@@ -401,7 +404,7 @@ character(len=:),allocatable         :: line
 integer                              :: i
 integer                              :: istart
 integer                              :: iback
-character(len=255)                   :: string
+!character(len=255)                   :: string
    if(get('usage') == 'T')then
       ! kludge to test interactive mode concept
       !   do
@@ -639,7 +642,7 @@ end subroutine check_commandline
 !!        line the rest of the command line goes into the character array
 !!        "UNNAMED".
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !! Sample program:
@@ -729,19 +732,32 @@ end subroutine check_commandline
 !!
 !!  They are case-sensitive names.
 !!
-!!  Note "@" is a special character in Powershell, and there requires being
+!!  Note "@" is a special character in Powershell, and therefore requires being
 !!  escaped with a grave character or placed in double-quotes if the name
 !!  is alphanumeric (using names like "a-b" or other non-alphanumeric
-!!  characters also prevents the "@" from being treated specially). To
-!!  accomodate this the "@" character may alternatively appear on the end
+!!  characters also prevents the "@" from being treated specially).
+!!
+!!   LEADING UNDERSCORE IS EQUIVALENT TO AT
+!!  Therefore, a leading underscore on a word is converted to an at ("@")
+!!  when response file mode is enabled. It will be converted to an "@"
+!!  before processing continues.
+!!
+!!   TRAILING AT IS EQUIVALENT TO LEADING AT
+!!  Alternatively To accommodate special handling of leading "@" characters
+!!  the "@" character may alternatively appear on the end
 !!  of the name instead of the beginning. It will be internally moved to
 !!  the beginning before processing commences.
 !!
+!!   CHANGING THE PREFIX IDENTIFIER
 !!  It is not recommended in general but the response name prefix may
 !!  be changed via the environment variable CLI_RESPONSE_PREFIX if in an
 !!  environment preventing the use of the "@" character. Typically "^" or
 !!  "%" or "_" are unused characters. In the very worst case an arbitrary
 !!  string is allowed such as "rsp_".
+!!
+!!  Currently this also means changing the prefix in the response files as
+!!  well. This may be changed so the @ character usage remains unchanged
+!!  in the file.
 !!
 !!   LOCATING RESPONSE FILES
 !!
@@ -990,6 +1006,10 @@ character(len=:),allocatable                      :: debug_mode
    end select
 
    G_response=CLI_RESPONSE_FILE
+   if(CLI_AUTO_RESPONSE_FILE)then
+      CLI_AUTO_QUIET=.true.
+      G_response=.true.
+   endif
 
    G_options_only=.false.
    G_passed_in=''
@@ -1062,7 +1082,7 @@ end subroutine set_args
 !!##RETURNS
 !!    NAME   name of subcommand
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -1177,7 +1197,6 @@ character(len=:),allocatable  :: prototype
 integer                       :: ilongest
 integer                       :: i
 integer                       :: j
-integer                       :: iend
    G_RESPONSE_PREFIX=get_env('CLI_RESPONSE_PREFIX','@')
    G_subcommand=''
    G_options_only=.true.
@@ -1194,6 +1213,7 @@ integer                       :: iend
    do i = 1, command_argument_count()
       call get_command_argument(i, cmdarg)
       call move_from_end(cmdarg)
+      cmdarg=change_leading_underscore_to_prefix(cmdarg)
       if(scan(adjustl(cmdarg(1:len(G_RESPONSE_PREFIX))),G_RESPONSE_PREFIX)  ==  1)then
          call get_prototype(cmdarg,prototype)
          call split(prototype,array)
@@ -1239,6 +1259,21 @@ end subroutine move_from_end
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
+function change_leading_underscore_to_prefix(string) result(newstring)
+character(len=*) :: string
+character(len=:),allocatable :: newstring
+! @ is treated as a special character in powershell so allow the underscore to be a prefix
+   if(string.eq.'')then
+      newstring=string
+   elseif(string(1:1).eq.'_')then
+      newstring=G_RESPONSE_PREFIX//string(2:)
+   else
+      newstring=string
+   endif
+end function change_leading_underscore_to_prefix
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!===================================================================================================================================
 !>
 !!##NAME
 !!    set_usage(3f) - [ARGUMENTS:M_CLI2] allow setting a short description
@@ -1259,7 +1294,7 @@ end subroutine move_from_end
 !!     DESCRIPTION  a brief one-line description of the keyword
 !!
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! sample program:
 !!
@@ -1337,7 +1372,7 @@ end subroutine set_usage
 !!
 !!##RETURNS
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! sample program:
 !!
@@ -1535,7 +1570,7 @@ end subroutine prototype_to_dictionary
 !!    SPECIFIED  returns .TRUE. if specified NAME was present on the command
 !!               line when the program was invoked.
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -1675,7 +1710,7 @@ end function specified
 !!           present remove keyword entry from dictionary.
 !!
 !!           If "present" is true, a value will be appended
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !!##AUTHOR
@@ -1792,7 +1827,7 @@ end subroutine update
 !!      subroutine wipe_dictionary()
 !!##DESCRIPTION
 !!      reset private M_CLI2(3fm) dictionary to empty
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -1834,7 +1869,7 @@ end subroutine wipe_dictionary
 !!    dictionary.
 !!##OPTIONS
 !!##RETURNS
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !===================================================================================================================================
 function get(key) result(valout)
@@ -1867,7 +1902,7 @@ end function get
 !!    using the routines for maintaining a list from command line arguments.
 !!##OPTIONS
 !!      prototype
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program
 !!
@@ -2057,8 +2092,10 @@ integer                                  :: lines_processed
    call find_and_read_response_file(basename(get_name(),keep_suffix=.false.))
    if(lines_processed /= 0)return
 
-   write(*,gen)'<ERROR> response name ['//trim(name)//'] not found'
-   stop 1
+   if(.not.CLI_AUTO_QUIET)then
+      write(*,gen)'<ERROR> response name ['//trim(name)//'] not found'
+      stop 1
+   endif
 contains
 !===================================================================================================================================
 subroutine find_and_read_response_file(rname)
@@ -2130,7 +2167,7 @@ character(len=:),allocatable :: temp
    G_RESPONSE_PREFIX=get_env('CLI_RESPONSE_PREFIX','@')
    line=''
    lines_processed=0
-      INFINITE: do
+   INFINITE: do
       read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
       if(is_iostat_end(ios))then
          backspace(lun,iostat=ios)
@@ -2190,9 +2227,47 @@ character(len=:),allocatable :: temp
          end select PROCESS
 
       endif
-      enddo INFINITE
+   enddo INFINITE
 end subroutine process_response
-
+!===================================================================================================================================
+subroutine show_response_file(quiet)  ! copy response file to stdout
+logical,intent(in),optional :: quiet
+logical                     :: quiet_local
+   if(present(quiet))then
+      quiet_local=quiet
+   else
+      quiet_local=.false.
+   endif
+   G_RESPONSE_PREFIX=get_env('CLI_RESPONSE_PREFIX','@')
+   line=''
+   INFINITE: do
+      read(unit=lun,fmt='(a)',iostat=ios,iomsg=message)line
+      if(is_iostat_end(ios))then
+         backspace(lun,iostat=ios)
+         exit INFINITE
+      elseif(ios /= 0)then
+         if(quiet_local)then
+            write(*,gen)'<ERROR>*show_response_file*:'//trim(message)
+         endif
+         exit INFINITE
+      endif
+      line=clipends(line)
+      if(index(line//' ','#') == 1)cycle
+      if(line == '' )cycle
+      if(index(line,G_RESPONSE_PREFIX) == 1)then
+         PROCESS: select case(lower(array(1)))
+         case('comment','#','')
+         case('system','!','$')
+         case('options','option','-')
+         case('print','>','echo')
+         case('stop')
+         case default
+         end select PROCESS
+         write(*,*)trim(line)
+      endif
+   enddo INFINITE
+end subroutine show_response_file
+!===================================================================================================================================
 end subroutine get_prototype
 !===================================================================================================================================
 function fileopen(filename,message) result(lun)
@@ -2356,7 +2431,7 @@ end function basename
 !!    Therefore can be very system dependent. If the queries fail the
 !!    default returned is "/".
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !!    sample usage
@@ -2442,7 +2517,11 @@ logical                      :: next_mandatory
    pointer=0
    lastkeyword=' '
    G_keyword_single_letter=.true.
-   i=1
+   if(CLI_AUTO_RESPONSE_FILE)then
+      i=0  ! cause get_next_argument to return a response macro name
+   else
+      i=1
+   endif
    current_argument=''
    GET_ARGS: do while (get_next_argument()) ! insert and replace entries
       if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:WHILE:CURRENT_ARGUMENT=',current_argument
@@ -2595,6 +2674,7 @@ logical                      :: next_mandatory
          lastkeyword=''
          next_mandatory=.false.
       endif
+      if(CLI_AUTO_QUIET)CLI_AUTO_QUIET=.false.
    enddo GET_ARGS
    if(lastkeyword /= '')then
       call ifnull()
@@ -2609,6 +2689,7 @@ subroutine ifnull()
 
    if(upper(oldvalue(1:1)) == 'F'.or.upper(oldvalue(1:1)) == 'T')then
       call update(lastkeyword,'T')
+      !call update(lastkeyword,upper(oldvalue(1:1)))
    elseif(oldvalue(1:1) == '"')then
       call update(lastkeyword,'" "')
    else
@@ -2633,6 +2714,13 @@ integer :: iequal
       hadequal=.false.
       get_next_argument=.true.
       ilength=len(current_argument)
+      return
+   endif
+
+   if(i == 0)then ! auto_response_file is true and first call to here
+      get_next_argument=.true.
+      current_argument=G_RESPONSE_PREFIX//basename(get_name(),keep_suffix=.false.)
+      i=i+1
       return
    endif
 
@@ -2708,7 +2796,7 @@ end subroutine cmd_args_to_dictionary
 !!             argument list.
 !!     STOP    logical value that if true stops the program after displaying
 !!             the dictionary.
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !!
@@ -2848,7 +2936,7 @@ end subroutine print_dictionary
 !!    If the functions are called with no argument they will return the
 !!    UNNAMED array converted to the specified type.
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !!
 !! Sample program:
@@ -2925,7 +3013,7 @@ end subroutine print_dictionary
 !!                colon, and whitespace. A string containing an alternate
 !!                list of delimiter characters may be supplied.
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -2984,7 +3072,7 @@ end subroutine print_dictionary
 !!                colon, and whitespace. A string containing an alternate
 !!                list of delimiter characters may be supplied.
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -3524,9 +3612,9 @@ end subroutine get_scalar_logical
 !!##DESCRIPTION
 !!    length of longest argument on command line. Useful when allocating
 !!    storage for holding arguments.
-!!##RESULT
+!!##RETURNS
 !!    longest_command_argument  length of longest command argument
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program
 !!
@@ -4357,9 +4445,9 @@ end function replace_str
 !!                string. If CLIP
 !!                is .FALSE. spaces are not trimmed
 !!
-!!##RESULT
+!!##RETURNS
 !!    quoted_str  The output string, which is based on adding quotes to STR.
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -4469,10 +4557,10 @@ end function quote
 !!    esc         optional character used to protect the next quote
 !!                character from being processed as a quote, but simply as
 !!                a plain character.
-!!##RESULT
+!!##RETURNS
 !!    unquoted_str  The output string, which is based on removing quotes
 !!                  from quoted_str.
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -4616,7 +4704,7 @@ end function unquote
 !!    basein   base of input string; either 0 or from 2 to 36.
 !!    out10    output value in base 10
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -5652,7 +5740,7 @@ end subroutine locate_key
 !===================================================================================================================================
 !>
 !!##NAME
-!!    set_mode(3f) - [ARGUMENTS:M_CLI2] turn on optional modes
+!!    set_mode(3f) - [ARGUMENTS:M_CLI2] turn on optional modes+
 !!    (LICENSE:PD)
 !!
 !!##SYNOPSIS
@@ -5671,6 +5759,10 @@ end subroutine locate_key
 !!    The following values are allowed:
 !!
 !!    o  response_file - enable use of response file
+!!
+!!    o  auto_response_file - enable use of response file
+!!       but also act as if @$0 was entered on the command line
+!!       where $0 is the basename of the file being executed
 !!
 !!    o  ignorelongcase - ignore case in long key names. So the user
 !!       does not have to remember if the option is --CurtMode or --curtmode
@@ -5696,7 +5788,7 @@ end subroutine locate_key
 !!           Set to .false. to deactivate the mode.
 !!           It is .true. by default.
 !!
-!!##EXAMPLE
+!!##EXAMPLES
 !!
 !! Sample program:
 !!
@@ -5758,6 +5850,7 @@ character(len=:),allocatable  :: debug_mode
 
    select case(lower(key))
    case('response_file','response file'); CLI_RESPONSE_FILE=local_mode
+   case('auto_response_file','auto response file'); CLI_AUTO_RESPONSE_FILE=local_mode
    case('debug');                         G_DEBUG=local_mode
    case('ignorecase','ignorelongcase');   G_IGNORELONGCASE=local_mode
    case('ignoreallcase');   G_IGNOREALLCASE=local_mode
