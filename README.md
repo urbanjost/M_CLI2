@@ -7,9 +7,10 @@
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
    the program. Calls are then made for each parameter name to set the
-   variables appropriately in the program. One approach is isolate all
-   the parsing to the beginning of the program, which is generally just
-   a few lines:
+   variables appropriately in the program. 
+
+   One approach is to isolate all the parsing to the beginning of the
+   program, which is generally just a few lines:
 ```fortran
    program compartmentalized
    use M_CLI2, only : set_args, get_args, s=>sget, r=>rget, i=>iget, l=>lget 
