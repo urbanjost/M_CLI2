@@ -17,4 +17,4 @@ documents:
 + [![run fpm test on windows with mingw64 ](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_mingw64_windows.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_mingw64_windows.yml)
 + [![run fpm test on windows with msys gfortran](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_msys_windows.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_msys_windows.yml)
 
-+ [![run fpm test on multiple programming environments using conda setup(https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml)
++ [![run fpm test on multiple programming environments using conda setup](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml)
