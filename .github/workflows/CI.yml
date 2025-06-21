@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        compiler: [gfortran, ifx, lfortran, flang-new]
+        include:
+        - os: ubuntu-latest
+          extra-packages: ""
+        - os: windows-latest
+          extra-packages: ""
+        - os: macos-latest
+          extra-packages: ""
+        exclude:
+          - os: macos-latest
+            compiler: flang-new
+          - os: macos-latest
+            compiler: ifx
+          - os: windows-latest
+            compiler: lfortran
+          - os: windows-latest
+            compiler: flang-new
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Conda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          activate-environment: fortran
+          channels: conda-forge, defaults
+
+      - name: Setup Fortran
+        uses: gha3mi/setup-fortran-conda@main
+        with:
+          compiler: ${{ matrix.compiler }}
+          platform: ${{ matrix.os }}
+          extra-packages: ${{ matrix.extra-packages }}
+
+      - name: fpm test (debug)
+        run: fpm test --compiler ${{ matrix.compiler }} --profile debug --verbose
+
+      - name: fpm test (release)
+        run: fpm test --compiler ${{ matrix.compiler }} --profile release --verbose
