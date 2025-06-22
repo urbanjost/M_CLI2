@@ -31,6 +31,8 @@ jobs:
             compiler: lfortran
           - os: windows-latest
             compiler: flang-new
+    env:
+      TZ: UTC+04:00
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
