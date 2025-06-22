@@ -1,0 +1,24 @@
+ENVIRONMENT VARIABLES
+ FPM_FC            sets the path to the Fortran compiler used for the build,
+                   will be overwritten by --compiler command line option
+
+ FPM_FFLAGS        sets the arguments for the Fortran compiler
+                   will be overwritten by --flag command line option
+
+ FPM_CC            sets the path to the C compiler used for the build,
+                   will be overwritten by --c-compiler command line option
+
+ FPM_CFLAGS        sets the arguments for the C compiler
+                   will be overwritten by --c-flag command line option
+
+ FPM_CXX           sets the path to the C++ compiler used for the build,
+                   will be overwritten by --cxx-compiler command line option
+
+ FPM_CXXFLAGS      sets the arguments for the C++ compiler
+                   will be overwritten by --cxx-flag command line option
+
+ FPM_AR            sets the path to the archiver used for the build,
+                   will be overwritten by --archiver command line option
+
+ FPM_LDFLAGS       sets additional link arguments for creating executables
+                   will be overwritten by --link-flag command line option
