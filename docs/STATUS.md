@@ -10,7 +10,7 @@ documents:
 
 + [![Build FORD(1) docs](https://github.com/urbanjost/M_CLI2/actions/workflows/deploy_api_docs.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/deploy_api_docs.yml)
 
-+ [![run fpm test on multiple programming environments using conda setup](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml)
++ [![run fpm test using conda setup](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml)
 
 + [![run fpm test on ubuntu with intel](https://github.com/urbanjost/M_CLI2/actions/workflows/test_intel_ubuntu.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_intel_ubuntu.yml)
 
