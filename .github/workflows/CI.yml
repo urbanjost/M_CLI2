@@ -52,14 +52,14 @@ jobs:
           extra-packages: ${{ matrix.extra-packages }}
 
 # ENVIRONMENT VARIABLES
-#  FPM_FC            sets the path to the Fortran compiler used for the build, ==> --compiler 
-#  FPM_FFLAGS        sets the arguments for the Fortran compiler               ==> --flag 
-#  FPM_CC            sets the path to the C compiler used for the build        ==> --c-compiler 
-#  FPM_CFLAGS        sets the arguments for the C compiler                     ==> --c-flag 
-#  FPM_CXX           sets the path to the C++ compiler used for the build,     ==> --cxx-compiler 
-#  FPM_CXXFLAGS      sets the arguments for the C++ compiler                   ==> --cxx-flag 
-#  FPM_AR            sets the path to the archiver used for the build,         ==> --archiver 
-#  FPM_LDFLAGS       sets additional link arguments for creating executables   ==> --link-flag 
+#  FPM_FC            sets the path to the Fortran compiler used for the build, ==> --compiler
+#  FPM_FFLAGS        sets the arguments for the Fortran compiler               ==> --flag
+#  FPM_CC            sets the path to the C compiler used for the build        ==> --c-compiler
+#  FPM_CFLAGS        sets the arguments for the C compiler                     ==> --c-flag
+#  FPM_CXX           sets the path to the C++ compiler used for the build,     ==> --cxx-compiler
+#  FPM_CXXFLAGS      sets the arguments for the C++ compiler                   ==> --cxx-flag
+#  FPM_AR            sets the path to the archiver used for the build,         ==> --archiver
+#  FPM_LDFLAGS       sets additional link arguments for creating executables   ==> --link-flag
 #
       - name: Set environment for lfortran
         if: matrix.compiler == 'lfortran'
@@ -69,10 +69,10 @@ jobs:
         run: |
           # Use the compiler to build and test
           export FPM_FC=${{ matrix.compiler }}
-	  fpm test --compiler ${{ matrix.compiler }} --profile debug --verbose
+          fpm test --compiler ${{ matrix.compiler }} --profile debug --verbose
 
       - name: fpm test (release)
         run: |
           # Use the compiler to build and test
           export FPM_FC=${{ matrix.compiler }}
-	  fpm test --compiler ${{ matrix.compiler }} --profile release --verbose
+          fpm test --compiler ${{ matrix.compiler }} --profile release --verbose
