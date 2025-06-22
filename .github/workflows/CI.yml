@@ -1,11 +1,11 @@
 # from https://github.com/gha3mi/setup-fortran-conda
-name: CI
+name: multi-platform fpm test using conda setup
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, master, dev]
   pull_request:
-    branches: [main]
+    branches: [main, master]
 
 jobs:
   test:
