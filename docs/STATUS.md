@@ -1,4 +1,4 @@
-## STATUS
+## CD/CI STATUS
 
 On each push or pull request this repository automatically runs "fpm
 test" to run its unit tests on Ubuntu(gfortran,ifort), MacOS(gfortran),
@@ -10,11 +10,17 @@ documents:
 
 + [![Build FORD(1) docs](https://github.com/urbanjost/M_CLI2/actions/workflows/deploy_api_docs.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/deploy_api_docs.yml)
 
++ [![run fpm test on multiple programming environments using conda setup](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml)
+
 + [![run fpm test on ubuntu with intel](https://github.com/urbanjost/M_CLI2/actions/workflows/test_intel_ubuntu.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_intel_ubuntu.yml)
+
 + [![run fpm test on ubuntu with gfortran](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_ubuntu.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_ubuntu.yml)
+
 + [![run fpm test on macos with gfortran](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_macos.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_macos.yml)
+
 + [![run fpm test on windows with gfortran](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_windows.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_windows.yml)
+
 + [![run fpm test on windows with mingw64 ](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_mingw64_windows.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_mingw64_windows.yml)
+
 + [![run fpm test on windows with msys gfortran](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_msys_windows.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/test_gfortran_msys_windows.yml)
 
-+ [![run fpm test on multiple programming environments using conda setup](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml/badge.svg)](https://github.com/urbanjost/M_CLI2/actions/workflows/CI.yml)

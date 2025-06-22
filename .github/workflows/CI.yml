@@ -1,3 +1,4 @@
+# from https://github.com/gha3mi/setup-fortran-conda
 name: CI
 
 on:
