@@ -51,7 +51,7 @@ jobs:
           platform: ${{ matrix.os }}
           extra-packages: ${{ matrix.extra-packages }}
 
-# ENVIRONMENT VARIABLES
+# ENVIRONMENT VARIABLES FOR COMPILERS
 #  FPM_FC            sets the path to the Fortran compiler used for the build, ==> --compiler
 #  FPM_FFLAGS        sets the arguments for the Fortran compiler               ==> --flag
 #  FPM_CC            sets the path to the C compiler used for the build        ==> --c-compiler
@@ -63,16 +63,47 @@ jobs:
 #
       - name: Set environment for lfortran
         if: matrix.compiler == 'lfortran'
-        run: echo "FPM_FFLAGS='--no-style-warnings'" >> $GITHUB_ENV
+        run: |
+          echo "FPM_FFLAGS='--no-style-warnings' --cpp" >> $GITHUB_ENV
+
+      - name: Set environment for gfortran
+        if: matrix.compiler == 'gfortran'
+        run: |
+          echo "end" >_empty.f90
+          gfortran -cpp -dM -E _empty.f90
+          rm -f _empty.f90
+          gfortran --version
+
+      - name: Set environment for flang-new
+        if: matrix.compiler == 'flang-new'
+        run: |
+          echo "end" >_empty.f90
+          flang-new -cpp -dM -E _empty.f90
+          rm -f _empty.f90
+          flang-new --version
+          echo "FPM_FFLAGS='-cpp'" >> $GITHUB_ENV
+
+      - name: Set environment for ifx
+        if: matrix.compiler == 'ifx'
+        run: |
+          echo "end" >_empty.f90
+          ifx -E -fpp empty.f90 -dryrun 2>&1 | perl -lne 'print for /-D(\S+)/'
+          rm -f _empty.f90
+          ifx --version
+
+# OS
+
+      - name: Set environment for ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          ulimit -c unlimited -d unlimited -f unlimited -m unlimited -s unlimited -t unlimited -v unlimited -x unlimited
+
+# RUN TESTS
 
       - name: fpm test (debug)
         run: |
-          # Use the compiler to build and test
-          export FPM_FC=${{ matrix.compiler }}
           fpm test --compiler ${{ matrix.compiler }} --profile debug --verbose
 
       - name: fpm test (release)
         run: |
-          # Use the compiler to build and test
-          export FPM_FC=${{ matrix.compiler }}
-          fpm test --compiler ${{ matrix.compiler }} --profile release --verbose
+          fpm test --compiler ${{ matrix.compiler }} --profile release -- --brief
