@@ -244,6 +244,66 @@ mv fpm-m_cli2 $HOME/.local/bin/
         [dependencies]
         M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
 ```
+---
+![cmake](docs/images/cmake_logo-1.png)
+---
+## Download and Build using cmake
+
+To download the github repository and build and install with cmake
+(you may wish to change the install path in src/CMakeLists.txt first) :
+```bash
+      git clone https://github.com/urbanjost/M_CLI2.git
+      cd M_CLI2
+
+      # Create a Build Directory:
+      mkdir -p build
+
+      cd build
+      cmake -S ../src -B .
+
+      # Configure the Build, specifying your preferred compiler (ifort, flang, etc.):
+      cmake . -DCMAKE_Fortran_COMPILER=gfortran
+
+      # Build the Project:
+      cmake --build .
+
+      #This creates:
+      #
+      #    build/lib/libM_CLI2.a (the static library).
+      #    build/include/*.mod (module files).
+      #    build/test/* (test executables).
+      #    build/example/* (example executables).
+
+      # OPTIONAL SECTION:
+
+      # Verify build
+      ls build/lib/libM_CLI2.a
+      ls build/include/*.mod
+      ls build/test/*
+      ls build/example/*
+
+      #Optionally Run Tests and Examples:
+      for name in ./test/* ./example/*
+      do
+         $name
+      done
+
+      #Install (Optional):
+      # This installs the library and module files to the system
+      # (e.g., /usr/local/lib/ and /usr/local/include/).
+      cmake --install .
+
+      # if you have insufficient permissions sudo(1) may be required
+      # to perform the install
+      #sudo cmake --install .
+
+      # Verify installation
+      ls /usr/local/lib/libM_CLI2.a
+      ls /usr/local/include/*.mod
+
+      # Cleaning Up: To clean artifacts, remove the build/ directory:
+      rm -rf build
+```
 
 ## Supports Meson
    Alternatively, meson(1) users may download the github repository and build it with
