@@ -35,7 +35,7 @@ executable = [
    { name="demo14", source-dir="example", main="demo14.f90" },
    { name="demo15", source-dir="example", main="demo15.f90" },
    { name="demo16", source-dir="example", main="demo16.f90" },
-   { name="demo17", source-dir="example", main="demo17.f90" },
+#  { name="demo17", source-dir="example", main="demo17.f90" },
 # sample programs extracted from manpages:
    { name="demo_set_mode",              source-dir="example/demos", main="demo_set_mode.f90" },
    { name="demo_set_args",              source-dir="example/demos", main="demo_set_args.f90" },

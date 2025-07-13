@@ -18,9 +18,10 @@ PROGFILES = \
  ../example/demo14.f90 \
  ../example/demo15.f90 \
  ../example/demo16.f90 \
- ../example/demo17.f90 \
  ../example/manually_test_bundling.f90 \
 $(NULL)
+# ../example/demo17.f90
+#
 TESTFILES = \
  ../test/test_suite_M_CLI2.f90 \
  ../test/test_ignorecase.f90 \
