@@ -1,0 +1,175 @@
+################################################################################
+# NOTE:
+# must
+#  + specify optional --target keyword
+#  + use --keyword value, not --keyword=value
+#  + quote option strings starting with dash
+################################################################################
+# os: [ubuntu-latest, macos-latest, windows-latest]
+# compiler: [gfortran, ifx, lfortran, flang-new, nvfortran]
+################################################################################
+#
+@test_ubuntu-latest_gfortran_debug
+print RESPONSE: ubuntu-latest
+option test --target '*' --compiler gfortran --profile debug
+option --flag "-DRSP"
+
+@test_ubuntu-latest_ifx_debug
+print RESPONSE: ubuntu-latest
+option test --target '*' --compiler ifx --profile debug
+option --flag "-DRSP"
+
+@test_ubuntu-latest_lfortran_debug
+print RESPONSE: ubuntu-latest
+option test --target '*' --compiler lfortran --profile debug
+option --flag "-DRSP --no-style-warnings --cpp"
+
+@test_ubuntu-latest_flang-new_debug
+print RESPONSE: ubuntu-latest
+option test --target '*' --compiler flang-new --profile debug
+option --flag "-DRSP"
+
+@test_ubuntu-latest_nvfortran_debug
+print RESPONSE: ubuntu-latest
+option test --target '*' --compiler nvfortran --profile debug
+option --flag "-DRSP"
+
+#------------------------------------------------------------------------------#
+#
+@test_macos-latest_gfortran_debug
+print RESPONSE: macos-latest
+option test --target '*' --compiler gfortran --profile debug
+option --flag "-DRSP"
+
+@test_macos-latest_ifx_debug
+print RESPONSE: macos-latest
+option test --target '*' --compiler ifx --profile debug
+option --flag "-DRSP"
+
+@test_macos-latest_lfortran_debug
+print RESPONSE: macos-latest
+option test --target '*' --compiler lfortran --profile debug
+option --flag "-DRSP --no-style-warnings --cpp"
+
+@test_macos-latest_flang-new_debug
+print RESPONSE: macos-latest
+option test --target '*' --compiler flang-new --profile debug
+option --flag "-DRSP"
+
+@test_macos-latest_nvfortran_debug
+print RESPONSE: macos-latest
+option test --target '*' --compiler nvfortran --profile debug
+option --flag "-DRSP"
+
+#------------------------------------------------------------------------------#
+#
+@test_windows-latest_gfortran_debug
+print RESPONSE: windows-latest gfortran debug
+option test --target "*" --compiler gfortran
+option --flag "-DRSP -D_WIN32 -Wall -Wextra -fmax-errors=1 -g -fcheck=bounds -fcheck=array-temps -fbacktrace -fcoarray=single -fimplicit-none -Werror=implicit-interface"
+
+@test_windows-latest_ifx_debug
+print RESPONSE: windows-latest ifx debug
+option test --target "*" --compiler ifx --profile debug
+option --flag "/fpp /D RSP"
+
+@test_windows-latest_lfortran_debug
+print RESPONSE: windows-latest lfortran debug
+option test --target "*" --compiler lfortran --profile debug
+option --flag "-DRSP -D_WIN32 --no-style-warnings --cpp"
+
+@test_windows-latest_flang-new_debug
+print RESPONSE: windows-latest flang-new debug
+option test --target "*" --compiler flang-new
+option --flag "-DRSP -D_WIN32"
+
+@test_windows-latest_nvfortran_debug
+print RESPONSE: windows-latest
+option test --target "*" --compiler nvfortran --profile debug
+option --flag "-DRSP -D_WIN32"
+
+#------------------------------------------------------------------------------#
+@test_ubuntu-latest_gfortran_release
+option test --target '*' --compiler gfortran --profile release
+option --flag "-DRSP -D_WIN32"
+@test_ubuntu-latest_ifx_release
+option test --target '*' --compiler ifx --profile release
+option --flag "-DRSP -D_WIN32"
+@test_ubuntu-latest_lfortran_release
+option test --target '*' --compiler lfortran --profile release
+option --flag "-DRSP --no-style-warnings --cpp"
+@test_ubuntu-latest_flang-new_release
+option test --target '*' --compiler flang-new --profile release
+option --flag "-DRSP -D_WIN32"
+@test_ubuntu-latest_nvfortran_release
+option test --target '*' --compiler nvfortran --profile release
+option --flag "-DRSP -D_WIN32"
+#------------------------------------------------------------------------------#
+@test_macos-latest_gfortran_release
+option test --target '*' --compiler gfortran --profile release
+option --flag "-DRSP"
+@test_macos-latest_ifx_release
+option test --target '*' --compiler ifx --profile release
+option --flag "-DRSP"
+@test_macos-latest_lfortran_release
+option test --target '*' --compiler lfortran --profile release
+option --flag "-DRSP --no-style-warnings --cpp"
+@test_macos-latest_flang-new_release
+option test --target '*' --compiler flang-new --profile release
+option --flag "-DRSP"
+@test_macos-latest_nvfortran_release
+option test --target '*' --compiler nvfortran --profile release
+option --flag "-DRSP"
+#------------------------------------------------------------------------------#
+@test_windows-latest_gfortran_release
+option test --target "*" --compiler gfortran
+option --flag "-DRSP -D_WIN32 -O3 -funroll-loops -Wimplicit-interface -fmax-errors=1 -fcoarray=single -fimplicit-none -Werror=implicit-interface"
+@test_windows-latest_ifx_release
+option test --target "*" --compiler ifx --profile release
+option --flag "/fpp /D RSP"
+@test_windows-latest_lfortran_release
+option test --target "*" --compiler lfortran --profile release
+option --flag "-DRSP -D_WIN32 --no-style-warnings --cpp"
+@test_windows-latest_flang-new_release
+option test --target "*" --compiler flang-new
+option --flag "-DRSP -D_WIN32"
+@test_windows-latest_nvfortran_release
+option test --target "*" --compiler nvfortran --profile release
+option --flag "-DRSP -D_WIN32"
+#------------------------------------------------------------------------------#
+################################################################################
+@declare2
+> found it
+################################################################################
+@debugg
+option build --target '*'
+option --compiler gfortran --profile debug
+option --flag '-fdump-fortran-global'
+option --link-flag '-fdump-fortran-global'
+option --verbose
+################################################################################
+@rung
+print run all apps with gfortran
+# note --target is required in a response file
+option run --target '*' --compiler gfortran --profile release
+################################################################################
+@testi
+print run test apps with ifx
+option test --target '*' --compiler ifx --profile release --verbose
+################################################################################
+@runi
+print run all apps with ifx
+option run --target '*' --compiler ifx --profile release
+################################################################################
+@runn
+system banner RUNN
+option run --compiler nvfortran --flag "-cuda -Mpreprocess"
+
+@buildn
+option build --compiler nvfortran --flag "-cuda -Mpreprocess"
+
+@testn
+option test --compiler nvfortran --flag "-cuda -Mpreprocess"
+################################################################################
+@box_month
+options run --target demo_box_month --example --profile release --verbose

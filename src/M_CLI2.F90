@@ -737,10 +737,6 @@ end subroutine check_commandline
 !!  is alphanumeric (using names like "a-b" or other non-alphanumeric
 !!  characters also prevents the "@" from being treated specially).
 !!
-!!   LEADING UNDERSCORE IS EQUIVALENT TO AT
-!!  Therefore, a leading underscore on a word is converted to an at ("@")
-!!  when response file mode is enabled. It will be converted to an "@"
-!!  before processing continues.
 !!
 !!   TRAILING AT IS EQUIVALENT TO LEADING AT
 !!  Alternatively To accommodate special handling of leading "@" characters
@@ -1036,7 +1032,7 @@ character(len=:),allocatable                      :: debug_mode
    call prototype_and_cmd_args_to_nlist(hold,string)
    if(allocated(G_RESPONSE_IGNORED))then
       if(G_DEBUG)write(*,gen)'<DEBUG>SET_ARGS:G_RESPONSE_IGNORED:',G_RESPONSE_IGNORED
-      if(size(unnamed) /= 0)write(*,*)'LOGIC ERROR'
+      !if(size(unnamed) /= 0)write(*,*)'LOGIC ERROR'
       call split(G_RESPONSE_IGNORED,unnamed)
    endif
 
@@ -1260,16 +1256,17 @@ end subroutine move_from_end
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
 function change_leading_underscore_to_prefix(string) result(newstring)
+! CAUSES FILENAMES STaRTING WITH _ TO bE TREATED AS REQUESTS FOR RESPONSE FILES. TURN IT OFF; maybe make optional
 character(len=*) :: string
 character(len=:),allocatable :: newstring
 ! @ is treated as a special character in powershell so allow the underscore to be a prefix
-   if(string.eq.'')then
+!x!   if(string.eq.'')then
+!x!      newstring=string
+!x!   elseif(string(1:1).eq.'_')then
+!x!      newstring=G_RESPONSE_PREFIX//string(2:)
+!x!   else
       newstring=string
-   elseif(string(1:1).eq.'_')then
-      newstring=G_RESPONSE_PREFIX//string(2:)
-   else
-      newstring=string
-   endif
+!x!   endif
 end function change_leading_underscore_to_prefix
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
@@ -1386,15 +1383,17 @@ end subroutine set_usage
 !!##LICENSE
 !!      Public Domain
 !===================================================================================================================================
-recursive subroutine prototype_to_dictionary(string)
+recursive subroutine prototype_to_dictionary(string,pass)
 
 ! ident_3="@(#) M_CLI2 prototype_to_dictionary(3f) parse user command and store tokens into dictionary"
 
 character(len=*),intent(in)   :: string  ! string is character input string of options and values
+integer,intent(in),optional   :: pass
 
 character(len=:),allocatable  :: dummy   ! working copy of string
 character(len=:),allocatable  :: value
 character(len=:),allocatable  :: keyword
+character(len=:),allocatable  :: oldvalue
 character(len=3)              :: delmt   ! flag if in a delimited string or not
 character(len=1)              :: currnt  ! current character being processed
 character(len=1)              :: prev    ! character to left of CURRNT
@@ -1408,6 +1407,14 @@ integer                       :: ifwd
 integer                       :: ibegin
 integer                       :: iend
 integer                       :: place
+integer                       :: pass_local
+integer                       :: longest
+
+   if(present(pass))then
+      pass_local=pass
+   else
+      pass_local=1
+   endif
 
    islen=len_trim(string)                               ! find number of characters in input string
    if(islen  ==  0)then                                 ! if input string is blank, even default variable will not be changed
@@ -1456,7 +1463,19 @@ integer                       :: place
             enddo TESTIT
             if(keyword /= ' ')then
                if(value=='[]')value=','
-               call update(keyword,value)            ! store name and its value
+               if(pass_local == 1 )then
+                  call update(keyword,value)            ! store name and its value
+               else
+                  oldvalue=get(keyword)
+                  select case(oldvalue)
+                  case('T','F')
+                     call update(keyword,'T')
+                     longest=max(len(unnamed),len_trim(value))
+                     unnamed=[character(len=longest) :: unnamed,value]
+                  case default
+                     call update(keyword,value)            ! store name and its value
+                  end select
+               endif
             elseif( G_remaining_option_allowed)then  ! meaning "--" has been encountered
                if(value=='[]')value=','
                call update('_args_',trim(value))
@@ -1841,17 +1860,17 @@ end subroutine update
 !!      Public Domain
 !===================================================================================================================================
 subroutine wipe_dictionary()
-   if(allocated(keywords))deallocate(keywords)
+   if(allocated(keywords))   deallocate(keywords)
+   if(allocated(values))     deallocate(values)
+   if(allocated(counts))     deallocate(counts)
+   if(allocated(shorts))     deallocate(shorts)
+   if(allocated(present_in)) deallocate(present_in)
+   if(allocated(mandatory))  deallocate(mandatory)
    allocate(character(len=0) :: keywords(0))
-   if(allocated(values))deallocate(values)
    allocate(character(len=0) :: values(0))
-   if(allocated(counts))deallocate(counts)
    allocate(counts(0))
-   if(allocated(shorts))deallocate(shorts)
    allocate(character(len=0) :: shorts(0))
-   if(allocated(present_in))deallocate(present_in)
    allocate(present_in(0))
-   if(allocated(mandatory))deallocate(mandatory)
    allocate(mandatory(0))
 end subroutine wipe_dictionary
 !===================================================================================================================================
@@ -1973,7 +1992,7 @@ integer                               :: iused
    G_remaining_on=.false.
    G_remaining=''
    if(prototype /= '')then
-      call prototype_to_dictionary(prototype)       ! build dictionary from prototype
+      call prototype_to_dictionary(prototype,1)       ! build dictionary from prototype
 
       ! if short keywords not used by user allow them for standard options
 
@@ -2006,7 +2025,7 @@ integer                               :: iused
 
    if(present(string))then                          ! instead of command line arguments use another prototype string
       if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:CALL PROTOTYPE_TO_DICTIONARY:STRING=',STRING
-      call prototype_to_dictionary(string)          ! build dictionary from prototype
+      call prototype_to_dictionary(string,2)        ! build dictionary from prototype
    else
       if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_NLIST:CALL CMD_ARGS_TO_DICTIONARY:CHECK=',.true.
       call cmd_args_to_dictionary()
@@ -2037,7 +2056,7 @@ logical                      :: hold
       hold=G_append
       G_append=.false.
       if(G_DEBUG)write(*,gen)'<DEBUG>EXPAND_RESPONSE:CALL PROTOTYPE_TO_DICTIONARY:PROTOTYPE=',prototype
-      call prototype_to_dictionary(prototype)       ! build dictionary from prototype
+      call prototype_to_dictionary(prototype,1)       ! build dictionary from prototype
       G_append=hold
    endif
 

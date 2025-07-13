@@ -60,7 +60,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025	get_args_fixed_length(3m_cli2)
+				 July 12, 2025	get_args_fixed_length(3m_cli2)
 get_subcommand(3m_cli2) 			       get_subcommand(3m_cli2)
 
 NAME
@@ -188,7 +188,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025	       get_subcommand(3m_cli2)
+				 July 12, 2025	       get_subcommand(3m_cli2)
 M_CLI2(3m_cli2) 					       M_CLI2(3m_cli2)
 
 NAME
@@ -392,7 +392,7 @@ SEE ALSO
   dget(3f), iget(3f), lget(3f), rget(3f), sget(3f), cget(3f) dgets(3f),
   igets(3f), lgets(3f), rgets(3f), sgets(3f), cgets(3f)
 
-				March 14, 2025		       M_CLI2(3m_cli2)
+				 July 12, 2025		       M_CLI2(3m_cli2)
 set_args(3m_cli2)					     set_args(3m_cli2)
 
 NAME
@@ -637,11 +637,6 @@ RESPONSE FILES
   alphanumeric (using names like "a-b" or other non-alphanumeric characters
   also prevents the "@" from being treated specially).
 
-   LEADING UNDERSCORE IS EQUIVALENT TO AT
-  Therefore, a leading underscore on a word is converted to an at ("@") when
-  response file mode is enabled. It will be converted to an "@" before
-  processing continues.
-
    TRAILING AT IS EQUIVALENT TO LEADING AT
   Alternatively To accommodate special handling of leading "@" characters the
   "@" character may alternatively appear on the end of the name instead of the
@@ -869,7 +864,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025		     set_args(3m_cli2)
+				 July 12, 2025		     set_args(3m_cli2)
 set_mode(3m_cli2)					     set_mode(3m_cli2)
 
 NAME
@@ -960,7 +955,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025		     set_mode(3m_cli2)
+				 July 12, 2025		     set_mode(3m_cli2)
 specified(3m_cli2)					    specified(3m_cli2)
 
 NAME
@@ -1103,7 +1098,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025		    specified(3m_cli2)
+				 July 12, 2025		    specified(3m_cli2)
 get_args_fixed_size(3m_cli2)			  get_args_fixed_size(3m_cli2)
 
 NAME
@@ -1188,7 +1183,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025	  get_args_fixed_size(3m_cli2)
+				 July 12, 2025	  get_args_fixed_size(3m_cli2)
 get_args(3m_cli2)					     get_args(3m_cli2)
 
 NAME
@@ -1301,4 +1296,4 @@ AUTHOR
 LICENSE
   Public Domain
 
-				March 14, 2025		     get_args(3m_cli2)
+				 July 12, 2025		     get_args(3m_cli2)
