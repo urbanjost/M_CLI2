@@ -1749,6 +1749,7 @@ character(len=:),allocatable          :: val_local
 character(len=:),allocatable          :: short
 character(len=:),allocatable          :: long
 character(len=:),allocatable          :: long_short(:)
+character(len=:),allocatable          :: kludge(:)
 integer                               :: isize
 logical                               :: set_mandatory
    set_mandatory=.false.
@@ -1763,7 +1764,8 @@ logical                               :: set_mandatory
    if(isize > 0)then                     ! very special-purpose syntax where if ends in :: next field is a value even
       if(long_short(isize) == '')then    ! if it starts with a dash, for --flags option on fpm(1).
          set_mandatory=.true.
-         long_short=long_short(:isize-1)
+         kludge=long_short(:isize-1)     ! use kludge to avoid nvfortran bug
+         long_short=kludge
       endif
    endif
 
