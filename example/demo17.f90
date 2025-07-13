@@ -44,12 +44,13 @@ type(character(len=:)),allocatable  :: fnames(:)
    !! The optional unnamed values on the command line are
    !! accumulated in the character array "UNNAMED" which was 
    !! renamed to "FILENAMES" on the use statement
-   if(allocated(filenames))then
-      if(size(filenames) > 0)then
-         print all,'files:'
-         print '(i6.6,1x,3a)',(indx,'[',filenames(indx),']',indx=1,size(filenames))
-      endif
-   endif
+! nvfortran internal compiler error
+!   if(allocated(filenames))then
+!      if(size(filenames) > 0)then
+!         print all,'files:'
+!         print '(i6.6,1x,3a)',(indx,'[',filenames(indx),']',indx=1,size(filenames))
+!      endif
+!   endif
 
    ! alternate method, additionally can be used when desired result is numeric
    ! by using igets(3f), rgets(3f), ... instead of sgets(3f).
