@@ -7,21 +7,15 @@
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
    the program. Calls are then made for each parameter name to set the
-   variables appropriately in the program. One approach is isolate all
-   the parsing to the beginning of the program, which is generally just
-   a few lines:
+   variables appropriately in the program. 
+
+   One approach is to isolate all the parsing to the beginning of the
+   program, which is generally just a few lines:
 ```fortran
    program compartmentalized
-   use M_CLI2, only : set_args, get_args, s=>sget, r=>rget, i=>iget, l=>lget 
+   use M_CLI2, only : set_args, s=>sget, r=>rget, i=>iget, l=>lget 
    implicit none
-   !
-   ! define command options and default values and parse command line
      call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
-   ! just like calling the command accept --title:T means to give it the long
-   ! name "title" and the short name "T" and that to define a boolean you give
-   ! it the unquoted value of F.
-   !
-   ! convert arguments to the desired types and call main program
      call main( x=r('x'), y=r('y'), title=s('title'), i=i('i'), l=l('l'), lbig=l('L'))
    contains 
    subroutine main(x,y,title,i,l,lbig)
@@ -34,6 +28,18 @@
    end subroutine main
    end program compartmentalized
 ```
+   The SET_ARGS(3) call defines the command options and default values
+   and parses the command line.
+
+   The conversion routines have been aliased for the purpose of making
+   the call to MAIN(3) short, but are all that is required to assign
+   values from the command line parsing to Fortran variables.
+
+   The syntax in SET_ARGS(3) is similar to invoking the command from
+   the command line with every option specified except --title:T means
+   to give it the long name "title" and the short name "T" and that to
+   define a boolean you give it the unquoted value of F.
+   
 ## Example Program
 This short program defines a command that can be called using
 conventional Unix-style syntax for short and long parameters:

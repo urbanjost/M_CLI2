@@ -96,7 +96,6 @@ call set_args(&
 '                                                                                ', &
 '     demo17 *.*                                                                 ', &
 '                                                                                ', &
-'                                                                                ', &
 !! ## VERSION TEXT (with optional @(#) prefix for what(1) command) ##
 '' ], [character(len=80) :: &
 '@(#)PROGRAM:     demo17           >', &

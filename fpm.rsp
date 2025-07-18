@@ -1,0 +1,39 @@
+################################################################################
+# NOTE:
+# must specify optional --target and quote option strings starting with dash
+################################################################################
+@declare2
+> found it
+################################################################################
+@debugg
+option build  --target '*' 
+option  --compiler gfortran --profile debug 
+option  --flag '-fdump-fortran-global' 
+option  --link-flag '-fdump-fortran-global' 
+option  --verbose
+################################################################################
+@rung
+print  run all apps with gfortran
+# note --target is required in a response file
+option run  --target '*' --compiler gfortran --profile release
+################################################################################
+@testi
+print  run test apps with ifx
+option test  --target '*' --compiler ifx --profile release --verbose
+################################################################################
+@runi
+print  run all apps with ifx
+option run  --target '*' --compiler ifx --profile release
+################################################################################
+@runn
+system banner RUNN
+option run --compiler nvfortran --flag "-cuda -Mpreprocess"
+
+@buildn
+option build --compiler nvfortran --flag "-cuda -Mpreprocess"
+
+@testn
+option test --compiler nvfortran --flag "-cuda -Mpreprocess"
+################################################################################
+@box_month
+options run --target demo_box_month --example --profile release --verbose
