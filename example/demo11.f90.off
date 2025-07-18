@@ -23,7 +23,7 @@ print *,'demo11: examples of validating values with ALL(3f) and ANY(3f)'
 ! or the convenience functions like inum(3f). 
 !
 ! Fortran already has powerful validation capabilities.  Logical
-! expressions ANY(3f) and ALL(3f) are standard Fortran features easily
+! expressions ANY(3f) and ALL(3f) are standard Fortran features which easily
 ! allow performing the common validations for command line arguments
 ! without having to learn any additional syntax or methods.
 
@@ -51,7 +51,7 @@ endif
 ! as a string and using a NAMELIST(3f) group to convert it. Note that
 ! if input values are strings that have to be quoted (ie. more than one
 ! word) or contain characters special to the shell that how you have to
-! quote the command line can get complicated.
+! quote the command line, which can get complicated.
 
 string='10,20,"green"'
 

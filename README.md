@@ -18,7 +18,7 @@
    !
    ! define command options and default values and parse command line
      call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
-   ! just like calling the command accept --title:T means to give it the long
+   ! just like calling the command except --title:T means to give it the long
    ! name "title" and the short name "T" and that to define a boolean you give
    ! it the unquoted value of F.
    !
