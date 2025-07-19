@@ -18,11 +18,19 @@ option --flag "-DRSP"
 print RESPONSE: ubuntu-latest
 option test --target '*' --compiler ifx --profile debug
 option --flag "-DRSP"
+#------------------------------------------------------------------------------#
 
+
+# -g --show-stacktrace only supported if optionally built in
+
+
+#------------------------------------------------------------------------------#
+# LFortran: modern interactive LLVM-based Fortran compiler
 @test_ubuntu-latest_lfortran_debug
 print RESPONSE: ubuntu-latest
-option test --target '*' --compiler lfortran --profile debug
-option --flag "-DRSP --no-style-warnings --cpp"
+option test --target '*' --compiler lfortran --profile debug --verbose
+option --flag "-D__COMPILER__=LFORTRAN --no-style-warnings --error-format=human -v --static --cpp-infer --linker=gcc --fixed-form-infer"
+# can pick --shared versus --static. Is -fPIC required for shared?
 
 @test_ubuntu-latest_flang-new_debug
 print RESPONSE: ubuntu-latest
@@ -48,8 +56,8 @@ option --flag "-DRSP"
 
 @test_macos-latest_lfortran_debug
 print RESPONSE: macos-latest
-option test --target '*' --compiler lfortran --profile debug
-option --flag "-DRSP --no-style-warnings --cpp"
+option test --target '*' --compiler lfortran --profile debug --verbose
+option --flag "-D__COMPILER__=LFORTRAN --no-style-warnings --error-format=human -v --static --cpp-infer --linker=gcc --fixed-form-infer"
 
 @test_macos-latest_flang-new_debug
 print RESPONSE: macos-latest
@@ -75,8 +83,8 @@ option --flag "/fpp /D RSP"
 
 @test_windows-latest_lfortran_debug
 print RESPONSE: windows-latest lfortran debug
-option test --target "*" --compiler lfortran --profile debug
-option --flag "-DRSP -D_WIN32 --no-style-warnings --cpp"
+option test --target '*' --compiler lfortran --profile debug --verbose
+option --flag "-D__COMPILER__=LFORTRAN --no-style-warnings --error-format=human -v --static --cpp-infer --linker=gcc --fixed-form-infer"
 
 @test_windows-latest_flang-new_debug
 print RESPONSE: windows-latest flang-new debug
@@ -95,9 +103,11 @@ option --flag "-DRSP -D_WIN32"
 @test_ubuntu-latest_ifx_release
 option test --target '*' --compiler ifx --profile release
 option --flag "-DRSP -D_WIN32"
+
 @test_ubuntu-latest_lfortran_release
-option test --target '*' --compiler lfortran --profile release
-option --flag "-DRSP --no-style-warnings --cpp"
+option test --target '*' --compiler lfortran --profile release --verbose
+option --flag "-D__COMPILER__=LFORTRAN --no-style-warnings --error-format=human -v --static --cpp-infer --linker=gcc --fixed-form-infer"
+
 @test_ubuntu-latest_flang-new_release
 option test --target '*' --compiler flang-new --profile release
 option --flag "-DRSP -D_WIN32"
@@ -111,9 +121,11 @@ option --flag "-DRSP"
 @test_macos-latest_ifx_release
 option test --target '*' --compiler ifx --profile release
 option --flag "-DRSP"
+
 @test_macos-latest_lfortran_release
-option test --target '*' --compiler lfortran --profile release
-option --flag "-DRSP --no-style-warnings --cpp"
+option test --target '*' --compiler lfortran --profile release --verbose
+option --flag "-D__COMPILER__=LFORTRAN --no-style-warnings --error-format=human -v --static --cpp-infer --linker=gcc --fixed-form-infer"
+
 @test_macos-latest_flang-new_release
 option test --target '*' --compiler flang-new --profile release
 option --flag "-DRSP"
@@ -127,9 +139,11 @@ option --flag "-DRSP -D_WIN32 -O3 -funroll-loops -Wimplicit-interface -fmax-erro
 @test_windows-latest_ifx_release
 option test --target "*" --compiler ifx --profile release
 option --flag "/fpp /D RSP"
+
 @test_windows-latest_lfortran_release
-option test --target "*" --compiler lfortran --profile release
-option --flag "-DRSP -D_WIN32 --no-style-warnings --cpp"
+option test --target '*' --compiler lfortran --profile release --verbose
+option --flag "-D__COMPILER__=LFORTRAN --no-style-warnings --error-format=human -v --static --cpp-infer --linker=gcc --fixed-form-infer"
+
 @test_windows-latest_flang-new_release
 option test --target "*" --compiler flang-new
 option --flag "-DRSP -D_WIN32"
