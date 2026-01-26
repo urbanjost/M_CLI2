@@ -31,15 +31,14 @@
    write(*,nml=args)
    end subroutine main
    end program compartmentalized
-
+```
 ## General Overview
 
-```
-   The SET_ARGS(3) call defines the command options and default values
-   and parses the command line.
+The SET_ARGS(3) call defines the command options and default values and
+parses the command line.
 
-   The "get" routines are all that is required to assign values from
-   the command line values by keyword to Fortran variables.
+The "get" routines are all that is required to assign values from the
+command line values by keyword to Fortran variables.
 
 Additionally, the "gets" functions can return arrays of values, you can
 query whether a keyword has been specified or not, and you can add text
