@@ -9,7 +9,7 @@
    the program. Calls are then made for each parameter name to set the
    variables appropriately in the program.
 
-   One approach is to isolate all the parsing to the beginning of the
+   One common use is to isolate all the parsing to the beginning of the
    program, which is generally just a few lines:
 ```fortran
    program compartmentalized
@@ -22,6 +22,7 @@
      & i=iget('i'),              & ! get a whole number
      l=lget('l'), lbig=lget('L'))  ! get some boolean options
    contains
+
    subroutine main(x,y,title,i,l,lbig)
    ! do something with the values, all the parsing is done
    real                          :: x,y     ;namelist /args/x,y
@@ -30,6 +31,7 @@
    character(len=:),allocatable  :: title   ;namelist /args/title
    write(*,nml=args)
    end subroutine main
+
    end program compartmentalized
 ```
 ## General Overview
@@ -37,17 +39,25 @@
 The SET_ARGS(3) call defines the command options and default values and
 parses the command line.
 
-The "get" routines are all that is required to assign values from the
-command line values by keyword to Fortran variables.
+The "GET" routines are all that is required to assign scalar values from
+the command line values by keyword to Fortran variables.
 
-Additionally, the "gets" functions can return arrays of values, you can
-query whether a keyword has been specified or not, and you can add text
-blocks to display when --help or --version is supplied.
+Additionally, the "GETS" functions can return arrays of values.
 
-A few nodes are also available. For example, but default boolean short
-names may not be concatenated, but in "strict" mode the can be (but then
-long keywords must always start with two dashes instead of one or two
-being allowed).
+You can query whether a keyword has been specified or not using
+SPECIFIED(3).
+
+Text blocks to display when --help or --version is supplied on the
+command line can optionally be added to the SET_ARGS(3) call.
+
+A few additional modes are also available. For example, by default boolean
+short names may not be concatenated, but in "strict" mode they can be
+(but then long keywords must always start with two dashes instead of
+one or two being allowed).
+
+There are also advanced features such as support for "response files"
+which let you create platform-independent aliases for long commands,
+support for subcommands, and a few other less-used capabilities.
 
 All the features are demonstrated via example programs and man-page
 format descriptions of each procedure.
@@ -68,6 +78,8 @@ described under SET_ARGS(3f).
 
 ## More specifically ...
 
+## Syntax rules for the prototype command in SET_ARGS(3):
+
   The syntax used in SET_ARGS(3) is similar to invoking the command from
   the command line with every option specified using a few simple rules.
 
@@ -79,11 +91,18 @@ described under SET_ARGS(3f).
      name followed immediately by ":LETTER" where LETTER is the short
      keyword name.
    - separate lists of values with commas
+   - if the value can start with a dash and you want to allow the
+     syntax "--keyword value" add a : to the end of the keyword, which
+     means "next argument is a value even if it starts with " -".
+
+### Example call to SET_ARGS(3):
 ```bash
     call set_args('-a 10 -b 1,2,3 --title:T "my title" -t F')
 ```
   That single line defines all the command keywords and their default values
   and parses the command line.
+
+## Getting keyword values
 
   All that remains is to get argument values. To get the values
 * you add calls to the get_args(3f) subroutine or one of its shortcut
@@ -93,9 +112,12 @@ described under SET_ARGS(3f).
   (rget(3f),sget(3f),iget(3f) ...) that allow you to use a simple
   function-based interface.
 
-  Less frequently used are special routines for when you want to use fixed
-  length character variables. CHARACTER variables or fixed-size arrays
-  instead of the allocatable variables are best used with get_args(3f)).
+  Less frequently used are special routines for when you want to use
+  fixed length CHARACTER variables or fixed-size arrays instead of
+  the allocatable variables. These require routines that start with
+  "GET_ARGS".
+
+## That is usually it
 
   Now when you call the program all the values in the prototype should
   be updated using values from the command line and queried and ready
@@ -114,14 +136,14 @@ These demo programs provide templates for the most common usage:
 
 ## Optional Modes
 * [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
-* [demo14](example/demo14.f90) Case-insensitive long keys
+* [demo14](example/demo14.f90) Optional mode for case-insensitive long keys
 * [demo12](example/demo12.f90) Enabling response files
-* [demo13](example/demo13.f90) Equivalencing dash to underscore in keynames
+* [demo13](example/demo13.f90) Mode for equivalencing dash to underscore in keynames
 
 ## Niche examples
 * [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f)
-* [demo4](example/demo4.f90)   _COMPLEX_ type values
-* [demo7](example/demo7.f90)   Controlling array delimiter characters
+* [demo4](example/demo4.f90)   COMPLEX_ type values
+* [demo7](example/demo7.f90)   Controlling delimiter characters for values that are arrays
 * [demo6](example/demo6.f90)   How to create a command with subcommands
 * [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
 
