@@ -42,7 +42,7 @@
        ! variables are fixed-length or pre-allocated.
        !
        ! After SET_ARGS(3f) has parsed the command line
-       ! GET_ARGS(3f) retrieves the value of keywords accept for
+       ! GET_ARGS(3f) retrieves the value of keywords except for
        ! two special cases. For fixed-length CHARACTER variables
        ! see GET_ARGS_FIXED_LENGTH(3f). For fixed-size arrays see
        ! GET_ARGS_FIXED_SIZE(3f).

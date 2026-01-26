@@ -13,10 +13,14 @@
    program, which is generally just a few lines:
 ```fortran
    program compartmentalized
-   use M_CLI2, only : set_args, s=>sget, r=>rget, i=>iget, l=>lget 
+   use M_CLI2, only : set_args, sget, rget, iget, lget 
    implicit none
      call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
-     call main( x=r('x'), y=r('y'), title=s('title'), i=i('i'), l=l('l'), lbig=l('L'))
+     call main(&
+     & x=rget('x'), y=rget('y'), & ! get some float values
+     & title=sget('title'),      & ! get a string
+     & i=iget('i'),              & ! get a whole number
+     l=lget('l'), lbig=lget('L'))  ! get some boolean options
    contains 
    subroutine main(x,y,title,i,l,lbig)
    ! do something with the values, all the parsing is done
@@ -31,85 +35,28 @@
    The SET_ARGS(3) call defines the command options and default values
    and parses the command line.
 
-   The conversion routines have been aliased for the purpose of making
-   the call to MAIN(3) short, but are all that is required to assign
-   values from the command line parsing to Fortran variables.
-
-   The syntax in SET_ARGS(3) is similar to invoking the command from
-   the command line with every option specified except --title:T means
-   to give it the long name "title" and the short name "T" and that to
-   define a boolean you give it the unquoted value of F.
+   The "get" routines are all that is required to assign values from
+   the command line values by keyword to Fortran variables.
    
 ## Example Program
-This short program defines a command that can be called using
-conventional Unix-style syntax for short and long parameters:
 
-```bash
-   # arrays can be allowed like for "-p":
-   ./show -x 10 -y -20 -p 10,20,30 --title "plot of stuff" -L
-   ./show -lL # in strict mode booleans may be concatenated
-   ./show  --title="my new title" # --name=value or --name value is OK
-   ./show  -T "my new title" # a short name for "title"
-```
-```fortran
-   program show
-   use M_CLI2, only : set_args, get_args, set_mode
-   use M_CLI2, only : sget, rget, iget, lget 
-   use M_CLI2, only : sgets, rgets, igets, lgets 
-   implicit none
-   real                          :: x,y,z
-   logical                       :: l, lbig
-   integer,allocatable           :: p(:)
-   character(len=:),allocatable  :: title
-   namelist /args/x,y,z,l,lbig,p,title ! just for printing
-      call set_mode('strict')
-      !
-      ! Define command and default values and parse supplied command line options
-      call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title:T "my title" -l F -L F')
-      ! use convenience functions for scalar values or allocatable arrays. 
-      ! The functions are particularly useful in expressions and as arguments on
-      ! procedure calls:
-      x=rget('x')         ! float 
-      y=rget('y') 
-      z=rget('z') 
-      title=sget('title') ! string 
-      p=igets('p')        ! integer array
-      l=lget('l')         ! logical
-      lbig=lget('L')
-      ! All ready to go, print it as a namelist so everything is labeled
-      write(*,args)
-      !
-      ! Alternatively: use get_args directly instead of via the convenience routines:
-      !
-      ! multiple scalar non-allocatable values can be done in one call if desired
-      call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
-      !
-      ! allocatable arrays and allocatable string lengths need called by themselves
-      call get_args('title',title)
-      call get_args('p',p)
-      !
-      ! All ready to go, print it as a namelist so everything is labeled
-      write(*,args)
-   end program show
-```
-running with no options shows the defaults
-```text
-&ARGS
- X=  1.00000000    ,
- Y=  2.00000000    ,
- Z=  3.50000000    ,
- L=F,
- LBIG=F,
- P=11         ,-22        ,33         ,
- TITLE="my title",
- /
-```
+Additionally, the "gets" functions can return arrays of values, you can
+query whether a keyword has been specified or not, and you can add text
+blocks to display when --help or --version is supplied.
+
+A few nodes are also available. For example, but default boolean short
+names may not be concatenated, but in "strict" mode the can be (but then
+long keywords must always start with two dashes instead of one or two
+being allowed).
+
+All the features are demonstrated via example programs and man-page
+format descriptions of each procedure.
+
 An arbitrary number of strings such as filenames may be passed in on
-the end of commands; you can query whether an option was supplied; and
-get_args(3f)-related routines can be used for refining options such as
-requiring lists of a specified size.
+the end of commands; and get_args(3)-related routines can be used for
+refining options such as requiring lists of a specified size.
 
-These parameters are defined automatically
+Note that these parameters are defined automatically
 ```bash
     --help
     --usage
@@ -118,6 +65,73 @@ These parameters are defined automatically
 ```
 You must supply text for the optional "--help" and "--version" keywords, as
 described under SET_ARGS(3f).
+
+## More specifically ...
+
+  The syntax used in SET_ARGS(3) is similar to invoking the command from
+  the command line with every option specified using a few simple rules.
+
+  Each keyword must have a default value specified.
+   + separate keywords from values with a space
+   + double-quote string values
+   + use a value of F unquoted to designate a keyword as boolean
+   - to have both a long and short keyword name designate the long
+     name followed immediately by ":LETTER" where LETTER is the short
+     keyword name.
+   - separate lists of values with commas
+```bash
+    call set_args('-a 10 -b 1,2,3 --title:T "my title" -t F')
+```
+  That single line defines all the command keywords and their default values
+  and parses the command line.
+
+  All that remains is to get argument values. To get the values
+* you add calls to the get_args(3f) subroutine or one of its shortcut
+  function names.
+
+  These alternative shortcut names are convenience procedures
+  (rget(3f),sget(3f),iget(3f) ...) that allow you to use a simple
+  function-based interface.
+
+  Less frequently used are special routines for when you want to use fixed
+  length character variables. CHARACTER variables or fixed-size arrays
+  instead of the allocatable variables are best used with get_args(3f)).
+
+  Now when you call the program all the values in the prototype should
+  be updated using values from the command line and queried and ready
+  to use in your program.
+
+![demos](docs/images/demo.gif)
+## Demo Programs
+These demo programs provide templates for the most common usage:
+
+* [demo3](example/demo3.f90)   Example of **basic** use
+* [demo1](example/demo1.f90)   Using the convenience functions
+* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME.
+* [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
+* [demo17](example/demo17.f90) Using unnamed options as filenames or strings
+* [demo16](example/demo16.f90) Using unnamed values as numbers
+
+## Optional Modes
+* [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
+* [demo14](example/demo14.f90) Case-insensitive long keys
+* [demo12](example/demo12.f90) Enabling response files
+* [demo13](example/demo13.f90) Equivalencing dash to underscore in keynames
+
+## Niche examples
+* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f)
+* [demo4](example/demo4.f90)   _COMPLEX_ type values
+* [demo7](example/demo7.f90)   Controlling array delimiter characters
+* [demo6](example/demo6.f90)   How to create a command with subcommands
+* [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
+
+## Response files
+[Response files](response.md) are supported as described in the documentation for
+[set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html).
+They are a system-independent way to create short abbreviations for long
+complex commands. This option is generally not needed by programs with
+just a few options, but can be particularly useful for programs with
+dozens of options where various values are frequently reused.
 
 ![docs](docs/images/docs.gif)
 ## Documentation
@@ -270,55 +284,6 @@ mv fpm-m_cli2 $HOME/.local/bin/
         M_CLI2_dep = subproject('M_CLI2').get_variable('M_CLI2_dep')
 ```
 
-## Functional Specification
-**This is how the interface works --**
-
-* Pass in a string to set_args(3f) that looks almost like the command
-  you would use to execute the program except with all keywords and
-  default values specified.
-
-* you add calls to the get_args(3f) procedure or one of its variants.
-  The alternative convenience procedures (rget(3f),sget(3f),iget(3f)
-  ...) allow you to use a simple function-based interface model. There
-  are special routines for when you want to use fixed length.  CHARACTER
-  variables or fixed-size arrays instead of the allocatable variables
-  best used with get_args(3f)).
-
-  Now when you call the program all the values in the prototype should
-  be updated using values from the command line and queried and ready
-  to use in your program.
-
-![demos](docs/images/demo.gif)
-## Demo Programs
-These demo programs provide templates for the most common usage:
-
-* [demo3](example/demo3.f90)   Example of **basic** use
-* [demo1](example/demo1.f90)   Using the convenience functions
-* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME.
-* [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
-* [demo17](example/demo17.f90) Using unnamed options as filenames or strings
-* [demo16](example/demo16.f90) Using unnamed values as numbers
-
-## Optional Modes
-* [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
-* [demo14](example/demo14.f90) Case-insensitive long keys
-* [demo12](example/demo12.f90) Enabling response files
-* [demo13](example/demo13.f90) Equivalencing dash to underscore in keynames
-
-## Niche examples
-* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f)
-* [demo4](example/demo4.f90)   _COMPLEX_ type values
-* [demo7](example/demo7.f90)   Controlling array delimiter characters
-* [demo6](example/demo6.f90)   How to create a command with subcommands
-* [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
-
-## Response files
-[Response files](response.md) are supported as described in the documentation for
-[set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html).
-They are a system-independent way to create short abbreviations for long
-complex commands. This option is generally not needed by programs with
-just a few options, but can be particularly useful for programs with
-dozens of options where various values are frequently reused.
 
 ## Commit Tests ##
 
