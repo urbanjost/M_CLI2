@@ -21,8 +21,6 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/include)
 # Define the library
 add_library(M_CLI2 STATIC
     M_CLI2.F90
-    M_CLI2__oop.f90
-    M_CLI2__duplicate.f90
 )
 
 # Set output directory for the library to build/lib
@@ -33,6 +31,20 @@ set_target_properties(M_CLI2 PROPERTIES
 # Find all Fortran files in test/ and example/ directories (relative to project root)
 file(GLOB TEST_SOURCES "${CMAKE_SOURCE_DIR}/../test/*.[fF]90")
 file(GLOB EXAMPLE_SOURCES "${CMAKE_SOURCE_DIR}/../example/*.[fF]90")
+
+# Find all Fortran files in test/ and example/ directories (relative to project root)
+#file(GLOB TEST_SOURCES "${CMAKE_SOURCE_DIR}/../test/*.f90")
+file(GLOB TEST_SOURCES 
+"${CMAKE_SOURCE_DIR}/../test/fid.f90"
+"${CMAKE_SOURCE_DIR}/../test/test_ignorecase.f90"
+"${CMAKE_SOURCE_DIR}/../test/test_lastonly.f90"
+"${CMAKE_SOURCE_DIR}/../test/test_strict.f90"
+"${CMAKE_SOURCE_DIR}/../test/test_suite_M_CLI2.f90"
+"${CMAKE_SOURCE_DIR}/../test/test_syntax.f90"
+"${CMAKE_SOURCE_DIR}/../test/fid.f90"
+)
+
+file(GLOB EXAMPLE_SOURCES "${CMAKE_SOURCE_DIR}/../example/*.f90")
 
 # Build test programs
 foreach(test_source ${TEST_SOURCES})
@@ -66,8 +78,8 @@ endforeach()
 # 
 # This variable defaults as follows:
 # 
-#     If the CMAKE_INSTALL_PREFIX environment variable is set,
-#     its value is used as default for this variable.
+#     Added in version 3.29: If the CMAKE_INSTALL_PREFIX environment
+#     variable is set, its value is used as default for this variable.
 # 
 #     c:/Program Files/${PROJECT_NAME} on Windows.
 # 

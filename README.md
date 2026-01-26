@@ -7,13 +7,13 @@
    M_CLI2(3f) is a Fortran module that will crack the command line when
    given a prototype string that looks very much like an invocation of
    the program. Calls are then made for each parameter name to set the
-   variables appropriately in the program. 
+   variables appropriately in the program.
 
    One approach is to isolate all the parsing to the beginning of the
    program, which is generally just a few lines:
 ```fortran
    program compartmentalized
-   use M_CLI2, only : set_args, sget, rget, iget, lget 
+   use M_CLI2, only : set_args, sget, rget, iget, lget
    implicit none
      call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
      call main(&
@@ -21,7 +21,7 @@
      & title=sget('title'),      & ! get a string
      & i=iget('i'),              & ! get a whole number
      l=lget('l'), lbig=lget('L'))  ! get some boolean options
-   contains 
+   contains
    subroutine main(x,y,title,i,l,lbig)
    ! do something with the values, all the parsing is done
    real                          :: x,y     ;namelist /args/x,y
@@ -31,14 +31,15 @@
    write(*,nml=args)
    end subroutine main
    end program compartmentalized
+
+## General Overview
+
 ```
    The SET_ARGS(3) call defines the command options and default values
    and parses the command line.
 
    The "get" routines are all that is required to assign values from
    the command line values by keyword to Fortran variables.
-   
-## Example Program
 
 Additionally, the "gets" functions can return arrays of values, you can
 query whether a keyword has been specified or not, and you can add text
@@ -137,7 +138,7 @@ dozens of options where various values are frequently reused.
 ## Documentation
 
 ![manpages](docs/images/manpages.gif)
-### man-pages 
+### man-pages
 - HTML [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) index of individual procedures
 - HTML [book-form ](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) of pages consolidated using JavaScript
 + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip) for installing wherever the man(1) command is available
@@ -262,6 +263,66 @@ mv fpm-m_cli2 $HOME/.local/bin/
 ```toml
         [dependencies]
         M_CLI2        = { git = "https://github.com/urbanjost/M_CLI2.git" }
+```
+---
+![cmake](docs/images/cmake_logo-1.png)
+---
+## Download and Build using cmake
+
+To download the github repository and build and install with cmake
+(you may wish to change the install path in src/CMakeLists.txt first) :
+```bash
+      git clone https://github.com/urbanjost/M_CLI2.git
+      cd M_CLI2
+
+      # Create a Build Directory:
+      mkdir -p build
+
+      cd build
+      cmake -S ../src -B .
+
+      # Configure the Build, specifying your preferred compiler (ifort, flang, etc.):
+      cmake . -DCMAKE_Fortran_COMPILER=gfortran
+
+      # Build the Project:
+      cmake --build .
+
+      #This creates:
+      #
+      #    build/lib/libM_CLI2.a (the static library).
+      #    build/include/*.mod (module files).
+      #    build/test/* (test executables).
+      #    build/example/* (example executables).
+
+      # OPTIONAL SECTION:
+
+      # Verify build
+      ls build/lib/libM_CLI2.a
+      ls build/include/*.mod
+      ls build/test/*
+      ls build/example/*
+
+      #Optionally Run Tests and Examples:
+      for name in ./test/* ./example/*
+      do
+         $name
+      done
+
+      #Install (Optional):
+      # This installs the library and module files to the system
+      # (e.g., /usr/local/lib/ and /usr/local/include/).
+      cmake --install .
+
+      # if you have insufficient permissions sudo(1) may be required
+      # to perform the install
+      #sudo cmake --install .
+
+      # Verify installation
+      ls /usr/local/lib/libM_CLI2.a
+      ls /usr/local/include/*.mod
+
+      # Cleaning Up: To clean artifacts, remove the build/ directory:
+      rm -rf build
 ```
 
 ## Supports Meson
