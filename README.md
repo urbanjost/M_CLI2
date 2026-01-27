@@ -4,18 +4,45 @@
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
 
 ## Description
-   M_CLI2(3f) is a Fortran module that will crack the command line when
-   given a prototype string that looks very much like an invocation of
-   the program. Calls are then made for each parameter name to set the
-   variables appropriately in the program.
+**M_CLI2**(3) is a Fortran module that will crack the command line when
+given a prototype string that looks very much like an invocation of
+the program. Calls are then made for each parameter name to set 
+variables appropriately in the program.
 
-   One common use is to isolate all the parsing to the beginning of the
-   program, which is generally just a few lines:
+One common style of use is to isolate all the parsing to the beginning
+of the program, which is generally just a few lines:
 ```fortran
    program compartmentalized
-   use M_CLI2, only : set_args, sget, rget, iget, lget
+   use M_CLI2, only : set_args, sget, rget, dget, iget, lget
    implicit none
-     call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
+     ! define command and default values and parse command line
+     call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F', &
+
+     ! optional block of text to display when the --help option appears
+     help_text=[character(len=80):: &
+     'NAME', &
+     '  compartmentalized - example program for parsing command line', &
+     'DESCRIPTION', &
+     '   A program to illustrate using M_CLI2 to parse the command line', &
+     '   including creating help text using a block of text.', &
+     'OPTIONS', &
+     ' -x,-y:      some real values', &
+     ' -i:         a whole number', &
+     ' --title,T:  title line', &
+     ' -l,-L       some Boolean options', &
+     ''], &
+
+     ! optional block of text to display when the --version option appears
+     version_text=[character(len=80):: &
+     'PROGRAM:     compartmentalized               ', &
+     'DESCRIPTION: Illustrate command line parsing ', &
+     'VERSION:     1.0, 2026-01-26                 ', &
+     'AUTHOR:      Leonardo DaVinci                ', &
+     'LICENSE:     Public Domain', &
+     ''])
+
+     ! get all the argument values and assign them to variables of various
+     ! types 
      call main(&
      & x=rget('x'), y=rget('y'), & ! get some float values
      & title=sget('title'),      & ! get a string
@@ -36,24 +63,36 @@
 ```
 ## General Overview
 
-The SET_ARGS(3) call defines the command options and default values and
-parses the command line.
+The **SET_ARGS(3)** call defines the command options and default values
+and parses the command line. The common Unix command line style is
+supported where "--keyword=value" or "--keyword value" for long names
+(multiple character) and "-L" for short names (where L is a single
+letter).
 
-The "GET" routines are all that is required to assign scalar values from
+The "\*GET" routines are all that is required to assign scalar values from
 the command line values by keyword to Fortran variables.
 
-Additionally, the "GETS" functions can return arrays of values.
+Additionally, the matching "\*GETS" functions return arrays of values.
 
 You can query whether a keyword has been specified or not using
-SPECIFIED(3).
+**SPECIFIED**(3). 
 
-Text blocks to display when --help or --version is supplied on the
-command line can optionally be added to the SET_ARGS(3) call.
+**M_CLI2**(3) intentionally does not include validating values beyond
+type because Fortran is already very good at that. The example program
+in the document for
+[**SPECIFIED**(3)](example/demos/demo_specified.f90)
+shows how to determine if required parameters are present, to ensure
+only one of a number of mutually exclusive options has been chosen,
+that a value matches a specified range or is a member of a given set, ...
 
-A few additional modes are also available. For example, by default boolean
-short names may not be concatenated, but in "strict" mode they can be
-(but then long keywords must always start with two dashes instead of
-one or two being allowed).
+As illustrated, text blocks to display when --help or --version
+is supplied on the command line can optionally be added to the
+**SET_ARGS**(3) call.
+
+A few additional modes are also available. For example, by default
+Boolean short names may not be concatenated, but in "strict" mode they
+can be (but in "strict" mode then long keywords must always start with
+two dashes instead of one or two being allowed).
 
 There are also advanced features such as support for "response files"
 which let you create platform-independent aliases for long commands,
@@ -63,7 +102,7 @@ All the features are demonstrated via example programs and man-page
 format descriptions of each procedure.
 
 An arbitrary number of strings such as filenames may be passed in on
-the end of commands; and get_args(3)-related routines can be used for
+the end of commands; and **get_args**(3)-related routines can be used for
 refining options such as requiring lists of a specified size.
 
 Note that these parameters are defined automatically
@@ -73,31 +112,31 @@ Note that these parameters are defined automatically
     --verbose
     --version
 ```
-You must supply text for the optional "--help" and "--version" keywords, as
-described under SET_ARGS(3f).
+Where you supply text for the optional "--help" and "--version" keywords, as
+described under **SET_ARGS**(3).
 
 ## More specifically ...
 
-## Syntax rules for the prototype command in SET_ARGS(3):
+## Syntax rules for the prototype command in **SET_ARGS**(3):
 
-  The syntax used in SET_ARGS(3) is similar to invoking the command from
-  the command line with every option specified using a few simple rules.
+  The syntax used in **SET_ARGS**(3) is similar to invoking the command
+  from the command using just a few simple rules:
 
-  Each keyword must have a default value specified.
-   + separate keywords from values with a space
+   + Each keyword must have a default value specified separated from
+     the keyword by a space.
    + double-quote string values
-   + use a value of F unquoted to designate a keyword as boolean
-   - to have both a long and short keyword name designate the long
+   + use a value of F unquoted to designate a keyword as Boolean
+   + to have both a long and short keyword name designate the long
      name followed immediately by ":LETTER" where LETTER is the short
      keyword name.
-   - separate lists of values with commas
-   - if the value can start with a dash and you want to allow the
+   + separate lists of values with commas
+   + if the value can start with a dash and you want to allow the
      syntax "--keyword value" add a : to the end of the keyword, which
      means "next argument is a value even if it starts with " -".
 
-### Example call to SET_ARGS(3):
+### Example call to **SET_ARGS**(3):
 ```bash
-    call set_args('-a 10 -b 1,2,3 --title:T "my title" -t F')
+    call set_args('-a -10 -b 1,2,3 --title:T "my title" -t F')
 ```
   That single line defines all the command keywords and their default values
   and parses the command line.
@@ -105,23 +144,23 @@ described under SET_ARGS(3f).
 ## Getting keyword values
 
   All that remains is to get argument values. To get the values
-* you add calls to the get_args(3f) subroutine or one of its shortcut
+* you add calls to the **get_args**(3) subroutine or one of its shortcut
   function names.
 
   These alternative shortcut names are convenience procedures
-  (rget(3f),sget(3f),iget(3f) ...) that allow you to use a simple
+  (**rget**(3),**sget**(3),**iget**(3) ...) that allow you to use a simple
   function-based interface.
 
   Less frequently used are special routines for when you want to use
-  fixed length CHARACTER variables or fixed-size arrays instead of
+  fixed length **CHARACTER** variables or fixed-size arrays instead of
   the allocatable variables. These require routines that start with
   "GET_ARGS".
 
 ## That is usually it
 
-  Now when you call the program all the values in the prototype should
-  be updated using values from the command line and queried and ready
-  to use in your program.
+  Now when you call the program all the values in the program should
+  be updated using values from the prototype and command line and be
+  ready to use in your program.
 
 ![demos](docs/images/demo.gif)
 ## Demo Programs
@@ -141,8 +180,8 @@ These demo programs provide templates for the most common usage:
 * [demo13](example/demo13.f90) Mode for equivalencing dash to underscore in keynames
 
 ## Niche examples
-* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f)
-* [demo4](example/demo4.f90)   COMPLEX_ type values
+* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to **get_args**(3)
+* [demo4](example/demo4.f90)   **COMPLEX**-type values
 * [demo7](example/demo7.f90)   Controlling delimiter characters for values that are arrays
 * [demo6](example/demo6.f90)   How to create a command with subcommands
 * [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
@@ -204,7 +243,7 @@ mv fpm-m_cli2 $HOME/.local/bin/
 
 ![gmake](docs/images/gnu.gif)
 ## Download and Build with Make(1)
-   Compile the M_CLI2 module and build all the example programs.
+   Compile the **M_CLI2** module and build all the example programs.
 ```bash
    git clone https://github.com/urbanjost/M_CLI2.git
    cd M_CLI2/src
@@ -235,7 +274,7 @@ mv fpm-m_cli2 $HOME/.local/bin/
    There are different methods for adding the directory to your default
    load path, but frequently you can append the directory you have
    placed the files in into the colon-separated list of directories
-   in the $LD_LIBRARY_PATH or $LIBRARY_PATH environment variable, and
+   in the **$LD_LIBRARY_PATH** or **$LIBRARY_PATH** environment variable, and
    then the -L option will not be required (or it's equivalent in your
    programming environment).
 ```bash

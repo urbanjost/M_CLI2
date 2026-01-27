@@ -56,7 +56,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-set_args(3f) - [ARGUMENTS:M_CLI2] command line argument parsing
+set_args(3) - [ARGUMENTS:M_CLI2] command line argument parsing
 (LICENSE:PD)
 <P>
 </BLOCKQUOTE>
@@ -96,11 +96,11 @@ subroutine set_args(prototype,help_text,version_text,ierr,errmsg)
 </A>
 <BLOCKQUOTE>
 <P>
-SET_ARGS(3f) requires a unix-like command prototype which defines
+SET_ARGS(3) requires a unix-like command prototype which defines
 the command-line options and their default values. When the program
 is executed this and the command-line options are applied and the
 resulting values are placed in an internal table for retrieval via
-GET_ARGS(3f).
+GET_ARGS(3).
 <P>
 The built-in <B>--help</B> and <B>--version</B> options require optional help_text
 and version_text values to be provided to be particularly useful.
@@ -437,7 +437,7 @@ Sample program:
 <BLOCKQUOTE>
 <P>
 If you have no interest in using external files as abbreviations
-you can ignore this section. Otherwise, before calling set_args(3f)
+you can ignore this section. Otherwise, before calling set_args(3)
 add:
 <P>
 <PRE>
@@ -606,7 +606,7 @@ Now, back to the details on just what you can put in the files.
 The first word of a line is special and has the following meanings:
 <P>
 <PRE>
-   options|-  Command options following the rules of the SET_ARGS(3f)
+   options|-  Command options following the rules of the SET_ARGS(3)
               prototype. So
                o It is preferred to specify a value for all options.
                o double-quote strings.

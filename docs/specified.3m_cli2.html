@@ -56,7 +56,7 @@ a.existingWikiWord[title]{ //border: 1px dashed #BBB; }
 
 </A>
 <BLOCKQUOTE>
-specified(3f) - [ARGUMENTS:M_CLI2] return true if keyword was present
+specified(3) - [ARGUMENTS:M_CLI2] return true if keyword was present
 on command line
 (LICENSE:PD)
 <P>
@@ -92,16 +92,16 @@ elemental impure function specified(name)
 </A>
 <BLOCKQUOTE>
 <P>
-specified(3f) returns .true. if the specified keyword was present on
+specified(3) returns .true. if the specified keyword was present on
 the command line.
 <P>
-M_CLI2 intentionally does not have validators except for SPECIFIED(3f)
+M_CLI2 intentionally does not have validators except for SPECIFIED(3)
 and of course a check whether the input conforms to the type when
-requesting a value (with get_args(3f) or the convenience functions
-like inum(3f)).
+requesting a value (with get_args(3) or the convenience functions
+like inum(3)).
 <P>
 Fortran already has powerful validation capabilities. Logical
-expressions ANY(3f) and ALL(3f) are standard Fortran features which
+expressions ANY(3) and ALL(3) are standard Fortran features which
 easily allow performing the common validations for command line
 arguments without having to learn any additional syntax or methods.
 </BLOCKQUOTE>
@@ -177,7 +177,7 @@ Sample program:
     write(*,*)specified([&#146;floats&#146;,&#146;ints  &#146;])
 <P>
     ! If you want to know if groups of parameters were specified use
-    ! ANY(3f) and ALL(3f)
+    ! ANY(3) and ALL(3)
     write(*,*)&#146;ANY:&#146;,any(specified([&#146;floats&#146;,&#146;ints  &#146;]))
     write(*,*)&#146;ALL:&#146;,all(specified([&#146;floats&#146;,&#146;ints  &#146;]))
 <P>
