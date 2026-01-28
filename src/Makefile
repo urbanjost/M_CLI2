@@ -59,7 +59,7 @@ ifort: all
 
 ifx: F90=ifx
 ifx: FCFLAGS := -warn all -traceback -fpic
-ifx: COMPILER=ifx
+ifx_install: COMPILER=ifx
 ifx: all
 	@echo built with $(F90)
 
