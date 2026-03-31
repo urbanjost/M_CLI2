@@ -16,7 +16,7 @@ character(len=*),parameter :: all='(*(g0))'
 
    print *,'demo14: ignorecase mode'
 
-   call set_mode('ignorecase')
+   !call set_mode('ignorecase')
    call set_args(' --longName:N F ')
    print all,'--longName or -N ... ',lget('longName')
 end program demo14

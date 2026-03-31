@@ -4,27 +4,52 @@
 ### M_CLI2 - parse Unix-like command line arguments from Fortran
 
 ## Description
-   M_CLI2(3f) is a Fortran module that will crack the command line when
-   given a prototype string that looks very much like an invocation of
-   the program. Calls are then made for each parameter name to set the
-   variables appropriately in the program. 
+**M_CLI2**(3) is a Fortran module that will crack the command line when
+given a prototype string that looks very much like an invocation of
+the program. Calls are then made for each parameter name to set 
+variables appropriately in the program.
 
-   One approach is to isolate all the parsing to the beginning of the
-   program, which is generally just a few lines:
+One common style of use is to isolate all the parsing to the beginning
+of the program, which is generally just a few lines:
 ```fortran
    program compartmentalized
-   use M_CLI2, only : set_args, get_args, s=>sget, r=>rget, i=>iget, l=>lget 
+   use M_CLI2, only : set_args, sget, rget, dget, iget, lget
    implicit none
-   !
-   ! define command options and default values and parse command line
-     call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F')
-   ! just like calling the command except --title:T means to give it the long
-   ! name "title" and the short name "T" and that to define a boolean you give
-   ! it the unquoted value of F.
-   !
-   ! convert arguments to the desired types and call main program
-     call main( x=r('x'), y=r('y'), title=s('title'), i=i('i'), l=l('l'), lbig=l('L'))
-   contains 
+     ! define command and default values and parse command line
+     call set_args('-x 1 -y 2.0 -i 11 --title:T "my title" -l F -L F', &
+
+     ! optional block of text to display when the --help option appears
+     help_text=[character(len=80):: &
+     'NAME', &
+     '  compartmentalized - example program for parsing command line', &
+     'DESCRIPTION', &
+     '   A program to illustrate using M_CLI2 to parse the command line', &
+     '   including creating help text using a block of text.', &
+     'OPTIONS', &
+     ' -x,-y:      some real values', &
+     ' -i:         a whole number', &
+     ' --title,T:  title line', &
+     ' -l,-L       some Boolean options', &
+     ''], &
+
+     ! optional block of text to display when the --version option appears
+     version_text=[character(len=80):: &
+     'PROGRAM:     compartmentalized               ', &
+     'DESCRIPTION: Illustrate command line parsing ', &
+     'VERSION:     1.0, 2026-01-26                 ', &
+     'AUTHOR:      Leonardo DaVinci                ', &
+     'LICENSE:     Public Domain', &
+     ''])
+
+     ! get all the argument values and assign them to variables of various
+     ! types 
+     call main(&
+     & x=rget('x'), y=rget('y'), & ! get some float values
+     & title=sget('title'),      & ! get a string
+     & i=iget('i'),              & ! get a whole number
+     l=lget('l'), lbig=lget('L'))  ! get some boolean options
+   contains
+
    subroutine main(x,y,title,i,l,lbig)
    ! do something with the values, all the parsing is done
    real                          :: x,y     ;namelist /args/x,y
@@ -33,92 +58,147 @@
    character(len=:),allocatable  :: title   ;namelist /args/title
       write(*,nml=args)
    end subroutine main
+
    end program compartmentalized
 ```
-## Example Program
-This short program defines a command that can be called using
-conventional Unix-style syntax for short and long parameters:
+## General Overview
 
-```bash
-   # arrays can be allowed like for "-p":
-   ./show -x 10 -y -20 -p 10,20,30 --title "plot of stuff" -L
-   ./show -lL # in strict mode booleans may be concatenated
-   ./show  --title="my new title" # --name=value or --name value is OK
-   ./show  -T "my new title" # a short name for "title"
-```
-```fortran
-   program show
-   use M_CLI2, only : set_args, get_args, set_mode
-   use M_CLI2, only : sget, rget, iget, lget 
-   use M_CLI2, only : sgets, rgets, igets, lgets 
-   implicit none
-   real                          :: x,y,z
-   logical                       :: l, lbig
-   integer,allocatable           :: p(:)
-   character(len=:),allocatable  :: title
-   namelist /args/x,y,z,l,lbig,p,title ! just for printing
-      call set_mode('strict')
-      !
-      ! Define command and default values and parse supplied command line options
-      call set_args('-x 1 -y 2.0 -z 3.5e0 -p 11,-22,33 --title:T "my title" -l F -L F')
-      ! use convenience functions for scalar values or allocatable arrays. 
-      ! The functions are particularly useful in expressions and as arguments on
-      ! procedure calls:
-      x=rget('x')         ! float 
-      y=rget('y') 
-      z=rget('z') 
-      title=sget('title') ! string 
-      p=igets('p')        ! integer array
-      l=lget('l')         ! logical
-      lbig=lget('L')
-      ! All ready to go, print it as a namelist so everything is labeled
-      write(*,args)
-      !
-      ! Alternatively: use get_args directly instead of via the convenience routines:
-      !
-      ! multiple scalar non-allocatable values can be done in one call if desired
-      call get_args('x',x,'y',y,'z',z,'l',l,'L',lbig)
-      !
-      ! allocatable arrays and allocatable string lengths need called by themselves
-      call get_args('title',title)
-      call get_args('p',p)
-      !
-      ! All ready to go, print it as a namelist so everything is labeled
-      write(*,args)
-   end program show
-```
-running with no options shows the defaults
-```text
-&ARGS
- X=  1.00000000    ,
- Y=  2.00000000    ,
- Z=  3.50000000    ,
- L=F,
- LBIG=F,
- P=11         ,-22        ,33         ,
- TITLE="my title",
- /
-```
+The **SET_ARGS(3)** call defines the command options and default values
+and parses the command line. The common Unix command line style is
+supported where "--keyword=value" or "--keyword value" for long names
+(multiple character) and "-L" for short names (where L is a single
+letter).
+
+The "\*GET" routines are all that is required to assign scalar values from
+the command line values by keyword to Fortran variables.
+
+Additionally, the matching "\*GETS" functions return arrays of values.
+
+You can query whether a keyword has been specified or not using
+**SPECIFIED**(3). 
+
+**M_CLI2**(3) intentionally does not include validating values beyond
+type because Fortran is already very good at that. The example program
+in the document for
+[**SPECIFIED**(3)](example/demos/demo_specified.f90)
+shows how to determine if required parameters are present, to ensure
+only one of a number of mutually exclusive options has been chosen,
+that a value matches a specified range or is a member of a given set, ...
+
+As illustrated, text blocks to display when --help or --version
+is supplied on the command line can optionally be added to the
+**SET_ARGS**(3) call.
+
+A few additional modes are also available. For example, by default
+Boolean short names may not be concatenated, but in "strict" mode they
+can be (but in "strict" mode then long keywords must always start with
+two dashes instead of one or two being allowed).
+
+There are also advanced features such as support for "response files"
+which let you create platform-independent aliases for long commands,
+support for subcommands, and a few other less-used capabilities.
+
+All the features are demonstrated via example programs and man-page
+format descriptions of each procedure.
+
 An arbitrary number of strings such as filenames may be passed in on
-the end of commands; you can query whether an option was supplied; and
-get_args(3f)-related routines can be used for refining options such as
-requiring lists of a specified size.
+the end of commands; and **get_args**(3)-related routines can be used for
+refining options such as requiring lists of a specified size.
 
-These parameters are defined automatically
+Note that these parameters are defined automatically
 ```bash
     --help
     --usage
     --verbose
     --version
 ```
-You must supply text for the optional "--help" and "--version" keywords, as
-described under SET_ARGS(3f).
+Where you supply text for the optional "--help" and "--version" keywords, as
+described under **SET_ARGS**(3).
+
+## More specifically ...
+
+## Syntax rules for the prototype command in **SET_ARGS**(3):
+
+  The syntax used in **SET_ARGS**(3) is similar to invoking the command
+  from the command using just a few simple rules:
+
+   + Each keyword must have a default value specified separated from
+     the keyword by a space.
+   + double-quote string values
+   + use a value of F unquoted to designate a keyword as Boolean
+   + to have both a long and short keyword name designate the long
+     name followed immediately by ":LETTER" where LETTER is the short
+     keyword name.
+   + separate lists of values with commas
+   + if the value can start with a dash and you want to allow the
+     syntax "--keyword value" add a : to the end of the keyword, which
+     means "next argument is a value even if it starts with " -".
+
+### Example call to **SET_ARGS**(3):
+```bash
+    call set_args('-a -10 -b 1,2,3 --title:T "my title" -t F')
+```
+  That single line defines all the command keywords and their default values
+  and parses the command line.
+
+## Getting keyword values
+
+  All that remains is to get argument values. To get the values
+* you add calls to the **get_args**(3) subroutine or one of its shortcut
+  function names.
+
+  These alternative shortcut names are convenience procedures
+  (**rget**(3),**sget**(3),**iget**(3) ...) that allow you to use a simple
+  function-based interface.
+
+  Less frequently used are special routines for when you want to use
+  fixed length **CHARACTER** variables or fixed-size arrays instead of
+  the allocatable variables. These require routines that start with
+  "GET_ARGS".
+
+## That is usually it
+
+  Now when you call the program all the values in the program should
+  be updated using values from the prototype and command line and be
+  ready to use in your program.
+
+![demos](docs/images/demo.gif)
+## Demo Programs
+These demo programs provide templates for the most common usage:
+
+* [demo3](example/demo3.f90)   Example of **basic** use
+* [demo1](example/demo1.f90)   Using the convenience functions
+* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME.
+* [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
+* [demo17](example/demo17.f90) Using unnamed options as filenames or strings
+* [demo16](example/demo16.f90) Using unnamed values as numbers
+
+## Optional Modes
+* [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
+* [demo14](example/demo14.f90) Optional mode for case-insensitive long keys
+* [demo12](example/demo12.f90) Enabling response files
+* [demo13](example/demo13.f90) Mode for equivalencing dash to underscore in keynames
+
+## Niche examples
+* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to **get_args**(3)
+* [demo4](example/demo4.f90)   **COMPLEX**-type values
+* [demo7](example/demo7.f90)   Controlling delimiter characters for values that are arrays
+* [demo6](example/demo6.f90)   How to create a command with subcommands
+* [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
+
+## Response files
+[Response files](response.md) are supported as described in the documentation for
+[set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html).
+They are a system-independent way to create short abbreviations for long
+complex commands. This option is generally not needed by programs with
+just a few options, but can be particularly useful for programs with
+dozens of options where various values are frequently reused.
 
 ![docs](docs/images/docs.gif)
 ## Documentation
 
 ![manpages](docs/images/manpages.gif)
-### man-pages 
+### man-pages
 - HTML [man-pages](https://urbanjost.github.io/M_CLI2/man3.html) index of individual procedures
 - HTML [book-form ](https://urbanjost.github.io/M_CLI2/BOOK_M_CLI2.html) of pages consolidated using JavaScript
 + [manpages.zip](https://urbanjost.github.io/M_CLI2/manpages.zip) for installing wherever the man(1) command is available
@@ -163,7 +243,7 @@ mv fpm-m_cli2 $HOME/.local/bin/
 
 ![gmake](docs/images/gnu.gif)
 ## Download and Build with Make(1)
-   Compile the M_CLI2 module and build all the example programs.
+   Compile the **M_CLI2** module and build all the example programs.
 ```bash
    git clone https://github.com/urbanjost/M_CLI2.git
    cd M_CLI2/src
@@ -194,7 +274,7 @@ mv fpm-m_cli2 $HOME/.local/bin/
    There are different methods for adding the directory to your default
    load path, but frequently you can append the directory you have
    placed the files in into the colon-separated list of directories
-   in the $LD_LIBRARY_PATH or $LIBRARY_PATH environment variable, and
+   in the **$LD_LIBRARY_PATH** or **$LIBRARY_PATH** environment variable, and
    then the -L option will not be required (or it's equivalent in your
    programming environment).
 ```bash
@@ -325,55 +405,6 @@ To download the github repository and build and install with cmake
         M_CLI2_dep = subproject('M_CLI2').get_variable('M_CLI2_dep')
 ```
 
-## Functional Specification
-**This is how the interface works --**
-
-* Pass in a string to set_args(3f) that looks almost like the command
-  you would use to execute the program except with all keywords and
-  default values specified.
-
-* you add calls to the get_args(3f) procedure or one of its variants.
-  The alternative convenience procedures (rget(3f),sget(3f),iget(3f)
-  ...) allow you to use a simple function-based interface model. There
-  are special routines for when you want to use fixed length.  CHARACTER
-  variables or fixed-size arrays instead of the allocatable variables
-  best used with get_args(3f)).
-
-  Now when you call the program all the values in the prototype should
-  be updated using values from the command line and queried and ready
-  to use in your program.
-
-![demos](docs/images/demo.gif)
-## Demo Programs
-These demo programs provide templates for the most common usage:
-
-* [demo3](example/demo3.f90)   Example of **basic** use
-* [demo1](example/demo1.f90)   Using the convenience functions
-* [demo9](example/demo9.f90)   Long and short names using --LONGNAME:SHORTNAME.
-* [demo2](example/demo2.f90)   Putting everything including **help** and **version** information into a contained procedure.
-* [demo17](example/demo17.f90) Using unnamed options as filenames or strings
-* [demo16](example/demo16.f90) Using unnamed values as numbers
-
-## Optional Modes
-* [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
-* [demo14](example/demo14.f90) Case-insensitive long keys
-* [demo12](example/demo12.f90) Enabling response files
-* [demo13](example/demo13.f90) Equivalencing dash to underscore in keynames
-
-## Niche examples
-* [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to get_args(3f)
-* [demo4](example/demo4.f90)   _COMPLEX_ type values
-* [demo7](example/demo7.f90)   Controlling array delimiter characters
-* [demo6](example/demo6.f90)   How to create a command with subcommands
-* [demo5](example/demo5.f90)   extended description of using _CHARACTER_ type values
-
-## Response files
-[Response files](response.md) are supported as described in the documentation for
-[set_args](https://urbanjost.github.io/M_CLI2/set_args.3m_cli2.html).
-They are a system-independent way to create short abbreviations for long
-complex commands. This option is generally not needed by programs with
-just a few options, but can be particularly useful for programs with
-dozens of options where various values are frequently reused.
 
 ## Commit Tests ##
 

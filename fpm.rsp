@@ -19,11 +19,7 @@ print RESPONSE: ubuntu-latest
 option test --target '*' --compiler ifx --profile debug
 option --flag "-DRSP"
 #------------------------------------------------------------------------------#
-
-
 # -g --show-stacktrace only supported if optionally built in
-
-
 #------------------------------------------------------------------------------#
 # LFortran: modern interactive LLVM-based Fortran compiler
 @test_ubuntu-latest_lfortran_debug
@@ -151,11 +147,32 @@ option --flag "-DRSP -D_WIN32"
 option test --target "*" --compiler nvfortran --profile release
 option --flag "-DRSP -D_WIN32"
 #------------------------------------------------------------------------------#
+>>>>>>> 6d585d9c20c3521273216c06e614e2ab635342f9
 ################################################################################
 @declare2
 > found it
 ################################################################################
 @debugg
+<<<<<<< HEAD
+option build  --target '*' 
+option  --compiler gfortran --profile debug 
+option  --flag '-fdump-fortran-global' 
+option  --link-flag '-fdump-fortran-global' 
+option  --verbose
+################################################################################
+@rung
+print  run all apps with gfortran
+# note --target is required in a response file
+option run  --target '*' --compiler gfortran --profile release
+################################################################################
+@testi
+print  run test apps with ifx
+option test  --target '*' --compiler ifx --profile release --verbose
+################################################################################
+@runi
+print  run all apps with ifx
+option run  --target '*' --compiler ifx --profile release
+=======
 option build --target '*'
 option --compiler gfortran --profile debug
 option --flag '-fdump-fortran-global'
@@ -174,6 +191,7 @@ option test --target '*' --compiler ifx --profile release --verbose
 @runi
 print run all apps with ifx
 option run --target '*' --compiler ifx --profile release
+>>>>>>> 6d585d9c20c3521273216c06e614e2ab635342f9
 ################################################################################
 @runn
 system banner RUNN
