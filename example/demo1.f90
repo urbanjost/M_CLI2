@@ -40,4 +40,4 @@ end program demo1
    !  o string values must be double-quoted
    !  o numeric lists must be comma-delimited. No spaces are allowed
    !  o long keynames must be all lowercase but may be followed by :LETTER where LETTER is a
-   !    single letter that may be of any case that will act as a short name for the same value.
+   !    single letter that may be of any case will act as a short name for the same value.

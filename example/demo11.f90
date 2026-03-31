@@ -50,7 +50,7 @@ endif
 ! and even user-defined types can be processed by reading the input
 ! as a string and using a NAMELIST(3f) group to convert it. Note that
 ! if input values are strings that have to be quoted (ie. more than one
-! word) or contain characters special to the shell that how you have to
+! word) or contain characters special to the shell that you have to
 ! quote the command line, which can get complicated.
 
 string='10,20,"green"'

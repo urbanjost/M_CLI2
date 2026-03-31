@@ -31,7 +31,7 @@
    logical                       :: l,lbig  ;namelist /args/l,lbig
    integer                       :: i       ;namelist /args/i
    character(len=:),allocatable  :: title   ;namelist /args/title
-   write(*,nml=args)
+      write(*,nml=args)
    end subroutine main
    end program compartmentalized
 ```
