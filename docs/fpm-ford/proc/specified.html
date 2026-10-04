@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="description" content="command line parsing">
+    <meta name="author" content="John S. Urban" >
+    <link rel="icon" href="../favicon.png">
+
+    <title>specified &ndash; M_CLI2</title>
+
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/pygments.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/local.css" rel="stylesheet">
+    <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="../js/jquery-2.1.3.min.js"></script>
+    <script src="../js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html">M_CLI2 </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="../lists/files.html">Source Files</a></li>
+            <li><a href="../lists/modules.html">Modules</a></li>
+            <li><a href="../lists/procedures.html">Procedures</a></li>
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+            <li><a href="../lists/programs.html">Programs</a></li>
+       
+            </ul>
+        
+            </li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
+<li class="visible-xs hidden-sm visible-lg"><a href="../lists/programs.html">Programs</a></li>
+          </ul>
+        <form action="../search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+  <div class="row">
+    <h1>specified
+      <small>Function</small>
+      
+    </h1>
+      <div class="row" id="info-bar">
+    <div class="col-lg-12">
+      <div class="well well-sm">
+        <ul class="list-inline" style="margin-bottom:0px;display:inline">
+
+          <li id="statements"><i class="fa fa-list-ol"></i>
+            <a data-toggle="tooltip"
+               data-placement="bottom" data-html="true"
+               title=" 2.9% of total for procedures.">11 statements</a>
+          </li>
+
+            <li id="source-file">
+              <i class="fa fa-code"></i>
+              <a href="../src/M_CLI2.F90"> Source File</a>
+            </li>
+        </ul>
+        <ol class="breadcrumb in-well text-right">
+              <li><a href='../sourcefile/m_cli2.f90.html'>M_CLI2.F90</a></li>
+              <li><a href='../module/m_cli2.html'>M_CLI2</a></li>
+          <li class="active">specified</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+    })
+  </script>
+
+  </div>
+  
+  <div class="row">
+    <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
+      <div id="sidebar">
+      <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/specified.html#src">specified</a>
+      </div>
+    </div>
+
+
+  </div>
+
+    </div>
+    
+    <div class="col-md-9" id='text'>
+    <h2>public impure elemental function specified(key)  
+</h2>
+    
+
+    <h2 id="name">NAME</h2>
+<div class="codehilite"><pre><span></span><code><span class="nv">specified</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="o">-</span> [<span class="nv">ARGUMENTS</span>:<span class="nv">M_CLI2</span>] <span class="k">return</span> <span class="nv">true</span> <span class="k">if</span> <span class="nv">keyword</span> <span class="nv">was</span> <span class="nv">present</span>
+<span class="nv">on</span> <span class="nv">command</span> <span class="nv">line</span>
+<span class="ss">(</span><span class="nv">LICENSE</span>:<span class="nv">PD</span><span class="ss">)</span>
+</code></pre></div>
+
+<h2 id="synopsis">SYNOPSIS</h2>
+<div class="codehilite"><pre><span></span><code>elemental impure function specified(name)
+
+ character(len=*),intent(in) :: name
+ logical :: specified
+</code></pre></div>
+
+<h2 id="description">DESCRIPTION</h2>
+<div class="codehilite"><pre><span></span><code><span class="nv">specified</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">returns</span> .<span class="nv">true</span>. <span class="k">if</span> <span class="nv">the</span> <span class="nv">specified</span> <span class="nv">keyword</span> <span class="nv">was</span> <span class="nv">present</span> <span class="nv">on</span>
+<span class="nv">the</span> <span class="nv">command</span> <span class="nv">line</span>.
+
+<span class="nv">M_CLI2</span> <span class="nv">intentionally</span> <span class="nv">does</span> <span class="nv">not</span> <span class="nv">have</span> <span class="nv">validators</span> <span class="nv">except</span> <span class="k">for</span> <span class="nv">SPECIFIED</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span>
+<span class="nv">and</span> <span class="nv">of</span> <span class="nv">course</span> <span class="nv">a</span> <span class="nv">check</span> <span class="nv">whether</span> <span class="nv">the</span> <span class="nv">input</span> <span class="nv">conforms</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">type</span> <span class="nv">when</span>
+<span class="nv">requesting</span> <span class="nv">a</span> <span class="nv">value</span> <span class="ss">(</span><span class="nv">with</span> <span class="nv">get_args</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">or</span> <span class="nv">the</span> <span class="nv">convenience</span> <span class="nv">functions</span>
+<span class="nv">like</span> <span class="nv">inum</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">))</span>.
+
+<span class="nv">Fortran</span> <span class="nv">already</span> <span class="nv">has</span> <span class="nv">powerful</span> <span class="nv">validation</span> <span class="nv">capabilities</span>.  <span class="nv">Logical</span>
+<span class="nv">expressions</span> <span class="nv">ANY</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">and</span> <span class="nv">ALL</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">are</span> <span class="nv">standard</span> <span class="nv">Fortran</span> <span class="nv">features</span> <span class="nv">which</span>
+<span class="nv">easily</span> <span class="nv">allow</span> <span class="nv">performing</span> <span class="nv">the</span> <span class="nv">common</span> <span class="nv">validations</span> <span class="k">for</span> <span class="nv">command</span> <span class="nv">line</span>
+<span class="nv">arguments</span> <span class="nv">without</span> <span class="nv">having</span> <span class="nv">to</span> <span class="nv">learn</span> <span class="nv">any</span> <span class="nv">additional</span> <span class="nv">syntax</span> <span class="nv">or</span> <span class="nv">methods</span>.
+</code></pre></div>
+
+<h2 id="options">OPTIONS</h2>
+<div class="codehilite"><pre><span></span><code>NAME   name of commandline argument to query the presence of. Long
+       names should always be used.
+</code></pre></div>
+
+<h2 id="returns">RETURNS</h2>
+<div class="codehilite"><pre><span></span><code><span class="nv">SPECIFIED</span>  <span class="nv">returns</span> .<span class="nv">TRUE</span>. <span class="k">if</span> <span class="nv">specified</span> <span class="nv">NAME</span> <span class="nv">was</span> <span class="nv">present</span> <span class="nv">on</span> <span class="nv">the</span> <span class="nv">command</span>
+           <span class="nv">line</span> <span class="nv">when</span> <span class="nv">the</span> <span class="nv">program</span> <span class="nv">was</span> <span class="nv">invoked</span>.
+</code></pre></div>
+
+<h2 id="example">EXAMPLE</h2>
+<p>Sample program:</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">program</span> <span class="nv">demo_specified</span>
+<span class="nv">use</span>, <span class="nv">intrinsic</span> :: <span class="nv">iso_fortran_env</span>, <span class="nv">only</span> : <span class="o">&amp;</span>
+<span class="o">&amp;</span> <span class="nv">stderr</span><span class="o">=&gt;</span><span class="nv">ERROR_UNIT</span>, <span class="nv">stdin</span><span class="o">=&gt;</span><span class="nv">INPUT_UNIT</span>, <span class="nv">stdout</span><span class="o">=&gt;</span><span class="nv">OUTPUT_UNIT</span>
+<span class="nv">use</span> <span class="nv">M_CLI2</span>,  <span class="nv">only</span> : <span class="nv">set_args</span>, <span class="nv">igets</span>, <span class="nv">rgets</span>, <span class="nv">specified</span>, <span class="nv">sget</span>, <span class="nv">lget</span>
+<span class="nv">implicit</span> <span class="nv">none</span>
+
+<span class="o">!</span> <span class="nv">Define</span> <span class="nv">args</span>
+<span class="nv">integer</span>,<span class="nv">allocatable</span>  :: <span class="nv">ints</span><span class="ss">(</span>:<span class="ss">)</span>
+<span class="nv">real</span>,<span class="nv">allocatable</span>     :: <span class="nv">floats</span><span class="ss">(</span>:<span class="ss">)</span>
+<span class="nv">logical</span>              :: <span class="nv">flag</span>
+<span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span>:<span class="ss">)</span>,<span class="nv">allocatable</span> :: <span class="nv">color</span>
+<span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span>:<span class="ss">)</span>,<span class="nv">allocatable</span> :: <span class="nv">list</span><span class="ss">(</span>:<span class="ss">)</span>
+<span class="nv">integer</span> :: <span class="nv">i</span>
+
+ <span class="k">call</span> <span class="nl">set_args</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">color</span>:<span class="nv">c</span> <span class="s2">&quot;</span><span class="s">red</span><span class="s2">&quot;</span>       <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">flag</span>:<span class="nv">f</span> <span class="nv">F</span>            <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">ints</span>:<span class="nv">i</span> <span class="mi">1</span>,<span class="mi">10</span>,<span class="mi">11</span>      <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="o">--</span><span class="nv">floats</span>:<span class="nv">T</span> <span class="mi">12</span>.<span class="mi">3</span>, <span class="mi">4</span>.<span class="mi">56</span> <span class="o">&amp;</span>
+    <span class="o">&amp;</span> <span class="s1">&#39;</span><span class="s">)</span>
+ <span class="nv">ints</span><span class="o">=</span><span class="nv">igets</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">ints</span><span class="s1">&#39;</span><span class="ss">)</span>
+ <span class="nv">floats</span><span class="o">=</span><span class="nv">rgets</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span><span class="ss">)</span>
+ <span class="nv">flag</span><span class="o">=</span><span class="nv">lget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">flag</span><span class="s1">&#39;</span><span class="ss">)</span>
+ <span class="nv">color</span><span class="o">=</span><span class="nv">sget</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">color</span><span class="s1">&#39;</span><span class="ss">)</span>
+
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">color=</span><span class="s1">&#39;</span>,<span class="nv">color</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">flag=</span><span class="s1">&#39;</span>,<span class="nv">flag</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints=</span><span class="s1">&#39;</span>,<span class="nv">ints</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">floats=</span><span class="s1">&#39;</span>,<span class="nv">floats</span>
+
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">was -flag specified?</span><span class="s1">&#39;</span>,<span class="nv">specified</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">flag</span><span class="s1">&#39;</span><span class="ss">)</span>
+
+ <span class="o">!</span> <span class="nv">elemental</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">)</span>
+
+ <span class="o">!</span> <span class="k">If</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">know</span> <span class="k">if</span> <span class="nv">groups</span> <span class="nv">of</span> <span class="nv">parameters</span> <span class="nv">were</span> <span class="nv">specified</span> <span class="nv">use</span>
+ <span class="o">!</span> <span class="nv">ANY</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span> <span class="nv">and</span> <span class="nv">ALL</span><span class="ss">(</span><span class="mi">3</span><span class="nv">f</span><span class="ss">)</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ANY:</span><span class="s1">&#39;</span>,<span class="nv">any</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">))</span>
+ <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ALL:</span><span class="s1">&#39;</span>,<span class="nv">all</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">))</span>
+
+ <span class="o">!</span> <span class="k">For</span> <span class="nv">mutually</span> <span class="nv">exclusive</span>
+ <span class="k">if</span> <span class="ss">(</span><span class="nv">all</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">)))</span><span class="k">then</span>
+     <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">You specified both names --ints and --floats</span><span class="s1">&#39;</span>
+ <span class="k">endif</span>
+
+ <span class="o">!</span> <span class="k">For</span> <span class="nv">required</span> <span class="nv">parameter</span>
+ <span class="k">if</span> <span class="ss">(</span>.<span class="nv">not</span>.<span class="nv">any</span><span class="ss">(</span><span class="nv">specified</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">floats</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">ints  </span><span class="s1">&#39;</span>]<span class="ss">)))</span><span class="k">then</span>
+     <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">You must specify --ints or --floats</span><span class="s1">&#39;</span>
+ <span class="k">endif</span>
+
+<span class="o">!</span> <span class="nv">check</span> <span class="k">if</span> <span class="nv">all</span> <span class="nv">values</span> <span class="nv">are</span> <span class="nv">in</span> <span class="nv">range</span> <span class="nv">from</span> <span class="mi">10</span> <span class="nv">to</span> <span class="mi">30</span> <span class="nv">and</span> <span class="nv">even</span>
+<span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">are all numbers good?</span><span class="s1">&#39;</span>,<span class="nv">all</span><span class="ss">(</span>[<span class="nv">ints</span> <span class="o">&gt;=</span> <span class="mi">10</span>,<span class="nv">ints</span> <span class="o">&lt;=</span> <span class="mi">30</span>,<span class="ss">(</span><span class="nv">ints</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">==</span> <span class="nv">ints</span>]<span class="ss">)</span>
+
+<span class="o">!</span> <span class="nv">perhaps</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">check</span> <span class="nv">one</span> <span class="nv">value</span> <span class="nv">at</span> <span class="nv">a</span> <span class="nv">time</span>
+<span class="k">do</span> <span class="nv">i</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">size</span><span class="ss">(</span><span class="nv">ints</span><span class="ss">)</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>,[<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&gt;=</span> <span class="mi">10</span>,<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&lt;=</span> <span class="mi">30</span>,<span class="ss">(</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">==</span> <span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>]
+   <span class="k">if</span><span class="ss">(</span><span class="nv">all</span><span class="ss">(</span>[<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&gt;=</span> <span class="mi">10</span>,<span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span> <span class="o">&lt;=</span> <span class="mi">30</span>,<span class="ss">(</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span><span class="o">/</span><span class="mi">2</span><span class="ss">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">==</span> <span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>]<span class="ss">)</span> <span class="ss">)</span><span class="k">then</span>
+      <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>,<span class="s1">&#39;</span><span class="s">is an even number from 10 to 30 inclusive</span><span class="s1">&#39;</span>
+   <span class="k">else</span>
+      <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">ints</span><span class="ss">(</span><span class="nv">i</span><span class="ss">)</span>,<span class="s1">&#39;</span><span class="s">is not an even number from 10 to 30 inclusive</span><span class="s1">&#39;</span>
+   <span class="k">endif</span>
+<span class="nv">enddo</span>
+
+<span class="nv">list</span> <span class="o">=</span> [<span class="nv">character</span><span class="ss">(</span><span class="nv">len</span><span class="o">=</span><span class="mi">10</span><span class="ss">)</span> :: <span class="s1">&#39;</span><span class="s">red</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">white</span><span class="s1">&#39;</span>,<span class="s1">&#39;</span><span class="s">blue</span><span class="s1">&#39;</span>]
+<span class="k">if</span><span class="ss">(</span> <span class="nv">any</span><span class="ss">(</span><span class="nv">color</span> <span class="o">==</span> <span class="nv">list</span><span class="ss">)</span> <span class="ss">)</span><span class="k">then</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">color</span>,<span class="s1">&#39;</span><span class="s">matches a value in the list</span><span class="s1">&#39;</span>
+<span class="k">else</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="nv">color</span>,<span class="s1">&#39;</span><span class="s">not in the list</span><span class="s1">&#39;</span>
+<span class="k">endif</span>
+
+<span class="k">if</span><span class="ss">(</span><span class="nv">size</span><span class="ss">(</span><span class="nv">ints</span><span class="ss">)</span>.<span class="nv">eq</span>.<span class="mi">3</span><span class="ss">)</span><span class="k">then</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints(:) has expected number of values</span><span class="s1">&#39;</span>
+<span class="k">else</span>
+   <span class="nv">write</span><span class="ss">(</span><span class="o">*</span>,<span class="o">*</span><span class="ss">)</span><span class="s1">&#39;</span><span class="s">ints(:) does not have expected number of values</span><span class="s1">&#39;</span>
+<span class="k">endif</span>
+
+<span class="k">end</span> <span class="nv">program</span> <span class="nv">demo_specified</span>
+</code></pre></div>
+
+<p>Default output</p>
+<blockquote>
+<p>color=red
+flag= F
+ints=           1          10          11
+floats=   12.3000002       4.55999994
+was -flag specified? F
+F F
+ANY: F
+ALL: F
+You must specify &ndash;ints or &ndash;floats
+          1 F T F
+          1  is not an even number from 10 to 30 inclusive
+         10 T T T
+         10  is an even number from 10 to 30 inclusive
+         11 T T F
+         11  is not an even number from 10 to 30 inclusive
+red matches a value in the list
+ints(:) has expected number of values</p>
+</blockquote>
+<h2 id="author">AUTHOR</h2>
+<div class="codehilite"><pre><span></span><code>  John S. Urban, 2019
+</code></pre></div>
+
+<h2 id="license">LICENSE</h2>
+<div class="codehilite"><pre><span></span><code>  Public Domain
+</code></pre></div>
+
+    <h3>Arguments</h3>
+        <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th>Type</th>
+<th>Intent</th><th>Optional</th>        <th>Attributes</th>
+        <th></th>
+        <th>Name</th>
+        <th></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-key"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>key</strong></td>
+            <td>
+                
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <h3>Return Value
+        <small>
+          <span class="anchor" id="variable-specified"></span>
+          logical
+        </small>
+      </h3>
+      
+    <br>
+
+    <section class="visible-xs visible-sm hidden-md">
+        <h3>Contents</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    <div class="panel panel-primary">
+      <div class="panel-heading text-left"><h3 class="panel-title">Source Code</h3></div>
+      <div class="list-group">
+        <a class="list-group-item" href="../proc/specified.html#src">specified</a>
+      </div>
+    </div>
+
+
+    </section>
+    <br class="visible-xs visible-sm hidden-md">
+
+
+    
+    
+
+    
+    
+
+
+    
+    <section>
+    <h2><span class="anchor" id="src"></span>Source Code</h2>
+    <div class="highlight"><pre><span></span><span class="k">elemental impure function </span><span class="n">specified</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="w"></span>
+<span class="kt">character</span><span class="p">(</span><span class="nb">len</span><span class="o">=*</span><span class="p">),</span><span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span><span class="w"> </span><span class="kd">::</span><span class="w"> </span><span class="n">key</span><span class="w"></span>
+<span class="kt">logical</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">specified</span><span class="w"></span>
+<span class="kt">integer</span><span class="w">                     </span><span class="kd">::</span><span class="w"> </span><span class="n">place</span><span class="w"></span>
+<span class="w">   </span><span class="k">call </span><span class="n">locate_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">place</span><span class="p">)</span><span class="w">                   </span><span class="c">! find where string is or should be</span>
+<span class="w">   </span><span class="k">if</span><span class="p">(</span><span class="n">place</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="k">then</span>
+<span class="k">      </span><span class="n">specified</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="w">   </span><span class="k">else</span>
+<span class="k">      </span><span class="n">specified</span><span class="o">=</span><span class="n">present_in</span><span class="p">(</span><span class="n">place</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="k">endif</span>
+<span class="k">end function </span><span class="n">specified</span><span class="w"></span>
+</pre></div>
+
+    </section>
+    <br>
+    
+    </div>
+  </div>
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-6"><p>M_CLI2 was developed by John S. Urban<br>&copy; 2023 
+</p>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+ on 2023-02-10 18:53            </p>
+        </div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="../js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script src="../tipuesearch/tipuesearch_content.js"></script>
+    <script src="../tipuesearch/tipuesearch_set.js"></script>
+    <script src="../tipuesearch/tipuesearch.js"></script>
+    
+  </body>
+</html>
