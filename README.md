@@ -6,7 +6,7 @@
 ## Description
 **M_CLI2**(3) is a Fortran module that will crack the command line when
 given a prototype string that looks very much like an invocation of
-the program. Calls are then made for each parameter name to set 
+the program. Calls are then made for each parameter name to set
 variables appropriately in the program.
 
 One common style of use is to isolate all the parsing to the beginning
@@ -20,16 +20,16 @@ of the program, which is generally just a few lines:
 
      ! optional block of text to display when the --help option appears
      help_text=[character(len=80):: &
-     'NAME', &
-     '  compartmentalized - example program for parsing command line', &
-     'DESCRIPTION', &
-     '   A program to illustrate using M_CLI2 to parse the command line', &
-     '   including creating help text using a block of text.', &
-     'OPTIONS', &
-     ' -x,-y:      some real values', &
-     ' -i:         a whole number', &
-     ' --title,T:  title line', &
-     ' -l,-L       some Boolean options', &
+     'NAME                                                           ', &
+     '  compartmentalized - example program for parsing command line ', &
+     'DESCRIPTION                                                    ', &
+     '   A program to illustrate using M_CLI2 to parse the command   ', &
+     '   line including creating help text using a block of text.    ', &
+     'OPTIONS                                                        ', &
+     ' -x,-y:      some real values                                  ', &
+     ' -i:         a whole number                                    ', &
+     ' --title,T:  title line                                        ', &
+     ' -l,-L       some Boolean options                              ', &
      ''], &
 
      ! optional block of text to display when the --version option appears
@@ -38,11 +38,11 @@ of the program, which is generally just a few lines:
      'DESCRIPTION: Illustrate command line parsing ', &
      'VERSION:     1.0, 2026-01-26                 ', &
      'AUTHOR:      Leonardo DaVinci                ', &
-     'LICENSE:     Public Domain', &
+     'LICENSE:     Public Domain                   ', &
      ''])
 
      ! get all the argument values and assign them to variables of various
-     ! types 
+     ! types
      call main(&
      & x=rget('x'), y=rget('y'), & ! get some float values
      & title=sget('title'),      & ! get a string
@@ -75,7 +75,7 @@ the command line values by keyword to Fortran variables.
 Additionally, the matching "\*GETS" functions return arrays of values.
 
 You can query whether a keyword has been specified or not using
-**SPECIFIED**(3). 
+**SPECIFIED**(3).
 
 **M_CLI2**(3) intentionally does not include validating values beyond
 type because Fortran is already very good at that. The example program
@@ -176,8 +176,8 @@ These demo programs provide templates for the most common usage:
 ## Optional Modes
 * [demo15](example/demo15.f90) Allowing bundling short Boolean keys using "strict" mode
 * [demo14](example/demo14.f90) Optional mode for case-insensitive long keys
-* [demo12](example/demo12.f90) Enabling response files
 * [demo13](example/demo13.f90) Mode for equivalencing dash to underscore in keynames
+* [demo12](example/demo12.f90) Enabling response files
 
 ## Niche examples
 * [demo8](example/demo8.f90)   Parsing multiple keywords in a single call to **get_args**(3)
@@ -405,14 +405,12 @@ To download the github repository and build and install with cmake
         M_CLI2_dep = subproject('M_CLI2').get_variable('M_CLI2_dep')
 ```
 
-
 ## Commit Tests ##
 
 commit `598e44164eee383b8a0775aa75b7d1bb100481c3` was tested on 2020-11-22 with
  + GNU Fortran (GCC) 8.3.1 20191121 (Red Hat 8.3.1-5)
  + ifort (IFORT) 19.1.3.304 20200925
  + nvfortran 20.7-0 LLVM 64-bit target on x86-64 Linux
-
 
 commit `8fe841d8c0c1867f88847e24009a76a98484b31a` was tested on 2021-09-29 with
  + GNU Fortran (Ubuntu 10.3.0-1ubuntu1~20.04) 10.3.0

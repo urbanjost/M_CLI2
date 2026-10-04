@@ -413,7 +413,7 @@ integer                              :: iback
       !   do
       !      call print_dictionary_usage()
       !      read(*,'(a)')string
-      !      if(string.eq.'.')exit
+      !      if(string == '.')exit
       !      call prototype_to_dictionary(string)
       !   enddo
       call print_dictionary_usage()
@@ -1263,9 +1263,9 @@ function change_leading_underscore_to_prefix(string) result(newstring)
 character(len=*) :: string
 character(len=:),allocatable :: newstring
 ! @ is treated as a special character in powershell so allow the underscore to be a prefix
-!x!   if(string.eq.'')then
+!x!   if(string == '')then
 !x!      newstring=string
-!x!   elseif(string(1:1).eq.'_')then
+!x!   elseif(string(1:1) == '_')then
 !x!      newstring=G_RESPONSE_PREFIX//string(2:)
 !x!   else
       newstring=string
@@ -1666,7 +1666,7 @@ end subroutine prototype_to_dictionary
 !!       write(*,*)color,'not in the list'
 !!    endif
 !!
-!!    if(size(ints).eq.3)then
+!!    if(size(ints) == 3)then
 !!       write(*,*)'ints(:) has expected number of values'
 !!    else
 !!       write(*,*)'ints(:) does not have expected number of values'
@@ -1807,12 +1807,12 @@ character(len=:),allocatable          :: kludge(:)
       iilen=len_trim(val_local)
       call locate_key(long,place)                  ! find where string is or should be
       if(place < 1)then                                ! if string was not found insert it
-         call insert_(keywords,long,iabs(place))
-         call insert_(values,val_local,iabs(place))
-         call insert_(counts,iilen,iabs(place))
-         call insert_(shorts,short,iabs(place))
-         call insert_(present_in,.true.,iabs(place))
-         call insert_(mandatory,set_mandatory,iabs(place))
+         call insert_(keywords,long,abs(place))
+         call insert_(values,val_local,abs(place))
+         call insert_(counts,iilen,abs(place))
+         call insert_(shorts,short,abs(place))
+         call insert_(present_in,.true.,abs(place))
+         call insert_(mandatory,set_mandatory,abs(place))
       else
          if(present_in(place))then                      ! if multiple keywords append values with space between them
             if(G_append)then
@@ -2426,7 +2426,7 @@ integer :: iend
    endif
    if(.not.return_with_suffix)then
       iend=index(base,'.',back=.true.)
-      if(iend.gt.1)then
+      if(iend > 1)then
          base=base(:iend-1)
       endif
    endif
@@ -2601,7 +2601,7 @@ logical                      :: next_mandatory
          endif
          call locate_key(current_argument_padded(2:),pointer)
          jj=len(current_argument)
-         if( (pointer <= 0.or.jj.ge.3).and.(G_STRICT) )then  ! name not found
+         if( (pointer <= 0.or.jj >= 3).and.(G_STRICT) )then  ! name not found
             if(G_DEBUG)write(*,gen)'<DEBUG>CMD_ARGS_TO_DICTIONARY:SHORT NOT FOUND:',current_argument_padded(2:)
             ! in strict mode this might be multiple single-character values
             do kk=2,jj
@@ -3943,7 +3943,7 @@ character(len=3),save        :: nan_string='NaN'
       endif
    else
       select case(local_chars(1:1))
-      case('z','Z','h','H')                                     ! assume hexadecimal
+      case('z','Z','h','H','u','U')                                     ! assume hexadecimal
          write(frmt,"('(Z',i0,')')")len(local_chars)
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
@@ -4807,8 +4807,8 @@ integer           :: ierr
   decodebase=.false.
 
   ipound=index(string_local,'#')                                       ! determine if in form [-]base#whole
-  if(basein == 0.and.ipound > 1)then                                  ! split string into two values
-     call a2i(string_local(:ipound-1),basein_local,ierr)   ! get the decimal value of the base
+  if(basein == 0.and.ipound > 1)then                                   ! split string into two values
+     call a2i(string_local(:ipound-1),basein_local,ierr)               ! get the decimal value of the base
      string_local=string_local(ipound+1:)                              ! now that base is known make string just the value
      if(basein_local >= 0)then                                         ! allow for a negative sign prefix
         out_sign=1
@@ -4879,13 +4879,13 @@ end function decodebase
 !!
 !!##DESCRIPTION
 !!
-!!    LOCATE_(3) finds the index where the VALUE is found or should
-!!    be found in an array. The array must be sorted in descending
-!!    order (highest at top). If VALUE is not found it returns the index
-!!    where the name should be placed at with a negative sign.
+!!    LOCATE_(3) finds the index where the VALUE is found or should be
+!!    found in an array. The array must be sorted in descending order
+!!    (highest at top). If VALUE is not found it returns the index where
+!!    the name should be placed at with a negative sign.
 !!
-!!    The array and list must be of the same type (CHARACTER, DOUBLEPRECISION,
-!!    REAL,INTEGER)
+!!    The array and list must be of the same type (CHARACTER,
+!!    DOUBLEPRECISION, REAL,INTEGER)
 !!
 !!##OPTIONS
 !!
@@ -5006,7 +5006,7 @@ integer                                 :: error
       maxtry=0
       place=-1
    else
-      maxtry=nint(log(float(arraysize))/log(2.0)+1.0)
+      maxtry=nint(log(real(arraysize))/log(2.0)+1.0)
       place=(arraysize+1)/2
    endif
    imin=1
@@ -5026,7 +5026,7 @@ integer                                 :: error
 
       if(imin > imax)then
          place=-imin
-         if(iabs(place) > arraysize)then ! ran off end of list. Where new value should go or an unsorted input array'
+         if(abs(place) > arraysize)then ! ran off end of list. Where new value should go or an unsorted input array'
             exit LOOP
          endif
          exit LOOP

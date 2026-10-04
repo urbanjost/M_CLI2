@@ -60,7 +60,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026 get_args_fixed_length(3m_cli2)
+			      September 25, 2026get_args_fixed_length(3m_cli2)
 get_subcommand(3m_cli2) 			       get_subcommand(3m_cli2)
 
 NAME
@@ -188,7 +188,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026        get_subcommand(3m_cli2)
+			      September 25, 2026       get_subcommand(3m_cli2)
 M_CLI2(3m_cli2) 					       M_CLI2(3m_cli2)
 
 NAME
@@ -392,7 +392,7 @@ SEE ALSO
   iget(3), lget(3), rget(3), sget(3), cget(3) dgets(3), igets(3), lgets(3),
   rgets(3), sgets(3), cgets(3)
 
-			       January 27, 2026 	       M_CLI2(3m_cli2)
+			      September 25, 2026	       M_CLI2(3m_cli2)
 set_args(3m_cli2)					     set_args(3m_cli2)
 
 NAME
@@ -864,7 +864,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026 	     set_args(3m_cli2)
+			      September 25, 2026	     set_args(3m_cli2)
 set_mode(3m_cli2)					     set_mode(3m_cli2)
 
 NAME
@@ -955,7 +955,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026 	     set_mode(3m_cli2)
+			      September 25, 2026	     set_mode(3m_cli2)
 specified(3m_cli2)					    specified(3m_cli2)
 
 NAME
@@ -1064,7 +1064,7 @@ EXAMPLES
 	write(*,*)color,'not in the list'
      endif
 
-     if(size(ints).eq.3)then
+     if(size(ints) == 3)then
 	write(*,*)'ints(:) has expected number of values'
      else
 	write(*,*)'ints(:) does not have expected number of values'
@@ -1098,7 +1098,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026 	    specified(3m_cli2)
+			      September 25, 2026	    specified(3m_cli2)
 get_args_fixed_size(3m_cli2)			  get_args_fixed_size(3m_cli2)
 
 NAME
@@ -1183,7 +1183,7 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026   get_args_fixed_size(3m_cli2)
+			      September 25, 2026  get_args_fixed_size(3m_cli2)
 get_args(3m_cli2)					     get_args(3m_cli2)
 
 NAME
@@ -1304,4 +1304,4 @@ AUTHOR
 LICENSE
   Public Domain
 
-			       January 27, 2026 	     get_args(3m_cli2)
+			      September 25, 2026	     get_args(3m_cli2)

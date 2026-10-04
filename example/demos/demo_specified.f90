@@ -68,7 +68,7 @@
         write(*,*)color,'not in the list'
      endif
 
-     if(size(ints).eq.3)then
+     if(size(ints) == 3)then
         write(*,*)'ints(:) has expected number of values'
      else
         write(*,*)'ints(:) does not have expected number of values'
