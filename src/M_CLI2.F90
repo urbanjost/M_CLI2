@@ -331,7 +331,173 @@ interface lgets;module procedure lgs, lg;end interface
 interface rgets;module procedure rgs, rg;end interface
 interface sgets;module procedure sgs, sg;end interface
 
+private :: menu_placeholder
+
+abstract interface
+   subroutine menu_interface(labels,values,help)
+      character(len=*),intent(in)                :: labels(*)
+      character(len=:),intent(inout),allocatable :: values(:)
+      character(len=*),intent(in),optional       :: help(:)
+   end subroutine menu_interface
+end interface
+
+procedure(menu_interface),pointer :: my_menu => menu_placeholder
+
 contains
+!-----------------------------------------------------------------------------------------------------------------------------------
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
+!-----------------------------------------------------------------------------------------------------------------------------------
+subroutine set_menu(proc)
+! provide a subroutine that edits the options table when -? is provided
+procedure(menu_interface) :: proc
+   my_menu => proc
+end subroutine set_menu
+!===================================================================================================================================
+!()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()=
+!===================================================================================================================================
+subroutine menu_placeholder(labels,values,help)
+! a placeholder for editing the options table when -? is provided
+character(len=*),intent(in)                :: labels(*)
+character(len=:),intent(inout),allocatable :: values(:)
+character(len=*),intent(in),optional       :: help(:)
+character(len=255)                         :: reply
+integer                                    :: i
+character(len=1)                           :: first
+character(len=*),parameter                 :: hlp(*)=[character(len=80) :: &
+'--------------------------------------------------------------------------------',&
+'| You may respecify your command-line arguments using the same syntax as used  |',&
+'| for the prototype command in set_args():                                     |',&
+'|                                                                              |',&
+'|    --NAME "string" or --NAME F|T or --NAME NUMBER,NUMBER, ...                |',&
+'|                                                                              |',&
+'| this procedure is a placeholder intended for replacement by a TUI or GUI that|',&
+'| is typically too platform-specific to include in M_CLI2 itself, but it can   |',&
+'| still be useful when no other higher-level interface is provided. Little     |',&
+'| syntax checking is performed.                                                |',&
+'|                                                                              |',&
+'|  o  string values                                                            |',&
+'|     o must be delimited with double quotes.                                  |',&
+'|     o adjacent double quotes put one double quote into value                 |',&
+'|     o must not be null. A blank is specified as " ", not "".                 |',&
+'|                                                                              |',&
+'|  o  logical values                                                           |',&
+'|      o logical values must have a value. Use F or T.                         |',&
+'|                                                                              |',&
+'|  o  leading and trailing blanks are removed from unquoted values             |',&
+'|                                                                              |',&
+'|  o  special commands                                                         |',&
+'|      o  !command -- executes system command                                  |',&
+'|      o  x        -- stop program                                             |',&
+'|                                                                              |',&
+'| To display command help text if any, enter "help".                           |',&
+'--------------------------------------------------------------------------------']
+   call print_dictionary_usage()
+   do
+      write(*,'(a)',advance='no')'"." to exit, "?" for help:'
+      read(*,'(a)')reply
+      reply=adjustl(reply)
+      first=reply(1:1)
+      select case(first)
+      case('.','q')
+         exit
+      case('h','?')
+         if(reply.eq.'help')then
+            call pager(help)
+         else
+            call pager(hlp)
+         endif
+      case('x')
+         stop
+      case('!')        ! execute system command
+         COMMAND: block
+            integer            :: exitstat
+            integer            :: cmdstat
+            character(len=255) :: cmdmsg
+            call execute_command_line(trim(reply(2:)), exitstat=exitstat,cmdstat=cmdstat,cmdmsg=cmdmsg)
+         end block COMMAND
+         cycle
+      case default
+         call prototype_to_dictionary(reply,3)
+      end select
+      call print_dictionary_usage()
+   enddo
+end subroutine menu_placeholder
+!===================================================================================================================================
+subroutine pager(text)
+character(len=*),intent(in) :: text(:)
+integer                     :: i
+integer                     :: where_on_page
+integer                     :: iostat
+integer                     :: where_in_text
+character(len=1)            :: paws
+integer,parameter           :: page_size=24
+   where_in_text = 0
+   where_on_page = 0
+   INFINITE: do
+      if(where_in_text < size(text) )then
+         where_in_text=where_in_text+1
+      endif
+      write(stdout,'(a)')trim(text(where_in_text))
+      where_on_page = where_on_page+1
+      if ( where_on_page >= page_size-1 .or. where_in_text >= size(text) ) then
+         write(stdout,'(a)',advance='no')'"." or "q" to exit help text:'
+         read(stdin,'(a)',iostat=iostat)paws
+
+         select case (paws)
+          case ('.','q')
+             exit INFINITE
+          case ('t')
+             where_in_text=0
+             where_on_page=0
+             cycle INFINITE
+          case ('x')
+             stop
+          case (' ')
+            if(where_on_page >= page_size-1)where_on_page=0
+          case default
+             if(where_on_page >= page_size-1)where_on_page=0
+             write(stdout,'(a)')'q or .  --- quit displaying help'
+             write(stdout,'(a)')'t       --- return to top of help text'
+             write(stdout,'(a)')'x       --- stop program'
+             where_on_page=where_on_page+3
+         end select
+
+         cycle INFINITE
+      endif
+   enddo INFINITE
+end subroutine pager
+!===================================================================================================================================
+subroutine edit_dictionary(my_labels,my_values,my_help)
+character(len=*),intent(in)          :: my_labels(*)
+character(len=:),allocatable         :: my_values(:)
+character(len=*),intent(in),optional :: my_help(:)
+integer                              :: i
+logical                              :: hold
+
+hold=G_APPEND
+G_APPEND=.false.           ! whether to append or replace when duplicate keywords found
+
+   call my_menu(my_labels,my_values,my_help)
+
+G_APPEND=hold
+
+!   if(allocated(unnamed))then
+!      if(size(unnamed) > 0)then
+!         write(warn,'(a)')'UNNAMED'
+!         write(warn,'(i6.6,3a)')(i,'[',unnamed(i),']',i=1,size(unnamed))
+!      endif
+!   endif
+!   if(allocated(args))then
+!      if(size(args) > 0)then
+!         write(warn,'(a)')'ARGS'
+!         write(warn,'(i6.6,3a)')(i,'[',args(i),']',i=1,size(args))
+!      endif
+!   endif
+!   if(G_remaining /= '')then
+!      write(warn,'(a)')'REMAINING'
+!      write(warn,'(a)')G_remaining
+!   endif
+end subroutine edit_dictionary
 !===================================================================================================================================
 !()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()()!
 !===================================================================================================================================
@@ -348,8 +514,8 @@ contains
 !!       character(len=*),intent(in),optional :: version_text(:)
 !!
 !!##DESCRIPTION
-!!     Checks the commandline  and processes the implicit --help, --version,
-!!     --verbose, and --usage parameters.
+!!     Checks the commandline  and processes the implicit --help|-h,
+!!     --version|-v, --verbose|-V, --edit|-? and --usage|-u parameters.
 !!
 !!     If the optional text values are supplied they will be displayed by
 !!     --help and --version command-line options, respectively.
@@ -407,15 +573,10 @@ character(len=:),allocatable         :: line
 integer                              :: i
 integer                              :: istart
 integer                              :: iback
-!character(len=255)                   :: string
+   if(get('edit') == 'T')then
+      call edit_dictionary(keywords,values,help_text)
+   endif
    if(get('usage') == 'T')then
-      ! kludge to test interactive mode concept
-      !   do
-      !      call print_dictionary_usage()
-      !      read(*,'(a)')string
-      !      if(string == '.')exit
-      !      call prototype_to_dictionary(string)
-      !   enddo
       call print_dictionary_usage()
       call mystop(32)
       return
@@ -515,7 +676,7 @@ end subroutine check_commandline
 !!                Note that the following options are predefined for all
 !!                commands:
 !!
-!!                    --verbose F --usage F --help F --version F
+!!                    --verbose F --usage F --help F --version F --edit F
 !!
 !!                see "DEFINING THE PROTOTYPE" in the next section for
 !!                further details.
@@ -838,8 +999,8 @@ end subroutine check_commandline
 !!                o give a blank string value as " ".
 !!                o use F|T for lists of logicals,
 !!                o lists of numbers should be comma-delimited.
-!!                o --usage, --help, --version, --verbose, and unknown
-!!                  options are ignored.
+!!                o --usage, --help, --version, --edit, --verbose, and
+!!                  "unknown" options are ignored.
 !!
 !!    comment|#  Line is a comment line
 !!    system|!   System command.
@@ -1031,7 +1192,7 @@ character(len=:),allocatable                      :: debug_mode
    allocate(character(len=ibig) :: args(0))
 
    call wipe_dictionary()
-   hold='--version F --usage F --help F --version F '//adjustl(prototype)
+   hold='--version F --usage F --edit F --help F --version F '//adjustl(prototype)
    call prototype_and_cmd_args_to_nlist(hold,string)
    if(allocated(G_RESPONSE_IGNORED))then
       if(G_DEBUG)write(*,gen)'<DEBUG>SET_ARGS:G_RESPONSE_IGNORED:',G_RESPONSE_IGNORED
@@ -1045,7 +1206,7 @@ character(len=:),allocatable                      :: debug_mode
    if(.not.allocated(args))then
        allocate(character(len=0) :: args(0))
    endif
-   call check_commandline(help_text,version_text) ! process --help, --version, --usage
+   call check_commandline(help_text,version_text) ! process --help, --version, --usage, --edit
    if(present(ierr))then
       ierr=G_STOP
    endif
@@ -1341,9 +1502,10 @@ end subroutine set_usage
 !!
 !!##SYNOPSIS
 !!
-!!     recursive subroutine prototype_to_dictionary(string)
+!!     recursive subroutine prototype_to_dictionary(string,pass)
 !!
 !!      character(len=*),intent(in)     ::  string
+!!      integer,intent(in)              ::  pass
 !!
 !!##DESCRIPTION
 !!      given a string of form
@@ -1369,6 +1531,7 @@ end subroutine set_usage
 !!
 !!##OPTIONS
 !!      STRING   string is character input string to define command
+!!      PASS     1=create dictionary, 2=update dictionary, 3=change values
 !!
 !!##RETURNS
 !!
@@ -1490,7 +1653,14 @@ integer                       :: longest
          else
             call locate_key(keyword,place)
             if(keyword /= ' '.and.place < 0)then
-               call update(keyword,'F')           ! store name and null value (first pass)
+               if(pass.lt.3)then
+                  call update(keyword,'F')           ! store name and null value (first pass)
+               else
+                  write(warn,'(*(g0))')'*prototype_to_dictionary* warning: unknown keyword. ignoring string [', &
+                  & trim(value),  &
+                  & '] for ',     &
+                  & trim(keyword)
+               endif
             elseif(keyword /= ' ')then
                call update(keyword,' ')           ! store name and null value (second pass)
             elseif(.not.G_keyword_single_letter.and.ipoint-2 == islen) then ! -- at end of line
@@ -2014,6 +2184,12 @@ integer                               :: iused
       if(iused <= 0)then
          call update('version')
          call update('version:v','F')
+      endif
+
+      call locate_key('?',iused)
+      if(iused <= 0)then
+         call update('edit')
+         call update('edit:?','F')
       endif
 
       call locate_key('V',iused)
@@ -3943,7 +4119,7 @@ character(len=3),save        :: nan_string='NaN'
       endif
    else
       select case(local_chars(1:1))
-      case('z','Z','h','H','u','U')                                     ! assume hexadecimal
+      case('z','Z','h','H','u','U')                             ! assume hexadecimal
          write(frmt,"('(Z',i0,')')")len(local_chars)
          read(local_chars(2:),frmt,iostat=ierr,iomsg=msg)intg
          valu=dble(intg)
